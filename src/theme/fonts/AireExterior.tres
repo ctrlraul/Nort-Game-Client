@@ -1,0 +1,7 @@
+[gd_resource type="FontVariation" load_steps=2 format=3 uid="uid://d3mpjilq7jk34"]
+
+[ext_resource type="FontFile" uid="uid://egkh56djee13" path="res://theme/fonts/AireExterior.ttf" id="1_n640e"]
+
+[resource]
+base_font = ExtResource("1_n640e")
+spacing_glyph = 1

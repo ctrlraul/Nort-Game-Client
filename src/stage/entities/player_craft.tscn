@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://d3udbkcd2skey"]
+
+[ext_resource type="Script" path="res://stage/entities/player_craft.gd" id="1_dvdqw"]
+[ext_resource type="PackedScene" uid="uid://b8kgq1nanwsyw" path="res://stage/craft/craft_body.tscn" id="2_dh6al"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_a3g0y"]
+size = Vector2(5, 5)
+
+[node name="PlayerCraft" type="Node2D"]
+script = ExtResource("1_dvdqw")
+
+[node name="Body" parent="." instance=ExtResource("2_dh6al")]
+unique_name_in_owner = true
+
+[node name="TransformWrapper" type="Node" parent="."]
+
+[node name="Cursor" type="CharacterBody2D" parent="TransformWrapper"]
+unique_name_in_owner = true
+collision_layer = 256
+collision_mask = 256
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TransformWrapper/Cursor"]
+shape = SubResource("RectangleShape2D_a3g0y")

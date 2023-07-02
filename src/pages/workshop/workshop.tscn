@@ -1,0 +1,151 @@
+[gd_scene load_steps=13 format=3 uid="uid://b3m0hjtsgn5gj"]
+
+[ext_resource type="Script" path="res://pages/workshop/workshop.gd" id="1_vg08v"]
+[ext_resource type="PackedScene" uid="uid://gyid7spgcjj0" path="res://pages/workshop/parts_inventory_item.tscn" id="2_g0ii2"]
+[ext_resource type="Theme" uid="uid://85byrm5eq3ab" path="res://theme/theme.tres" id="3_t7xk5"]
+[ext_resource type="PackedScene" uid="uid://bk5m6deoy4705" path="res://common/interface/drag_receiver/drag_receiver.tscn" id="4_s4op0"]
+[ext_resource type="Texture2D" uid="uid://b2h5w2qbjnved" path="res://pages/workshop/hexagons_grid.png" id="5_c2h6q"]
+[ext_resource type="PackedScene" uid="uid://bjgbkm0q3g02x" path="res://common/interface/craft_display/craft_display.tscn" id="6_7py8v"]
+[ext_resource type="PackedScene" uid="uid://bnywbmg2uuj8j" path="res://common/interface/window_margin.tscn" id="7_ex5jn"]
+[ext_resource type="PackedScene" uid="uid://cwl7mn40ut30d" path="res://pages/workshop/parts_inventory.tscn" id="8_64ebj"]
+[ext_resource type="PackedScene" uid="uid://cudr7rtxdnhfl" path="res://pages/workshop/part_drag_preview.tscn" id="9_e87r6"]
+
+[sub_resource type="Shader" id="Shader_uqvf8"]
+code = "shader_type canvas_item;
+
+void fragment() {
+	COLOR = texture(TEXTURE, UV - vec2(-0.0925, 0.2575));
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_q5yqe"]
+shader = SubResource("Shader_uqvf8")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4n1lx"]
+bg_color = Color(1, 1, 1, 0.0196078)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 1)
+border_blend = true
+
+[node name="Workshop" type="CanvasLayer"]
+script = ExtResource("1_vg08v")
+PartsListItem = ExtResource("2_g0ii2")
+
+[node name="Theme" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("3_t7xk5")
+
+[node name="Hitbox" type="Control" parent="Theme"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HitboxDragReceiver" parent="Theme/Hitbox" instance=ExtResource("4_s4op0")]
+layout_mode = 1
+
+[node name="Container" type="Control" parent="Theme"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Canvas" type="Control" parent="Theme/Container"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Grid" type="TextureRect" parent="Theme/Container/Canvas"]
+texture_filter = 2
+material = SubResource("ShaderMaterial_q5yqe")
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -1000.0
+offset_top = -1000.0
+offset_right = 1000.0
+offset_bottom = 1000.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.6, 0.6)
+pivot_offset = Vector2(1000, 1000)
+mouse_filter = 2
+texture = ExtResource("5_c2h6q")
+stretch_mode = 1
+
+[node name="Panel" type="Panel" parent="Theme/Container/Canvas/Grid"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_4n1lx")
+
+[node name="CraftDisplay" parent="Theme/Container/Canvas" instance=ExtResource("6_7py8v")]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1, 1)
+
+[node name="WindowMargin" parent="Theme" instance=ExtResource("7_ex5jn")]
+layout_mode = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Theme/WindowMargin"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="PartsInventory" parent="Theme/WindowMargin/HBoxContainer" instance=ExtResource("8_64ebj")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="PartDragPreview" parent="Theme" instance=ExtResource("9_e87r6")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 0
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+grow_horizontal = 1
+grow_vertical = 1
+scale = Vector2(0.5, 0.5)
+mouse_filter = 2
+
+[connection signal="gui_input" from="Theme/Hitbox" to="." method="_on_hitbox_gui_input"]
+[connection signal="drag_enter" from="Theme/Hitbox/HitboxDragReceiver" to="." method="_on_hitbox_drag_receiver_drag_enter"]
+[connection signal="drag_leave" from="Theme/Hitbox/HitboxDragReceiver" to="." method="_on_hitbox_drag_receiver_drag_leave"]
+[connection signal="drag_over" from="Theme/Hitbox/HitboxDragReceiver" to="." method="_on_hitbox_drag_receiver_drag_over"]
+[connection signal="got_data" from="Theme/Hitbox/HitboxDragReceiver" to="." method="_on_hitbox_drag_receiver_got_data"]
+[connection signal="part_picked" from="Theme/WindowMargin/HBoxContainer/PartsInventory" to="." method="_on_parts_inventory_part_picked"]

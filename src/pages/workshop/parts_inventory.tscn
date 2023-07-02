@@ -1,0 +1,35 @@
+[gd_scene load_steps=3 format=3 uid="uid://cwl7mn40ut30d"]
+
+[ext_resource type="Script" path="res://pages/workshop/parts_inventory.gd" id="1_cw3gl"]
+[ext_resource type="PackedScene" uid="uid://gyid7spgcjj0" path="res://pages/workshop/parts_inventory_item.tscn" id="2_rcf30"]
+
+[node name="PartsInventory" type="PanelContainer"]
+custom_minimum_size = Vector2(336, 0)
+offset_right = 336.0
+offset_bottom = 413.0
+script = ExtResource("1_cw3gl")
+PartsInventoryItemScene = ExtResource("2_rcf30")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="PartsContainer" type="GridContainer" parent="ScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+columns = 4
+
+[node name="PartsListItem" parent="ScrollContainer/PartsContainer" instance=ExtResource("2_rcf30")]
+layout_mode = 2
+
+[node name="PartsListItem2" parent="ScrollContainer/PartsContainer" instance=ExtResource("2_rcf30")]
+layout_mode = 2
+
+[node name="PartsListItem3" parent="ScrollContainer/PartsContainer" instance=ExtResource("2_rcf30")]
+layout_mode = 2
+
+[node name="PartsListItem4" parent="ScrollContainer/PartsContainer" instance=ExtResource("2_rcf30")]
+layout_mode = 2
+
+[node name="PartsListItem5" parent="ScrollContainer/PartsContainer" instance=ExtResource("2_rcf30")]
+layout_mode = 2

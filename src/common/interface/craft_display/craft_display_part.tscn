@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://d3adgnvi6si7i"]
+
+[ext_resource type="Script" path="res://common/interface/craft_display/craft_display_part.gd" id="1_col4d"]
+[ext_resource type="Texture2D" uid="uid://b3bm4djf5tas8" path="res://assets/images/part_example.png" id="2_fck1p"]
+
+[node name="CraftDisplayPart" type="CenterContainer"]
+use_top_left = true
+script = ExtResource("1_col4d")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("2_fck1p")

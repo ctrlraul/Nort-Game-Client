@@ -1,0 +1,13 @@
+{
+	"id": "newborn",
+	"core": {
+		"data": {
+			"definition": "core_1",
+			"level": 1,
+			"shiny": false
+		},
+		"x": 0,
+		"y": 0
+	},
+	"parts": []
+}

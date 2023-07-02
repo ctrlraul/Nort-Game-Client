@@ -1,0 +1,98 @@
+[gd_scene load_steps=8 format=3 uid="uid://ch024wrq3drl4"]
+
+[ext_resource type="Theme" uid="uid://85byrm5eq3ab" path="res://theme/theme.tres" id="1_kp2xo"]
+[ext_resource type="Script" path="res://common/interface/generic_window/generic_window.gd" id="2_r1gwo"]
+[ext_resource type="Texture2D" uid="uid://mn1cp574cid" path="res://theme/panel.png" id="3_y3mwv"]
+[ext_resource type="Texture2D" uid="uid://duotyrshpkhha" path="res://theme/button_x.png" id="4_7078q"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_ejiw4"]
+font_size = 24
+
+[sub_resource type="Animation" id="Animation_u7tkr"]
+resource_name = "open"
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ifgr6"]
+_data = {
+"open": SubResource("Animation_u7tkr")
+}
+
+[node name="GenericWindow" type="Control"]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -350.0
+offset_top = -200.0
+offset_right = 350.0
+offset_bottom = 200.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_kp2xo")
+script = ExtResource("2_r1gwo")
+
+[node name="NinePatchRect" type="NinePatchRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_y3mwv")
+region_rect = Rect2(0, 0, 254, 254)
+patch_margin_left = 40
+patch_margin_top = 22
+patch_margin_right = 40
+patch_margin_bottom = 21
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 28
+theme_override_constants/margin_top = 28
+theme_override_constants/margin_right = 28
+theme_override_constants/margin_bottom = 28
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+clip_contents = true
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Header" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Header"]
+layout_mode = 2
+text = "Window"
+label_settings = SubResource("LabelSettings_ejiw4")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CloseButton" type="TextureButton" parent="MarginContainer/VBoxContainer/Header"]
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+texture_normal = ExtResource("4_7078q")
+stretch_mode = 5
+
+[node name="Content" type="Control" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_ifgr6")
+}
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Header/CloseButton" to="." method="_on_close_button_pressed"]

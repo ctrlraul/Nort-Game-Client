@@ -1,0 +1,13 @@
+[gd_scene load_steps=4 format=3 uid="uid://df155wn1dmw8r"]
+
+[ext_resource type="Script" path="res://stage/entities/turret_craft.gd" id="1_qjhxd"]
+[ext_resource type="PackedScene" uid="uid://b8kgq1nanwsyw" path="res://stage/craft/craft_body.tscn" id="2_lwkuu"]
+[ext_resource type="PackedScene" uid="uid://bthskvmroiyr" path="res://stage/entity_components/tractor_target.tscn" id="3_w37u6"]
+
+[node name="TurretCraft" type="Node2D"]
+script = ExtResource("1_qjhxd")
+
+[node name="Body" parent="." instance=ExtResource("2_lwkuu")]
+unique_name_in_owner = true
+
+[node name="TractorTarget" parent="." instance=ExtResource("3_w37u6")]
