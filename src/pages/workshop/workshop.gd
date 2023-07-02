@@ -119,7 +119,15 @@ func _on_hitbox_drag_receiver_drag_enter() -> void:
 	var blueprint = CraftBlueprintPart.new(DragEmitter.data)
 	blueprint.place = canvas.get_local_mouse_position()
 
-	dragged_part = craft_display.add_part(blueprint)
+	# Adding children to craft display on the same frame as the mouse entered the
+	# drag receiver triggered another mouse enter event, which causes a stack
+	# overflow, even if craft display's visibility is set to hidden, which is
+	# pretty fucking bizarre.
+	(
+		func():
+			dragged_part = craft_display.add_part(blueprint)
+	).call_deferred()
+
 
 
 func _on_hitbox_drag_receiver_drag_leave() -> void:

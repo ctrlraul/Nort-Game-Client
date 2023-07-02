@@ -7,8 +7,7 @@ signal drag_over()
 
 
 
-@onready var normal: Panel = %Normal
-@onready var mouse_over: Panel = %MouseOver
+@onready var color_rect: ColorRect = %ColorRect
 
 
 
@@ -37,28 +36,29 @@ func _on_drag_stop(source, data) -> void:
 	visible = false
 	if __mouse_over:
 		__mouse_over = false
-		normal.visible = true
-		mouse_over.visible = false
+#		normal.visible = true
+#		mouse_over.visible = false
 		gui_input.disconnect(_on_gui_input)
 		got_data.emit(source, data)
 
 
 func _on_mouse_entered() -> void:
-	normal.visible = false
-	mouse_over.visible = true
+#	normal.visible = false
+#	mouse_over.visible = true
 	__mouse_over = true
 	drag_enter.emit()
 	gui_input.connect(_on_gui_input)
 
 
 func _on_mouse_exited() -> void:
-	normal.visible = true
-	mouse_over.visible = false
+#	normal.visible = true
+#	mouse_over.visible = false
 	__mouse_over = false
 	drag_leave.emit()
 	gui_input.disconnect(_on_gui_input)
 
 
+# Connected dynamically, no touchy!
 func _on_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
 		drag_over.emit()

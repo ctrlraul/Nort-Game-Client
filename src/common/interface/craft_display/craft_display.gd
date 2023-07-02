@@ -10,6 +10,7 @@ extends Control
 
 
 
+var core: Control = null
 var color: Color = Color(1, 0, 1)
 
 var parts: Array :
@@ -28,7 +29,7 @@ func set_blueprint(blueprint: CraftBlueprint) -> void:
 	for part_blueprint in blueprint.parts:
 		add_part(part_blueprint)
 
-	var core = add_part(blueprint.core)
+	core = add_part(blueprint.core)
 
 	__core_light.visible = true
 	__core_light.position = core.position
@@ -37,11 +38,19 @@ func set_blueprint(blueprint: CraftBlueprint) -> void:
 func set_color(value: Color) -> void:
 	color = value
 	for part in __parts_container.get_children():
-		part.set_color(color)
+		part.color = color
 
 
 func add_part(part_blueprint: CraftBlueprintPart) -> Control:
+
 	var part = PartScene.instantiate()
+
 	__parts_container.add_child(part)
+
 	part.set_blueprint(part_blueprint)
+	part.color = color
+
+	# Keep core on top
+	__parts_container.move_child(core, __parts_container.get_child_count() - 1)
+
 	return part
