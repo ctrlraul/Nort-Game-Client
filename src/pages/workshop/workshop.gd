@@ -258,7 +258,7 @@ func _on_hitbox_drag_receiver_drag_enter() -> void:
 	elif DragEmitter.data is CraftPartData:
 		blueprint = CraftBlueprintPart.new(DragEmitter.data)
 
-	blueprint.place = canvas.get_local_mouse_position() - drag_offset
+	blueprint.place = snapped(canvas.get_local_mouse_position() - drag_offset, GRID_SNAP)
 
 	# Adding children to the tree on the same frame as the mouse entered the
 	# drag receiver triggers another mouse enter event, which causes a stack
