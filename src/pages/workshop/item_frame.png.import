@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bnajamf51ffvv"
-path="res://.godot/imported/core_light.png-9f956b97e9abcf641599340e6926f807.ctex"
+uid="uid://cpvu7gu8m0rod"
+path="res://.godot/imported/item_frame.png-f49ccc790f16ae4a16cf8c7c3cdfcbb1.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://stage/craft/core_light.png"
-dest_files=["res://.godot/imported/core_light.png-9f956b97e9abcf641599340e6926f807.ctex"]
+source_file="res://pages/workshop/item_frame.png"
+dest_files=["res://.godot/imported/item_frame.png-f49ccc790f16ae4a16cf8c7c3cdfcbb1.ctex"]
 
 [params]
 

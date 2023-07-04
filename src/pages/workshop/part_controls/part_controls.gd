@@ -44,13 +44,15 @@ func _ready() -> void:
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
 
-		var mouse = rotate_icon_centerer.get_local_mouse_position()
+		var mouse = get_local_mouse_position()
 		var mouse_angle = mouse.angle()
 		var new_rotation = rad_to_deg(mouse_angle - __rotation_start_angle)
 		var snap: float = 360.0 / ANGLES
 
 		angle = deg_to_rad(floor(new_rotation / snap) * snap)
-		part.angle = angle
+
+		if part:
+			part.angle = angle
 
 		line.rotation = mouse_angle
 		line.points[1].x = mouse.length()
@@ -63,7 +65,7 @@ func set_part(value: CraftDisplayPart) -> void:
 
 	part = value
 
-	outline_sprite.texture = part.sprite.texture
+	outline_sprite.texture = Assets.get_part_texture(value.part_data.definition.id)
 	angle = part.angle
 	flipped = part.flipped
 
@@ -89,7 +91,7 @@ func update_transform(control: Control) -> void:
 
 func _on_rotate_button_button_down() -> void:
 
-	var mouse = rotate_icon_centerer.get_local_mouse_position()
+	var mouse = get_local_mouse_position()
 	var mouse_angle = mouse.angle()
 
 	__rotation_start_angle = mouse_angle - angle

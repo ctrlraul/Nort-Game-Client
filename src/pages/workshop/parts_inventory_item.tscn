@@ -1,14 +1,10 @@
-[gd_scene load_steps=9 format=3 uid="uid://gyid7spgcjj0"]
+[gd_scene load_steps=7 format=3 uid="uid://gyid7spgcjj0"]
 
-[ext_resource type="Theme" uid="uid://85byrm5eq3ab" path="res://theme/theme.tres" id="1_mkxle"]
-[ext_resource type="Script" path="res://pages/workshop/parts_inventory_item.gd" id="2_1njnr"]
-[ext_resource type="PackedScene" uid="uid://cudr7rtxdnhfl" path="res://pages/workshop/part_drag_preview.tscn" id="3_dv358"]
-[ext_resource type="Texture2D" uid="uid://d0odmr4n0aifr" path="res://pages/workshop/hexagon.png" id="4_vywqe"]
-[ext_resource type="Texture2D" uid="uid://b3bm4djf5tas8" path="res://assets/images/part_example.png" id="5_4xuib"]
-[ext_resource type="Shader" path="res://pages/workshop/part_outline.gdshader" id="6_chu3c"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_301hi"]
-shader = ExtResource("6_chu3c")
+[ext_resource type="Theme" uid="uid://85byrm5eq3ab" path="res://theme/theme.tres" id="1_jbv3o"]
+[ext_resource type="Script" path="res://pages/workshop/parts_inventory_item.gd" id="2_58mbk"]
+[ext_resource type="PackedScene" uid="uid://cudr7rtxdnhfl" path="res://pages/workshop/part_drag_preview.tscn" id="3_1am46"]
+[ext_resource type="Texture2D" uid="uid://cpvu7gu8m0rod" path="res://pages/workshop/item_frame.png" id="4_wldh8"]
+[ext_resource type="PackedScene" uid="uid://uk8tpg655i5w" path="res://common/interface/craft_part_display/craft_part_display.tscn" id="7_13fuq"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_3s4op"]
 font_size = 14
@@ -18,11 +14,13 @@ outline_color = Color(0, 0, 0, 1)
 [node name="PartsListItem" type="Button"]
 self_modulate = Color(1, 1, 1, 0)
 custom_minimum_size = Vector2(64, 64)
-theme = ExtResource("1_mkxle")
-script = ExtResource("2_1njnr")
-PartDragPreviewScene = ExtResource("3_dv358")
+theme = ExtResource("1_jbv3o")
+script = ExtResource("2_58mbk")
+PartDragPreviewScene = ExtResource("3_1am46")
 
-[node name="TextureRect" type="TextureRect" parent="."]
+[node name="Frame" type="TextureRect" parent="."]
+unique_name_in_owner = true
+self_modulate = Color(0, 0, 0, 1)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -30,11 +28,12 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-texture = ExtResource("4_vywqe")
+texture = ExtResource("4_wldh8")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Control" type="Control" parent="."]
+[node name="CraftPartDisplay" parent="." instance=ExtResource("7_13fuq")]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -44,44 +43,6 @@ anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.5, 0.5)
-mouse_filter = 2
-
-[node name="Sprite" type="TextureRect" parent="Control"]
-unique_name_in_owner = true
-self_modulate = Color(1, 0, 1, 1)
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -64.0
-offset_top = -54.0
-offset_right = 64.0
-offset_bottom = 54.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-texture = ExtResource("5_4xuib")
-stretch_mode = 5
-
-[node name="OutlineSprite" type="TextureRect" parent="Control"]
-unique_name_in_owner = true
-visible = false
-material = SubResource("ShaderMaterial_301hi")
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -64.0
-offset_top = -54.0
-offset_right = 64.0
-offset_bottom = 54.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-texture = ExtResource("5_4xuib")
-stretch_mode = 5
 
 [node name="Count" type="Label" parent="."]
 unique_name_in_owner = true

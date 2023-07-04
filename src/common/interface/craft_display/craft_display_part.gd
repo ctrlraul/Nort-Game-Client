@@ -2,35 +2,34 @@ class_name CraftDisplayPart extends Control
 
 
 
-@onready var sprite: TextureRect = %Sprite
+@onready var craft_part_display: Control = %CraftPartDisplay
 
 
+
+var part_data: CraftPartData = null
 
 var color: Color :
-	set(value):
-		color = value
-		sprite.self_modulate = color
+	set(value): craft_part_display.color = value
+	get: return craft_part_display.color
 
 var flipped: bool :
-	set(value):
-		flipped = value
-		sprite.flip_h = value
+	set(value): craft_part_display.flipped = value
+	get: return craft_part_display.flipped
 
 var angle: float :
-	set(value):
-		angle = value
-		rotation = value
-
-var part_data: CraftPartData
+	set(value): rotation = value
+	get: return rotation
 
 
 
 func set_blueprint(blueprint: CraftBlueprintPart) -> void:
 	position = blueprint.place
+	part_data = blueprint.data
+	craft_part_display.definition = blueprint.data.definition
+	craft_part_display.shiny = blueprint.data.shiny
 	flipped = blueprint.flipped
 	angle = blueprint.angle
-	part_data = blueprint.data
-	sprite.texture = Assets.get_part_texture(blueprint.data.definition.id)
+
 
 
 func to_blueprint() -> CraftBlueprintPart:

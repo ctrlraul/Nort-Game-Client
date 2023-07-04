@@ -9,7 +9,7 @@ const DEBUG = false
 const ASSETS_DATA_PATH = "res://data/"
 
 
-const PLAYER_FACTION = "emerald"
+const PLAYER_FACTION = "ruby"
 const INITIAL_BLUEPRINT = "newborn"
 const FACTIONLESS_COLOR = Color(1, 0, 1)
 

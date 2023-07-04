@@ -7,10 +7,18 @@ const LOCAL_PLAYERS_DIR: String = "user://local_players"
 
 
 func new_local_player() -> PlayerData:
+
 	var player = PlayerData.new()
+	var blueprint = Assets.initial_blueprint
+
 	player.id = Assets.generate_uid()
-	player.current_blueprint = Assets.initial_blueprint
-	player.blueprints = [player.current_blueprint] as Array[CraftBlueprint]
+	player.current_blueprint = blueprint
+	player.blueprints.append(blueprint)
+	player.cores.append(blueprint.core.data)
+
+	for part in blueprint.parts:
+		player.parts.append(part.data)
+
 	return player
 
 

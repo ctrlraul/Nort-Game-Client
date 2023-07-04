@@ -21,7 +21,7 @@ func _ready() -> void:
 
 
 
-func set_parts(parts: Array[CraftPartDefinition]) -> void:
+func set_parts(parts: Array[CraftPartData]) -> void:
 	for part in parts:
 		var item = PartsInventoryItemScene.instantiate()
 
@@ -31,7 +31,7 @@ func set_parts(parts: Array[CraftPartDefinition]) -> void:
 		item.color = Assets.player_faction.color
 		item.picked.connect(_on_item_picked.bind(item))
 
-		items[part.id] = item
+		items[part.definition.id] = item
 
 
 

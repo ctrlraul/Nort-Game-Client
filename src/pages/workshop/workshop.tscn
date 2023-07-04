@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://b3m0hjtsgn5gj"]
+[gd_scene load_steps=20 format=3 uid="uid://b3m0hjtsgn5gj"]
 
 [ext_resource type="Script" path="res://pages/workshop/workshop.gd" id="1_3gydl"]
 [ext_resource type="PackedScene" uid="uid://gyid7spgcjj0" path="res://pages/workshop/parts_inventory_item.tscn" id="2_bxtng"]
@@ -12,9 +12,10 @@
 [ext_resource type="PackedScene" uid="uid://bnywbmg2uuj8j" path="res://common/interface/window_margin.tscn" id="10_jfafk"]
 [ext_resource type="PackedScene" uid="uid://cwl7mn40ut30d" path="res://pages/workshop/parts_inventory.tscn" id="11_tputx"]
 [ext_resource type="PackedScene" uid="uid://cudr7rtxdnhfl" path="res://pages/workshop/part_drag_preview.tscn" id="12_meuxm"]
+[ext_resource type="PackedScene" uid="uid://f58y3xr2ti0s" path="res://pages/workshop/cores_list_item.tscn" id="12_nhu0i"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_gbnip"]
-size = Vector2(1, 1)
+[sub_resource type="CircleShape2D" id="CircleShape2D_i0onw"]
+radius = 8.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rq4b1"]
 size = Vector2(80, 80)
@@ -45,6 +46,7 @@ shader = ExtResource("7_4qp4t")
 [node name="Workshop" type="CanvasLayer"]
 script = ExtResource("1_3gydl")
 PartsListItem = ExtResource("2_bxtng")
+CoresListItemScene = ExtResource("12_nhu0i")
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="."]
 anchors_preset = 15
@@ -56,6 +58,8 @@ grow_vertical = 2
 [node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
 unique_name_in_owner = true
 transparent_bg = true
+handle_input_locally = false
+render_target_update_mode = 4
 
 [node name="Node2D" type="Node2D" parent="SubViewportContainer/SubViewport"]
 
@@ -69,7 +73,7 @@ collision_mask = 256
 monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SubViewportContainer/SubViewport/Node2D/MouseArea"]
-shape = SubResource("RectangleShape2D_gbnip")
+shape = SubResource("CircleShape2D_i0onw")
 
 [node name="CoreArea" type="Area2D" parent="SubViewportContainer/SubViewport/Node2D"]
 unique_name_in_owner = true
@@ -233,13 +237,53 @@ alignment = 1
 layout_mode = 2
 text = "Save"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Theme/WindowMargin/VBoxContainer"]
+[node name="HBoxContainer" type="GridContainer" parent="Theme/WindowMargin/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 2
+columns = 3
 
-[node name="PartsInventory" parent="Theme/WindowMargin/VBoxContainer/HBoxContainer" instance=ExtResource("11_tputx")]
+[node name="Control" type="Control" parent="Theme/WindowMargin/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="PartsInventory" parent="Theme/WindowMargin/VBoxContainer/HBoxContainer/Control" instance=ExtResource("11_tputx")]
 unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 0.0
+offset_bottom = 0.0
+grow_vertical = 2
+size_flags_vertical = 3
+
+[node name="CoresListContainer" type="MarginContainer" parent="Theme/WindowMargin/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="PanelContainer" type="PanelContainer" parent="Theme/WindowMargin/VBoxContainer/HBoxContainer/CoresListContainer"]
+layout_mode = 2
+
+[node name="CoresList" type="HBoxContainer" parent="Theme/WindowMargin/VBoxContainer/HBoxContainer/CoresListContainer/PanelContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="CoresListItem" parent="Theme/WindowMargin/VBoxContainer/HBoxContainer/CoresListContainer/PanelContainer/CoresList" instance=ExtResource("12_nhu0i")]
+layout_mode = 2
+
+[node name="CoresListItem2" parent="Theme/WindowMargin/VBoxContainer/HBoxContainer/CoresListContainer/PanelContainer/CoresList" instance=ExtResource("12_nhu0i")]
+layout_mode = 2
+
+[node name="CoresDragReceiver" parent="Theme/WindowMargin/VBoxContainer/HBoxContainer/CoresListContainer" instance=ExtResource("4_fq1rx")]
+visible = false
 layout_mode = 2
 
 [node name="PartDragPreview" parent="Theme" instance=ExtResource("12_meuxm")]
@@ -261,5 +305,6 @@ mouse_filter = 2
 [connection signal="got_data" from="Theme/Hitbox/HitboxDragReceiver" to="." method="_on_hitbox_drag_receiver_got_data"]
 [connection signal="rotated" from="Theme/Container/PartControls" to="." method="_on_part_controls_rotated"]
 [connection signal="pressed" from="Theme/WindowMargin/VBoxContainer/Header/HBoxContainer/SaveButton" to="." method="_on_save_button_pressed"]
-[connection signal="part_picked" from="Theme/WindowMargin/VBoxContainer/HBoxContainer/PartsInventory" to="." method="_on_parts_inventory_part_picked"]
-[connection signal="part_stored" from="Theme/WindowMargin/VBoxContainer/HBoxContainer/PartsInventory" to="." method="_on_parts_inventory_part_stored"]
+[connection signal="part_picked" from="Theme/WindowMargin/VBoxContainer/HBoxContainer/Control/PartsInventory" to="." method="_on_parts_inventory_part_picked"]
+[connection signal="part_stored" from="Theme/WindowMargin/VBoxContainer/HBoxContainer/Control/PartsInventory" to="." method="_on_parts_inventory_part_stored"]
+[connection signal="got_data" from="Theme/WindowMargin/VBoxContainer/HBoxContainer/CoresListContainer/CoresDragReceiver" to="." method="_on_cores_drag_receiver_got_data"]

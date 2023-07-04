@@ -11,6 +11,7 @@ const PAN_MAX = 400
 
 
 @export var PartsListItem: PackedScene
+@export var CoresListItemScene: PackedScene
 
 @onready var mouse_area: Area2D = %MouseArea
 @onready var core_area: Area2D = %CoreArea
@@ -25,8 +26,12 @@ const PAN_MAX = 400
 @onready var craft_display: CraftDisplay = %CraftDisplay
 @onready var parts_inventory: Control = %PartsInventory
 @onready var picked_part_preview: Control = %PartDragPreview
+@onready var cores_list_container: Control = %CoresListContainer
+@onready var cores_list: Control = %CoresList
 
 
+
+var color: Color = GameConfig.FACTIONLESS_COLOR
 
 var drag_offset: Vector2 = Vector2.ZERO
 var dragged_part: CraftDisplayPart = null
@@ -42,6 +47,7 @@ func _ready() -> void:
 	picked_part_preview.clear()
 	part_controls.clear()
 	Stage.clear()
+	NodeUtils.clear(cores_list)
 	%SubViewport.size = hitbox.size
 
 
@@ -50,30 +56,68 @@ func _mount() -> void:
 	await Game.initialize()
 
 	if Game.current_player:
-		set_blueprint(Game.current_player.current_blueprint)
+		init_for_player()
 	else:
-		set_blueprint(Assets.initial_blueprint)
+		init_for_dev()
 
-	var hulls: Array[CraftPartDefinition] = []
-	var cores: Array[CraftPartDefinition] = []
 
-	craft_display.set_color(Assets.player_faction.color)
+func init_for_player() -> void:
 
-	for part in Assets.get_parts():
+	var player = Game.current_player
+
+	color = Assets.player_faction.color
+	craft_display.color = color
+
+	set_blueprint(player.current_blueprint)
+
+	parts_inventory.set_parts(player.parts)
+
+	for core in player.cores:
+		add_core_button(core)
+
+	cores_list_container.visible = player.cores.size() > 1
+
+
+func init_for_dev() -> void:
+
+	color = Assets.player_faction.color
+	craft_display.color = color
+
+	set_blueprint(Assets.initial_blueprint)
+
+	var hulls: Array[CraftPartData] = []
+	var cores: Array[CraftPartData] = []
+
+	for part in Assets.parts.values():
+		var part_data = CraftPartData.new(part)
 		match part.type:
-			CraftPartDefinition.Type.CORE:
-				cores.append(part)
-			CraftPartDefinition.Type.HULL:
-				hulls.append(part)
+			CraftPartDefinition.Type.CORE: cores.append(part_data)
+			CraftPartDefinition.Type.HULL: hulls.append(part_data)
 
 	parts_inventory.set_parts(hulls)
 
+	for core in Assets.cores.values():
+		add_core_button(CraftPartData.new(core))
+
+	cores_list_container.visible = Assets.cores.size() > 1
+
+
+func add_core_button(part_data: CraftPartData) -> void:
+
+	var item = CoresListItemScene.instantiate()
+	var blueprint = CraftBlueprintPart.new(part_data)
+
+	cores_list.add_child(item)
+
+	item.part_data = part_data
+	item.color = Assets.player_faction.color
+	item.pressed.connect(func(): craft_display.set_core_blueprint(blueprint))
 
 
 func set_blueprint(blueprint: CraftBlueprint) -> void:
+	craft_display.set_core_blueprint(blueprint.core)
 	for part in blueprint.parts:
 		add_part(part)
-	craft_display.set_core_blueprint(blueprint.core)
 
 
 func zoom(delta: int) -> void:
@@ -185,7 +229,7 @@ func update_hovered_part() -> void:
 		hovered_part_outline.visible = true
 		hovered_part_outline.position = hovered_part.position
 		hovered_part_outline.rotation = hovered_part.angle
-		hovered_part_outline_sprite.texture = hovered_part.sprite.texture
+		hovered_part_outline_sprite.texture = Assets.get_part_texture(hovered_part.part_data)
 	else:
 		hovered_part_outline.visible = false
 
@@ -232,7 +276,7 @@ func _on_hitbox_gui_input(event: InputEvent) -> void:
 			update_camera()
 			part_controls.update_transform(canvas)
 
-		elif !dragged_part:
+		elif dragged_part == null:
 			mouse_area.global_position = mouse_area.get_global_mouse_position()
 			update_hovered_part()
 
@@ -298,3 +342,14 @@ func _on_save_button_pressed() -> void:
 		Game.current_player.current_blueprint = craft_display.to_blueprint()
 		Game.current_player.blueprints[0] = Game.current_player.current_blueprint
 		PagesManager.go_to(GameConfig.Routes.LOBBY)
+		PlayerDataManager.store_local_player(Game.current_player)
+
+
+func _on_cores_drag_receiver_got_data(_source, data) -> void:
+
+	if data is CraftPartData:
+		add_core_button(data)
+	elif data is CraftBlueprintPart:
+		add_core_button(data.data)
+
+	picked_part_preview.clear()

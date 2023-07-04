@@ -1,0 +1,41 @@
+[gd_scene load_steps=4 format=3 uid="uid://f58y3xr2ti0s"]
+
+[ext_resource type="Script" path="res://pages/workshop/cores_list_item.gd" id="1_8y6em"]
+[ext_resource type="PackedScene" uid="uid://uk8tpg655i5w" path="res://common/interface/craft_part_display/craft_part_display.tscn" id="2_a8x48"]
+[ext_resource type="Texture2D" uid="uid://bnajamf51ffvv" path="res://assets/images/core_light.png" id="3_rh6h5"]
+
+[node name="CoresListItem" type="Button"]
+custom_minimum_size = Vector2(60, 60)
+flat = true
+script = ExtResource("1_8y6em")
+
+[node name="CraftPartDisplay" parent="." instance=ExtResource("2_a8x48")]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.5, 0.5)
+
+[node name="CoreLight" type="TextureRect" parent="CraftPartDisplay"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -61.5
+offset_top = -61.5
+offset_right = 61.5
+offset_bottom = 61.5
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_rh6h5")
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

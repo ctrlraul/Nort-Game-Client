@@ -22,7 +22,7 @@ func set_player_data(player_data: PlayerData) -> void:
 	nick_label.text = player_data.nick
 	score_label.text = str(player_data.score)
 	craft_display.set_blueprint(player_data.current_blueprint)
-	craft_display.set_color(Assets.player_faction.color)
+	craft_display.color = Assets.player_faction.color
 
 
 

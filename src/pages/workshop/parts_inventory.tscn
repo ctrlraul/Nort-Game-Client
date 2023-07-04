@@ -1,15 +1,15 @@
 [gd_scene load_steps=4 format=3 uid="uid://cwl7mn40ut30d"]
 
-[ext_resource type="Script" path="res://pages/workshop/parts_inventory.gd" id="1_lykdl"]
-[ext_resource type="PackedScene" uid="uid://gyid7spgcjj0" path="res://pages/workshop/parts_inventory_item.tscn" id="2_x6daq"]
-[ext_resource type="PackedScene" uid="uid://bk5m6deoy4705" path="res://common/interface/drag_receiver/drag_receiver.tscn" id="3_6k3gb"]
+[ext_resource type="Script" path="res://pages/workshop/parts_inventory.gd" id="1_87omu"]
+[ext_resource type="PackedScene" uid="uid://gyid7spgcjj0" path="res://pages/workshop/parts_inventory_item.tscn" id="2_wlwwl"]
+[ext_resource type="PackedScene" uid="uid://bk5m6deoy4705" path="res://common/interface/drag_receiver/drag_receiver.tscn" id="3_gntig"]
 
 [node name="PartsInventory" type="Panel"]
 custom_minimum_size = Vector2(336, 0)
 offset_right = 336.0
 offset_bottom = 413.0
-script = ExtResource("1_lykdl")
-PartsInventoryItemScene = ExtResource("2_x6daq")
+script = ExtResource("1_87omu")
+PartsInventoryItemScene = ExtResource("2_wlwwl")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -32,22 +32,23 @@ unique_name_in_owner = true
 layout_mode = 2
 columns = 4
 
-[node name="PartsListItem" parent="MarginContainer/ScrollContainer/PartsContainer" instance=ExtResource("2_x6daq")]
+[node name="PartsListItem" parent="MarginContainer/ScrollContainer/PartsContainer" instance=ExtResource("2_wlwwl")]
 layout_mode = 2
 
-[node name="PartsListItem2" parent="MarginContainer/ScrollContainer/PartsContainer" instance=ExtResource("2_x6daq")]
+[node name="PartsListItem2" parent="MarginContainer/ScrollContainer/PartsContainer" instance=ExtResource("2_wlwwl")]
 layout_mode = 2
 
-[node name="PartsListItem3" parent="MarginContainer/ScrollContainer/PartsContainer" instance=ExtResource("2_x6daq")]
+[node name="PartsListItem3" parent="MarginContainer/ScrollContainer/PartsContainer" instance=ExtResource("2_wlwwl")]
 layout_mode = 2
 
-[node name="PartsListItem4" parent="MarginContainer/ScrollContainer/PartsContainer" instance=ExtResource("2_x6daq")]
+[node name="PartsListItem4" parent="MarginContainer/ScrollContainer/PartsContainer" instance=ExtResource("2_wlwwl")]
 layout_mode = 2
 
-[node name="PartsListItem5" parent="MarginContainer/ScrollContainer/PartsContainer" instance=ExtResource("2_x6daq")]
+[node name="PartsListItem5" parent="MarginContainer/ScrollContainer/PartsContainer" instance=ExtResource("2_wlwwl")]
 layout_mode = 2
 
-[node name="DragReceiver" parent="." instance=ExtResource("3_6k3gb")]
+[node name="DragReceiver" parent="." instance=ExtResource("3_gntig")]
+visible = false
 layout_mode = 1
 
 [connection signal="got_data" from="DragReceiver" to="." method="_on_drag_receiver_got_data"]

@@ -13,7 +13,8 @@ const __PART_SPRITES_DIR = "craft_part_sprites"
 
 var __logger = Logger.new("Assets")
 
-var __parts: Dictionary = {}
+var parts: Dictionary = {}
+var cores: Dictionary = {}
 var __blueprints: Dictionary = {}
 var __factions: Dictionary = {}
 var __part_textures: Dictionary = {}
@@ -37,25 +38,32 @@ func import_assets(base_path: String) -> void:
 
 	__import_part_textures(base_path)
 
-	__logger.info("Parts: %s" % __parts.size())
+	__logger.info("Items: %s" % (parts.size() + cores.size()))
 	__logger.info("Blueprints: %s" % __blueprints.size())
 	__logger.info("Factions: %s" % __factions.size())
 
 
 
-func get_part_texture(id: String) -> Texture2D:
+func get_part_texture(reference) -> Texture2D:
+
+	var id: String
+
+	if reference is String:
+		id = reference
+	elif reference is CraftPartDefinition:
+		id = reference.id
+	elif reference is CraftPartData:
+		id = reference.definition.id
+	elif reference is CraftBlueprintPart:
+		id = reference.data.definition.id
+	else:
+		__logger.error("Texture for '%s' is not found" % id)
+
 	return __part_textures.get(id, MISSING_PART_IMAGE)
 
 
 func get_part(id: String) -> CraftPartDefinition:
-	return __parts[id]
-
-
-func get_parts() -> Array[CraftPartDefinition]:
-	var parts: Array[CraftPartDefinition] = []
-	for part in __parts.values():
-		parts.append(part)
-	return parts
+	return parts[id] if id in parts else cores[id]
 
 
 func get_blueprint(id: String) -> CraftBlueprint:
@@ -75,6 +83,19 @@ func generate_uid() -> String:
 	]
 
 
+func is_core(object) -> bool:
+
+	if object is CraftPartDefinition:
+		return object.type == CraftPartDefinition.Type.CORE
+	if object is CraftPartData:
+		return object.definition.type == CraftPartDefinition.Type.CORE
+	if object is CraftBlueprintPart:
+		return object.data.definition.type == CraftPartDefinition.Type.CORE
+
+	assert(false, "Not implemented")
+
+	return false
+
 
 func __import_part(path: String) -> void:
 
@@ -84,7 +105,9 @@ func __import_part(path: String) -> void:
 		push_error("Failed to import craft part '%s': %s" % [path, result.error])
 	else:
 		var part = CraftPartDefinition.new(result.value)
-		__parts[part.id] = part
+		match part.type:
+			CraftPartDefinition.Type.CORE: cores[part.id] = part
+			CraftPartDefinition.Type.HULL: parts[part.id] = part
 
 
 func __import_blueprint(path: String) -> void:
@@ -111,20 +134,20 @@ func __import_faction(path: String) -> void:
 
 func __import_part_textures(base_path: String) -> void:
 
-	assert(__parts.size() > 0, "No parts imported")
+	assert(parts.size() + cores.size() > 0, "No parts imported")
 
 	var dir_path = base_path.path_join(__PART_SPRITES_DIR)
 
-	for id in __parts:
+	for part in parts.values() + cores.values():
 
-		var texture_path = dir_path.path_join(__parts[id].texture_name)
+		var texture_path = dir_path.path_join(part.texture_name)
 		var texture = load(texture_path)
 
 		if texture:
-			__part_textures[id] = __with_inset_margin(texture, 1)
+			__part_textures[part.id] = __with_inset_margin(texture, 1)
 		else:
-			__part_textures[id] = MISSING_PART_IMAGE
-			__logger.error("Failed to import texture for part '%s': %s" % [id, texture_path])
+			__part_textures[part.id] = MISSING_PART_IMAGE
+			__logger.error("Failed to import texture for part '%s': %s" % [part.id, texture_path])
 
 
 func __with_inset_margin(texture: Texture2D, margin: int) -> Texture2D:

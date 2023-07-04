@@ -1,9 +1,11 @@
-[gd_scene load_steps=2 format=3 uid="uid://c8vjpl3s8tb65"]
+[gd_scene load_steps=3 format=3 uid="uid://c8vjpl3s8tb65"]
 
-[ext_resource type="Script" path="res://stage/craft/craft_part.gd" id="1_36ybw"]
+[ext_resource type="Script" path="res://stage/craft/craft_part.gd" id="1_0orcj"]
+[ext_resource type="Material" uid="uid://bscgpp7x5c27j" path="res://common/materials/shiny_part.tres" id="2_81och"]
 
 [node name="CraftPart" type="Node2D"]
-script = ExtResource("1_36ybw")
+script = ExtResource("1_0orcj")
+ShinyPartMaterial = ExtResource("2_81och")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 unique_name_in_owner = true

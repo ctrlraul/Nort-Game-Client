@@ -7,11 +7,16 @@ extends Control
 
 @onready var __parts_container: Control = %PartsContainer
 @onready var __core_light: Control = %CoreLight
+@onready var core: CraftDisplayPart = %Core
 
 
 
-var core: CraftDisplayPart = null
-var color: Color = Color(1, 0, 1)
+var color: Color = GameConfig.FACTIONLESS_COLOR :
+	set(value):
+		core.color = value
+		for part in parts:
+			part.color = value
+		color = value
 
 var parts: Array :
 	get:
@@ -25,26 +30,15 @@ func _ready() -> void:
 
 
 func set_blueprint(blueprint: CraftBlueprint) -> void:
-
 	for part_blueprint in blueprint.parts:
 		add_part(part_blueprint)
-
-	core = add_part(blueprint.core)
-
-	__core_light.visible = true
-	__core_light.position = core.position
+	set_core_blueprint(blueprint.core)
 
 
 func set_core_blueprint(blueprint: CraftBlueprintPart) -> void:
-	core = add_part(blueprint)
-	__core_light.visible = true
+	core.set_blueprint(blueprint)
+	__core_light.visible = Assets.is_core(blueprint)
 	__core_light.position = core.position
-
-
-func set_color(value: Color) -> void:
-	color = value
-	for part in __parts_container.get_children():
-		part.color = color
 
 
 func add_part(part_blueprint: CraftBlueprintPart) -> Control:
@@ -55,11 +49,6 @@ func add_part(part_blueprint: CraftBlueprintPart) -> Control:
 
 	part.set_blueprint(part_blueprint)
 	part.color = color
-
-	# Keep core on top
-	var parts_count = __parts_container.get_child_count()
-	if parts_count > 1:
-		__parts_container.move_child(core, parts_count - 1)
 
 	return part
 

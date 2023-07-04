@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d0odmr4n0aifr"
-path="res://.godot/imported/hexagon.png-fe6166edb7d461cd8d6e161cebbe0f2d.ctex"
+uid="uid://bnajamf51ffvv"
+path="res://.godot/imported/core_light.png-d8b6139c4076bff0c0e921886cd4e57f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://pages/workshop/hexagon.png"
-dest_files=["res://.godot/imported/hexagon.png-fe6166edb7d461cd8d6e161cebbe0f2d.ctex"]
+source_file="res://assets/images/core_light.png"
+dest_files=["res://.godot/imported/core_light.png-d8b6139c4076bff0c0e921886cd4e57f.ctex"]
 
 [params]
 

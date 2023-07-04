@@ -1,0 +1,56 @@
+[gd_scene load_steps=6 format=3 uid="uid://uk8tpg655i5w"]
+
+[ext_resource type="Texture2D" uid="uid://b3bm4djf5tas8" path="res://assets/images/part_example.png" id="1_wgdtu"]
+[ext_resource type="Script" path="res://common/interface/craft_part_display/craft_part_display.gd" id="1_xntch"]
+[ext_resource type="Shader" path="res://pages/workshop/part_outline.gdshader" id="2_ai505"]
+[ext_resource type="Material" uid="uid://bscgpp7x5c27j" path="res://common/materials/shiny_part.tres" id="2_siddt"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0xr03"]
+shader = ExtResource("2_ai505")
+
+[node name="CraftPartDisplay" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+mouse_filter = 2
+script = ExtResource("1_xntch")
+ShinyPartMaterial = ExtResource("2_siddt")
+
+[node name="Sprite" type="TextureRect" parent="."]
+unique_name_in_owner = true
+self_modulate = Color(1, 0, 0.870588, 1)
+material = ExtResource("2_siddt")
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -64.0
+offset_top = -54.0
+offset_right = 64.0
+offset_bottom = 54.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("1_wgdtu")
+stretch_mode = 5
+
+[node name="SpriteOutline" type="TextureRect" parent="."]
+unique_name_in_owner = true
+visible = false
+material = SubResource("ShaderMaterial_0xr03")
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -64.0
+offset_top = -54.0
+offset_right = 64.0
+offset_bottom = 54.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("1_wgdtu")
+stretch_mode = 5

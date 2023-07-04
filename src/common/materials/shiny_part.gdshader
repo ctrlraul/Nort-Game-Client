@@ -10,15 +10,15 @@ void fragment(){
 
   vec4 tex = texture(TEXTURE, UV);
 
-	if (noise > 0.91) {
+	if (noise > 0.875) {
 		if (tex.r > 0.5) {
 	  	COLOR.rgb = vec3(1);
 		} else {
-	  	COLOR.rgb += vec3(0.2);
+	  	COLOR.rgb += vec3(0.3);
 		}
 	}
 
-	COLOR.rgb += 0.15 * tex.r;
+	COLOR.rgb += vec3(0.1, 0.1, 0.2) * tex.r;
 
 	if (tex.r > 0.3) {
 		COLOR.rgb += (0.3 - fract(TIME * 0.5) * 0.3) * tex.r;
