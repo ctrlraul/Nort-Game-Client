@@ -62,6 +62,19 @@ func get_blueprint(id: String) -> CraftBlueprint:
 	return __blueprints[id]
 
 
+func generate_uid() -> String:
+
+	var random = RandomNumberGenerator.new()
+
+	random.randomize()
+
+	return "%s-%s-%s" % [
+		Time.get_unix_time_from_system() * 1000,
+		Time.get_ticks_msec(),
+		random.randi()
+	]
+
+
 
 func __import_part(path: String) -> void:
 

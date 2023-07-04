@@ -17,8 +17,18 @@ var __mouse_over: bool = false
 
 func _ready() -> void:
 	visible = false
+	set_process_input(false)
 	DragEmitter.drag_start.connect(_on_drag_start)
 	DragEmitter.drag_stop.connect(_on_drag_stop)
+
+	if !GameConfig.DEBUG:
+		modulate.a = 0
+
+
+
+func _input(event: InputEvent) -> void:
+	if event is InputEventMouseMotion:
+		drag_over.emit()
 
 
 
@@ -38,7 +48,7 @@ func _on_drag_stop(source, data) -> void:
 		__mouse_over = false
 #		normal.visible = true
 #		mouse_over.visible = false
-		gui_input.disconnect(_on_gui_input)
+		set_process_input(false)
 		got_data.emit(source, data)
 
 
@@ -47,7 +57,7 @@ func _on_mouse_entered() -> void:
 #	mouse_over.visible = true
 	__mouse_over = true
 	drag_enter.emit()
-	gui_input.connect(_on_gui_input)
+	set_process_input(true)
 
 
 func _on_mouse_exited() -> void:
@@ -55,10 +65,4 @@ func _on_mouse_exited() -> void:
 #	mouse_over.visible = false
 	__mouse_over = false
 	drag_leave.emit()
-	gui_input.disconnect(_on_gui_input)
-
-
-# Connected dynamically, no touchy!
-func _on_gui_input(event: InputEvent) -> void:
-	if event is InputEventMouseMotion:
-		drag_over.emit()
+	set_process_input(false)

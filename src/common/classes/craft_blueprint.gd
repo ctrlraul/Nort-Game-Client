@@ -10,10 +10,7 @@ var parts: Array[CraftBlueprintPart] = []
 
 func _init(source = null) -> void:
 
-	if source == null:
-		core = CraftBlueprintPart.new(Assets.initial_core)
-
-	elif source is Dictionary:
+	if source is Dictionary:
 		id = source.id
 		core = CraftBlueprintPart.new(source.core)
 

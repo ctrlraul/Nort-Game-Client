@@ -41,3 +41,4 @@ func _on_mouse_exited() -> void:
 
 func _on_button_down() -> void:
 	DragEmitter.drag(self, part_data)
+	picked.emit()

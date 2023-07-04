@@ -14,13 +14,15 @@ func _init(source = null) -> void:
 		definition = source
 		level = 1
 		shiny = false
+		return
 
 	if source is Dictionary:
 		definition = Assets.get_part(source.definition)
 		level = source.level
 		shiny = source.shiny
+		return
 
-	assert(source != null, "Invalid source")
+	assert(source == null, "Invalid source")
 
 
 

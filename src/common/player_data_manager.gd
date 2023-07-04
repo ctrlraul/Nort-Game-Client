@@ -8,7 +8,7 @@ const LOCAL_PLAYERS_DIR: String = "user://local_players"
 
 func new_local_player() -> PlayerData:
 	var player = PlayerData.new()
-	player.id = __generate_uid()
+	player.id = Assets.generate_uid()
 	player.current_blueprint = Assets.initial_blueprint
 	player.blueprints = [player.current_blueprint] as Array[CraftBlueprint]
 	return player
@@ -72,19 +72,6 @@ func __get_local_player(path: String) -> PlayerData:
 	assert(result.error == "", "Failed to load player data at '%s'" % result.error)
 
 	return PlayerData.new(result.value)
-
-
-func __generate_uid() -> String:
-
-	var random = RandomNumberGenerator.new()
-
-	random.randomize()
-
-	return "%s-%s-%s" % [
-		Time.get_unix_time_from_system() * 1000,
-		Time.get_ticks_msec(),
-		random.randi()
-	]
 
 
 func __create_local_players_dir() -> Result:

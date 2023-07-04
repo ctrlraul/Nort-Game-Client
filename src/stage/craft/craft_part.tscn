@@ -1,9 +1,9 @@
 [gd_scene load_steps=2 format=3 uid="uid://c8vjpl3s8tb65"]
 
-[ext_resource type="Script" path="res://stage/craft/craft_part.gd" id="1_yinnv"]
+[ext_resource type="Script" path="res://stage/craft/craft_part.gd" id="1_36ybw"]
 
 [node name="CraftPart" type="Node2D"]
-script = ExtResource("1_yinnv")
+script = ExtResource("1_36ybw")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 unique_name_in_owner = true

@@ -10,10 +10,7 @@ extends Page
 
 
 func _mount() -> void:
-
-	if !Game.initialized:
-		await Game.initialize()
-
+	await Game.initialize()
 	__refresh_saves_list()
 
 

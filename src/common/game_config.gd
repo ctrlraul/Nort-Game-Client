@@ -1,6 +1,11 @@
 extends Node
 
 
+
+const DEBUG = false
+
+
+
 const ASSETS_DATA_PATH = "res://data/"
 
 

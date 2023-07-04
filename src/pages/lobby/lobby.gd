@@ -4,8 +4,7 @@ extends Page
 
 func _mount() -> void:
 
-	if !Game.initialized:
-		await Game.initialize()
+	await Game.initialize()
 
 	Stage.clear()
 	Stage.spawn_player()#.crippled = true

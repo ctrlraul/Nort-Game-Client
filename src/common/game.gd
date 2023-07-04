@@ -4,7 +4,9 @@ signal current_player_changed(new_player: PlayerData)
 
 
 
-var initialized: bool = false
+var __initializing: bool = false
+var __initialized: bool = false
+
 var current_player: PlayerData :
 	set(value):
 		current_player = value
@@ -29,14 +31,20 @@ func _ready() -> void:
 
 
 func initialize() -> Signal:
-	assert(initialized == false, "Already initialized")
-	__initialize.call_deferred()
+
+	if __initialized:
+		return get_tree().create_timer(0.01).timeout
+
+	if !__initializing:
+		__initializing = true
+		__initialize.call_deferred()
+
 	return finished_initializing
 
 
 func __initialize() -> void:
 	Assets.import_assets(GameConfig.ASSETS_DATA_PATH)
-	initialized = true
+	__initialized = true
 	finished_initializing.emit()
 
 

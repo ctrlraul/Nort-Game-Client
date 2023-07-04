@@ -1,14 +1,23 @@
-[gd_scene load_steps=13 format=3 uid="uid://b3m0hjtsgn5gj"]
+[gd_scene load_steps=19 format=3 uid="uid://b3m0hjtsgn5gj"]
 
-[ext_resource type="Script" path="res://pages/workshop/workshop.gd" id="1_vg08v"]
-[ext_resource type="PackedScene" uid="uid://gyid7spgcjj0" path="res://pages/workshop/parts_inventory_item.tscn" id="2_g0ii2"]
-[ext_resource type="Theme" uid="uid://85byrm5eq3ab" path="res://theme/theme.tres" id="3_t7xk5"]
-[ext_resource type="PackedScene" uid="uid://bk5m6deoy4705" path="res://common/interface/drag_receiver/drag_receiver.tscn" id="4_s4op0"]
-[ext_resource type="Texture2D" uid="uid://b2h5w2qbjnved" path="res://pages/workshop/hexagons_grid.png" id="5_c2h6q"]
-[ext_resource type="PackedScene" uid="uid://bjgbkm0q3g02x" path="res://common/interface/craft_display/craft_display.tscn" id="6_7py8v"]
-[ext_resource type="PackedScene" uid="uid://bnywbmg2uuj8j" path="res://common/interface/window_margin.tscn" id="7_ex5jn"]
-[ext_resource type="PackedScene" uid="uid://cwl7mn40ut30d" path="res://pages/workshop/parts_inventory.tscn" id="8_64ebj"]
-[ext_resource type="PackedScene" uid="uid://cudr7rtxdnhfl" path="res://pages/workshop/part_drag_preview.tscn" id="9_e87r6"]
+[ext_resource type="Script" path="res://pages/workshop/workshop.gd" id="1_3gydl"]
+[ext_resource type="PackedScene" uid="uid://gyid7spgcjj0" path="res://pages/workshop/parts_inventory_item.tscn" id="2_bxtng"]
+[ext_resource type="Theme" uid="uid://85byrm5eq3ab" path="res://theme/theme.tres" id="3_qj5id"]
+[ext_resource type="PackedScene" uid="uid://bk5m6deoy4705" path="res://common/interface/drag_receiver/drag_receiver.tscn" id="4_fq1rx"]
+[ext_resource type="Texture2D" uid="uid://b2h5w2qbjnved" path="res://pages/workshop/hexagons_grid.png" id="5_cf5ic"]
+[ext_resource type="PackedScene" uid="uid://bjgbkm0q3g02x" path="res://common/interface/craft_display/craft_display.tscn" id="6_0w2yi"]
+[ext_resource type="Shader" path="res://pages/workshop/part_outline.gdshader" id="7_4qp4t"]
+[ext_resource type="Texture2D" uid="uid://b3bm4djf5tas8" path="res://assets/images/part_example.png" id="8_sjvjj"]
+[ext_resource type="PackedScene" uid="uid://c5f0wfx25glsh" path="res://pages/workshop/part_controls/part_controls.tscn" id="9_kkkqs"]
+[ext_resource type="PackedScene" uid="uid://bnywbmg2uuj8j" path="res://common/interface/window_margin.tscn" id="10_jfafk"]
+[ext_resource type="PackedScene" uid="uid://cwl7mn40ut30d" path="res://pages/workshop/parts_inventory.tscn" id="11_tputx"]
+[ext_resource type="PackedScene" uid="uid://cudr7rtxdnhfl" path="res://pages/workshop/part_drag_preview.tscn" id="12_meuxm"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gbnip"]
+size = Vector2(1, 1)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rq4b1"]
+size = Vector2(80, 80)
 
 [sub_resource type="Shader" id="Shader_uqvf8"]
 code = "shader_type canvas_item;
@@ -30,9 +39,50 @@ border_width_bottom = 2
 border_color = Color(1, 1, 1, 1)
 border_blend = true
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_qhi3n"]
+shader = ExtResource("7_4qp4t")
+
 [node name="Workshop" type="CanvasLayer"]
-script = ExtResource("1_vg08v")
-PartsListItem = ExtResource("2_g0ii2")
+script = ExtResource("1_3gydl")
+PartsListItem = ExtResource("2_bxtng")
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
+unique_name_in_owner = true
+transparent_bg = true
+
+[node name="Node2D" type="Node2D" parent="SubViewportContainer/SubViewport"]
+
+[node name="Camera2D" type="Camera2D" parent="SubViewportContainer/SubViewport/Node2D"]
+unique_name_in_owner = true
+
+[node name="MouseArea" type="Area2D" parent="SubViewportContainer/SubViewport/Node2D"]
+unique_name_in_owner = true
+collision_layer = 0
+collision_mask = 256
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SubViewportContainer/SubViewport/Node2D/MouseArea"]
+shape = SubResource("RectangleShape2D_gbnip")
+
+[node name="CoreArea" type="Area2D" parent="SubViewportContainer/SubViewport/Node2D"]
+unique_name_in_owner = true
+visible = false
+collision_layer = 256
+collision_mask = 0
+monitoring = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SubViewportContainer/SubViewport/Node2D/CoreArea"]
+shape = SubResource("RectangleShape2D_rq4b1")
+
+[node name="PartAreas" type="Node2D" parent="SubViewportContainer/SubViewport/Node2D"]
+unique_name_in_owner = true
 
 [node name="Theme" type="Control" parent="."]
 layout_mode = 3
@@ -42,7 +92,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-theme = ExtResource("3_t7xk5")
+theme = ExtResource("3_qj5id")
 
 [node name="Hitbox" type="Control" parent="Theme"]
 unique_name_in_owner = true
@@ -53,7 +103,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="HitboxDragReceiver" parent="Theme/Hitbox" instance=ExtResource("4_s4op0")]
+[node name="HitboxDragReceiver" parent="Theme/Hitbox" instance=ExtResource("4_fq1rx")]
 visible = false
 layout_mode = 1
 
@@ -98,7 +148,7 @@ grow_vertical = 2
 scale = Vector2(0.6, 0.6)
 pivot_offset = Vector2(1000, 1000)
 mouse_filter = 2
-texture = ExtResource("5_c2h6q")
+texture = ExtResource("5_cf5ic")
 stretch_mode = 1
 
 [node name="Panel" type="Panel" parent="Theme/Container/Canvas/Grid"]
@@ -111,7 +161,7 @@ grow_vertical = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_4n1lx")
 
-[node name="CraftDisplay" parent="Theme/Container/Canvas" instance=ExtResource("6_7py8v")]
+[node name="CraftDisplay" parent="Theme/Container/Canvas" instance=ExtResource("6_0w2yi")]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 8
@@ -123,18 +173,76 @@ grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(1, 1)
 
-[node name="WindowMargin" parent="Theme" instance=ExtResource("7_ex5jn")]
+[node name="HoveredPartOutline" type="Control" parent="Theme/Container/Canvas"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="HoveredPartOutlineSprite" type="TextureRect" parent="Theme/Container/Canvas/HoveredPartOutline"]
+unique_name_in_owner = true
+self_modulate = Color(0, 1, 0, 1)
+material = SubResource("ShaderMaterial_qhi3n")
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -64.0
+offset_top = -54.0
+offset_right = 64.0
+offset_bottom = 54.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("8_sjvjj")
+stretch_mode = 5
+
+[node name="PartControls" parent="Theme/Container" instance=ExtResource("9_kkkqs")]
+unique_name_in_owner = true
+
+[node name="WindowMargin" parent="Theme" instance=ExtResource("10_jfafk")]
 layout_mode = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Theme/WindowMargin"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Theme/WindowMargin"]
 layout_mode = 2
 mouse_filter = 2
 
-[node name="PartsInventory" parent="Theme/WindowMargin/HBoxContainer" instance=ExtResource("8_64ebj")]
+[node name="Header" type="MarginContainer" parent="Theme/WindowMargin/VBoxContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Theme/WindowMargin/VBoxContainer/Header"]
+layout_mode = 2
+mouse_filter = 2
+alignment = 1
+
+[node name="SaveButton" type="Button" parent="Theme/WindowMargin/VBoxContainer/Header/HBoxContainer"]
+layout_mode = 2
+text = "Save"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Theme/WindowMargin/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="PartsInventory" parent="Theme/WindowMargin/VBoxContainer/HBoxContainer" instance=ExtResource("11_tputx")]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="PartDragPreview" parent="Theme" instance=ExtResource("9_e87r6")]
+[node name="PartDragPreview" parent="Theme" instance=ExtResource("12_meuxm")]
 unique_name_in_owner = true
 visible = false
 layout_mode = 0
@@ -151,4 +259,7 @@ mouse_filter = 2
 [connection signal="drag_leave" from="Theme/Hitbox/HitboxDragReceiver" to="." method="_on_hitbox_drag_receiver_drag_leave"]
 [connection signal="drag_over" from="Theme/Hitbox/HitboxDragReceiver" to="." method="_on_hitbox_drag_receiver_drag_over"]
 [connection signal="got_data" from="Theme/Hitbox/HitboxDragReceiver" to="." method="_on_hitbox_drag_receiver_got_data"]
-[connection signal="part_picked" from="Theme/WindowMargin/HBoxContainer/PartsInventory" to="." method="_on_parts_inventory_part_picked"]
+[connection signal="rotated" from="Theme/Container/PartControls" to="." method="_on_part_controls_rotated"]
+[connection signal="pressed" from="Theme/WindowMargin/VBoxContainer/Header/HBoxContainer/SaveButton" to="." method="_on_save_button_pressed"]
+[connection signal="part_picked" from="Theme/WindowMargin/VBoxContainer/HBoxContainer/PartsInventory" to="." method="_on_parts_inventory_part_picked"]
+[connection signal="part_stored" from="Theme/WindowMargin/VBoxContainer/HBoxContainer/PartsInventory" to="." method="_on_parts_inventory_part_stored"]
