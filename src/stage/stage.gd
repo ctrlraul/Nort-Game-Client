@@ -29,7 +29,6 @@ func spawn_turret() -> TurretCraft:
 
 
 
-
 func clear() -> void:
 	camera.position = Vector2.ZERO
 	camera.zoom = Vector2.ONE * 0.5

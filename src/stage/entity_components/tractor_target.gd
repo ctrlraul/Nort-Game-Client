@@ -1,4 +1,6 @@
-extends Node2D
+@tool
+
+class_name TractorTarget extends Node2D
 
 
 
@@ -6,12 +8,18 @@ extends Node2D
 
 
 
-func _on_area_2d_body_entered(_body: Node2D) -> void:
-	animation_player.play("show")
+var in_range: bool = false :
+	set(value):
+		if value:
+			animation_player.play("show")
+		else:
+			animation_player.play("hide")
 
 
-func _on_area_2d_body_exited(_body: Node2D) -> void:
-	animation_player.play("hide")
+
+func _ready() -> void:
+	if Engine.is_editor_hint():
+		animation_player.play("rotate")
 
 
 func _on_animation_player_animation_finished(anim_name: StringName) -> void:

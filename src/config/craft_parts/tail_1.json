@@ -1,0 +1,8 @@
+{
+	"id": "tail_1",
+	"display_name": "M Tail",
+	"texture": "tail_1.png",
+	"type": "HULL",
+	"hull": 80,
+	"core": 20
+}

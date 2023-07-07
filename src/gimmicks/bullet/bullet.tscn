@@ -1,0 +1,64 @@
+[gd_scene load_steps=7 format=3 uid="uid://dln0sc730korg"]
+
+[ext_resource type="Script" path="res://gimmicks/bullet/bullet.gd" id="1_p8ohm"]
+[ext_resource type="Texture2D" uid="uid://hlcyw0kime5w" path="res://assets/images/gimmicks/bullet.png" id="2_t1j6l"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_v2vhg"]
+radius = 400.0
+
+[sub_resource type="Curve" id="Curve_exlj0"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -1.65129, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_xx0f8"]
+curve = SubResource("Curve_exlj0")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_wu7l6"]
+particle_flag_disable_z = true
+spread = 10.0
+gravity = Vector3(0, 0, 0)
+initial_velocity_min = 200.0
+initial_velocity_max = 1000.0
+orbit_velocity_min = 0.0
+orbit_velocity_max = 0.0
+damping_min = 1000.0
+damping_max = 1000.0
+scale_min = 8.0
+scale_max = 16.0
+scale_curve = SubResource("CurveTexture_xx0f8")
+
+[node name="BulletGimmick" type="Node2D"]
+script = ExtResource("1_p8ohm")
+
+[node name="Area2D" type="Area2D" parent="."]
+unique_name_in_owner = true
+collision_layer = 0
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+unique_name_in_owner = true
+shape = SubResource("CircleShape2D_v2vhg")
+
+[node name="GFX" type="Node2D" parent="."]
+unique_name_in_owner = true
+
+[node name="Sprite2D" type="Sprite2D" parent="GFX"]
+texture = ExtResource("2_t1j6l")
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="GFX"]
+unique_name_in_owner = true
+emitting = false
+amount = 16
+process_material = SubResource("ParticleProcessMaterial_wu7l6")
+lifetime = 0.5
+one_shot = true
+explosiveness = 1.0
+
+[node name="CooldownTimer" type="Timer" parent="."]
+unique_name_in_owner = true
+one_shot = true
+autostart = true
+
+[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
+[connection signal="area_exited" from="Area2D" to="." method="_on_area_2d_area_exited"]
+[connection signal="timeout" from="CooldownTimer" to="." method="_on_cooldown_timer_timeout"]

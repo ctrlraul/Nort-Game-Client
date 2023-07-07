@@ -67,18 +67,22 @@ grow_horizontal = 2
 mouse_filter = 2
 alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="ButtonsMargin"]
+[node name="Control" type="Control" parent="ButtonsMargin"]
 layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
 mouse_filter = 2
-theme_override_constants/separation = 20
 
-[node name="RotateButton" type="TextureButton" parent="ButtonsMargin/HBoxContainer"]
+[node name="RotateButton" type="TextureButton" parent="ButtonsMargin/Control"]
 layout_mode = 2
+offset_left = -65.0
+offset_right = -10.0
+offset_bottom = 64.0
 texture_normal = ExtResource("5_h8ufq")
 texture_pressed = ExtResource("6_arr5t")
 texture_hover = ExtResource("7_ny1h0")
 
-[node name="RotateIconCenterer" type="CenterContainer" parent="ButtonsMargin/HBoxContainer/RotateButton"]
+[node name="RotateIconCenterer" type="CenterContainer" parent="ButtonsMargin/Control/RotateButton"]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 8
@@ -91,12 +95,12 @@ grow_vertical = 2
 scale = Vector2(0.75, 0.75)
 use_top_left = true
 
-[node name="RotateIconContainer" type="Control" parent="ButtonsMargin/HBoxContainer/RotateButton/RotateIconCenterer"]
+[node name="RotateIconContainer" type="Control" parent="ButtonsMargin/Control/RotateButton/RotateIconCenterer"]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 1
 
-[node name="TextureRect" type="TextureRect" parent="ButtonsMargin/HBoxContainer/RotateButton/RotateIconCenterer/RotateIconContainer"]
+[node name="TextureRect" type="TextureRect" parent="ButtonsMargin/Control/RotateButton/RotateIconCenterer/RotateIconContainer"]
 layout_mode = 2
 offset_left = -32.0
 offset_top = -32.0
@@ -104,13 +108,16 @@ offset_right = 32.0
 offset_bottom = 32.0
 texture = ExtResource("8_l4g87")
 
-[node name="FlipButton" type="TextureButton" parent="ButtonsMargin/HBoxContainer"]
+[node name="FlipButton" type="TextureButton" parent="ButtonsMargin/Control"]
 layout_mode = 2
+offset_left = 10.0
+offset_right = 65.0
+offset_bottom = 64.0
 texture_normal = ExtResource("5_h8ufq")
 texture_pressed = ExtResource("6_arr5t")
 texture_hover = ExtResource("7_ny1h0")
 
-[node name="CenterContainer" type="CenterContainer" parent="ButtonsMargin/HBoxContainer/FlipButton"]
+[node name="CenterContainer" type="CenterContainer" parent="ButtonsMargin/Control/FlipButton"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -122,12 +129,12 @@ grow_vertical = 2
 scale = Vector2(0.75, 0.75)
 use_top_left = true
 
-[node name="FlipIcon" type="TextureRect" parent="ButtonsMargin/HBoxContainer/FlipButton/CenterContainer"]
+[node name="FlipIcon" type="TextureRect" parent="ButtonsMargin/Control/FlipButton/CenterContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 texture = ExtResource("9_dtkn8")
 
-[connection signal="button_down" from="ButtonsMargin/HBoxContainer/RotateButton" to="." method="_on_rotate_button_button_down"]
-[connection signal="button_up" from="ButtonsMargin/HBoxContainer/RotateButton" to="." method="_on_rotate_button_button_up"]
-[connection signal="gui_input" from="ButtonsMargin/HBoxContainer/RotateButton" to="." method="_on_rotate_button_gui_input"]
-[connection signal="pressed" from="ButtonsMargin/HBoxContainer/FlipButton" to="." method="_on_flip_button_pressed"]
+[connection signal="button_down" from="ButtonsMargin/Control/RotateButton" to="." method="_on_rotate_button_button_down"]
+[connection signal="button_up" from="ButtonsMargin/Control/RotateButton" to="." method="_on_rotate_button_button_up"]
+[connection signal="gui_input" from="ButtonsMargin/Control/RotateButton" to="." method="_on_rotate_button_gui_input"]
+[connection signal="pressed" from="ButtonsMargin/Control/FlipButton" to="." method="_on_flip_button_pressed"]

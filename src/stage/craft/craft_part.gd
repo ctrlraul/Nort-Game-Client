@@ -8,6 +8,8 @@ extends Node2D
 @onready var sprite: Sprite2D = %Sprite2D
 
 var collision_shape: CollisionShape2D = null
+var gimmick: Node2D
+var craft_body: CraftBody
 
 
 
@@ -27,6 +29,16 @@ func set_blueprint(blueprint: CraftBlueprintPart) -> void:
 	collision_shape.position = position
 	collision_shape.shape = RectangleShape2D.new()
 	collision_shape.shape.size = sprite.texture.get_size()
+
+	if Assets.is_core(blueprint):
+		var core_light = Sprite2D.new()
+		core_light.texture = Assets.CORE_LIGHT
+		add_child(core_light)
+
+	if blueprint.data.gimmick != null:
+		gimmick = blueprint.data.gimmick.scene.instantiate()
+		gimmick.position = position
+		gimmick.part = self
 
 
 func set_color(color: Color) -> void:

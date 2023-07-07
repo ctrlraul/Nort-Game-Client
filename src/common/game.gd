@@ -14,6 +14,9 @@ var current_player: PlayerData :
 	get:
 		return current_player
 
+var dev: bool :
+	get: return OS.has_feature("editor") && current_player == null
+
 
 
 func _ready() -> void:
@@ -43,7 +46,7 @@ func initialize() -> Signal:
 
 
 func __initialize() -> void:
-	Assets.import_assets(GameConfig.ASSETS_DATA_PATH)
+	Assets.import_assets(GameConfig.CONFIG_PATH)
 	__initialized = true
 	finished_initializing.emit()
 

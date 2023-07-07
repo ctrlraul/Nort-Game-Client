@@ -25,8 +25,7 @@ var angle: float :
 func set_blueprint(blueprint: CraftBlueprintPart) -> void:
 	position = blueprint.place
 	part_data = blueprint.data
-	craft_part_display.definition = blueprint.data.definition
-	craft_part_display.shiny = blueprint.data.shiny
+	craft_part_display.set_part_data(blueprint.data)
 	flipped = blueprint.flipped
 	angle = blueprint.angle
 

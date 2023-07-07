@@ -1,25 +1,16 @@
-[gd_scene load_steps=7 format=3 uid="uid://cigqt0kjqfuw2"]
+[gd_scene load_steps=5 format=3 uid="uid://cigqt0kjqfuw2"]
 
-[ext_resource type="Theme" uid="uid://85byrm5eq3ab" path="res://theme/theme.tres" id="1_pwxyl"]
 [ext_resource type="Script" path="res://pages/login/saves_list_item.gd" id="2_upj3j"]
 [ext_resource type="PackedScene" uid="uid://bjgbkm0q3g02x" path="res://common/interface/craft_display/craft_display.tscn" id="3_cismy"]
 [ext_resource type="Texture2D" uid="uid://duotyrshpkhha" path="res://theme/button_x.png" id="4_p3g58"]
 [ext_resource type="Texture2D" uid="uid://bhxn77jhp6maq" path="res://theme/button_x_ruby.png" id="5_v2g3n"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_22gc4"]
-bg_color = Color(0, 0, 0, 0.513726)
-corner_radius_top_left = 2
-corner_radius_top_right = 2
-corner_radius_bottom_right = 2
-corner_radius_bottom_left = 2
 
 [node name="SavesListItem" type="PanelContainer"]
 anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 90.0
 grow_horizontal = 2
-theme = ExtResource("1_pwxyl")
-theme_override_styles/panel = SubResource("StyleBoxFlat_22gc4")
+theme_type_variation = &"PanelContainerDarken"
 script = ExtResource("2_upj3j")
 
 [node name="SelectButton" type="Button" parent="."]
@@ -34,11 +25,12 @@ mouse_filter = 2
 layout_mode = 2
 mouse_filter = 2
 
-[node name="CraftPreview" type="Control" parent="MarginContainer/HBoxContainer"]
+[node name="CraftPreview" type="Panel" parent="MarginContainer/HBoxContainer"]
 clip_contents = true
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 mouse_filter = 2
+theme_type_variation = &"PanelDarken"
 
 [node name="CraftDisplay" parent="MarginContainer/HBoxContainer/CraftPreview" instance=ExtResource("3_cismy")]
 unique_name_in_owner = true
@@ -50,6 +42,7 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
+rotation = 0.785398
 
 [node name="Details" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
 layout_mode = 2

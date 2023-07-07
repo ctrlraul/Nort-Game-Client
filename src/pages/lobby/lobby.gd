@@ -8,7 +8,11 @@ func _mount() -> void:
 
 	Stage.clear()
 	Stage.spawn_player()#.crippled = true
-	Stage.spawn_turret()
+
+	var turret = Stage.spawn_turret()
+
+	turret.position.x = 300
+#	turret.set_blueprint()
 
 
 func _on_workshop_button_pressed() -> void:

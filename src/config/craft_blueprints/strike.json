@@ -1,0 +1,22 @@
+{
+	"core": {
+		"data": {
+			"definition": "tail_2",
+			"level": 1
+		},
+		"x": 0,
+		"y": 0
+	},
+	"id": "strike",
+	"parts": [
+		{
+			"angle": -180,
+			"data": {
+				"definition": "tail_1",
+				"level": 1
+			},
+			"x": 0,
+			"y": 0
+		}
+	]
+}

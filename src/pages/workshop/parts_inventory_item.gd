@@ -6,7 +6,6 @@ signal picked()
 
 @export var PartDragPreviewScene: PackedScene
 
-@onready var __frame: TextureRect = %Frame
 @onready var __craft_part_display: Control = %CraftPartDisplay
 @onready var __count_label: Label = %Count
 
@@ -23,9 +22,7 @@ var color: Color :
 
 func set_part(value: CraftPartData) -> void:
 	part_data = value
-	__craft_part_display.definition = part_data.definition
-	__craft_part_display.shiny = part_data.shiny
-	__frame.self_modulate = Color.WHITE if part_data.shiny else Color.BLACK
+	__craft_part_display.set_part_data(part_data)
 	__count_label.text = ""
 
 

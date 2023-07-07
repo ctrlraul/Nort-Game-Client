@@ -3,11 +3,14 @@ extends Node
 
 
 const MISSING_PART_IMAGE = preload("res://assets/images/part_example.png")
+const CORE_LIGHT = preload("res://assets/images/core_light.png")
 
 const __PARTS_DIR = "craft_parts"
-const __BLUEPRINTS_DIR = "craft_blueprints"
+const BLUEPRINTS_DIR = "craft_blueprints"
 const __FACTIONS_DIR = "factions"
-const __PART_SPRITES_DIR = "craft_part_sprites"
+const __PART_TEXTURES_DIR = "part_textures"
+const __GIMMICKS_FILE = "gimmicks.json"
+const __GIMMICK_TEXTURES_DIR = "res://assets/images/gimmicks/"
 
 
 
@@ -15,9 +18,11 @@ var __logger = Logger.new("Assets")
 
 var parts: Dictionary = {}
 var cores: Dictionary = {}
+var gimmicks: Dictionary = {}
 var __blueprints: Dictionary = {}
 var __factions: Dictionary = {}
 var __part_textures: Dictionary = {}
+var __gimmick_textures: Dictionary = {}
 
 var initial_blueprint: CraftBlueprint :
 	get: return __blueprints[GameConfig.INITIAL_BLUEPRINT]
@@ -29,14 +34,21 @@ var player_faction: Faction :
 
 func import_assets(base_path: String) -> void:
 
+	var gimmicks_result = __import_gimmicks(base_path.path_join(__GIMMICKS_FILE))
+
+	if gimmicks_result.error:
+		__logger.info("Failed to import gimmicks: %s" % gimmicks_result.error)
+		return
+
 	FileSystemUtils.map_files(base_path.path_join(__PARTS_DIR), __import_part)
-	FileSystemUtils.map_files(base_path.path_join(__BLUEPRINTS_DIR), __import_blueprint)
+	FileSystemUtils.map_files(base_path.path_join(BLUEPRINTS_DIR), __import_blueprint)
 	FileSystemUtils.map_files(base_path.path_join(__FACTIONS_DIR), __import_faction)
 
 	assert(GameConfig.INITIAL_BLUEPRINT in __blueprints, "Initial blueprint '%s' not found" % GameConfig.INITIAL_BLUEPRINT)
 	assert(GameConfig.PLAYER_FACTION in __factions, "Player faction '%s' not found" % GameConfig.PLAYER_FACTION)
 
 	__import_part_textures(base_path)
+	__import_gimmick_textures()
 
 	__logger.info("Items: %s" % (parts.size() + cores.size()))
 	__logger.info("Blueprints: %s" % __blueprints.size())
@@ -57,9 +69,33 @@ func get_part_texture(reference) -> Texture2D:
 	elif reference is CraftBlueprintPart:
 		id = reference.data.definition.id
 	else:
-		__logger.error("Texture for '%s' is not found" % id)
+		assert(id != "", "Invalid argument")
+		return MISSING_PART_IMAGE
 
-	return __part_textures.get(id, MISSING_PART_IMAGE)
+	if !__part_textures.has(id):
+		__logger.error("No texture found for part with id '%s'" % id)
+		return MISSING_PART_IMAGE
+
+	return __part_textures.get(id)
+
+
+func get_gimmick_texture(reference) -> Texture2D:
+
+	var id: String
+
+	if reference is String:
+		id = reference
+	elif reference is Gimmick:
+		id = reference.id
+	else:
+		assert(id != "", "Invalid argument")
+		return __gimmick_textures.values()[0] # TODO: add missing gimmick texture
+
+	if !__gimmick_textures.has(id):
+		__logger.error("No texture found for gimmick with id '%s'" % id)
+		return __gimmick_textures.values()[0] # TODO: same as above
+
+	return __gimmick_textures.get(id)
 
 
 func get_part(id: String) -> CraftPartDefinition:
@@ -68,6 +104,10 @@ func get_part(id: String) -> CraftPartDefinition:
 
 func get_blueprint(id: String) -> CraftBlueprint:
 	return __blueprints[id]
+
+
+func get_gimmick(id: String) -> Gimmick:
+	return gimmicks[id]
 
 
 func generate_uid() -> String:
@@ -95,6 +135,21 @@ func is_core(object) -> bool:
 	assert(false, "Not implemented")
 
 	return false
+
+
+
+func __import_gimmicks(path: String) -> Result:
+
+	var result = JSONUtils.from_file(path)
+
+	if result.error:
+		return result
+
+	for source in result.value:
+		var gimmick = Gimmick.new(source)
+		gimmicks[gimmick.id] = gimmick
+
+	return Result.new()
 
 
 func __import_part(path: String) -> void:
@@ -136,7 +191,7 @@ func __import_part_textures(base_path: String) -> void:
 
 	assert(parts.size() + cores.size() > 0, "No parts imported")
 
-	var dir_path = base_path.path_join(__PART_SPRITES_DIR)
+	var dir_path = base_path.path_join(__PART_TEXTURES_DIR)
 
 	for part in parts.values() + cores.values():
 
@@ -148,6 +203,22 @@ func __import_part_textures(base_path: String) -> void:
 		else:
 			__part_textures[part.id] = MISSING_PART_IMAGE
 			__logger.error("Failed to import texture for part '%s': %s" % [part.id, texture_path])
+
+
+func __import_gimmick_textures() -> void:
+
+	assert(gimmicks.size() > 0, "No gimmicks imported")
+
+	for id in gimmicks:
+
+		var texture_path = __GIMMICK_TEXTURES_DIR.path_join(id + ".png")
+		var texture = load(texture_path)
+
+		if texture:
+			__gimmick_textures[id] = __with_inset_margin(texture, 1)
+		else:
+			__gimmick_textures[id] = MISSING_PART_IMAGE
+			__logger.error("Failed to import texture for gimmick '%s': %s" % [id, texture_path])
 
 
 func __with_inset_margin(texture: Texture2D, margin: int) -> Texture2D:

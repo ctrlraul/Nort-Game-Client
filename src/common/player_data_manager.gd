@@ -1,5 +1,7 @@
 extends Node
 
+signal local_player_deleted(player_data: PlayerData)
+
 
 
 const LOCAL_PLAYERS_DIR: String = "user://local_players"
@@ -63,13 +65,22 @@ func store_local_player(player_data: PlayerData) -> Result:
 	return Result.new()
 
 
-func delete_local_player(player_id: String) -> void:
+func delete_local_player(player_data: PlayerData) -> Result:
 
-	var file_name: String = "%s.json" % player_id
+	var file_name: String = "%s.json" % player_data.id
 	var file_path: String = LOCAL_PLAYERS_DIR.path_join(file_name)
+	var remove_error = DirAccess.remove_absolute(file_path)
 
-	if FileAccess.file_exists(file_path):
-		DirAccess.remove_absolute(file_path)
+	if remove_error != OK:
+		return Result.err("Failed to delete local player: %s" % error_string(remove_error))
+
+	local_player_deleted.emit(player_data)
+
+	return Result.new()
+
+
+func add_part(player_data: PlayerData, part_data: CraftPartData) -> void:
+	player_data.parts.append(part_data)
 
 
 

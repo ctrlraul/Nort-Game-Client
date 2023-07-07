@@ -1,0 +1,8 @@
+{
+	"id": "wing_1",
+	"display_name": "Pidgeon",
+	"texture": "wing_1.png",
+	"type": "HULL",
+	"hull": 80,
+	"core": 20
+}

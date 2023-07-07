@@ -19,7 +19,6 @@ script = ExtResource("2_58mbk")
 PartDragPreviewScene = ExtResource("3_1am46")
 
 [node name="Frame" type="TextureRect" parent="."]
-unique_name_in_owner = true
 self_modulate = Color(0, 0, 0, 1)
 layout_mode = 1
 anchors_preset = 15

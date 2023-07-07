@@ -8,11 +8,13 @@ signal damaged()
 
 
 
-@onready var physics_body: CharacterBody2D = %PhysicsBody
+@onready var area: Area2D = %Area2D
 @onready var parts_container: Node2D = %PartsContainer
-@onready var flakes_container: Node2D = %FlakesContainer
+@onready var gimmicks_container: Node2D = %GimmicksContainer
 
 
+
+var craft: Craft
 
 var color: Color = GameConfig.FACTIONLESS_COLOR :
 	set(value):
@@ -27,6 +29,11 @@ func _ready() -> void:
 
 
 
+func enable() -> void:
+	area.monitorable = true
+
+
+
 func set_blueprint(blueprint: CraftBlueprint) -> void:
 	__clear()
 	for part_blueprint in blueprint.parts:
@@ -36,14 +43,22 @@ func set_blueprint(blueprint: CraftBlueprint) -> void:
 
 
 func __add_part(blueprint: CraftBlueprintPart) -> void:
+
 	var part: CraftPart = CraftPartScene.instantiate()
+
 	parts_container.add_child(part)
+
 	part.set_blueprint(blueprint)
 	part.set_color(color)
-	physics_body.add_child(part.collision_shape)
+	part.craft_body = self
+
+	area.add_child(part.collision_shape)
+
+	if part.gimmick:
+		gimmicks_container.add_child(part.gimmick)
 
 
 func __clear() -> void:
-	NodeUtils.clear(physics_body)
+	NodeUtils.clear(area)
 	NodeUtils.clear(parts_container)
-	NodeUtils.clear(flakes_container)
+	NodeUtils.clear(gimmicks_container)

@@ -5,7 +5,7 @@ extends Page
 const GRID_SNAP = Vector2.ONE * 16
 const ZOOM_STEP = 0.1
 const ZOOM_MIN = 0.6
-const ZOOM_MAX = 1.3
+const ZOOM_MAX = 1
 const PAN_MAX = 400
 
 
@@ -23,37 +23,50 @@ const PAN_MAX = 400
 @onready var hovered_part_outline: Control = %HoveredPartOutline
 @onready var hovered_part_outline_sprite: TextureRect = %HoveredPartOutlineSprite
 @onready var part_controls: Control = %PartControls
+@onready var blueprint_id_input: LineEdit = %BlueprintIDInput
 @onready var craft_display: CraftDisplay = %CraftDisplay
 @onready var parts_inventory: Control = %PartsInventory
-@onready var picked_part_preview: Control = %PartDragPreview
+@onready var part_inspector: PanelContainer = %PartInspector
+@onready var export_button: Button = %ExportButton
+@onready var dragged_part_preview: Control = %DraggedPartPreview
 @onready var cores_list_container: Control = %CoresListContainer
 @onready var cores_list: Control = %CoresList
 
 
 
-var color: Color = GameConfig.FACTIONLESS_COLOR
-
+var logger: Logger = Logger.new("Workshop")
 var drag_offset: Vector2 = Vector2.ZERO
 var dragged_part: CraftDisplayPart = null
 var hovered_part: CraftDisplayPart = null
 var panning: bool = false
-
 var area_for_part: Dictionary = {}
 var part_for_area: Dictionary = {}
+
+var color: Color = GameConfig.FACTIONLESS_COLOR :
+	set(value):
+		craft_display.color = value
+		parts_inventory.color = value
+		part_inspector.color = value
+		dragged_part_preview.color = value
+		color = value
 
 
 
 func _ready() -> void:
-	picked_part_preview.clear()
+	dragged_part_preview.visible = false
 	part_controls.clear()
 	Stage.clear()
 	NodeUtils.clear(cores_list)
-	%SubViewport.size = hitbox.size
+	canvas.scale = Vector2.ONE * 0.5
+	set_process(false)
+	zoom(0)
 
 
 func _mount() -> void:
 
 	await Game.initialize()
+
+	dragged_part_preview.color = Assets.player_faction.color
 
 	if Game.current_player:
 		init_for_player()
@@ -61,12 +74,17 @@ func _mount() -> void:
 		init_for_dev()
 
 
+func _input(event: InputEvent) -> void:
+	if event is InputEventMouseMotion:
+		dragged_part_preview.position = event.position
+
+
+
 func init_for_player() -> void:
 
 	var player = Game.current_player
 
 	color = Assets.player_faction.color
-	craft_display.color = color
 
 	set_blueprint(player.current_blueprint)
 
@@ -76,12 +94,13 @@ func init_for_player() -> void:
 		add_core_button(core)
 
 	cores_list_container.visible = player.cores.size() > 1
+	blueprint_id_input.visible = false
+	export_button.visible = false
 
 
 func init_for_dev() -> void:
 
 	color = Assets.player_faction.color
-	craft_display.color = color
 
 	set_blueprint(Assets.initial_blueprint)
 
@@ -100,6 +119,8 @@ func init_for_dev() -> void:
 		add_core_button(CraftPartData.new(core))
 
 	cores_list_container.visible = Assets.cores.size() > 1
+	blueprint_id_input.visible = true
+	export_button.visible = true
 
 
 func add_core_button(part_data: CraftPartData) -> void:
@@ -111,13 +132,21 @@ func add_core_button(part_data: CraftPartData) -> void:
 
 	item.part_data = part_data
 	item.color = Assets.player_faction.color
-	item.pressed.connect(func(): craft_display.set_core_blueprint(blueprint))
+	item.pressed.connect(craft_display.set_core_blueprint.bind(blueprint))
+	item.mouse_entered.connect(part_inspector.set_part.bind(part_data))
 
 
 func set_blueprint(blueprint: CraftBlueprint) -> void:
-	craft_display.set_core_blueprint(blueprint.core)
+
 	for part in blueprint.parts:
 		add_part(part)
+
+	if Game.current_player:
+		craft_display.set_core_blueprint(blueprint.core) # this way it's not editable
+	else:
+		add_part(blueprint.core, true)
+
+	part_inspector.set_part(craft_display.core)
 
 
 func zoom(delta: int) -> void:
@@ -142,14 +171,21 @@ func update_camera() -> void:
 	camera.position = -canvas.position / canvas.scale
 
 
-func add_part(blueprint: CraftBlueprintPart) -> void:
+func add_part(blueprint: CraftBlueprintPart, core = false) -> CraftDisplayPart:
 
-	var part = craft_display.add_part(blueprint)
+	var part: CraftDisplayPart
+
+	if core:
+		part = craft_display.set_core_blueprint(blueprint)
+	else:
+		part = craft_display.add_part(blueprint)
+
 	var area = Area2D.new()
 	var shape = CollisionShape2D.new()
 
 	area.position = blueprint.place
 	area.collision_layer = 256
+	area.rotation = blueprint.angle
 	shape.shape = RectangleShape2D.new()
 	shape.shape.size = Assets.get_part_texture(blueprint.data.definition.id).get_size()
 
@@ -159,7 +195,11 @@ func add_part(blueprint: CraftBlueprintPart) -> void:
 	area_for_part[part.get_instance_id()] = area
 	part_for_area[area.get_instance_id()] = part
 
-	dragged_part = part
+	return part
+
+
+func add_and_drag_part(blueprint: CraftBlueprintPart) -> void:
+	dragged_part = add_part(blueprint)
 	hovered_part_outline.visible = false
 
 
@@ -174,48 +214,6 @@ func remove_part(part: CraftDisplayPart) -> void:
 	part.queue_free()
 
 
-func get_nearest_part() -> CraftDisplayPart:
-
-	var relative_mouse = craft_display.get_local_mouse_position()
-	var shortest_distance: float = INF
-	var closest: CraftDisplayPart = null
-
-	for part in craft_display.parts:
-
-		if part == craft_display.core:
-			continue
-
-		if !part.is_mouse_over():
-			continue
-
-		var distance = part.position.distance_to(relative_mouse)
-
-		if distance < shortest_distance:
-			shortest_distance = distance
-			closest = part
-
-	return closest
-
-
-func find_nearest(nodes: Array, place: Vector2) -> Node:
-
-	var shortest_distance: float = INF
-	var nearest = null
-
-	for node in nodes:
-
-		if node.is_queued_for_deletion():
-			continue
-
-		var distance = node.position.distance_to(place)
-
-		if distance < shortest_distance:
-			shortest_distance = distance
-			nearest = node
-
-	return nearest
-
-
 func update_hovered_part() -> void:
 
 	var areas = mouse_area.get_overlapping_areas()
@@ -223,13 +221,15 @@ func update_hovered_part() -> void:
 	match areas.size():
 		0: hovered_part = null
 		1: hovered_part = get_part_for_area(areas[0])
-		_: hovered_part = get_part_for_area(find_nearest(areas, mouse_area.position))
+		_: hovered_part = get_part_for_area(NodeUtils.find_nearest(areas, mouse_area.position))
 
 	if hovered_part:
 		hovered_part_outline.visible = true
 		hovered_part_outline.position = hovered_part.position
 		hovered_part_outline.rotation = hovered_part.angle
 		hovered_part_outline_sprite.texture = Assets.get_part_texture(hovered_part.part_data)
+		hovered_part_outline_sprite.flip_h = hovered_part.flipped
+		part_inspector.set_part(hovered_part)
 	else:
 		hovered_part_outline.visible = false
 
@@ -242,26 +242,40 @@ func get_part_for_area(area: Area2D) -> CraftDisplayPart:
 	return part_for_area.get(area.get_instance_id())
 
 
+func on_click_hovered_part(event: InputEventMouseButton) -> void:
+
+	if !event.pressed:
+		panning = false
+		return
+
+	if hovered_part == craft_display.core:
+		part_inspector.set_part(hovered_part.part_data)
+		part_controls.set_part(hovered_part)
+		part_controls.update_transform(canvas)
+		return
+
+	if hovered_part != null:
+		part_controls.clear()
+		drag_offset = event.position - hovered_part.global_position
+		DragEmitter.drag(self, hovered_part.to_blueprint())
+		remove_part(hovered_part)
+		hovered_part = null
+		return
+
+	panning = true
+	part_controls.clear()
+	hovered_part_outline.visible = false
+
+
 
 func _on_hitbox_gui_input(event: InputEvent) -> void:
+
 	if event is InputEventMouseButton:
 
 		match event.button_index:
 
 			MOUSE_BUTTON_LEFT:
-				if event.pressed:
-					if hovered_part != null:
-						part_controls.clear()
-						drag_offset = event.position - hovered_part.global_position
-						DragEmitter.drag(self, hovered_part.to_blueprint())
-						remove_part(hovered_part)
-						hovered_part = null
-					else:
-						panning = true
-						part_controls.clear()
-				else:
-					panning = false
-
+				on_click_hovered_part(event)
 
 			MOUSE_BUTTON_WHEEL_UP:
 				zoom(1)
@@ -283,16 +297,24 @@ func _on_hitbox_gui_input(event: InputEvent) -> void:
 
 func _on_parts_inventory_part_picked(part_data: CraftPartData) -> void:
 	part_controls.clear()
-	picked_part_preview.set_part_data(part_data)
+	dragged_part_preview.set_part_data(part_data)
+	dragged_part_preview.visible = true
+	set_process(true)
 
 
 func _on_parts_inventory_part_stored() -> void:
-	picked_part_preview.clear()
+	dragged_part_preview.visible = false
+	set_process(false)
+
+
+func _on_parts_inventory_part_hovered(part_data: CraftPartData) -> void:
+	part_inspector.set_part(part_data)
 
 
 func _on_hitbox_drag_receiver_drag_enter() -> void:
 
-	picked_part_preview.clear()
+	dragged_part_preview.visible = false
+	set_process(false)
 
 	var blueprint: CraftBlueprintPart
 
@@ -307,12 +329,14 @@ func _on_hitbox_drag_receiver_drag_enter() -> void:
 	# Adding children to the tree on the same frame as the mouse entered the
 	# drag receiver triggers another mouse enter event, which causes a stack
 	# overflow, pretty fucking bizarre.
-	add_part.bind(blueprint).call_deferred()
+	add_and_drag_part.call_deferred(blueprint)
 
 
 func _on_hitbox_drag_receiver_drag_leave() -> void:
 
-	picked_part_preview.set_part_data(dragged_part.part_data)
+	dragged_part_preview.set_part_data(dragged_part.part_data)
+	dragged_part_preview.visible = true
+	set_process(true)
 
 	remove_part(dragged_part)
 
@@ -345,6 +369,25 @@ func _on_save_button_pressed() -> void:
 		PlayerDataManager.store_local_player(Game.current_player)
 
 
+func _on_export_button_pressed() -> void:
+
+	var blueprint = craft_display.to_blueprint()
+
+	if blueprint_id_input.text != "":
+		blueprint.id = blueprint_id_input.text
+
+	var path = GameConfig.CONFIG_PATH.path_join(Assets.BLUEPRINTS_DIR).path_join(blueprint.id + ".json")
+	var result = JSONUtils.to_file(path, blueprint.to_dictionary(), "\t")
+
+	if result.error:
+		var message = "Failed to export blueprint: %s" % result.error
+		PopupsManager.error(message)
+		logger.error(message)
+
+	else:
+		logger.info("Exported blueprint '%s'" % path)
+
+
 func _on_cores_drag_receiver_got_data(_source, data) -> void:
 
 	if data is CraftPartData:
@@ -352,4 +395,9 @@ func _on_cores_drag_receiver_got_data(_source, data) -> void:
 	elif data is CraftBlueprintPart:
 		add_core_button(data.data)
 
-	picked_part_preview.clear()
+	dragged_part_preview.visible = false
+	set_process(false)
+
+
+func _on_theme_resized() -> void:
+	%SubViewport.size = get_viewport().size

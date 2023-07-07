@@ -6,7 +6,6 @@ extends Control
 @export var PartScene: PackedScene
 
 @onready var __parts_container: Control = %PartsContainer
-@onready var __core_light: Control = %CoreLight
 @onready var core: CraftDisplayPart = %Core
 
 
@@ -35,13 +34,12 @@ func set_blueprint(blueprint: CraftBlueprint) -> void:
 	set_core_blueprint(blueprint.core)
 
 
-func set_core_blueprint(blueprint: CraftBlueprintPart) -> void:
+func set_core_blueprint(blueprint: CraftBlueprintPart) -> CraftDisplayPart:
 	core.set_blueprint(blueprint)
-	__core_light.visible = Assets.is_core(blueprint)
-	__core_light.position = core.position
+	return core
 
 
-func add_part(part_blueprint: CraftBlueprintPart) -> Control:
+func add_part(part_blueprint: CraftBlueprintPart) -> CraftDisplayPart:
 
 	var part = PartScene.instantiate()
 

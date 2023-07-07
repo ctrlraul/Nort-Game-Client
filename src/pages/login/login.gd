@@ -8,6 +8,9 @@ extends Page
 
 
 
+func _ready() -> void:
+	PlayerDataManager.local_player_deleted.connect(__refresh_saves_list)
+
 
 func _mount() -> void:
 	await Game.initialize()
@@ -23,7 +26,6 @@ func __refresh_saves_list() -> void:
 		var item: SavesListItem = SavesListItemScene.instantiate()
 		saves_list.add_child(item)
 		item.set_player_data(player)
-		item.delete.connect(_on_local_player_delete)
 		item.select.connect(_on_local_player_select)
 
 
@@ -33,11 +35,6 @@ func _on_return_button_pressed() -> void:
 
 
 func _on_refresh_button_pressed() -> void:
-	__refresh_saves_list()
-
-
-func _on_local_player_delete(player: PlayerData) -> void:
-	PlayerDataManager.delete_local_player(player.id)
 	__refresh_saves_list()
 
 

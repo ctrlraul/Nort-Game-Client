@@ -11,6 +11,12 @@ var crippled: bool = false
 
 
 
+func _ready() -> void:
+	body.craft = self
+	body.enable()
+
+
+
 func set_blueprint(blueprint: CraftBlueprint) -> void:
 	body.set_blueprint(blueprint)
 

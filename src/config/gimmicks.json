@@ -1,0 +1,5 @@
+[{
+	"id": "bullet",
+	"display_name": "Bullet",
+	"scene": "bullet/bullet.tscn"
+}]
