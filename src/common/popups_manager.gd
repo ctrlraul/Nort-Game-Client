@@ -2,17 +2,18 @@ extends Node
 
 
 
-const GenericPopupScene: PackedScene = preload("res://common/interface/generic_popup/generic_popup.tscn")
+const DialogPopupScene: PackedScene = preload("res://common/interface/dialog_popup/dialog_popup.tscn")
+const PartBuilderPopupScene: PackedScene = preload("res://common/interface/part_builder_popup/part_builder_popup.tscn")
 
 
 
-func error(message: String) -> GenericPopup:
+func error(message: String, title = "Error") -> DialogPopup:
 
-	var popup = GenericPopupScene.instantiate()
+	var popup = DialogPopupScene.instantiate()
 
 	add_child(popup)
 
-	popup.title = "Error"
+	popup.title = title
 	popup.message = message
 	popup.cancellable = true
 
@@ -22,16 +23,21 @@ func error(message: String) -> GenericPopup:
 	return popup
 
 
+func warn(message: String, title = "Warning") -> DialogPopup:
 
-func warn(message: String) -> GenericPopup:
-
-	var popup = GenericPopupScene.instantiate()
+	var popup = DialogPopupScene.instantiate()
 
 	add_child(popup)
 
-	popup.title = "Warning"
+	popup.title = title
 	popup.message = message
 
 	popup.set_amber()
 
+	return popup
+
+
+func part_builder() -> PartBuilderPopup:
+	var popup = PartBuilderPopupScene.instantiate()
+	add_child(popup)
 	return popup

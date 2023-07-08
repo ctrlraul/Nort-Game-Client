@@ -1,7 +1,7 @@
 [gd_scene load_steps=21 format=3 uid="uid://b3m0hjtsgn5gj"]
 
 [ext_resource type="Script" path="res://pages/workshop/workshop.gd" id="1_3gydl"]
-[ext_resource type="PackedScene" uid="uid://gyid7spgcjj0" path="res://pages/workshop/parts_inventory_item.tscn" id="2_bxtng"]
+[ext_resource type="PackedScene" uid="uid://gyid7spgcjj0" path="res://pages/workshop/parts_inventory/parts_inventory_item.tscn" id="2_bxtng"]
 [ext_resource type="Theme" uid="uid://85byrm5eq3ab" path="res://theme/theme.tres" id="3_qj5id"]
 [ext_resource type="PackedScene" uid="uid://bk5m6deoy4705" path="res://common/interface/drag_receiver/drag_receiver.tscn" id="4_fq1rx"]
 [ext_resource type="Texture2D" uid="uid://b2h5w2qbjnved" path="res://pages/workshop/hexagons_grid.png" id="5_cf5ic"]
@@ -10,10 +10,10 @@
 [ext_resource type="Texture2D" uid="uid://b3bm4djf5tas8" path="res://assets/images/part_example.png" id="8_sjvjj"]
 [ext_resource type="PackedScene" uid="uid://c5f0wfx25glsh" path="res://pages/workshop/part_controls/part_controls.tscn" id="9_kkkqs"]
 [ext_resource type="PackedScene" uid="uid://bnywbmg2uuj8j" path="res://common/interface/window_margin.tscn" id="10_jfafk"]
-[ext_resource type="PackedScene" uid="uid://cwl7mn40ut30d" path="res://pages/workshop/parts_inventory.tscn" id="11_tputx"]
+[ext_resource type="PackedScene" uid="uid://cwl7mn40ut30d" path="res://pages/workshop/parts_inventory/parts_inventory.tscn" id="11_tputx"]
 [ext_resource type="PackedScene" uid="uid://f58y3xr2ti0s" path="res://pages/workshop/cores_list_item.tscn" id="12_nhu0i"]
 [ext_resource type="PackedScene" uid="uid://drp484ne1xpxt" path="res://pages/workshop/part_inspector/part_inspector.tscn" id="13_3cpb8"]
-[ext_resource type="PackedScene" uid="uid://uk8tpg655i5w" path="res://common/interface/craft_part_display/craft_part_display.tscn" id="14_fhvjg"]
+[ext_resource type="PackedScene" uid="uid://c21jgpf6mtj8a" path="res://pages/workshop/dragged_part_preview.tscn" id="14_yo3fk"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_i0onw"]
 radius = 8.0
@@ -261,6 +261,7 @@ mouse_filter = 2
 
 [node name="PartsInventory" parent="Theme/WindowMargin/VBoxContainer/HBoxContainer/InventoryContainer" instance=ExtResource("11_tputx")]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(331, 0)
 layout_mode = 1
 anchors_preset = 9
 anchor_bottom = 1.0
@@ -319,10 +320,8 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 8
 
-[node name="DraggedPartPreview" parent="Theme" instance=ExtResource("14_fhvjg")]
+[node name="DraggedPartPreview" parent="Theme" instance=ExtResource("14_yo3fk")]
 unique_name_in_owner = true
-visible = false
-scale = Vector2(0.5, 0.5)
 
 [connection signal="resized" from="Theme" to="." method="_on_theme_resized"]
 [connection signal="gui_input" from="Theme/Hitbox" to="." method="_on_hitbox_gui_input"]

@@ -1,9 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://gyid7spgcjj0"]
+[gd_scene load_steps=5 format=3 uid="uid://gyid7spgcjj0"]
 
-[ext_resource type="Theme" uid="uid://85byrm5eq3ab" path="res://theme/theme.tres" id="1_jbv3o"]
-[ext_resource type="Script" path="res://pages/workshop/parts_inventory_item.gd" id="2_58mbk"]
-[ext_resource type="PackedScene" uid="uid://cudr7rtxdnhfl" path="res://pages/workshop/part_drag_preview.tscn" id="3_1am46"]
-[ext_resource type="Texture2D" uid="uid://cpvu7gu8m0rod" path="res://pages/workshop/item_frame.png" id="4_wldh8"]
+[ext_resource type="Script" path="res://pages/workshop/parts_inventory/parts_inventory_item.gd" id="2_58mbk"]
+[ext_resource type="Texture2D" uid="uid://cpvu7gu8m0rod" path="res://pages/workshop/parts_inventory/item_frame.png" id="4_wldh8"]
 [ext_resource type="PackedScene" uid="uid://uk8tpg655i5w" path="res://common/interface/craft_part_display/craft_part_display.tscn" id="7_13fuq"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_3s4op"]
@@ -14,9 +12,8 @@ outline_color = Color(0, 0, 0, 1)
 [node name="PartsListItem" type="Button"]
 self_modulate = Color(1, 1, 1, 0)
 custom_minimum_size = Vector2(64, 64)
-theme = ExtResource("1_jbv3o")
+flat = true
 script = ExtResource("2_58mbk")
-PartDragPreviewScene = ExtResource("3_1am46")
 
 [node name="Frame" type="TextureRect" parent="."]
 self_modulate = Color(0, 0, 0, 1)

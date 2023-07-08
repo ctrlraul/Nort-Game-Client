@@ -1,6 +1,4 @@
-[gd_scene load_steps=2 format=3 uid="uid://cudr7rtxdnhfl"]
-
-[ext_resource type="Script" path="res://pages/workshop/part_drag_preview.gd" id="1_mceai"]
+[gd_scene format=3 uid="uid://cudr7rtxdnhfl"]
 
 [node name="PartDragPreview" type="Control"]
 layout_mode = 3
@@ -9,4 +7,3 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_mceai")

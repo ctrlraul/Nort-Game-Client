@@ -11,8 +11,23 @@ extends Node2D
 
 
 
-func _ready() -> void:
-	pass # Replace with function body.
+var logger = Logger.new("Stage")
+
+
+
+func load_mission(mission: Mission) -> void:
+
+	logger.info("Loading mission: %s" % mission.display_name)
+
+	for craft_setup in mission.crafts:
+
+		var craft = CraftScene.instantiate()
+
+		entities_container.add_child(craft)
+
+		craft.position = craft_setup.place
+		craft.set_blueprint(craft_setup.blueprint)
+		craft.set_faction(craft_setup.faction)
 
 
 

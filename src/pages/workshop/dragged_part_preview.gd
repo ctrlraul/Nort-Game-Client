@@ -2,29 +2,29 @@ extends Control
 
 
 
-@onready var __sprite: TextureRect = %Sprite
+@onready var craft_part_display: Control = %CraftPartDisplay
 
 
 
 func _ready() -> void:
-	clear()
-	await Game.initialize()
-	__sprite.self_modulate = Assets.player_faction.color
+	set_process_input(false)
 
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
-		position = get_global_mouse_position()
+		position = event.global_position
 
 
 
 func set_part_data(part_data: CraftPartData) -> void:
-	__sprite.texture = Assets.get_part_texture(part_data.definition.id)
-
-	position = get_global_mouse_position()
 	visible = true
-
+	position = get_global_mouse_position()
 	set_process_input(true)
+	craft_part_display.set_part_data(part_data)
+
+
+func set_color(color: Color) -> void:
+	craft_part_display.color = color
 
 
 func clear() -> void:

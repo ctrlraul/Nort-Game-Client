@@ -26,7 +26,6 @@ func _ready() -> void:
 	if __is_running_main_scene():
 		Transition.cover_instantly()
 		await initialize()
-		PagesManager.go_to(GameConfig.Routes.MAIN_MENU)
 		Transition.uncover()
 	else:
 		Transition.uncover_instantly()

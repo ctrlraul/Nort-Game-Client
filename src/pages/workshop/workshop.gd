@@ -38,6 +38,7 @@ var logger: Logger = Logger.new("Workshop")
 var drag_offset: Vector2 = Vector2.ZERO
 var dragged_part: CraftDisplayPart = null
 var hovered_part: CraftDisplayPart = null
+var selected_part: CraftDisplayPart = null
 var panning: bool = false
 var area_for_part: Dictionary = {}
 var part_for_area: Dictionary = {}
@@ -47,18 +48,17 @@ var color: Color = GameConfig.FACTIONLESS_COLOR :
 		craft_display.color = value
 		parts_inventory.color = value
 		part_inspector.color = value
-		dragged_part_preview.color = value
+		dragged_part_preview.set_color(value)
 		color = value
 
 
 
 func _ready() -> void:
-	dragged_part_preview.visible = false
 	part_controls.clear()
+	dragged_part_preview.clear()
 	Stage.clear()
 	NodeUtils.clear(cores_list)
 	canvas.scale = Vector2.ONE * 0.5
-	set_process(false)
 	zoom(0)
 
 
@@ -66,17 +66,10 @@ func _mount() -> void:
 
 	await Game.initialize()
 
-	dragged_part_preview.color = Assets.player_faction.color
-
 	if Game.current_player:
 		init_for_player()
 	else:
 		init_for_dev()
-
-
-func _input(event: InputEvent) -> void:
-	if event is InputEventMouseMotion:
-		dragged_part_preview.position = event.position
 
 
 
@@ -132,8 +125,16 @@ func add_core_button(part_data: CraftPartData) -> void:
 
 	item.part_data = part_data
 	item.color = Assets.player_faction.color
-	item.pressed.connect(craft_display.set_core_blueprint.bind(blueprint))
-	item.mouse_entered.connect(part_inspector.set_part.bind(part_data))
+	item.pressed.connect(set_core_blueprint.bind(blueprint))
+	item.mouse_entered.connect(part_inspector.set_part_data.bind(part_data))
+
+
+func set_core_blueprint(blueprint: CraftBlueprintPart) -> void:
+	craft_display.set_core_blueprint(blueprint)
+	if hovered_part == craft_display.core:
+		hovered_part_outline_sprite.texture = Assets.get_part_texture(blueprint)
+	if part_controls.part == craft_display.core:
+		part_controls.set_part(craft_display.core)
 
 
 func set_blueprint(blueprint: CraftBlueprint) -> void:
@@ -249,7 +250,7 @@ func on_click_hovered_part(event: InputEventMouseButton) -> void:
 		return
 
 	if hovered_part == craft_display.core:
-		part_inspector.set_part(hovered_part.part_data)
+		part_inspector.set_part(hovered_part)
 		part_controls.set_part(hovered_part)
 		part_controls.update_transform(canvas)
 		return
@@ -298,23 +299,19 @@ func _on_hitbox_gui_input(event: InputEvent) -> void:
 func _on_parts_inventory_part_picked(part_data: CraftPartData) -> void:
 	part_controls.clear()
 	dragged_part_preview.set_part_data(part_data)
-	dragged_part_preview.visible = true
-	set_process(true)
 
 
 func _on_parts_inventory_part_stored() -> void:
-	dragged_part_preview.visible = false
-	set_process(false)
+	dragged_part_preview.clear()
 
 
 func _on_parts_inventory_part_hovered(part_data: CraftPartData) -> void:
-	part_inspector.set_part(part_data)
+	part_inspector.set_part_data(part_data)
 
 
 func _on_hitbox_drag_receiver_drag_enter() -> void:
 
-	dragged_part_preview.visible = false
-	set_process(false)
+	dragged_part_preview.clear()
 
 	var blueprint: CraftBlueprintPart
 
@@ -335,8 +332,6 @@ func _on_hitbox_drag_receiver_drag_enter() -> void:
 func _on_hitbox_drag_receiver_drag_leave() -> void:
 
 	dragged_part_preview.set_part_data(dragged_part.part_data)
-	dragged_part_preview.visible = true
-	set_process(true)
 
 	remove_part(dragged_part)
 
@@ -395,8 +390,7 @@ func _on_cores_drag_receiver_got_data(_source, data) -> void:
 	elif data is CraftBlueprintPart:
 		add_core_button(data.data)
 
-	dragged_part_preview.visible = false
-	set_process(false)
+	dragged_part_preview.clear()
 
 
 func _on_theme_resized() -> void:

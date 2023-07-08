@@ -12,7 +12,7 @@ extends Control
 var __core_light: TextureRect = null
 var __gimmick_sprite: TextureRect = null
 
-var color: Color = GameConfig.FACTIONLESS_COLOR :
+var color: Color :
 	set(value): sprite.self_modulate = value
 	get: return sprite.self_modulate
 
@@ -46,6 +46,11 @@ var outline: bool = false :
 	set(value):
 		sprite_outline.visible = value
 		outline = value
+
+
+
+func _ready() -> void:
+	color = GameConfig.FACTIONLESS_COLOR
 
 
 

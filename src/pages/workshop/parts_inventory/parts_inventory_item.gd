@@ -4,8 +4,6 @@ signal picked()
 
 
 
-@export var PartDragPreviewScene: PackedScene
-
 @onready var __craft_part_display: Control = %CraftPartDisplay
 @onready var __count_label: Label = %Count
 

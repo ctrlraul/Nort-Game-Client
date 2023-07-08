@@ -35,10 +35,6 @@ func _ready() -> void:
 				Assets.get_gimmick_texture(gimmick),
 				gimmick.display_name
 			)
-			print(gimmick)
-
-		gimmick_options.visible = true
-		gimmick_label_container.queue_free()
 
 	else:
 		gimmick_options.queue_free()
@@ -54,12 +50,7 @@ func set_part(part: CraftDisplayPart) -> void:
 		clear()
 
 	else:
-		container.modulate.a = 1
-		craft_part_display.set_part_data(part_data)
-		name_label.text = part_data.definition.display_name
-		name_label.modulate = Color(0, 1, 1) if part_data.shiny else Color.WHITE
-		core_label.text = str(part_data.definition.core)
-		hull_label.text = str(part_data.definition.hull)
+		set_part_data(part_data)
 
 		if Game.dev:
 
@@ -72,6 +63,30 @@ func set_part(part: CraftDisplayPart) -> void:
 		else:
 			gimmick_icon.texture = null
 			gimmick_label.text = ""
+
+
+func set_part_data(part_data: CraftPartData) -> void:
+
+	__set_part_data(part_data)
+
+	gimmick_options.visible = false
+
+	if part_data.gimmick != null:
+		gimmick_icon.texture = Assets.get_gimmick_texture(part_data.gimmick)
+		gimmick_label.text = part_data.gimmick.display_name
+
+	else:
+		gimmick_icon.texture = null
+		gimmick_label.text = ""
+
+
+func __set_part_data(part_data: CraftPartData) -> void:
+	container.modulate.a = 1
+	craft_part_display.set_part_data(part_data)
+	name_label.text = part_data.definition.display_name
+	name_label.modulate = Color(0, 1, 1) if part_data.shiny else Color.WHITE
+	core_label.text = str(part_data.definition.core)
+	hull_label.text = str(part_data.definition.hull)
 
 
 func clear() -> void:

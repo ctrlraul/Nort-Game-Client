@@ -1,4 +1,4 @@
-extends Panel
+extends MarginContainer
 
 signal part_picked(part_data: CraftPartData)
 signal part_stored()
@@ -29,21 +29,26 @@ func _ready() -> void:
 
 
 
-func set_parts(parts: Array[CraftPartData]) -> void:
+func set_parts(part_datas: Array[CraftPartData]) -> void:
 
-	empty_text_label.visible = parts.size() == 0
+	empty_text_label.visible = part_datas.size() == 0
 
-	for part in parts:
-		var item = PartsInventoryItemScene.instantiate()
+	for part_data in part_datas:
+		add_part_data(part_data)
 
-		parts_container.add_child(item)
 
-		item.set_part(part)
-		item.color = Assets.player_faction.color
-		item.picked.connect(_on_item_picked.bind(item))
-		item.mouse_entered.connect(_on_item_mouse_entered.bind(item))
+func add_part_data(part_data: CraftPartData) -> void:
 
-		items[part.definition.id] = item
+	var item = PartsInventoryItemScene.instantiate()
+
+	parts_container.add_child(item)
+
+	item.set_part(part_data)
+	item.color = Assets.player_faction.color
+	item.picked.connect(_on_item_picked.bind(item))
+	item.mouse_entered.connect(_on_item_mouse_entered.bind(item))
+
+	items[part_data.definition.id] = item
 
 
 
@@ -62,3 +67,12 @@ func _on_drag_receiver_got_data(_source, data) -> void:
 			items[data.id].count += 1
 
 	part_stored.emit()
+
+
+func _on_add_part_button_pressed() -> void:
+	var popup = PopupsManager.part_builder()
+	popup.part_built.connect(_on_part_built)
+
+
+func _on_part_built(part_data: CraftPartData) -> void:
+	add_part_data(part_data)

@@ -9,9 +9,9 @@ const DEBUG = false
 const CONFIG_PATH = "res://config/"
 
 
-const PLAYER_FACTION = "cerulean"
+const PLAYER_FACTION = "emerald"
 const INITIAL_BLUEPRINT = "newborn"
-const FACTIONLESS_COLOR = Color(1, 0, 1)
+const FACTIONLESS_COLOR = Color(0.5, 0.5, 0.5)
 
 
 class Routes:

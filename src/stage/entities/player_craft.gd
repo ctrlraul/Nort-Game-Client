@@ -11,6 +11,8 @@ var __hovered_interactable = null
 
 func _ready() -> void:
 
+	super()
+
 	set_process_unhandled_input(false)
 
 	set_faction(Assets.player_faction)

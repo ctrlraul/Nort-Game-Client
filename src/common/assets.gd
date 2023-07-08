@@ -8,6 +8,7 @@ const CORE_LIGHT = preload("res://assets/images/core_light.png")
 const __PARTS_DIR = "craft_parts"
 const BLUEPRINTS_DIR = "craft_blueprints"
 const __FACTIONS_DIR = "factions"
+const __MISSIONS_DIR = "missions"
 const __PART_TEXTURES_DIR = "part_textures"
 const __GIMMICKS_FILE = "gimmicks.json"
 const __GIMMICK_TEXTURES_DIR = "res://assets/images/gimmicks/"
@@ -19,6 +20,7 @@ var __logger = Logger.new("Assets")
 var parts: Dictionary = {}
 var cores: Dictionary = {}
 var gimmicks: Dictionary = {}
+var missions: Dictionary = {}
 var __blueprints: Dictionary = {}
 var __factions: Dictionary = {}
 var __part_textures: Dictionary = {}
@@ -43,6 +45,7 @@ func import_assets(base_path: String) -> void:
 	FileSystemUtils.map_files(base_path.path_join(__PARTS_DIR), __import_part)
 	FileSystemUtils.map_files(base_path.path_join(BLUEPRINTS_DIR), __import_blueprint)
 	FileSystemUtils.map_files(base_path.path_join(__FACTIONS_DIR), __import_faction)
+	FileSystemUtils.map_files(base_path.path_join(__MISSIONS_DIR), __import_mission)
 
 	assert(GameConfig.INITIAL_BLUEPRINT in __blueprints, "Initial blueprint '%s' not found" % GameConfig.INITIAL_BLUEPRINT)
 	assert(GameConfig.PLAYER_FACTION in __factions, "Player faction '%s' not found" % GameConfig.PLAYER_FACTION)
@@ -104,6 +107,10 @@ func get_part(id: String) -> CraftPartDefinition:
 
 func get_blueprint(id: String) -> CraftBlueprint:
 	return __blueprints[id]
+
+
+func get_faction(id: String) -> Faction:
+	return __factions[id]
 
 
 func get_gimmick(id: String) -> Gimmick:
@@ -185,6 +192,17 @@ func __import_faction(path: String) -> void:
 	else:
 		var faction = Faction.new(result.value)
 		__factions[faction.id] = faction
+
+
+func __import_mission(path: String) -> void:
+
+	var result = JSONUtils.from_file(path)
+
+	if result.error != "":
+		push_error("Failed to import mission '%s': %s" % [path, result.error])
+	else:
+		var mission = Mission.new(result.value)
+		missions[mission.id] = mission
 
 
 func __import_part_textures(base_path: String) -> void:

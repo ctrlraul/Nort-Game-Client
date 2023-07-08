@@ -7,12 +7,9 @@ func _mount() -> void:
 	await Game.initialize()
 
 	Stage.clear()
+	Stage.load_mission(Assets.missions["basics"])
 	Stage.spawn_player()#.crippled = true
 
-	var turret = Stage.spawn_turret()
-
-	turret.position.x = 300
-#	turret.set_blueprint()
 
 
 func _on_workshop_button_pressed() -> void:
