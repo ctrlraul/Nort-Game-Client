@@ -248,7 +248,7 @@ func __with_inset_margin(texture: Texture2D, margin: int) -> Texture2D:
 	image.resize(
 		size.x - margin * 2,
 		size.y - margin * 2,
-		Image.INTERPOLATE_BILINEAR
+		Image.INTERPOLATE_TRILINEAR
 	)
 
 	new_image.blit_rect(

@@ -1,9 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://6wfise1ybf04"]
+[gd_scene load_steps=5 format=3 uid="uid://6wfise1ybf04"]
 
 [ext_resource type="Script" path="res://stage/stage.gd" id="1_xoyjq"]
 [ext_resource type="PackedScene" uid="uid://b1xci2ckb2rvw" path="res://stage/craft/craft.tscn" id="2_ptkh3"]
-[ext_resource type="PackedScene" uid="uid://d3udbkcd2skey" path="res://stage/entities/player_craft.tscn" id="3_7csbh"]
-[ext_resource type="PackedScene" uid="uid://df155wn1dmw8r" path="res://stage/entities/turret_craft.tscn" id="4_eofhd"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_iabwd"]
 
@@ -14,8 +12,6 @@ noise = SubResource("FastNoiseLite_iabwd")
 [node name="Stage" type="Node2D"]
 script = ExtResource("1_xoyjq")
 CraftScene = ExtResource("2_ptkh3")
-PlayerCraftScene = ExtResource("3_7csbh")
-TurretCraftScene = ExtResource("4_eofhd")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 self_modulate = Color(0.0117647, 0.0235294, 0.141176, 1)

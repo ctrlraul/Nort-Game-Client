@@ -15,6 +15,8 @@ func _ready() -> void:
 
 	super()
 
+	cancellable = true
+
 	var parts = Assets.parts.values()
 
 	part_options.clear()

@@ -1,10 +1,24 @@
-[gd_scene load_steps=3 format=3 uid="uid://b1xci2ckb2rvw"]
+[gd_scene load_steps=9 format=3 uid="uid://b1xci2ckb2rvw"]
 
 [ext_resource type="Script" path="res://stage/craft/craft.gd" id="1_l1cjh"]
+[ext_resource type="PackedScene" uid="uid://bet5rxmhei2mq" path="res://stage/craft_components/player_controls.tscn" id="2_jyhw8"]
+[ext_resource type="Script" path="res://stage/craft_components/flight.gd" id="2_pwlpr"]
 [ext_resource type="PackedScene" uid="uid://b8kgq1nanwsyw" path="res://stage/craft/craft_body.tscn" id="2_tk3l2"]
+[ext_resource type="PackedScene" uid="uid://bthskvmroiyr" path="res://stage/craft_components/tractor_target.tscn" id="4_e0dbf"]
+[ext_resource type="PackedScene" uid="uid://c5uvcuoayidxg" path="res://stage/craft_components/tractor.tscn" id="4_x5ufy"]
+[ext_resource type="PackedScene" uid="uid://dlalv66n5twn0" path="res://stage/craft_components/drone_ai.tscn" id="5_ypo60"]
+[ext_resource type="Script" path="res://stage/craft_component.gd" id="8_mmmer"]
 
 [node name="Craft" type="Node2D"]
 script = ExtResource("1_l1cjh")
+FlightComponent = ExtResource("2_pwlpr")
+PlayerControlsComponent = ExtResource("2_jyhw8")
+TractorComponent = ExtResource("4_x5ufy")
+TractorTargetComponent = ExtResource("4_e0dbf")
+DroneAIComponent = ExtResource("5_ypo60")
 
 [node name="Body" parent="." instance=ExtResource("2_tk3l2")]
 unique_name_in_owner = true
+
+[node name="Node2D" type="Node2D" parent="."]
+script = ExtResource("8_mmmer")

@@ -1,4 +1,4 @@
-extends Node2D
+class_name CraftComponentTractor extends CraftComponent
 
 
 
@@ -18,24 +18,22 @@ var target = null :
 
 
 func _ready() -> void:
+	super()
 	visible = false
 	set_physics_process(false)
+	craft.set_component(CraftComponentTractor, self)
 
 
 func _physics_process(delta: float) -> void:
 
 	delta *= Engine.physics_ticks_per_second # Normalize delta
 
-	var target_distance = owner.position.distance_to(target.position)
+	var target_distance = craft.position.distance_to(target.craft.position)
 	var force = abs(distance - target_distance) / distance * torque
 	var force_delta = 1 if target_distance < distance else -1
-	var direction = owner.position.direction_to(target.position)
+	var direction = craft.position.direction_to(target.craft.position)
 
-	target.position += direction * force * force_delta * delta
+	target.craft.position += direction * force * force_delta * delta
 
-	line.points[1] = target.position - owner.position
+	line.points[1] = target.craft.position - craft.position
 	line.width = min(1, 0.5 + distance / target_distance * 0.5) * torque * 3
-
-#	line.points[2] = target.position - owner.position
-#	line.points[1] = line.points[2] * 0.5
-#	line.width_curve.set_point_value(1, min(1, distance / target_distance))

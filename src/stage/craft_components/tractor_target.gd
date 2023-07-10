@@ -1,9 +1,11 @@
-@tool
+class_name CraftComponentTractorTarget extends CraftComponent
 
-class_name TractorTarget extends Node2D
+signal targeted()
+signal released()
 
 
 
+@onready var area: Area2D = %Area2D
 @onready var animation_player: AnimationPlayer = %AnimationPlayer
 
 
@@ -18,8 +20,9 @@ var in_range: bool = false :
 
 
 func _ready() -> void:
-	if Engine.is_editor_hint():
-		animation_player.play("rotate")
+	super()
+	animation_player.play("hide")
+	craft.set_component(CraftComponentTractorTarget, self)
 
 
 func _on_animation_player_animation_finished(anim_name: StringName) -> void:

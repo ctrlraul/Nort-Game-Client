@@ -3,10 +3,12 @@ extends Node2D
 
 
 const HALF_PI = PI * 0.5
+const RANGE_RADIUS = 700
 
 
 
 @onready var __area: Area2D = %Area2D
+@onready var __collision_shape: CollisionShape2D = %CollisionShape2D
 @onready var __gfx: Node2D = %GFX
 @onready var __cooldown_timer: Timer = %CooldownTimer
 @onready var __particles: GPUParticles2D = %GPUParticles2D
@@ -18,6 +20,7 @@ var part: CraftPart
 
 func _ready() -> void:
 	assert(__cooldown_timer.wait_time > __particles.lifetime, "ayo bro this aint worky")
+	__collision_shape.shape.radius = RANGE_RADIUS
 
 
 func _process(_delta: float) -> void:

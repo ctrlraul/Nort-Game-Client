@@ -3,8 +3,6 @@ extends Node2D
 
 
 @export var CraftScene: PackedScene
-@export var PlayerCraftScene: PackedScene
-@export var TurretCraftScene: PackedScene
 
 @onready var entities_container: Node2D = %EntitiesContainer
 @onready var camera: Camera2D = $Camera2D
@@ -28,20 +26,31 @@ func load_mission(mission: Mission) -> void:
 		craft.position = craft_setup.place
 		craft.set_blueprint(craft_setup.blueprint)
 		craft.set_faction(craft_setup.faction)
+		craft.set_behavior(craft_setup.behavior)
 
 
+func spawn_player() -> Craft:
 
-func spawn_player() -> PlayerCraft:
-	var craft = PlayerCraftScene.instantiate()
+	var craft = CraftScene.instantiate()
+
 	entities_container.add_child(craft)
+
+	craft.set_blueprint(
+		Game.current_player.current_blueprint
+		if Game.current_player
+		else Assets.initial_blueprint
+	)
+
+	craft.set_faction(Assets.player_faction)
+	craft.set_behavior(CraftSetup.Behavior.PLAYER)
+
 	return craft
 
 
-func spawn_turret() -> TurretCraft:
-	var craft = TurretCraftScene.instantiate()
-	entities_container.add_child(craft)
-	return craft
-
+#func spawn_turret() -> TurretCraft:
+#	var craft = TurretCraftScene.instantiate()
+#	entities_container.add_child(craft)
+#	return craft
 
 
 func clear() -> void:

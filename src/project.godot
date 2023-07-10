@@ -70,3 +70,7 @@ select={
 
 2d_physics/layer_1="Craft"
 2d_physics/layer_9="Mouse Interactable"
+
+[rendering]
+
+anti_aliasing/screen_space_roughness_limiter/enabled=false

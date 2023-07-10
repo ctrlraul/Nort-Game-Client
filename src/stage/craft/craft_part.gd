@@ -11,6 +11,12 @@ var collision_shape: CollisionShape2D = null
 var gimmick: Node2D
 var craft_body: CraftBody
 
+var color: Color = GameConfig.FACTIONLESS_COLOR :
+	set(value):
+		sprite.self_modulate = value
+		if collision_shape:
+			collision_shape.debug_color = value * Color(1, 1, 1, 0.25)
+		color = value
 
 
 func set_blueprint(blueprint: CraftBlueprintPart) -> void:
@@ -29,6 +35,7 @@ func set_blueprint(blueprint: CraftBlueprintPart) -> void:
 	collision_shape.position = position
 	collision_shape.shape = RectangleShape2D.new()
 	collision_shape.shape.size = sprite.texture.get_size()
+	collision_shape.debug_color = color * Color(1, 1, 1, 0.25)
 
 	if Assets.is_core(blueprint):
 		var core_light = Sprite2D.new()
@@ -39,7 +46,3 @@ func set_blueprint(blueprint: CraftBlueprintPart) -> void:
 		gimmick = blueprint.data.gimmick.scene.instantiate()
 		gimmick.position = position
 		gimmick.part = self
-
-
-func set_color(color: Color) -> void:
-	sprite.self_modulate = color

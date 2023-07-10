@@ -8,7 +8,7 @@ func _mount() -> void:
 
 	Stage.clear()
 	Stage.load_mission(Assets.missions["basics"])
-	Stage.spawn_player()#.crippled = true
+	Stage.spawn_player()
 
 
 

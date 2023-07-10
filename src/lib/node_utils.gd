@@ -11,18 +11,28 @@ static func clear(node: Node, remove = true) -> void:
 
 static func find_nearest(nodes: Array, place: Vector2) -> Node:
 
-	var shortest_distance: float = INF
-	var nearest = null
+	match nodes.size():
 
-	for node in nodes:
+		0:
+			return null
 
-		if node.is_queued_for_deletion():
-			continue
+		1:
+			return nodes[0]
 
-		var distance = node.position.distance_to(place)
+		_:
+			var shortest_distance: float = INF
+			var nearest = null
 
-		if distance < shortest_distance:
-			shortest_distance = distance
-			nearest = node
+			for node in nodes:
 
-	return nearest
+				if node.is_queued_for_deletion():
+					continue
+
+				var distance = node.position.distance_to(place)
+
+				if distance < shortest_distance:
+					shortest_distance = distance
+					nearest = node
+
+			return nearest
+

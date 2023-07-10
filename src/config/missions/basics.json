@@ -2,10 +2,10 @@
 	"id": "basics",
 	"display_name": "Hexagon One",
 	"crafts": [{
-		"x": 100,
+		"x": 800,
 		"y": 0,
 		"blueprint": "strike",
-		"faction": "amber",
+		"faction": "ruby",
 		"behavior": "DRONE"
 	}]
 }

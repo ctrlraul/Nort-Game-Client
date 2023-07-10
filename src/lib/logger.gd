@@ -21,3 +21,7 @@ func info(message: String) -> void:
 
 func error(message: String) -> void:
 	printerr(__FORMAT % [Time.get_ticks_msec() / 1000.0, "E", __label, message])
+
+
+static func error_static(label: String, message: String) -> void:
+	printerr(__FORMAT % [Time.get_ticks_msec() / 1000.0, "E", label, message])

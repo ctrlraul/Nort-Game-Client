@@ -3,6 +3,7 @@ class_name CraftSetup
 
 
 enum Behavior {
+	PLAYER,
 	FIGHTER,
 	DRONE,
 	TURRET,

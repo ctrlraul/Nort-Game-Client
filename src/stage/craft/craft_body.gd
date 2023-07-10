@@ -20,7 +20,7 @@ var color: Color = GameConfig.FACTIONLESS_COLOR :
 	set(value):
 		color = value
 		for part in parts_container.get_children():
-			part.set_color(color)
+			part.color = color
 
 
 
@@ -49,7 +49,7 @@ func __add_part(blueprint: CraftBlueprintPart) -> void:
 	parts_container.add_child(part)
 
 	part.set_blueprint(blueprint)
-	part.set_color(color)
+	part.color = color
 	part.craft_body = self
 
 	area.add_child(part.collision_shape)

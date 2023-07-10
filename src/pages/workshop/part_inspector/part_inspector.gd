@@ -36,8 +36,6 @@ func _ready() -> void:
 				gimmick.display_name
 			)
 
-	else:
-		gimmick_options.queue_free()
 
 
 func set_part(part: CraftDisplayPart) -> void:
