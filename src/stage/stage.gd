@@ -5,7 +5,6 @@ extends Node2D
 @export var CraftScene: PackedScene
 
 @onready var entities_container: Node2D = %EntitiesContainer
-@onready var camera: Camera2D = $Camera2D
 
 
 
@@ -54,6 +53,4 @@ func spawn_player() -> Craft:
 
 
 func clear() -> void:
-	camera.position = Vector2.ZERO
-	camera.zoom = Vector2.ONE * 0.5
 	NodeUtils.clear(entities_container)

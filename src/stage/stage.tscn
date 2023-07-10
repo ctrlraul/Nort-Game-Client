@@ -18,7 +18,5 @@ self_modulate = Color(0.0117647, 0.0235294, 0.141176, 1)
 scale = Vector2(8, 8)
 texture = SubResource("NoiseTexture2D_hps3s")
 
-[node name="Camera2D" type="Camera2D" parent="."]
-
 [node name="EntitiesContainer" type="Node2D" parent="."]
 unique_name_in_owner = true

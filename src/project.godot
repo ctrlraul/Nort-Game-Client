@@ -11,9 +11,14 @@ config_version=5
 [application]
 
 config/name="Nort"
+config/description="The ships game!"
 run/main_scene="res://pages/main_menu/main_menu.tscn"
 config/features=PackedStringArray("4.1", "Forward Plus")
-config/icon="res://icon.svg"
+boot_splash/bg_color=Color(0, 0, 0, 1)
+boot_splash/image="res://assets/branding/splash_screen.png"
+config/icon="res://assets/branding/icon256x256.png"
+config/windows_native_icon="res://assets/branding/icon16x16.ico"
+boot_splash/minimum_display_time=500
 
 [autoload]
 
