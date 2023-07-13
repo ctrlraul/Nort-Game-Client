@@ -62,7 +62,7 @@ func _ready() -> void:
 	zoom(0)
 
 
-func _mount() -> void:
+func _mount(_data) -> void:
 
 	await Game.initialize()
 

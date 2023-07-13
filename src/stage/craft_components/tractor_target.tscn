@@ -127,6 +127,7 @@ _data = {
 }
 
 [node name="TractorTarget" type="Node2D"]
+z_index = 1
 script = ExtResource("1_t8hf1")
 
 [node name="Area2D" type="Area2D" parent="."]

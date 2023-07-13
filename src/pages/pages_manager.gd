@@ -15,19 +15,19 @@ var current_page: Page :
 
 func _ready() -> void:
 	if tree.current_scene is Page:
-		await tree.current_scene._mount()
+		await tree.current_scene._mount(null)
 		page_mounted.emit()
 
 
 
-func go_to(scene_path: String) -> Signal:
-	tree.node_added.connect(_on_tree_node_added.bind(scene_path))
+func go_to(scene_path: String, data = null) -> Signal:
+	tree.node_added.connect(_on_tree_node_added.bind(scene_path, data))
 	tree.change_scene_to_file(scene_path)
 	return page_mounted
 
 
 
-func _on_tree_node_added(node: Node, scene_path: String) -> void:
+func _on_tree_node_added(node: Node, scene_path: String, data) -> void:
 
 	if node.scene_file_path != scene_path:
 		return
@@ -39,6 +39,6 @@ func _on_tree_node_added(node: Node, scene_path: String) -> void:
 	assert(node is Page, "All pages should extend the Page class")
 
 	await node.ready
-	await node._mount()
+	await node._mount(data)
 
 	page_mounted.emit()

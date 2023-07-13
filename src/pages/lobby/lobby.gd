@@ -2,12 +2,8 @@ extends Page
 
 
 
-func _mount() -> void:
-
+func _mount(_data) -> void:
 	await Game.initialize()
-
-	Stage.clear()
-	Stage.load_mission(Assets.missions["basics"])
 	Stage.spawn_player()
 
 
@@ -15,4 +11,12 @@ func _mount() -> void:
 func _on_workshop_button_pressed() -> void:
 	Transition.callback(
 		PagesManager.go_to.bind(GameConfig.Routes.WORKSHOP)
+	)
+
+
+func _on_test_button_pressed() -> void:
+	Transition.callback(
+		PagesManager.go_to.bind(GameConfig.Routes.MISSION, {
+			"mission": "basics"
+		})
 	)

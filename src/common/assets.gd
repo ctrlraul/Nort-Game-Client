@@ -144,6 +144,21 @@ func is_core(object) -> bool:
 	return false
 
 
+func get_blueprint_radius(blueprint: CraftBlueprint) -> float:
+
+	var top_left = Vector2.INF
+	var bottom_right = -Vector2.INF
+
+	for part in blueprint.parts:
+		var half_texture_size = get_part_texture(part).get_size() * 0.5
+		top_left.x = min(top_left.x, part.place.x - half_texture_size.x)
+		top_left.y = min(top_left.y, part.place.y - half_texture_size.y)
+		bottom_right.x = max(bottom_right.x, part.place.x + half_texture_size.x)
+		bottom_right.y = max(bottom_right.y, part.place.y + half_texture_size.y)
+
+	return abs(top_left - bottom_right).length() * 0.5
+
+
 
 func __import_gimmicks(path: String) -> Result:
 

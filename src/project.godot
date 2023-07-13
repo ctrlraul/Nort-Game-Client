@@ -73,7 +73,7 @@ select={
 
 [layer_names]
 
-2d_physics/layer_1="Craft"
+2d_physics/layer_1="Craft Part"
 2d_physics/layer_9="Mouse Interactable"
 
 [rendering]

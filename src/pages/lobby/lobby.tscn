@@ -24,6 +24,20 @@ layout_mode = 1
 layout_mode = 2
 mouse_filter = 2
 
+[node name="Header" type="MarginContainer" parent="Theme/WindowMargin/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+mouse_filter = 2
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="TestButton" type="Button" parent="Theme/WindowMargin/VBoxContainer/Header"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Workshop"
+
 [node name="Main" type="Control" parent="Theme/WindowMargin/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
@@ -43,4 +57,5 @@ layout_mode = 2
 size_flags_horizontal = 4
 text = "Workshop"
 
+[connection signal="pressed" from="Theme/WindowMargin/VBoxContainer/Header/TestButton" to="." method="_on_test_button_pressed"]
 [connection signal="pressed" from="Theme/WindowMargin/VBoxContainer/Footer/WorkshopButton" to="." method="_on_workshop_button_pressed"]

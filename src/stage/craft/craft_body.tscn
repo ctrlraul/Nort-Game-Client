@@ -7,12 +7,6 @@
 script = ExtResource("1_0158l")
 CraftPartScene = ExtResource("2_1mmal")
 
-[node name="Area2D" type="Area2D" parent="."]
-unique_name_in_owner = true
-collision_mask = 0
-monitoring = false
-monitorable = false
-
 [node name="PartsContainer" type="Node2D" parent="."]
 unique_name_in_owner = true
 

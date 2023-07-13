@@ -1,0 +1,78 @@
+[gd_scene load_steps=8 format=3 uid="uid://cv32wh2kql0cr"]
+
+[ext_resource type="Script" path="res://stage/dropped_part/dropped_part.gd" id="1_yg2f1"]
+[ext_resource type="Material" uid="uid://bscgpp7x5c27j" path="res://common/materials/shiny_part.tres" id="2_h38mt"]
+[ext_resource type="Texture2D" uid="uid://b3bm4djf5tas8" path="res://assets/images/part_example.png" id="3_5ng6i"]
+[ext_resource type="Texture2D" uid="uid://hlcyw0kime5w" path="res://assets/images/gimmicks/bullet.png" id="4_y8gsh"]
+
+[sub_resource type="Animation" id="Animation_dg6dc"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("GFX:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_bd4jh"]
+resource_name = "float"
+length = 4.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("GFX:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1, 2, 3, 4),
+"transitions": PackedFloat32Array(0.5, 2, 0.5, 2, 1),
+"update": 0,
+"values": [0.0, 5.0, 0.0, -5.0, 0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("GFX:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1, 2, 3, 4),
+"transitions": PackedFloat32Array(2, 0.5, 2, 0.5, 2),
+"update": 0,
+"values": [-5.0, 0.0, 5.0, 0.0, -5.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ghgra"]
+_data = {
+"RESET": SubResource("Animation_dg6dc"),
+"float": SubResource("Animation_bd4jh")
+}
+
+[node name="DroppedPart" type="Node2D"]
+script = ExtResource("1_yg2f1")
+
+[node name="GFX" type="Node2D" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="GFX"]
+unique_name_in_owner = true
+self_modulate = Color(1, 0, 1, 1)
+material = ExtResource("2_h38mt")
+texture = ExtResource("3_5ng6i")
+
+[node name="Gimmick" type="Sprite2D" parent="GFX"]
+unique_name_in_owner = true
+self_modulate = Color(0.5, 0.5, 0.5, 1)
+texture = ExtResource("4_y8gsh")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+unique_name_in_owner = true
+libraries = {
+"": SubResource("AnimationLibrary_ghgra")
+}

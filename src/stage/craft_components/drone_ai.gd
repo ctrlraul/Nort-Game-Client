@@ -35,13 +35,13 @@ func _physics_process(_delta: float) -> void:
 
 
 
-func _on_area_2d_area_exited(area: Area2D) -> void:
-	var craft_body: CraftBody = area.owner
-	if craft_body.craft.faction != craft.faction:
-		path.push_front(craft_body.craft.position)
-
-
 func _on_area_2d_area_entered(area: Area2D) -> void:
-	var craft_body: CraftBody = area.owner
-	if craft_body.craft.faction != craft.faction:
-		path.push_front(lerp(craft.position, craft_body.craft.position, 0.5))
+	var craft_part: CraftPart = area.owner
+	if craft_part.body.craft.faction != craft.faction:
+		path.push_front(lerp(craft.position, craft_part.body.craft.position, 0.5))
+
+
+func _on_area_2d_area_exited(area: Area2D) -> void:
+	var craft_part: CraftPart = area.owner
+	if craft_part.body.craft.faction != craft.faction:
+		path.push_front(craft_part.body.craft.position)

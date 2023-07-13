@@ -2,5 +2,5 @@ class_name Page extends CanvasLayer
 
 
 
-func _mount() -> void:
+func _mount(_data) -> void:
 	pass

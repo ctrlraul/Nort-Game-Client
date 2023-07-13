@@ -7,7 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://bthskvmroiyr" path="res://stage/craft_components/tractor_target.tscn" id="4_e0dbf"]
 [ext_resource type="PackedScene" uid="uid://c5uvcuoayidxg" path="res://stage/craft_components/tractor.tscn" id="4_x5ufy"]
 [ext_resource type="PackedScene" uid="uid://dlalv66n5twn0" path="res://stage/craft_components/drone_ai.tscn" id="5_ypo60"]
-[ext_resource type="Script" path="res://stage/craft_component.gd" id="8_mmmer"]
+[ext_resource type="PackedScene" uid="uid://b4v5a6vfbueqm" path="res://stage/craft_components/stats_display.tscn" id="7_jnrdh"]
 
 [node name="Craft" type="Node2D"]
 script = ExtResource("1_l1cjh")
@@ -16,9 +16,9 @@ PlayerControlsComponent = ExtResource("2_jyhw8")
 TractorComponent = ExtResource("4_x5ufy")
 TractorTargetComponent = ExtResource("4_e0dbf")
 DroneAIComponent = ExtResource("5_ypo60")
+StatsDisplayComponent = ExtResource("7_jnrdh")
 
 [node name="Body" parent="." instance=ExtResource("2_tk3l2")]
 unique_name_in_owner = true
 
-[node name="Node2D" type="Node2D" parent="."]
-script = ExtResource("8_mmmer")
+[connection signal="part_destroyed" from="Body" to="." method="_on_body_part_destroyed"]

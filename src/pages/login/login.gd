@@ -12,7 +12,7 @@ func _ready() -> void:
 	PlayerDataManager.local_player_deleted.connect(__refresh_saves_list)
 
 
-func _mount() -> void:
+func _mount(_data) -> void:
 	await Game.initialize()
 	__refresh_saves_list()
 

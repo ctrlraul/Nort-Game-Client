@@ -8,7 +8,6 @@ class_name CraftComponentPlayerControls extends CraftComponent
 var __interactable: Area2D
 var __tractor_comp: CraftComponentTractor
 var __flight_comp: CraftComponentFlight
-var __zoom_target: Vector2 = Vector2.ONE * 0.5
 
 
 
@@ -22,9 +21,10 @@ func _process(_delta: float) -> void:
 
 	__cursor_area.global_position = get_global_mouse_position()
 
-	__zoom_target = Vector2.ONE * min(0.5, 0.25 + 1 / max(__flight_comp.velocity.length(), 0.001) * 0.05)
+	var vel = max(__flight_comp.velocity.length(), 0.001)
 
-	__camera.zoom = lerp(__camera.zoom, __zoom_target, 0.002)
+	__camera.zoom = lerp(__camera.zoom, Vector2.ONE * clamp(1 / vel * 0.005, 0.4, 0.5), 0.01)
+	__camera.position = lerp(__camera.position, __flight_comp.velocity * 20, 0.01)
 
 	__update_interactable()
 

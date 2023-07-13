@@ -1,6 +1,6 @@
 class_name CraftBody extends Node2D
 
-signal damaged()
+signal part_destroyed(part: CraftPart)
 
 
 
@@ -8,13 +8,13 @@ signal damaged()
 
 
 
-@onready var area: Area2D = %Area2D
 @onready var parts_container: Node2D = %PartsContainer
 @onready var gimmicks_container: Node2D = %GimmicksContainer
 
 
 
 var craft: Craft
+var core: CraftPart
 
 var color: Color = GameConfig.FACTIONLESS_COLOR :
 	set(value):
@@ -25,40 +25,37 @@ var color: Color = GameConfig.FACTIONLESS_COLOR :
 
 
 func _ready() -> void:
-	__clear()
-
-
-
-func enable() -> void:
-	area.monitorable = true
+	NodeUtils.clear(parts_container)
 
 
 
 func set_blueprint(blueprint: CraftBlueprint) -> void:
-	__clear()
 	for part_blueprint in blueprint.parts:
 		__add_part(part_blueprint)
-	__add_part(blueprint.core)
+	core = __add_part(blueprint.core)
+
+
+func get_part(index: int) -> CraftPart:
+	return parts_container.get_child(index)
+
+
+func get_parts() -> Array:
+	return parts_container.get_children()
 
 
 
-func __add_part(blueprint: CraftBlueprintPart) -> void:
+func __add_part(blueprint: CraftBlueprintPart) -> CraftPart:
 
 	var part: CraftPart = CraftPartScene.instantiate()
 
 	parts_container.add_child(part)
 
-	part.set_blueprint(blueprint)
 	part.color = color
-	part.craft_body = self
-
-	area.add_child(part.collision_shape)
+	part.body = self
+	part.set_blueprint(blueprint)
+	part.destroyed.connect(func(): part_destroyed.emit(part))
 
 	if part.gimmick:
 		gimmicks_container.add_child(part.gimmick)
 
-
-func __clear() -> void:
-	NodeUtils.clear(area)
-	NodeUtils.clear(parts_container)
-	NodeUtils.clear(gimmicks_container)
+	return part
