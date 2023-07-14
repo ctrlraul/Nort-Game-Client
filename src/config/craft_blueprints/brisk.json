@@ -2,7 +2,8 @@
 	"core": {
 		"data": {
 			"definition": "center_1",
-			"level": 1
+			"gimmick": "bullet",
+			"level": 0
 		},
 		"x": 0,
 		"y": 0

@@ -3,6 +3,6 @@
 	"display_name": "Fighter",
 	"texture": "wing_2.png",
 	"type": "HULL",
-	"hull": 80,
-	"core": 20
+	"hull": 40,
+	"core": 10
 }

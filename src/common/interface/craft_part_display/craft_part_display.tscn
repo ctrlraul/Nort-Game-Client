@@ -8,49 +8,24 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0xr03"]
 shader = ExtResource("2_ai505")
 
-[node name="CraftPartDisplay" type="Control"]
-layout_mode = 3
-anchors_preset = 0
+[node name="CraftPartDisplay" type="CenterContainer"]
 mouse_filter = 2
+use_top_left = true
 script = ExtResource("1_xntch")
 ShinyPartMaterial = ExtResource("2_siddt")
 
 [node name="Sprite" type="TextureRect" parent="."]
 unique_name_in_owner = true
-self_modulate = Color(1, 0, 0.870588, 1)
+self_modulate = Color(0.5, 0.5, 0.5, 1)
 material = ExtResource("2_siddt")
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -64.0
-offset_top = -54.0
-offset_right = 64.0
-offset_bottom = 54.0
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 2
 mouse_filter = 2
 texture = ExtResource("1_wgdtu")
-stretch_mode = 5
 
 [node name="SpriteOutline" type="TextureRect" parent="."]
 unique_name_in_owner = true
 visible = false
 material = SubResource("ShaderMaterial_0xr03")
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -64.0
-offset_top = -54.0
-offset_right = 64.0
-offset_bottom = 54.0
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 2
 mouse_filter = 2
 texture = ExtResource("1_wgdtu")
-stretch_mode = 5

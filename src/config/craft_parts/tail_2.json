@@ -3,6 +3,6 @@
 	"display_name": "Rocket",
 	"texture": "tail_2.png",
 	"type": "HULL",
-	"hull": 80,
-	"core": 20
+	"hull": 35,
+	"core": 25
 }

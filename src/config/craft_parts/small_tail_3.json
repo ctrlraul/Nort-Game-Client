@@ -1,0 +1,8 @@
+{
+	"id": "small_tail_3",
+	"display_name": "Fishtail",
+	"texture": "small_tail_3.png",
+	"type": "HULL",
+	"hull": 30,
+	"core": 25
+}

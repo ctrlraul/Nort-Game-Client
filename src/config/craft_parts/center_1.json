@@ -3,6 +3,6 @@
 	"display_name": "Center",
 	"texture": "center_1.png",
 	"type": "HULL",
-	"hull": 80,
-	"core": 20
+	"hull": 30,
+	"core": 30
 }

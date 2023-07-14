@@ -3,6 +3,6 @@
 	"display_name": "M Tail",
 	"texture": "tail_1.png",
 	"type": "HULL",
-	"hull": 80,
+	"hull": 30,
 	"core": 20
 }

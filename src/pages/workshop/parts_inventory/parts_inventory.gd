@@ -6,6 +6,10 @@ signal part_hovered(part_data: CraftPartData)
 
 
 
+const PartBuilderPopupScene: PackedScene = preload("res://common/interface/part_builder_popup/part_builder_popup.tscn")
+
+
+
 @export var PartsInventoryItemScene: PackedScene
 
 @onready var parts_container: Control = %PartsContainer
@@ -70,7 +74,7 @@ func _on_drag_receiver_got_data(_source, data) -> void:
 
 
 func _on_add_part_button_pressed() -> void:
-	var popup = PopupsManager.part_builder()
+	var popup: PartBuilderPopup = PopupsManager.custom(PartBuilderPopupScene)
 	popup.part_built.connect(_on_part_built)
 
 

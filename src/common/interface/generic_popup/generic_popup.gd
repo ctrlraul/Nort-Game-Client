@@ -9,6 +9,11 @@ class_name GenericPopup extends CanvasLayer
 
 var cancellable: bool = false
 
+var width: int :
+	set(value):
+		window.custom_minimum_size.x = value
+		width = value
+
 
 
 func _ready() -> void:

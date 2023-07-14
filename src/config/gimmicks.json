@@ -2,4 +2,8 @@
 	"id": "bullet",
 	"display_name": "Bullet",
 	"scene": "bullet/bullet.tscn"
+}, {
+	"id": "drone",
+	"display_name": "Drone",
+	"scene": "drone/drone.tscn"
 }]

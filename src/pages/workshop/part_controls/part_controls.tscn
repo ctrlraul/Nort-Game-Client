@@ -30,28 +30,17 @@ texture_mode = 2
 begin_cap_mode = 2
 end_cap_mode = 2
 
-[node name="OutlineSpriteContainer" type="Control" parent="."]
+[node name="OutlineSpriteContainer" type="CenterContainer" parent="."]
 unique_name_in_owner = true
-anchors_preset = 0
+layout_mode = 0
+use_top_left = true
 
 [node name="OutlineSprite" type="TextureRect" parent="OutlineSpriteContainer"]
 unique_name_in_owner = true
 material = SubResource("ShaderMaterial_esskj")
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -64.0
-offset_top = -54.0
-offset_right = 64.0
-offset_bottom = 54.0
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 2
 mouse_filter = 2
 texture = ExtResource("3_t7umq")
-stretch_mode = 5
 
 [node name="ButtonsMargin" type="HBoxContainer" parent="."]
 unique_name_in_owner = true

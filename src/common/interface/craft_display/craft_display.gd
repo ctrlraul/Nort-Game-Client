@@ -51,6 +51,10 @@ func add_part(part_blueprint: CraftBlueprintPart) -> CraftDisplayPart:
 	return part
 
 
+func clear() -> void:
+	NodeUtils.clear(__parts_container)
+
+
 func to_blueprint() -> CraftBlueprint:
 
 	var blueprint = CraftBlueprint.new()

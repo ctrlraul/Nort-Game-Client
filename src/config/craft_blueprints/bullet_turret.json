@@ -1,0 +1,31 @@
+{
+	"core": {
+		"data": {
+			"definition": "center_small_2",
+			"gimmick": "bullet",
+			"level": 0
+		},
+		"x": 0,
+		"y": 0
+	},
+	"id": "bullet_turret",
+	"parts": [
+		{
+			"data": {
+				"definition": "center_1",
+				"level": 1
+			},
+			"x": 16,
+			"y": 0
+		},
+		{
+			"angle": -360,
+			"data": {
+				"definition": "center_1",
+				"level": 1
+			},
+			"x": -16,
+			"y": 0
+		}
+	]
+}

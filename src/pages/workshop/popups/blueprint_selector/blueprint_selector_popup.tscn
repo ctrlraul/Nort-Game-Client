@@ -1,0 +1,49 @@
+[gd_scene load_steps=4 format=3 uid="uid://bxbkn2h7dsnm5"]
+
+[ext_resource type="PackedScene" uid="uid://lym42cvdb0b3" path="res://common/interface/generic_popup/generic_popup.tscn" id="1_rwgo2"]
+[ext_resource type="Script" path="res://pages/workshop/popups/blueprint_selector/blueprint_selector_popup.gd" id="2_0oty5"]
+[ext_resource type="PackedScene" uid="uid://8e0734sbmdy0" path="res://pages/workshop/popups/blueprint_selector/blueprints_list_item.tscn" id="2_pmsnx"]
+
+[node name="BlueprintSelectorPopup" instance=ExtResource("1_rwgo2")]
+script = ExtResource("2_0oty5")
+BlueprintsListItemScene = ExtResource("2_pmsnx")
+
+[node name="Window" parent="Theme/Scaler" index="0"]
+custom_minimum_size = Vector2(400, 600)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Theme/Scaler/Window" index="0"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Theme/Scaler/Window/VBoxContainer" index="0"]
+layout_mode = 2
+text = "Select Blueprint"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="Theme/Scaler/Window/VBoxContainer" index="1"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_type_variation = &"PanelContainerDarken"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Theme/Scaler/Window/VBoxContainer/PanelContainer" index="0"]
+layout_mode = 2
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 2
+
+[node name="BlueprintsList" type="VBoxContainer" parent="Theme/Scaler/Window/VBoxContainer/PanelContainer/ScrollContainer" index="0"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="BlueprintsListItem" parent="Theme/Scaler/Window/VBoxContainer/PanelContainer/ScrollContainer/BlueprintsList" index="0" instance=ExtResource("2_pmsnx")]
+layout_mode = 2
+
+[node name="BlueprintsListItem2" parent="Theme/Scaler/Window/VBoxContainer/PanelContainer/ScrollContainer/BlueprintsList" index="1" instance=ExtResource("2_pmsnx")]
+layout_mode = 2
+
+[node name="BlueprintsListItem3" parent="Theme/Scaler/Window/VBoxContainer/PanelContainer/ScrollContainer/BlueprintsList" index="2" instance=ExtResource("2_pmsnx")]
+layout_mode = 2
+
+[node name="BlueprintsListItem4" parent="Theme/Scaler/Window/VBoxContainer/PanelContainer/ScrollContainer/BlueprintsList" index="3" instance=ExtResource("2_pmsnx")]
+layout_mode = 2

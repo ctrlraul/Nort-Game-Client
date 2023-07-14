@@ -43,7 +43,7 @@ func import_assets(base_path: String) -> void:
 		return
 
 	FileSystemUtils.map_files(base_path.path_join(__PARTS_DIR), __import_part)
-	FileSystemUtils.map_files(base_path.path_join(BLUEPRINTS_DIR), __import_blueprint)
+	import_blueprints(base_path)
 	FileSystemUtils.map_files(base_path.path_join(__FACTIONS_DIR), __import_faction)
 	FileSystemUtils.map_files(base_path.path_join(__MISSIONS_DIR), __import_mission)
 
@@ -57,6 +57,10 @@ func import_assets(base_path: String) -> void:
 	__logger.info("Blueprints: %s" % __blueprints.size())
 	__logger.info("Factions: %s" % __factions.size())
 
+
+func import_blueprints(base_path: String = GameConfig.CONFIG_PATH) -> void:
+	__blueprints.clear()
+	FileSystemUtils.map_files(base_path.path_join(BLUEPRINTS_DIR), __import_blueprint)
 
 
 func get_part_texture(reference) -> Texture2D:
@@ -107,6 +111,13 @@ func get_part(id: String) -> CraftPartDefinition:
 
 func get_blueprint(id: String) -> CraftBlueprint:
 	return __blueprints[id]
+
+
+func get_blueprints() -> Array[CraftBlueprint]:
+	var blueprints: Array[CraftBlueprint] = []
+	for blueprint in __blueprints.values():
+		blueprints.append(blueprint)
+	return blueprints
 
 
 func get_faction(id: String) -> Faction:

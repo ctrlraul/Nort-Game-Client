@@ -36,9 +36,9 @@ anchor_left = 0.5
 anchor_right = 0.5
 offset_left = -100.0
 offset_right = 100.0
-offset_bottom = 15.0
+offset_bottom = 10.0
 grow_horizontal = 2
-theme_override_constants/separation = 5
+theme_override_constants/separation = 0
 
 [node name="HullProgressBar" parent="Theme/MarginContainer/Control/VBoxContainer" instance=ExtResource("2_dm4nt")]
 unique_name_in_owner = true
@@ -50,7 +50,7 @@ color = Color(0, 1, 0.498039, 1)
 
 [node name="CoreProgressBar" parent="Theme/MarginContainer/Control/VBoxContainer" instance=ExtResource("2_dm4nt")]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(100, 5)
+custom_minimum_size = Vector2(200, 5)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 0

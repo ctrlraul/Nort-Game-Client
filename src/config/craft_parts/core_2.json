@@ -3,6 +3,6 @@
 	"display_name": "Belt Core",
 	"texture": "core_2.png",
 	"type": "CORE",
-	"hull": 80,
+	"hull": 40,
 	"core": 20
 }

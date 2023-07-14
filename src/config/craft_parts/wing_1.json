@@ -3,6 +3,6 @@
 	"display_name": "Pidgeon",
 	"texture": "wing_1.png",
 	"type": "HULL",
-	"hull": 80,
-	"core": 20
+	"hull": 35,
+	"core": 15
 }

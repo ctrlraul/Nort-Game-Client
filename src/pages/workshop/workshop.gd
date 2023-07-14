@@ -4,9 +4,11 @@ extends Page
 
 const GRID_SNAP = Vector2.ONE * 16
 const ZOOM_STEP = 0.1
-const ZOOM_MIN = 0.6
+const ZOOM_MIN = 0.5
 const ZOOM_MAX = 1
 const PAN_MAX = 400
+
+const BlueprintSelectorPopupScene: PackedScene = preload("popups/blueprint_selector/blueprint_selector_popup.tscn")
 
 
 
@@ -59,7 +61,7 @@ func _ready() -> void:
 	Stage.clear()
 	NodeUtils.clear(cores_list)
 	canvas.scale = Vector2.ONE * 0.5
-	zoom(0)
+	update_camera()
 
 
 func _mount(_data) -> void:
@@ -139,6 +141,10 @@ func set_core_blueprint(blueprint: CraftBlueprintPart) -> void:
 
 func set_blueprint(blueprint: CraftBlueprint) -> void:
 
+	clear()
+
+	blueprint_id_input.text = blueprint.id
+
 	for part in blueprint.parts:
 		add_part(part)
 
@@ -148,6 +154,14 @@ func set_blueprint(blueprint: CraftBlueprint) -> void:
 		add_part(blueprint.core, true)
 
 	part_inspector.set_part(craft_display.core)
+
+
+func clear() -> void:
+	blueprint_id_input.text = ""
+	craft_display.clear()
+	area_for_part.clear()
+	part_for_area.clear()
+	NodeUtils.clear(part_areas)
 
 
 func zoom(delta: int) -> void:
@@ -360,8 +374,8 @@ func _on_save_button_pressed() -> void:
 	if Game.current_player:
 		Game.current_player.current_blueprint = craft_display.to_blueprint()
 		Game.current_player.blueprints[0] = Game.current_player.current_blueprint
-		PagesManager.go_to(GameConfig.Routes.LOBBY)
 		PlayerDataManager.store_local_player(Game.current_player)
+	PagesManager.go_to(GameConfig.Routes.LOBBY)
 
 
 func _on_export_button_pressed() -> void:
@@ -376,11 +390,19 @@ func _on_export_button_pressed() -> void:
 
 	if result.error:
 		var message = "Failed to export blueprint: %s" % result.error
-		PopupsManager.error(message)
 		logger.error(message)
+		PopupsManager.error(message)
 
 	else:
 		logger.info("Exported blueprint '%s'" % path)
+		var popup = PopupsManager.info("Exported to '%s'" % path)
+		popup.width = 700
+		Assets.import_blueprints()
+
+
+func _on_import_button_pressed() -> void:
+	var popup = PopupsManager.custom(BlueprintSelectorPopupScene)
+	popup.blueprint_selected.connect(set_blueprint)
 
 
 func _on_cores_drag_receiver_got_data(_source, data) -> void:
