@@ -6,7 +6,6 @@ const GRID_SNAP = Vector2.ONE * 16
 const ZOOM_STEP = 0.1
 const ZOOM_MIN = 0.5
 const ZOOM_MAX = 1
-const PAN_MAX = 400
 
 const BlueprintSelectorPopupScene: PackedScene = preload("popups/blueprint_selector/blueprint_selector_popup.tscn")
 

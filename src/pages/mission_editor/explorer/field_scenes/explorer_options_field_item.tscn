@@ -1,0 +1,22 @@
+[gd_scene load_steps=2 format=3 uid="uid://bwjdntaysvdqi"]
+
+[ext_resource type="Script" path="res://pages/mission_editor/explorer/field_scenes/explorer_options_field_item.gd" id="1_de8nw"]
+
+[node name="HBoxContainer" type="HBoxContainer"]
+offset_right = 360.0
+offset_bottom = 28.0
+script = ExtResource("1_de8nw")
+
+[node name="Label" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+text = "Property"
+
+[node name="OptionButton" type="OptionButton" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[connection signal="item_selected" from="OptionButton" to="." method="_on_option_button_item_selected"]
