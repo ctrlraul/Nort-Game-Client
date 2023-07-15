@@ -8,7 +8,7 @@ const CORE_LIGHT = preload("res://assets/images/core_light.png")
 const __PARTS_DIR = "craft_parts"
 const BLUEPRINTS_DIR = "craft_blueprints"
 const __FACTIONS_DIR = "factions"
-const __MISSIONS_DIR = "missions"
+const MISSIONS_DIR = "missions"
 const __PART_TEXTURES_DIR = "part_textures"
 const __GIMMICKS_FILE = "gimmicks.json"
 const __GIMMICK_TEXTURES_DIR = "res://assets/images/gimmicks/"
@@ -20,7 +20,7 @@ var __logger = Logger.new("Assets")
 var parts: Dictionary = {}
 var cores: Dictionary = {}
 var gimmicks: Dictionary = {}
-var missions: Dictionary = {}
+var __missions: Dictionary = {}
 var __blueprints: Dictionary = {}
 var __factions: Dictionary = {}
 var __part_textures: Dictionary = {}
@@ -43,9 +43,9 @@ func import_assets(base_path: String) -> void:
 		return
 
 	FileSystemUtils.map_files(base_path.path_join(__PARTS_DIR), __import_part)
-	import_blueprints(base_path)
+	FileSystemUtils.map_files(base_path.path_join(BLUEPRINTS_DIR), __import_blueprint)
 	FileSystemUtils.map_files(base_path.path_join(__FACTIONS_DIR), __import_faction)
-	FileSystemUtils.map_files(base_path.path_join(__MISSIONS_DIR), __import_mission)
+	FileSystemUtils.map_files(base_path.path_join(MISSIONS_DIR), __import_mission)
 
 	assert(GameConfig.INITIAL_BLUEPRINT in __blueprints, "Initial blueprint '%s' not found" % GameConfig.INITIAL_BLUEPRINT)
 	assert(GameConfig.PLAYER_FACTION in __factions, "Player faction '%s' not found" % GameConfig.PLAYER_FACTION)
@@ -56,11 +56,6 @@ func import_assets(base_path: String) -> void:
 	__logger.info("Items: %s" % (parts.size() + cores.size()))
 	__logger.info("Blueprints: %s" % __blueprints.size())
 	__logger.info("Factions: %s" % __factions.size())
-
-
-func import_blueprints(base_path: String = GameConfig.CONFIG_PATH) -> void:
-	__blueprints.clear()
-	FileSystemUtils.map_files(base_path.path_join(BLUEPRINTS_DIR), __import_blueprint)
 
 
 func get_part_texture(reference) -> Texture2D:
@@ -120,8 +115,34 @@ func get_blueprints() -> Array[CraftBlueprint]:
 	return blueprints
 
 
+func add_blueprint(blueprint: CraftBlueprint) -> void:
+	__blueprints[blueprint.id] = blueprint
+
+
+func get_blueprint_radius(blueprint: CraftBlueprint) -> float:
+
+	var top_left = Vector2.INF
+	var bottom_right = -Vector2.INF
+
+	for part in blueprint.parts:
+		var half_texture_size = get_part_texture(part).get_size() * 0.5
+		top_left.x = min(top_left.x, part.place.x - half_texture_size.x)
+		top_left.y = min(top_left.y, part.place.y - half_texture_size.y)
+		bottom_right.x = max(bottom_right.x, part.place.x + half_texture_size.x)
+		bottom_right.y = max(bottom_right.y, part.place.y + half_texture_size.y)
+
+	return abs(top_left - bottom_right).length() * 0.5
+
+
 func get_faction(id: String) -> Faction:
 	return __factions[id]
+
+
+func get_factions() -> Array[Faction]:
+	var factions: Array[Faction] = []
+	for faction in __factions.values():
+		factions.append(faction)
+	return factions
 
 
 func get_gimmick(id: String) -> Gimmick:
@@ -153,21 +174,6 @@ func is_core(object) -> bool:
 	assert(false, "Not implemented")
 
 	return false
-
-
-func get_blueprint_radius(blueprint: CraftBlueprint) -> float:
-
-	var top_left = Vector2.INF
-	var bottom_right = -Vector2.INF
-
-	for part in blueprint.parts:
-		var half_texture_size = get_part_texture(part).get_size() * 0.5
-		top_left.x = min(top_left.x, part.place.x - half_texture_size.x)
-		top_left.y = min(top_left.y, part.place.y - half_texture_size.y)
-		bottom_right.x = max(bottom_right.x, part.place.x + half_texture_size.x)
-		bottom_right.y = max(bottom_right.y, part.place.y + half_texture_size.y)
-
-	return abs(top_left - bottom_right).length() * 0.5
 
 
 
@@ -228,7 +234,18 @@ func __import_mission(path: String) -> void:
 		push_error("Failed to import mission '%s': %s" % [path, result.error])
 	else:
 		var mission = Mission.new(result.value)
-		missions[mission.id] = mission
+		__missions[mission.id] = mission
+
+
+func add_mission(mission: Mission) -> void:
+	__missions[mission.id] = mission
+
+
+func get_missions() -> Array[Mission]:
+	var missions: Array[Mission] = []
+	for mission in __missions.values():
+		missions.append(mission)
+	return missions
 
 
 func __import_part_textures(base_path: String) -> void:

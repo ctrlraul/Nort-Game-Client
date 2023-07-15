@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://c0feyyf4bbte8"]
 
-[ext_resource type="Script" path="res://gimmicks/bullet/bullet.gd" id="1_4r7mb"]
+[ext_resource type="Script" path="res://gimmicks/drone/drone.gd" id="1_4r7mb"]
 [ext_resource type="Texture2D" uid="uid://byfrf7xyw43a2" path="res://assets/images/gimmicks/drone.png" id="2_3vis8"]
 
 [sub_resource type="Curve" id="Curve_exlj0"]

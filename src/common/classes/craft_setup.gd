@@ -1,8 +1,9 @@
-class_name CraftSetup
+class_name CraftSetup extends EntitySetup
 
 
 
 enum Behavior {
+	NONE,
 	PLAYER,
 	FIGHTER,
 	DRONE,
@@ -13,31 +14,34 @@ enum Behavior {
 
 
 
-var place: Vector2
 var blueprint: CraftBlueprint
 var faction: Faction
 var behavior: Behavior
 
 
 
-func _init(source) -> void:
+func _init(source = null) -> void:
+
+	super(source)
+
+	type = EntitySetup.Type.CRAFT
 
 	if source is Dictionary:
-		place = Vector2(source.x, source.y)
 		blueprint = Assets.get_blueprint(source.blueprint)
 		faction = Assets.get_faction(source.faction)
 		behavior = Behavior[source.behavior]
 		return
 
-	assert(source == null, "Invalid source: '%s'" % source)
+	assert(source == null, "Invalid source")
 
 
 
 func to_dictionary() -> Dictionary:
-	return {
-		"x": round(place.x),
-		"y": round(place.y),
-		"blueprint": blueprint.id,
-		"faction": faction.id,
-		"behavior": Behavior.find_key(behavior)
-	}
+
+	var dict = super()
+
+	dict.blueprint = blueprint.id
+	dict.faction = faction.id
+	dict.behavior = Behavior.find_key(behavior)
+
+	return dict

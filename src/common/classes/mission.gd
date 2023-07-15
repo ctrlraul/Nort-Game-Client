@@ -4,15 +4,30 @@ class_name Mission
 
 var id: String
 var display_name: String
-var crafts: Array[CraftSetup]
+var entities: Array[EntitySetup]
 
 
 
-func _init(source) -> void:
+func _init(source = null) -> void:
 
-	id = source.id
-	display_name = source.display_name
-	crafts = []
+	if source is Dictionary:
 
-	for craft_setup in source.crafts:
-		crafts.append(CraftSetup.new(craft_setup))
+		id = source.id
+		display_name = source.display_name
+		entities = []
+
+		for entity_setup in source.entities:
+			entities.append(EntitySetup.parse(entity_setup))
+
+		return
+
+	assert(source == null, "Invalid source")
+
+
+
+func to_dictionary() -> Dictionary:
+	return {
+		"id": id,
+		"display_name": display_name,
+		"entities": entities.map(func(setup): return setup.to_dictionary())
+	}

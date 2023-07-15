@@ -1,0 +1,14 @@
+{
+	"display_name": "2301746456",
+	"entities": [
+		{
+			"behavior": "FIGHTER",
+			"blueprint": "pequeno",
+			"faction": "ruby",
+			"type": "CRAFT",
+			"x": 0,
+			"y": 0
+		}
+	],
+	"id": "1689417863213-816-2751894747"
+}

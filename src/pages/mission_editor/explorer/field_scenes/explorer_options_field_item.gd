@@ -24,9 +24,10 @@ func set_field(field: ExplorerOptionsField) -> void:
 	__option_button.selected = __options.find(field.object[field.key])
 
 	for option in __options:
-		__option_button.add_item(option[str(field.option_label_key)].capitalize())
+		var label = option[field.option_label_key] if field.option_label_key != "" else str(option)
+		__option_button.add_item(label.capitalize())
 
 
 
 func _on_option_button_item_selected(index: int) -> void:
-	__field.target[__field.key] = __options[index]
+	__field.object[__field.key] = __options[index]

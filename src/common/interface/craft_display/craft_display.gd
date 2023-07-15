@@ -29,8 +29,12 @@ func _ready() -> void:
 
 
 func set_blueprint(blueprint: CraftBlueprint) -> void:
+
+	clear()
+
 	for part_blueprint in blueprint.parts:
 		add_part(part_blueprint)
+
 	set_core_blueprint(blueprint.core)
 
 

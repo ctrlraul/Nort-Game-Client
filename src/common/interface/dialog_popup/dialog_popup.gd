@@ -33,7 +33,7 @@ func _ready() -> void:
 	super()
 
 
-func add_button(text: String, callable: Callable = remove) -> void:
+func add_button(text: String, on_pressed: Callable = remove) -> void:
 
 	buttons_container.visible = true
 
@@ -42,9 +42,13 @@ func add_button(text: String, callable: Callable = remove) -> void:
 
 	var button = Button.new()
 
+	if on_pressed != remove:
+		on_pressed = func():
+			on_pressed.call()
+			remove()
+
 	buttons_container.add_child(button)
 
-	button.theme_type_variation = "PanelButton"
 	button.text = text
-	button.pressed.connect(callable)
+	button.pressed.connect(on_pressed)
 	button.custom_minimum_size.x = 100

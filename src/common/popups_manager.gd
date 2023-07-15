@@ -18,8 +18,6 @@ func info(message: String, title = "") -> DialogPopup:
 	popup.message = message
 	popup.cancellable = true
 
-	popup.add_button("Ok")
-
 	return popup
 
 

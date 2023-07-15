@@ -9,6 +9,7 @@ anchors_preset = 0
 script = ExtResource("1_shklw")
 
 [node name="CraftDisplay" parent="." instance=ExtResource("1_a6e25")]
+unique_name_in_owner = true
 
 [node name="Hitbox" type="Button" parent="."]
 self_modulate = Color(1, 1, 1, 0)
@@ -20,3 +21,7 @@ offset_right = 40.0
 offset_bottom = 40.0
 mouse_filter = 1
 flat = true
+
+[connection signal="button_down" from="Hitbox" to="." method="_on_hitbox_button_down"]
+[connection signal="button_up" from="Hitbox" to="." method="_on_hitbox_button_up"]
+[connection signal="pressed" from="Hitbox" to="." method="_on_hitbox_pressed"]

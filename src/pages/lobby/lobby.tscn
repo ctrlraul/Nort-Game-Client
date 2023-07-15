@@ -1,8 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://ntcpn7ia0jqa"]
+[gd_scene load_steps=3 format=3 uid="uid://ntcpn7ia0jqa"]
 
 [ext_resource type="Script" path="res://pages/lobby/lobby.gd" id="1_kfsbx"]
 [ext_resource type="Theme" uid="uid://85byrm5eq3ab" path="res://theme/theme.tres" id="2_6hh30"]
-[ext_resource type="PackedScene" uid="uid://bnywbmg2uuj8j" path="res://common/interface/window_margin.tscn" id="3_7lxxs"]
 
 [node name="Lobby" type="CanvasLayer"]
 script = ExtResource("1_kfsbx")
@@ -17,14 +16,20 @@ grow_vertical = 2
 mouse_filter = 2
 theme = ExtResource("2_6hh30")
 
-[node name="WindowMargin" parent="Theme" instance=ExtResource("3_7lxxs")]
+[node name="MarginContainer" type="MarginContainer" parent="Theme"]
 layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_type_variation = &"WindowMarginContainer"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Theme/WindowMargin"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Theme/MarginContainer"]
 layout_mode = 2
 mouse_filter = 2
 
-[node name="Header" type="MarginContainer" parent="Theme/WindowMargin/VBoxContainer"]
+[node name="Header" type="MarginContainer" parent="Theme/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 mouse_filter = 2
@@ -33,17 +38,17 @@ theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 0
 theme_override_constants/margin_bottom = 0
 
-[node name="TestButton" type="Button" parent="Theme/WindowMargin/VBoxContainer/Header"]
+[node name="TestButton" type="Button" parent="Theme/MarginContainer/VBoxContainer/Header"]
 layout_mode = 2
 size_flags_horizontal = 4
-text = "Workshop"
+text = "Test"
 
-[node name="Main" type="Control" parent="Theme/WindowMargin/VBoxContainer"]
+[node name="Main" type="Control" parent="Theme/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 2
 
-[node name="Footer" type="MarginContainer" parent="Theme/WindowMargin/VBoxContainer"]
+[node name="Footer" type="MarginContainer" parent="Theme/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 mouse_filter = 2
@@ -52,10 +57,10 @@ theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 0
 theme_override_constants/margin_bottom = 0
 
-[node name="WorkshopButton" type="Button" parent="Theme/WindowMargin/VBoxContainer/Footer"]
+[node name="WorkshopButton" type="Button" parent="Theme/MarginContainer/VBoxContainer/Footer"]
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Workshop"
 
-[connection signal="pressed" from="Theme/WindowMargin/VBoxContainer/Header/TestButton" to="." method="_on_test_button_pressed"]
-[connection signal="pressed" from="Theme/WindowMargin/VBoxContainer/Footer/WorkshopButton" to="." method="_on_workshop_button_pressed"]
+[connection signal="pressed" from="Theme/MarginContainer/VBoxContainer/Header/TestButton" to="." method="_on_test_button_pressed"]
+[connection signal="pressed" from="Theme/MarginContainer/VBoxContainer/Footer/WorkshopButton" to="." method="_on_workshop_button_pressed"]
