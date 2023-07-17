@@ -1,18 +1,22 @@
-[gd_scene load_steps=20 format=3 uid="uid://b3m0hjtsgn5gj"]
+[gd_scene load_steps=25 format=3 uid="uid://b3m0hjtsgn5gj"]
 
 [ext_resource type="Script" path="res://pages/workshop/workshop.gd" id="1_3gydl"]
 [ext_resource type="PackedScene" uid="uid://gyid7spgcjj0" path="res://pages/workshop/parts_inventory/parts_inventory_item.tscn" id="2_bxtng"]
+[ext_resource type="PackedScene" uid="uid://bxbkn2h7dsnm5" path="res://pages/workshop/blueprint_selector_popup/blueprint_selector_popup.tscn" id="2_cnyw3"]
 [ext_resource type="Theme" uid="uid://85byrm5eq3ab" path="res://theme/theme.tres" id="3_qj5id"]
 [ext_resource type="PackedScene" uid="uid://bk5m6deoy4705" path="res://common/interface/drag_receiver/drag_receiver.tscn" id="4_fq1rx"]
 [ext_resource type="Texture2D" uid="uid://b2h5w2qbjnved" path="res://pages/workshop/hexagons_grid.png" id="5_cf5ic"]
 [ext_resource type="PackedScene" uid="uid://bjgbkm0q3g02x" path="res://common/interface/craft_display/craft_display.tscn" id="6_0w2yi"]
-[ext_resource type="Shader" path="res://pages/workshop/part_outline.gdshader" id="7_4qp4t"]
 [ext_resource type="Texture2D" uid="uid://b3bm4djf5tas8" path="res://assets/images/part_example.png" id="8_sjvjj"]
 [ext_resource type="PackedScene" uid="uid://c5f0wfx25glsh" path="res://pages/workshop/part_controls/part_controls.tscn" id="9_kkkqs"]
 [ext_resource type="PackedScene" uid="uid://cwl7mn40ut30d" path="res://pages/workshop/parts_inventory/parts_inventory.tscn" id="11_tputx"]
 [ext_resource type="PackedScene" uid="uid://f58y3xr2ti0s" path="res://pages/workshop/cores_list_item.tscn" id="12_nhu0i"]
 [ext_resource type="PackedScene" uid="uid://drp484ne1xpxt" path="res://pages/workshop/part_inspector/part_inspector.tscn" id="13_3cpb8"]
+[ext_resource type="LabelSettings" uid="uid://dtfxwulwc71hw" path="res://common/resources/big_label_settings.tres" id="14_8i0qh"]
+[ext_resource type="Texture2D" uid="uid://cy854js4gmuv8" path="res://assets/images/icons/core.png" id="14_ut6dy"]
 [ext_resource type="PackedScene" uid="uid://c21jgpf6mtj8a" path="res://pages/workshop/dragged_part_preview.tscn" id="14_yo3fk"]
+[ext_resource type="Texture2D" uid="uid://do6ocyo4yi4oe" path="res://assets/images/icons/hull.png" id="15_6hs65"]
+[ext_resource type="Texture2D" uid="uid://cvj2hi0lqxt65" path="res://assets/images/icons/mass.png" id="16_doi2m"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_i0onw"]
 radius = 8.0
@@ -40,11 +44,28 @@ border_width_bottom = 2
 border_color = Color(1, 1, 1, 1)
 border_blend = true
 
+[sub_resource type="Shader" id="Shader_gwlvk"]
+code = "shader_type canvas_item;
+
+void fragment() {
+
+	float brightness = texture(TEXTURE, UV).r;
+
+	if (brightness > 0.5) {
+		COLOR.a = min(COLOR.a, pow(brightness, 3));
+	} else {
+		COLOR.a = 0.0;
+	}
+
+}
+"
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_qhi3n"]
-shader = ExtResource("7_4qp4t")
+shader = SubResource("Shader_gwlvk")
 
 [node name="Workshop" type="CanvasLayer"]
 script = ExtResource("1_3gydl")
+BlueprintSelectorPopupScene = ExtResource("2_cnyw3")
 PartsListItem = ExtResource("2_bxtng")
 CoresListItemScene = ExtResource("12_nhu0i")
 
@@ -227,11 +248,45 @@ theme_type_variation = &"WindowMarginContainer"
 layout_mode = 2
 mouse_filter = 2
 
-[node name="Header" type="VBoxContainer" parent="Theme/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="GridContainer" parent="Theme/MarginContainer/VBoxContainer"]
 layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+columns = 3
+
+[node name="Right" type="VBoxContainer" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 2
+size_flags_vertical = 3
 mouse_filter = 2
 
-[node name="BlueprintIDInput" type="LineEdit" parent="Theme/MarginContainer/VBoxContainer/Header"]
+[node name="PartsInventory" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/Right" instance=ExtResource("11_tputx")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(331, 0)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="BlueprintButtons" type="HBoxContainer" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/Right"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="ImportButton" type="Button" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/Right/BlueprintButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Import"
+
+[node name="ExportButton" type="Button" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/Right/BlueprintButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Export"
+
+[node name="Center" type="VBoxContainer" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="BlueprintIDInput" type="LineEdit" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/Center"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(256, 0)
 layout_mode = 2
@@ -239,58 +294,18 @@ size_flags_horizontal = 4
 placeholder_text = "ID"
 alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Theme/MarginContainer/VBoxContainer/Header"]
+[node name="BuildButton" type="Button" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/Center"]
+custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
-mouse_filter = 2
-alignment = 1
+size_flags_horizontal = 4
+text = "Build"
 
-[node name="SaveButton" type="Button" parent="Theme/MarginContainer/VBoxContainer/Header/HBoxContainer"]
-layout_mode = 2
-text = "Save"
-
-[node name="ExportButton" type="Button" parent="Theme/MarginContainer/VBoxContainer/Header/HBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Export"
-
-[node name="ImportButton" type="Button" parent="Theme/MarginContainer/VBoxContainer/Header/HBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Import"
-
-[node name="HBoxContainer" type="GridContainer" parent="Theme/MarginContainer/VBoxContainer"]
+[node name="Spacer" type="Control" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/Center"]
 layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 2
-columns = 3
 
-[node name="InventoryContainer" type="Control" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 2
-size_flags_vertical = 3
-mouse_filter = 2
-
-[node name="PartsInventory" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/InventoryContainer" instance=ExtResource("11_tputx")]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(331, 0)
-layout_mode = 1
-anchors_preset = 9
-anchor_bottom = 1.0
-offset_right = 0.0
-offset_bottom = 0.0
-grow_vertical = 2
-size_flags_vertical = 3
-
-[node name="MarginContainer" type="MarginContainer" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-mouse_filter = 2
-theme_override_constants/margin_left = 0
-theme_override_constants/margin_top = 0
-theme_override_constants/margin_right = 0
-theme_override_constants/margin_bottom = 0
-
-[node name="CoresListContainer" type="MarginContainer" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer"]
+[node name="CoresListContainer" type="MarginContainer" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/Center"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
@@ -301,30 +316,104 @@ theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 0
 theme_override_constants/margin_bottom = 0
 
-[node name="PanelContainer" type="PanelContainer" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/CoresListContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/Center/CoresListContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 8
 
-[node name="CoresList" type="HBoxContainer" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/CoresListContainer/PanelContainer"]
+[node name="CoresList" type="HBoxContainer" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/Center/CoresListContainer/PanelContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 20
 
-[node name="CoresListItem" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/CoresListContainer/PanelContainer/CoresList" instance=ExtResource("12_nhu0i")]
+[node name="CoresListItem" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/Center/CoresListContainer/PanelContainer/CoresList" instance=ExtResource("12_nhu0i")]
 layout_mode = 2
 
-[node name="CoresListItem2" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/CoresListContainer/PanelContainer/CoresList" instance=ExtResource("12_nhu0i")]
+[node name="CoresListItem2" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/Center/CoresListContainer/PanelContainer/CoresList" instance=ExtResource("12_nhu0i")]
 layout_mode = 2
 
-[node name="CoresDragReceiver" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/CoresListContainer" instance=ExtResource("4_fq1rx")]
+[node name="CoresDragReceiver" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/Center/CoresListContainer" instance=ExtResource("4_fq1rx")]
 visible = false
 layout_mode = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 10
+size_flags_vertical = 3
 mouse_filter = 2
+
+[node name="CraftSummary" type="PanelContainer" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/CraftSummary"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/CraftSummary/VBoxContainer"]
+layout_mode = 2
+text = "Summary"
+label_settings = ExtResource("14_8i0qh")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/CraftSummary/VBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"PanelContainerDarken"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/CraftSummary/VBoxContainer/PanelContainer"]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="Icons" type="VBoxContainer" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/CraftSummary/VBoxContainer/PanelContainer/HBoxContainer"]
+custom_minimum_size = Vector2(24, 0)
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/CraftSummary/VBoxContainer/PanelContainer/HBoxContainer/Icons"]
+layout_mode = 2
+texture = ExtResource("14_ut6dy")
+expand_mode = 4
+stretch_mode = 5
+
+[node name="TextureRect2" type="TextureRect" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/CraftSummary/VBoxContainer/PanelContainer/HBoxContainer/Icons"]
+layout_mode = 2
+texture = ExtResource("15_6hs65")
+expand_mode = 4
+stretch_mode = 5
+
+[node name="TextureRect3" type="TextureRect" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/CraftSummary/VBoxContainer/PanelContainer/HBoxContainer/Icons"]
+layout_mode = 2
+texture = ExtResource("16_doi2m")
+expand_mode = 4
+stretch_mode = 5
+
+[node name="Labels" type="VBoxContainer" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/CraftSummary/VBoxContainer/PanelContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="Core" type="Label" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/CraftSummary/VBoxContainer/PanelContainer/HBoxContainer/Labels"]
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 2
+text = "100"
+vertical_alignment = 1
+
+[node name="Hull" type="Label" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/CraftSummary/VBoxContainer/PanelContainer/HBoxContainer/Labels"]
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 2
+text = "100"
+vertical_alignment = 1
+
+[node name="Mass" type="Label" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/CraftSummary/VBoxContainer/PanelContainer/HBoxContainer/Labels"]
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 2
+text = "100"
+vertical_alignment = 1
+
+[node name="PanelContainer2" type="PanelContainer" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/CraftSummary/VBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"PanelContainerDarken"
+
+[node name="Label" type="Label" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/CraftSummary/VBoxContainer/PanelContainer2"]
+layout_mode = 2
+text = "Parts: 10"
 
 [node name="PartInspector" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer" instance=ExtResource("13_3cpb8")]
 unique_name_in_owner = true
@@ -341,10 +430,10 @@ unique_name_in_owner = true
 [connection signal="drag_over" from="Theme/Hitbox/HitboxDragReceiver" to="." method="_on_hitbox_drag_receiver_drag_over"]
 [connection signal="got_data" from="Theme/Hitbox/HitboxDragReceiver" to="." method="_on_hitbox_drag_receiver_got_data"]
 [connection signal="rotated" from="Theme/Container/PartControls" to="." method="_on_part_controls_rotated"]
-[connection signal="pressed" from="Theme/MarginContainer/VBoxContainer/Header/HBoxContainer/SaveButton" to="." method="_on_save_button_pressed"]
-[connection signal="pressed" from="Theme/MarginContainer/VBoxContainer/Header/HBoxContainer/ExportButton" to="." method="_on_export_button_pressed"]
-[connection signal="pressed" from="Theme/MarginContainer/VBoxContainer/Header/HBoxContainer/ImportButton" to="." method="_on_import_button_pressed"]
-[connection signal="part_hovered" from="Theme/MarginContainer/VBoxContainer/HBoxContainer/InventoryContainer/PartsInventory" to="." method="_on_parts_inventory_part_hovered"]
-[connection signal="part_picked" from="Theme/MarginContainer/VBoxContainer/HBoxContainer/InventoryContainer/PartsInventory" to="." method="_on_parts_inventory_part_picked"]
-[connection signal="part_stored" from="Theme/MarginContainer/VBoxContainer/HBoxContainer/InventoryContainer/PartsInventory" to="." method="_on_parts_inventory_part_stored"]
-[connection signal="got_data" from="Theme/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/CoresListContainer/CoresDragReceiver" to="." method="_on_cores_drag_receiver_got_data"]
+[connection signal="part_hovered" from="Theme/MarginContainer/VBoxContainer/HBoxContainer/Right/PartsInventory" to="." method="_on_parts_inventory_part_hovered"]
+[connection signal="part_picked" from="Theme/MarginContainer/VBoxContainer/HBoxContainer/Right/PartsInventory" to="." method="_on_parts_inventory_part_picked"]
+[connection signal="part_stored" from="Theme/MarginContainer/VBoxContainer/HBoxContainer/Right/PartsInventory" to="." method="_on_parts_inventory_part_stored"]
+[connection signal="pressed" from="Theme/MarginContainer/VBoxContainer/HBoxContainer/Right/BlueprintButtons/ImportButton" to="." method="_on_import_button_pressed"]
+[connection signal="pressed" from="Theme/MarginContainer/VBoxContainer/HBoxContainer/Right/BlueprintButtons/ExportButton" to="." method="_on_export_button_pressed"]
+[connection signal="pressed" from="Theme/MarginContainer/VBoxContainer/HBoxContainer/Center/BuildButton" to="." method="_on_build_button_pressed"]
+[connection signal="got_data" from="Theme/MarginContainer/VBoxContainer/HBoxContainer/Center/CoresListContainer/CoresDragReceiver" to="." method="_on_cores_drag_receiver_got_data"]

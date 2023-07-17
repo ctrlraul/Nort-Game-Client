@@ -5,10 +5,8 @@ extends PanelContainer
 @onready var container: HBoxContainer = %Container
 @onready var craft_part_display: Control = %CraftPartDisplay
 @onready var name_label: Label = %NameLabel
-@onready var gimmick_label_container: HBoxContainer = %GimmickLabelContainer
 @onready var gimmick_icon: TextureRect = %GimmickIcon
 @onready var gimmick_label: Label = %GimmickLabel
-@onready var gimmick_options: OptionButton = %GimmickOptions
 @onready var core_label: Label = %CoreLabel
 @onready var hull_label: Label = %HullLabel
 
@@ -19,22 +17,6 @@ var __part: CraftDisplayPart = null
 var color: Color :
 	set(value): craft_part_display.color = value
 	get: return craft_part_display.color
-
-
-
-func _ready() -> void:
-
-	await Game.initialize()
-
-	if Game.dev:
-
-		gimmick_options.clear()
-
-		for gimmick in Assets.gimmicks.values():
-			gimmick_options.add_icon_item(
-				Assets.get_gimmick_texture(gimmick),
-				gimmick.display_name
-			)
 
 
 
@@ -50,11 +32,7 @@ func set_part(part: CraftDisplayPart) -> void:
 	else:
 		set_part_data(part_data)
 
-		if Game.dev:
-
-			gimmick_options.select(Assets.gimmicks.values().find(part_data.gimmick))
-
-		elif part_data.gimmick != null:
+		if part_data.gimmick != null:
 			gimmick_icon.texture = Assets.get_gimmick_texture(part_data.gimmick)
 			gimmick_label.text = part_data.gimmick.display_name
 
@@ -66,8 +44,6 @@ func set_part(part: CraftDisplayPart) -> void:
 func set_part_data(part_data: CraftPartData) -> void:
 
 	__set_part_data(part_data)
-
-	gimmick_options.visible = false
 
 	if part_data.gimmick != null:
 		gimmick_icon.texture = Assets.get_gimmick_texture(part_data.gimmick)

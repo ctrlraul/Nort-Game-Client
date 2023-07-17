@@ -12,9 +12,9 @@
 [ext_resource type="Texture2D" uid="uid://djtodkfypkd3d" path="res://theme/panel_simple.png" id="12_vhlm2"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ea0kh"]
-content_margin_left = 30.0
+content_margin_left = 10.0
 content_margin_top = 10.0
-content_margin_right = 30.0
+content_margin_right = 10.0
 content_margin_bottom = 10.0
 texture = ExtResource("5_skwfm")
 texture_margin_left = 6.0
@@ -36,9 +36,9 @@ texture_margin_bottom = 6.0
 region_rect = Rect2(0, 0, 80, 80)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_nw1pn"]
-content_margin_left = 30.0
+content_margin_left = 10.0
 content_margin_top = 10.0
-content_margin_right = 30.0
+content_margin_right = 10.0
 content_margin_bottom = 10.0
 texture = ExtResource("7_6ncax")
 texture_margin_left = 6.0
@@ -181,12 +181,17 @@ texture_margin_top = 22.0
 texture_margin_right = 40.0
 texture_margin_bottom = 22.0
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_no5st"]
-bg_color = Color(0, 0, 0, 0.666667)
-corner_radius_top_left = 2
-corner_radius_top_right = 2
-corner_radius_bottom_right = 2
-corner_radius_bottom_left = 2
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_72b7d"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+bg_color = Color(0, 0, 0, 0.784314)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+corner_detail = 1
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5hqmn"]
 bg_color = Color(0, 1, 0.501961, 0.498039)
@@ -300,7 +305,7 @@ PanelContainerDarken/styles/panel = SubResource("StyleBoxFlat_1tfn4")
 PanelContainerRuby/base_type = &"PanelContainer"
 PanelContainerRuby/styles/panel = SubResource("StyleBoxTexture_r3fum")
 PanelDarken/base_type = &"Panel"
-PanelDarken/styles/panel = SubResource("StyleBoxFlat_no5st")
+PanelDarken/styles/panel = SubResource("StyleBoxFlat_72b7d")
 PopupMenu/colors/font_separator_color = Color(0, 1, 0.498039, 0.498039)
 PopupMenu/constants/h_separation = 5
 PopupMenu/constants/icon_max_width = 24

@@ -4,7 +4,7 @@ const ExplorerOptionsFieldItemScene = preload("res://pages/mission_editor/explor
 
 
 
-@onready var object_label: Label = %ObjectLabel
+@onready var entity_label: Label = %EntityLabel
 @onready var fields_list: VBoxContainer = %FieldsList
 
 
@@ -14,14 +14,14 @@ func _ready() -> void:
 
 
 
-func set_object(object: EditorObject) -> void:
+func set_entity(entity: EditorEntity) -> void:
 
 	clear()
 
 	visible = true
-	object_label.text = object.name
+	entity_label.text = EntitySetup.Type.find_key(entity.get_entity_setup().type).capitalize()
 
-	for field in object.explorer_fields:
+	for field in entity.explorer_fields:
 
 		var item = null
 
@@ -37,5 +37,5 @@ func set_object(object: EditorObject) -> void:
 
 func clear() -> void:
 	visible = false
-	object_label.text = ""
+	entity_label.text = ""
 	NodeUtils.clear(fields_list)

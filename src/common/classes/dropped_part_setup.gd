@@ -14,7 +14,7 @@ func _init(source = null) -> void:
 
 	super(source)
 
-	type = EntitySetup.Type.DROPPED_PART
+	type = EntitySetup.Type.ORPHAN_PART
 
 	if source is Dictionary:
 		definition = source.definition

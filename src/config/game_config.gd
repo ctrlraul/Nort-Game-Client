@@ -25,3 +25,4 @@ class Routes:
 	const LOBBY = "res://pages/lobby/lobby.tscn"
 	const WORKSHOP = "res://pages/workshop/workshop.tscn"
 	const MISSION = "res://pages/mission/mission.tscn"
+	const MISSION_EDITOR = "res://pages/mission_editor/mission_editor.tscn"

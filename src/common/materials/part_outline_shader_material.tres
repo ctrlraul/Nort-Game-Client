@@ -1,0 +1,20 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://igpcbk30hpxf"]
+
+[sub_resource type="Shader" id="Shader_2es2j"]
+code = "shader_type canvas_item;
+
+void fragment() {
+
+	float brightness = texture(TEXTURE, UV).r;
+
+	if (brightness > 0.5) {
+		COLOR.a = min(COLOR.a, pow(brightness, 3));
+	} else {
+		COLOR.a = 0.0;
+	}
+
+}
+"
+
+[resource]
+shader = SubResource("Shader_2es2j")

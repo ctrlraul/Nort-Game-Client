@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://c87dkvb7uucra"]
+
+[ext_resource type="PackedScene" uid="uid://bjgbkm0q3g02x" path="res://common/interface/craft_display/craft_display.tscn" id="1_a6e25"]
+[ext_resource type="PackedScene" uid="uid://c4ie2q1d8qerb" path="res://pages/mission_editor/editor_entities/editor_entity.tscn" id="1_fp2wm"]
+
+[node name="EditorCraft" instance=ExtResource("1_fp2wm")]
+
+[node name="CraftDisplay" parent="." index="0" instance=ExtResource("1_a6e25")]
+unique_name_in_owner = true
+scale = Vector2(1, 1)

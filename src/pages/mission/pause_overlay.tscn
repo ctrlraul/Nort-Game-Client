@@ -1,0 +1,75 @@
+[gd_scene load_steps=4 format=3 uid="uid://whj2kaikbqfx"]
+
+[ext_resource type="Script" path="res://pages/mission/pause_overlay.gd" id="1_c1km8"]
+[ext_resource type="Texture2D" uid="uid://bb2c5v84mdbhh" path="res://assets/images/vignette.png" id="2_r7blg"]
+[ext_resource type="Texture2D" uid="uid://dgqwtel1q4ppk" path="res://assets/branding/logo_themed.png" id="3_bug82"]
+
+[node name="PauseOverlay" type="CanvasLayer"]
+process_mode = 3
+script = ExtResource("1_c1km8")
+
+[node name="Theme" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="Theme"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_r7blg")
+
+[node name="MarginContainer" type="MarginContainer" parent="Theme"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_type_variation = &"WindowMarginContainer"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Theme/MarginContainer"]
+layout_mode = 2
+
+[node name="LogoContainer" type="CenterContainer" parent="Theme/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="TextureRect" type="TextureRect" parent="Theme/MarginContainer/VBoxContainer/LogoContainer"]
+layout_mode = 2
+texture = ExtResource("3_bug82")
+
+[node name="ButtonsContainer" type="VBoxContainer" parent="Theme/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 1.5
+alignment = 1
+
+[node name="ContinueButton" type="Button" parent="Theme/MarginContainer/VBoxContainer/ButtonsContainer"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Continue"
+
+[node name="ForfeitButton" type="Button" parent="Theme/MarginContainer/VBoxContainer/ButtonsContainer"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Forfeit"
+
+[node name="QuitButton" type="Button" parent="Theme/MarginContainer/VBoxContainer/ButtonsContainer"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Quit"
+
+[connection signal="tree_exiting" from="." to="." method="_on_tree_exiting"]
+[connection signal="pressed" from="Theme/MarginContainer/VBoxContainer/ButtonsContainer/ContinueButton" to="." method="_on_continue_button_pressed"]
+[connection signal="pressed" from="Theme/MarginContainer/VBoxContainer/ButtonsContainer/ForfeitButton" to="." method="_on_forfeit_button_pressed"]
+[connection signal="pressed" from="Theme/MarginContainer/VBoxContainer/ButtonsContainer/QuitButton" to="." method="_on_quit_button_pressed"]

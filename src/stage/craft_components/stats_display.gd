@@ -12,10 +12,10 @@ func _ready() -> void:
 	super()
 	craft.set_component(CraftComponentStats, self)
 
-	var radius = Assets.get_blueprint_radius(craft.blueprint)
+	var half_size = Assets.get_blueprint_size(craft.blueprint) * 0.5
 
-	scale.x = radius
-	position.y = radius + 20
+	scale.x = half_size.x
+	position.y = half_size.y
 
 	hull.modulate = craft.faction.color
 

@@ -1,14 +1,14 @@
 [gd_scene load_steps=7 format=3 uid="uid://civc8ny0v2omp"]
 
-[ext_resource type="PackedScene" uid="uid://lym42cvdb0b3" path="res://common/interface/generic_popup/generic_popup.tscn" id="1_p2k4e"]
-[ext_resource type="Script" path="res://common/interface/part_builder_popup/part_builder_popup.gd" id="2_iufp1"]
-[ext_resource type="PackedScene" uid="uid://uk8tpg655i5w" path="res://common/interface/craft_part_display/craft_part_display.tscn" id="3_o3rg5"]
-[ext_resource type="PackedScene" uid="uid://yu4ujxccdpgt" path="res://common/interface/gimmick_options/gimmick_options.tscn" id="4_4gb2n"]
-[ext_resource type="Theme" uid="uid://85byrm5eq3ab" path="res://theme/theme.tres" id="4_ibvje"]
-[ext_resource type="Texture2D" uid="uid://b3bm4djf5tas8" path="res://assets/images/part_example.png" id="5_6v68f"]
+[ext_resource type="PackedScene" uid="uid://lym42cvdb0b3" path="res://common/interface/generic_popup/generic_popup.tscn" id="1_t2kqp"]
+[ext_resource type="Script" path="res://pages/workshop/part_builder_popup/part_builder_popup.gd" id="2_kshy8"]
+[ext_resource type="PackedScene" uid="uid://uk8tpg655i5w" path="res://common/interface/craft_part_display/craft_part_display.tscn" id="3_8rtij"]
+[ext_resource type="Texture2D" uid="uid://b3bm4djf5tas8" path="res://assets/images/part_example.png" id="4_k6uuo"]
+[ext_resource type="PackedScene" uid="uid://yu4ujxccdpgt" path="res://common/interface/gimmick_options/gimmick_options.tscn" id="5_u65p2"]
+[ext_resource type="Theme" uid="uid://85byrm5eq3ab" path="res://theme/theme.tres" id="6_mi6o5"]
 
-[node name="PartBuilderPopup" instance=ExtResource("1_p2k4e")]
-script = ExtResource("2_iufp1")
+[node name="PartBuilderPopup" instance=ExtResource("1_t2kqp")]
+script = ExtResource("2_kshy8")
 
 [node name="Window" parent="Theme/Scaler" index="0"]
 custom_minimum_size = Vector2(400, 0)
@@ -31,7 +31,7 @@ custom_minimum_size = Vector2(120, 120)
 layout_mode = 2
 theme_type_variation = &"PanelDarken"
 
-[node name="CraftPartDisplay" parent="Theme/Scaler/Window/VBoxContainer/HBoxContainer/Panel" index="0" instance=ExtResource("3_o3rg5")]
+[node name="CraftPartDisplay" parent="Theme/Scaler/Window/VBoxContainer/HBoxContainer/Panel" index="0" instance=ExtResource("3_8rtij")]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 8
@@ -55,10 +55,10 @@ expand_icon = true
 item_count = 1
 selected = 0
 popup/item_0/text = "Part"
-popup/item_0/icon = ExtResource("5_6v68f")
+popup/item_0/icon = ExtResource("4_k6uuo")
 popup/item_0/id = 0
 
-[node name="GimmickOptions" parent="Theme/Scaler/Window/VBoxContainer/HBoxContainer/VBoxContainer" index="1" instance=ExtResource("4_4gb2n")]
+[node name="GimmickOptions" parent="Theme/Scaler/Window/VBoxContainer/HBoxContainer/VBoxContainer" index="1" instance=ExtResource("5_u65p2")]
 layout_mode = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Theme/Scaler/Window/VBoxContainer/HBoxContainer/VBoxContainer" index="2"]
@@ -67,7 +67,7 @@ layout_mode = 2
 [node name="ShinyCheckBox" type="CheckBox" parent="Theme/Scaler/Window/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer" index="0"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("4_ibvje")
+theme = ExtResource("6_mi6o5")
 
 [node name="Label" type="Label" parent="Theme/Scaler/Window/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer/ShinyCheckBox" index="0"]
 layout_mode = 1

@@ -1,139 +1,17 @@
-[gd_scene load_steps=16 format=3 uid="uid://6wfise1ybf04"]
+[gd_scene load_steps=4 format=3 uid="uid://6wfise1ybf04"]
 
 [ext_resource type="Script" path="res://stage/stage.gd" id="1_xoyjq"]
 [ext_resource type="PackedScene" uid="uid://b1xci2ckb2rvw" path="res://stage/craft/craft.tscn" id="2_ptkh3"]
-[ext_resource type="Shader" path="res://stage/jitter_free_pixel_art.gdshader" id="3_fp0f7"]
 [ext_resource type="PackedScene" uid="uid://cv32wh2kql0cr" path="res://stage/dropped_part/dropped_part.tscn" id="3_g11cx"]
-[ext_resource type="Texture2D" uid="uid://chce1agtw0y0j" path="res://assets/images/hollow_particle.png" id="4_py5tv"]
-[ext_resource type="Texture2D" uid="uid://6rlcrauxtj7e" path="res://assets/images/particle_solid.png" id="5_h67ak"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_yseu0"]
-shader = ExtResource("3_fp0f7")
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_iabwd"]
-frequency = 1.0
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_hps3s"]
-width = 32
-height = 32
-seamless_blend_skirt = 1.0
-noise = SubResource("FastNoiseLite_iabwd")
-
-[sub_resource type="Gradient" id="Gradient_u8lig"]
-offsets = PackedFloat32Array(0, 0.624138, 1)
-colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0)
-
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_feypb"]
-gradient = SubResource("Gradient_u8lig")
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_1phr4"]
-emission_shape = 3
-emission_box_extents = Vector3(-4096, 4096, 0)
-particle_flag_disable_z = true
-spread = 180.0
-gravity = Vector3(0, 0, 0)
-initial_velocity_max = 20.0
-angular_velocity_min = -90.0
-angular_velocity_max = 90.0
-orbit_velocity_min = 0.0
-orbit_velocity_max = 0.0
-scale_max = 2.0
-color_ramp = SubResource("GradientTexture1D_feypb")
-
-[sub_resource type="Gradient" id="Gradient_d24w0"]
-offsets = PackedFloat32Array(0, 0.624138, 1)
-colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0)
-
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_iueqq"]
-gradient = SubResource("Gradient_d24w0")
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_uyx1k"]
-emission_shape = 3
-emission_box_extents = Vector3(-4096, 4096, 0)
-particle_flag_disable_z = true
-spread = 180.0
-gravity = Vector3(0, 0, 0)
-initial_velocity_max = 30.0
-angular_velocity_min = -90.0
-angular_velocity_max = 90.0
-orbit_velocity_min = 0.0
-orbit_velocity_max = 0.0
-scale_max = 2.0
-color_ramp = SubResource("GradientTexture1D_iueqq")
 
 [node name="Stage" type="Node2D"]
 script = ExtResource("1_xoyjq")
 CraftScene = ExtResource("2_ptkh3")
 DroppedPartScene = ExtResource("3_g11cx")
 
+[node name="Camera2D" type="Camera2D" parent="."]
+unique_name_in_owner = true
+zoom = Vector2(0.5, 0.5)
+
 [node name="EntitiesContainer" type="Node2D" parent="."]
 unique_name_in_owner = true
-
-[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
-
-[node name="Background" type="ParallaxLayer" parent="ParallaxBackground"]
-motion_scale = Vector2(0.7, 0.7)
-motion_mirroring = Vector2(8192, 8192)
-
-[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/Background"]
-self_modulate = Color(0.00784314, 0.027451, 0.141176, 1)
-material = SubResource("ShaderMaterial_yseu0")
-position = Vector2(4096, 4096)
-scale = Vector2(256, 256)
-texture = SubResource("NoiseTexture2D_hps3s")
-
-[node name="HollowFar" type="ParallaxLayer" parent="ParallaxBackground"]
-motion_scale = Vector2(0.8, 0.8)
-motion_mirroring = Vector2(8192, 8192)
-
-[node name="GPUParticles2D" type="GPUParticles2D" parent="ParallaxBackground/HollowFar"]
-self_modulate = Color(0.741176, 0.835294, 1, 0.729412)
-position = Vector2(4096, 4096)
-process_material = SubResource("ParticleProcessMaterial_1phr4")
-texture = ExtResource("4_py5tv")
-lifetime = 20.0
-preprocess = 20.0
-visibility_rect = Rect2(-4096, -4096, 8192, 8192)
-local_coords = true
-
-[node name="HollowNear" type="ParallaxLayer" parent="ParallaxBackground"]
-motion_scale = Vector2(0.9, 0.9)
-motion_mirroring = Vector2(8192, 8192)
-
-[node name="GPUParticles2D" type="GPUParticles2D" parent="ParallaxBackground/HollowNear"]
-self_modulate = Color(0.741176, 0.835294, 1, 0.729412)
-position = Vector2(4096, 4096)
-process_material = SubResource("ParticleProcessMaterial_uyx1k")
-texture = ExtResource("4_py5tv")
-lifetime = 20.0
-preprocess = 20.0
-visibility_rect = Rect2(-4096, -4096, 8192, 8192)
-local_coords = true
-
-[node name="SolidFar" type="ParallaxLayer" parent="ParallaxBackground"]
-motion_scale = Vector2(0.8, 0.8)
-motion_mirroring = Vector2(8192, 8192)
-
-[node name="GPUParticles2D" type="GPUParticles2D" parent="ParallaxBackground/SolidFar"]
-self_modulate = Color(0.741176, 0.835294, 1, 0.729412)
-position = Vector2(4096, 4096)
-process_material = SubResource("ParticleProcessMaterial_1phr4")
-texture = ExtResource("5_h67ak")
-lifetime = 20.0
-preprocess = 20.0
-visibility_rect = Rect2(-4096, -4096, 8192, 8192)
-local_coords = true
-
-[node name="SolidNear" type="ParallaxLayer" parent="ParallaxBackground"]
-motion_scale = Vector2(0.9, 0.9)
-motion_mirroring = Vector2(8192, 8192)
-
-[node name="GPUParticles2D" type="GPUParticles2D" parent="ParallaxBackground/SolidNear"]
-self_modulate = Color(0.741176, 0.835294, 1, 0.729412)
-position = Vector2(4096, 4096)
-process_material = SubResource("ParticleProcessMaterial_uyx1k")
-texture = ExtResource("5_h67ak")
-lifetime = 20.0
-preprocess = 20.0
-visibility_rect = Rect2(-4096, -4096, 8192, 8192)
-local_coords = true

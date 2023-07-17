@@ -1,0 +1,26 @@
+shader_type canvas_item;
+
+uniform int margin = 2;
+
+void fragment() {
+
+	vec2 size = vec2(textureSize(TEXTURE, 0));
+	vec2 sizeMinusMargin = size - vec2(float(margin * 2));
+	vec2 offset = (size - sizeMinusMargin) / sizeMinusMargin * 0.5;
+	vec2 scale = size / sizeMinusMargin;
+
+	COLOR = texture(TEXTURE, UV * scale - offset);
+
+	if (UV.x < offset.x) {
+		COLOR.a *= UV.x / offset.x;
+	} else if (UV.x > 1.0 - offset.x) {
+		COLOR.a *= (1.0 - UV.x) / offset.x;
+	}
+
+	if (UV.y < offset.y) {
+		COLOR.a *= UV.y / offset.y;
+	} else if (UV.y > 1.0 - offset.y) {
+		COLOR.a *= (1.0 - UV.y) / offset.y;
+	}
+
+}

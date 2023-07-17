@@ -3,7 +3,6 @@ class_name CraftComponentPlayerControls extends CraftComponent
 
 
 @onready var __cursor_area: Area2D = %CursorArea
-@onready var __camera: Camera2D = %Camera2D
 
 var __interactable: Area2D
 var __tractor_comp: CraftComponentTractor
@@ -18,14 +17,7 @@ func _ready() -> void:
 
 
 func _process(_delta: float) -> void:
-
 	__cursor_area.global_position = get_global_mouse_position()
-
-	var vel = max(__flight_comp.velocity.length(), 0.001)
-
-	__camera.zoom = lerp(__camera.zoom, Vector2.ONE * clamp(1 / vel * 0.005, 0.4, 0.5), 0.01)
-	__camera.position = lerp(__camera.position, __flight_comp.velocity * 20, 0.01)
-
 	__update_interactable()
 
 

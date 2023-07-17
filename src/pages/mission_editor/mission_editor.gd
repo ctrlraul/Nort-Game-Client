@@ -4,12 +4,15 @@ class_name MissionEditor extends Page
 
 const GRID_SNAP = Vector2.ONE * 16
 const ZOOM_STEP = 0.1
-const ZOOM_MIN = 0.2
+const ZOOM_MIN = 0.1
 const ZOOM_MAX = 1
 
-const EditorCraftScene = preload("res://pages/mission_editor/editor_objects/editor_craft.tscn")
 
 
+@export var MissionSelectorPopupScene: PackedScene
+@export var EditorCraftScene: PackedScene
+@export var EditorPlayerCraftScene: PackedScene
+@export var EditorOrphanPartScene: PackedScene
 
 @onready var container: Control = %Container
 @onready var explorer: Explorer = %Explorer
@@ -23,13 +26,19 @@ var panning: bool = false
 
 
 
-func _mount(_data) -> void:
+func _mount(data) -> void:
 
 	await Game.initialize()
 
 	NodeUtils.clear(container)
 
-	mission_id_label.text = Assets.generate_uid()
+	if data != null:
+		set_mission(data.mission)
+	else:
+		mission_id_label.text = Assets.generate_uid()
+		add_entity(PlayerCraftSetup.new())
+
+	Stage.clear()
 
 
 
@@ -55,6 +64,17 @@ func select(event: InputEventMouseButton) -> void:
 	panning = true
 
 
+func set_mission(mission: Mission) -> void:
+
+	clear()
+
+	mission_name_line_edit.text = mission.display_name
+	mission_id_label.text = mission.id
+
+	for entity_setup in mission.entities:
+		add_entity(entity_setup)
+
+
 func get_mission() -> Mission:
 
 	var mission = Mission.new()
@@ -66,6 +86,39 @@ func get_mission() -> Mission:
 		mission.entities.append(entity.get_entity_setup())
 
 	return mission
+
+
+func clear() -> void:
+	mission_name_line_edit.text = ""
+	mission_id_label.text = ""
+	explorer.clear()
+	NodeUtils.clear(container)
+
+
+func add_entity(setup: EntitySetup) -> EditorEntity:
+
+	var Scene: PackedScene
+
+	match setup.type:
+		EntitySetup.Type.CRAFT: Scene = EditorCraftScene
+		EntitySetup.Type.PLAYER_CRAFT: Scene = EditorPlayerCraftScene
+		EntitySetup.Type.ORPHAN_PART: Scene = EditorOrphanPartScene
+
+	assert(Scene != null)
+
+	return add_entity_with_scene(setup, Scene)
+
+
+func add_entity_with_scene(setup: EntitySetup, Scene: PackedScene) -> EditorEntity:
+
+	var entity = Scene.instantiate()
+
+	container.add_child(entity)
+
+	entity.set_setup(setup)
+	entity.selected.connect(func(): explorer.set_entity(entity))
+
+	return entity
 
 
 
@@ -83,26 +136,16 @@ func _on_sandbox_gui_input(event: InputEvent) -> void:
 
 
 func _on_add_craft_button_pressed() -> void:
+	explorer.set_entity(add_entity(CraftSetup.new()))
 
-	var craft: EditorCraft = EditorCraftScene.instantiate()
-
-	container.add_child(craft)
-
-	craft.set_blueprint(Assets.initial_blueprint)
-	craft.set_faction(Assets.player_faction)
-	craft.set_behavior(CraftSetup.Behavior.find_key(CraftSetup.Behavior.FIGHTER))
-
-	explorer.set_object(craft)
-
-	craft.selected.connect(func(): explorer.set_object(craft))
 
 
 func _on_test_button_pressed() -> void:
-
-	var mission: Mission = get_mission()
-
 	Transition.callback(
-		PagesManager.go_to.bind(GameConfig.Routes.MISSION, { "mission": mission })
+		PagesManager.go_to.bind(GameConfig.Routes.MISSION, {
+			"mission": get_mission(),
+			"from_editor": true
+		})
 	)
 
 
@@ -137,3 +180,8 @@ func _on_export_button_pressed() -> void:
 		var popup = PopupsManager.info("Exported to '%s'" % path)
 		popup.width = 700
 		Assets.add_mission(mission)
+
+
+func _on_import_button_pressed() -> void:
+	var popup = PopupsManager.custom(MissionSelectorPopupScene)
+	popup.mission_selected.connect(set_mission)

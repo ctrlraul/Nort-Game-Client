@@ -1,13 +1,17 @@
-[gd_scene load_steps=5 format=3 uid="uid://chd8jfxbo0vp"]
+[gd_scene load_steps=7 format=3 uid="uid://chd8jfxbo0vp"]
 
 [ext_resource type="Script" path="res://pages/mission_editor/mission_editor.gd" id="1_rhan0"]
-[ext_resource type="PackedScene" uid="uid://bs3cphaenuckc" path="res://pages/mission_editor/editor_objects/editor_craft.tscn" id="2_mjqfs"]
+[ext_resource type="PackedScene" uid="uid://c87dkvb7uucra" path="res://pages/mission_editor/editor_entities/editor_craft.tscn" id="2_mjqfs"]
+[ext_resource type="PackedScene" uid="uid://dg8ygdrhal03f" path="res://pages/mission_editor/mission_selector_popup/mission_selector_popup.tscn" id="2_ob1n4"]
 [ext_resource type="PackedScene" uid="uid://crxxyndc18yre" path="res://pages/mission_editor/explorer/explorer.tscn" id="3_q5kjq"]
-
-[sub_resource type="LabelSettings" id="LabelSettings_scx4t"]
+[ext_resource type="PackedScene" uid="uid://bh8tfanbcbflj" path="res://pages/mission_editor/editor_entities/editor_player_craft.tscn" id="4_n5f8v"]
+[ext_resource type="LabelSettings" uid="uid://c17ibv5bt7jtw" path="res://common/resources/small_transparent_label_settings.tres" id="5_84hrd"]
 
 [node name="MissionEditor" type="CanvasLayer"]
 script = ExtResource("1_rhan0")
+MissionSelectorPopupScene = ExtResource("2_ob1n4")
+EditorCraftScene = ExtResource("2_mjqfs")
+EditorPlayerCraftScene = ExtResource("4_n5f8v")
 
 [node name="Theme" type="Control" parent="."]
 layout_mode = 3
@@ -35,8 +39,9 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
+scale = Vector2(0.5, 0.5)
 
-[node name="EditorCraft" parent="Theme/Sandbox/Container" instance=ExtResource("2_mjqfs")]
+[node name="EditorPlayerCraft" parent="Theme/Sandbox/Container" instance=ExtResource("4_n5f8v")]
 
 [node name="MarginContainer" type="MarginContainer" parent="Theme"]
 layout_mode = 1
@@ -50,6 +55,7 @@ theme_type_variation = &"WindowMarginContainer"
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Theme/MarginContainer"]
 layout_mode = 2
+mouse_filter = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Theme/MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -89,10 +95,9 @@ placeholder_text = "Mission Name"
 
 [node name="MissionIDLabel" type="Label" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer3/VBoxContainer/PanelContainer/VBoxContainer"]
 unique_name_in_owner = true
-self_modulate = Color(1, 1, 1, 0.498039)
 layout_mode = 2
 text = "mission-id"
-label_settings = SubResource("LabelSettings_scx4t")
+label_settings = ExtResource("5_84hrd")
 
 [node name="VBoxContainer2" type="HBoxContainer" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer3"]
 layout_mode = 2
@@ -147,5 +152,6 @@ text = "+ Craft"
 [connection signal="gui_input" from="Theme/Sandbox" to="." method="_on_sandbox_gui_input"]
 [connection signal="pressed" from="Theme/MarginContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer3/VBoxContainer2/TestButton" to="." method="_on_test_button_pressed"]
 [connection signal="pressed" from="Theme/MarginContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer3/VBoxContainer2/ExportButton" to="." method="_on_export_button_pressed"]
+[connection signal="pressed" from="Theme/MarginContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer3/VBoxContainer2/ImportButton" to="." method="_on_import_button_pressed"]
 [connection signal="pressed" from="Theme/MarginContainer/VBoxContainer/HBoxContainer/Center/HBoxContainer/AddCraftButton" to="." method="_on_add_craft_button_pressed"]
 [connection signal="pressed" from="Theme/MarginContainer/VBoxContainer/HBoxContainer/AddCraftButton" to="." method="_on_add_craft_button_pressed"]

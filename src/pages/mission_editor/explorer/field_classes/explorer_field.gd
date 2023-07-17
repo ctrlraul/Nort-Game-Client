@@ -2,11 +2,11 @@ class_name ExplorerField
 
 
 
-var object: EditorObject
+var entity: EditorEntity
 var key: String
 
 
 
-func _init(object_: EditorObject, key_: String) -> void:
-	object = object_
+func _init(entity_: EditorEntity, key_: String) -> void:
+	entity = entity_
 	key = key_

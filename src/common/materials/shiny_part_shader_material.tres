@@ -1,0 +1,44 @@
+[gd_resource type="ShaderMaterial" load_steps=4 format=3 uid="uid://bscgpp7x5c27j"]
+
+[sub_resource type="Shader" id="Shader_xjhvc"]
+code = "shader_type canvas_item;
+
+uniform sampler2D noise_texture;
+
+
+void fragment(){
+
+	float seed = (SCREEN_UV.x - SCREEN_UV.y) * 0.05 + TIME * 0.02;
+	float noise = texture(noise_texture, fract(vec2(seed))).r;
+
+  vec4 tex = texture(TEXTURE, UV);
+
+	if (noise > 0.875) {
+		if (tex.r > 0.5) {
+	  	COLOR.rgb = vec3(1);
+		} else {
+	  	COLOR.rgb += vec3(0.3);
+		}
+	}
+
+	COLOR.rgb += vec3(0.1, 0.1, 0.2) * tex.r;
+
+	if (tex.r > 0.3) {
+		COLOR.rgb += (0.3 - fract(TIME * 0.5) * 0.3) * tex.r;
+	}
+
+}
+"
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_yhjpf"]
+frequency = 0.05
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_pxu46"]
+width = 2048
+height = 1
+generate_mipmaps = false
+noise = SubResource("FastNoiseLite_yhjpf")
+
+[resource]
+shader = SubResource("Shader_xjhvc")
+shader_parameter/noise_texture = SubResource("NoiseTexture2D_pxu46")

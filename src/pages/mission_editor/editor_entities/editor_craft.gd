@@ -1,6 +1,4 @@
-class_name EditorCraft extends EditorObject
-
-signal selected()
+class_name EditorCraft extends EditorEntity
 
 
 
@@ -15,21 +13,25 @@ var behavior: String : set = set_behavior
 
 
 func _ready() -> void:
-
+	super()
 	set_process_input(false)
-
-	var get_behaviors = func(): return CraftSetup.Behavior.keys()
-
-	explorer_fields.append_array([
-		ExplorerOptionsField.new(self, "blueprint", Assets.get_blueprints, "id"),
-		ExplorerOptionsField.new(self, "faction", Assets.get_factions, "display_name"),
-		ExplorerOptionsField.new(self, "behavior", get_behaviors, "")
-	])
 
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
 		position += event.relative / get_global_transform().get_scale()
+
+
+func _init_explorer_fields() -> Array[ExplorerField]:
+
+	var get_behaviors = func():
+		return CraftSetup.Behavior.keys()
+
+	return [
+		ExplorerOptionsField.new(self, "blueprint", Assets.get_blueprints, "id"),
+		ExplorerOptionsField.new(self, "faction", Assets.get_factions, "display_name"),
+		ExplorerOptionsField.new(self, "behavior", get_behaviors, "")
+	]
 
 
 
@@ -64,16 +66,3 @@ func set_faction(value: Faction) -> void:
 
 func set_behavior(value: String) -> void:
 	behavior = value
-
-
-
-func _on_hitbox_pressed() -> void:
-	selected.emit()
-
-
-func _on_hitbox_button_down() -> void:
-	set_process_input(true)
-
-
-func _on_hitbox_button_up() -> void:
-	set_process_input(false)

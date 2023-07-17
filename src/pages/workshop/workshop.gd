@@ -7,10 +7,9 @@ const ZOOM_STEP = 0.1
 const ZOOM_MIN = 0.5
 const ZOOM_MAX = 1
 
-const BlueprintSelectorPopupScene: PackedScene = preload("popups/blueprint_selector/blueprint_selector_popup.tscn")
 
 
-
+@export var BlueprintSelectorPopupScene: PackedScene
 @export var PartsListItem: PackedScene
 @export var CoresListItemScene: PackedScene
 
@@ -28,7 +27,7 @@ const BlueprintSelectorPopupScene: PackedScene = preload("popups/blueprint_selec
 @onready var craft_display: CraftDisplay = %CraftDisplay
 @onready var parts_inventory: Control = %PartsInventory
 @onready var part_inspector: PanelContainer = %PartInspector
-@onready var export_button: Button = %ExportButton
+@onready var blueprint_buttons: HBoxContainer = %BlueprintButtons
 @onready var dragged_part_preview: Control = %DraggedPartPreview
 @onready var cores_list_container: Control = %CoresListContainer
 @onready var cores_list: Control = %CoresList
@@ -89,7 +88,7 @@ func init_for_player() -> void:
 
 	cores_list_container.visible = player.cores.size() > 1
 	blueprint_id_input.visible = false
-	export_button.visible = false
+	blueprint_buttons.visible = false
 
 
 func init_for_dev() -> void:
@@ -114,7 +113,7 @@ func init_for_dev() -> void:
 
 	cores_list_container.visible = Assets.cores.size() > 1
 	blueprint_id_input.visible = true
-	export_button.visible = true
+	blueprint_buttons.visible = true
 
 
 func add_core_button(part_data: CraftPartData) -> void:
@@ -135,7 +134,7 @@ func set_core_blueprint(blueprint: CraftBlueprintPart) -> void:
 	if hovered_part == craft_display.core:
 		hovered_part_outline_sprite.texture = Assets.get_part_texture(blueprint)
 	if part_controls.part == craft_display.core:
-		part_controls.set_part(craft_display.core)
+		part_controls.part = craft_display.core
 
 
 func set_blueprint(blueprint: CraftBlueprint) -> void:
@@ -219,6 +218,9 @@ func add_and_drag_part(blueprint: CraftBlueprintPart) -> void:
 
 func remove_part(part: CraftDisplayPart) -> void:
 
+	if part == null:
+		return
+
 	var area: Node2D = get_area_for_part(part)
 
 	part_for_area.erase(area)
@@ -256,29 +258,29 @@ func get_part_for_area(area: Area2D) -> CraftDisplayPart:
 	return part_for_area.get(area.get_instance_id())
 
 
-func on_click_hovered_part(event: InputEventMouseButton) -> void:
+func select(event: InputEventMouseButton) -> void:
 
 	if !event.pressed:
 		panning = false
 		return
 
-	if hovered_part == craft_display.core:
-		part_inspector.set_part(hovered_part)
-		part_controls.set_part(hovered_part)
-		part_controls.update_transform(canvas)
+	if hovered_part == null:
+		panning = true
+		part_controls.clear()
+		hovered_part_outline.visible = false
 		return
 
-	if hovered_part != null:
+	if hovered_part == craft_display.core:
+		part_inspector.set_part(hovered_part)
+		part_controls.part = hovered_part
+		part_controls.update_transform(canvas)
+
+	else:
 		part_controls.clear()
 		drag_offset = event.position - hovered_part.global_position
 		DragEmitter.drag(self, hovered_part.to_blueprint())
 		remove_part(hovered_part)
 		hovered_part = null
-		return
-
-	panning = true
-	part_controls.clear()
-	hovered_part_outline.visible = false
 
 
 
@@ -289,7 +291,7 @@ func _on_hitbox_gui_input(event: InputEvent) -> void:
 		match event.button_index:
 
 			MOUSE_BUTTON_LEFT:
-				on_click_hovered_part(event)
+				select(event)
 
 			MOUSE_BUTTON_WHEEL_UP:
 				zoom(1)
@@ -360,21 +362,13 @@ func _on_hitbox_drag_receiver_drag_over() -> void:
 
 
 func _on_hitbox_drag_receiver_got_data(_source, _data) -> void:
-	part_controls.set_part(dragged_part)
+	part_controls.part = dragged_part
 	part_controls.update_transform(canvas)
 	dragged_part = null
 
 
 func _on_part_controls_rotated(angle) -> void:
 	get_area_for_part(part_controls.part).rotation = angle
-
-
-func _on_save_button_pressed() -> void:
-	if Game.current_player:
-		Game.current_player.current_blueprint = craft_display.to_blueprint()
-		Game.current_player.blueprints[0] = Game.current_player.current_blueprint
-		PlayerDataManager.store_local_player(Game.current_player)
-	PagesManager.go_to(GameConfig.Routes.LOBBY)
 
 
 func _on_export_button_pressed() -> void:
@@ -396,7 +390,7 @@ func _on_export_button_pressed() -> void:
 		logger.info("Exported blueprint '%s'" % path)
 		var popup = PopupsManager.info("Exported to '%s'" % path)
 		popup.width = 700
-		Assets.import_blueprints()
+		Assets.add_blueprint(blueprint)
 
 
 func _on_import_button_pressed() -> void:
@@ -416,3 +410,11 @@ func _on_cores_drag_receiver_got_data(_source, data) -> void:
 
 func _on_theme_resized() -> void:
 	%SubViewport.size = get_viewport().size
+
+
+func _on_build_button_pressed() -> void:
+	if Game.current_player:
+		Game.current_player.current_blueprint = craft_display.to_blueprint()
+		Game.current_player.blueprints[0] = Game.current_player.current_blueprint
+		PlayerDataManager.store_local_player(Game.current_player)
+	PagesManager.go_to(GameConfig.Routes.LOBBY)

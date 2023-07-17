@@ -26,6 +26,12 @@ func _init(source = null) -> void:
 
 	type = EntitySetup.Type.CRAFT
 
+	if source == null:
+		blueprint = Assets.initial_blueprint
+		faction = Assets.player_faction
+		behavior = Behavior.NONE
+		return
+
 	if source is Dictionary:
 		blueprint = Assets.get_blueprint(source.blueprint)
 		faction = Assets.get_faction(source.faction)

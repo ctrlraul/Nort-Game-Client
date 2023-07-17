@@ -21,14 +21,14 @@ var dev: bool :
 
 func _ready() -> void:
 
-	DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_MAXIMIZED)
-
 	if __is_running_main_scene():
 		Transition.cover_instantly()
 		await initialize()
 		Transition.uncover()
 	else:
 		Transition.uncover_instantly()
+
+	PagesManager.page_change_error.connect(_on_page_change_error)
 
 
 
@@ -44,11 +44,15 @@ func initialize() -> Signal:
 	return finished_initializing
 
 
+func time(seconds) -> Signal:
+	return get_tree().create_timer(seconds).timeout
+
+
+
 func __initialize() -> void:
 	Assets.import_assets(GameConfig.CONFIG_PATH)
 	__initialized = true
 	finished_initializing.emit()
-
 
 
 func __is_running_main_scene() -> bool:
@@ -58,5 +62,7 @@ func __is_running_main_scene() -> bool:
 
 
 
-func time(seconds) -> Signal:
-	return get_tree().create_timer(seconds).timeout
+func _on_page_change_error(error: String) -> void:
+	PopupsManager.error(error)
+	if Transition.is_covered:
+		Transition.uncover()

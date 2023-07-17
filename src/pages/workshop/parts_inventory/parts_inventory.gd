@@ -6,14 +6,12 @@ signal part_hovered(part_data: CraftPartData)
 
 
 
-const PartBuilderPopupScene: PackedScene = preload("res://common/interface/part_builder_popup/part_builder_popup.tscn")
-
-
-
+@export var PartBuilderPopupScene: PackedScene
 @export var PartsInventoryItemScene: PackedScene
 
-@onready var parts_container: Control = %PartsContainer
-@onready var empty_text_label: Label = %EmptyTextLabel
+@onready var __parts_container: Control = %PartsContainer
+@onready var __empty_text_label: Label = %EmptyTextLabel
+@onready var __add_part_button: Button = %AddPartButton
 
 
 
@@ -29,13 +27,14 @@ var color: Color :
 
 func _ready() -> void:
 	items.clear()
-	NodeUtils.clear(parts_container)
+	NodeUtils.clear(__parts_container)
+	__add_part_button.visible = Game.dev
 
 
 
 func set_parts(part_datas: Array[CraftPartData]) -> void:
 
-	empty_text_label.visible = part_datas.size() == 0
+	__empty_text_label.visible = part_datas.size() == 0
 
 	for part_data in part_datas:
 		add_part_data(part_data)
@@ -45,7 +44,7 @@ func add_part_data(part_data: CraftPartData) -> void:
 
 	var item = PartsInventoryItemScene.instantiate()
 
-	parts_container.add_child(item)
+	__parts_container.add_child(item)
 
 	item.set_part(part_data)
 	item.color = Assets.player_faction.color

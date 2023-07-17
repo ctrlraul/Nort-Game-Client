@@ -28,6 +28,8 @@ func _ready() -> void:
 	__range_area_collision_shape.shape.radius = __RANGE_RADIUS
 	__ray_collision_shape.shape.b.y = -__RANGE_RADIUS
 
+	$Sprite2D.texture = Assets.get_gimmick_texture("bullet")
+
 	set_physics_process(false)
 
 

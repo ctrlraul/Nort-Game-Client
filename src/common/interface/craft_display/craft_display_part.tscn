@@ -3,11 +3,19 @@
 [ext_resource type="Script" path="res://common/interface/craft_display/craft_display_part.gd" id="1_j0avd"]
 [ext_resource type="PackedScene" uid="uid://uk8tpg655i5w" path="res://common/interface/craft_part_display/craft_part_display.tscn" id="2_m1uc2"]
 
-[node name="CraftDisplayPart" type="CenterContainer"]
+[node name="CraftDisplayPart" type="Control"]
+layout_mode = 3
+anchors_preset = 0
 mouse_filter = 2
-use_top_left = true
 script = ExtResource("1_j0avd")
 
 [node name="CraftPartDisplay" parent="." instance=ExtResource("2_m1uc2")]
 unique_name_in_owner = true
-layout_mode = 2
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2

@@ -1,7 +1,7 @@
-[gd_scene load_steps=11 format=3 uid="uid://c5f0wfx25glsh"]
+[gd_scene load_steps=10 format=3 uid="uid://c5f0wfx25glsh"]
 
 [ext_resource type="Script" path="res://pages/workshop/part_controls/part_controls.gd" id="1_hqm84"]
-[ext_resource type="Shader" path="res://pages/workshop/part_outline.gdshader" id="2_dtvh2"]
+[ext_resource type="Material" uid="uid://igpcbk30hpxf" path="res://common/materials/part_outline_shader_material.tres" id="3_ed3f3"]
 [ext_resource type="Texture2D" uid="uid://b3bm4djf5tas8" path="res://assets/images/part_example.png" id="3_t7umq"]
 [ext_resource type="Texture2D" uid="uid://c8ieoxpurelc0" path="res://assets/images/smooth_line_texture.png" id="4_3epxp"]
 [ext_resource type="Texture2D" uid="uid://dh6ypsv6d5wqq" path="res://pages/workshop/part_controls/hexagon_button.png" id="5_h8ufq"]
@@ -9,9 +9,6 @@
 [ext_resource type="Texture2D" uid="uid://cxngr55sbrtc6" path="res://pages/workshop/part_controls/hexagon_button_hovered.png" id="7_ny1h0"]
 [ext_resource type="Texture2D" uid="uid://ni64oky6nphi" path="res://pages/workshop/part_controls/rotate.png" id="8_l4g87"]
 [ext_resource type="Texture2D" uid="uid://dacwkt2vqhxia" path="res://pages/workshop/part_controls/flip.png" id="9_dtkn8"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_esskj"]
-shader = ExtResource("2_dtvh2")
 
 [node name="PartControls" type="Control"]
 layout_mode = 3
@@ -37,7 +34,7 @@ use_top_left = true
 
 [node name="OutlineSprite" type="TextureRect" parent="OutlineSpriteContainer"]
 unique_name_in_owner = true
-material = SubResource("ShaderMaterial_esskj")
+material = ExtResource("3_ed3f3")
 layout_mode = 2
 mouse_filter = 2
 texture = ExtResource("3_t7umq")

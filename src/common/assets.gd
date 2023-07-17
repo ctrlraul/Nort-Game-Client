@@ -119,19 +119,35 @@ func add_blueprint(blueprint: CraftBlueprint) -> void:
 	__blueprints[blueprint.id] = blueprint
 
 
-func get_blueprint_radius(blueprint: CraftBlueprint) -> float:
+func get_blueprint_size(blueprint: CraftBlueprint) -> Vector2:
 
-	var top_left = Vector2.INF
-	var bottom_right = -Vector2.INF
+	var top_left: Vector2 = Vector2.INF
+	var bottom_right: Vector2 = -Vector2.INF
 
-	for part in blueprint.parts:
+	for part in blueprint.parts + [blueprint.core]:
+
+		var texture_size = get_part_texture(part).get_size()
+
+		top_left.x = min(top_left.x, part.place.x)
+		top_left.y = min(top_left.y, part.place.y)
+
+		bottom_right.x = max(bottom_right.x, part.place.x + texture_size.x)
+		bottom_right.y = max(bottom_right.y, part.place.y + texture_size.y)
+
+	return abs(top_left - bottom_right)
+
+
+func get_blueprint_vertical_radius(blueprint: CraftBlueprint) -> float:
+
+	var top: float = INF
+	var bottom: float = -INF
+
+	for part in blueprint.parts + [blueprint.core]:
 		var half_texture_size = get_part_texture(part).get_size() * 0.5
-		top_left.x = min(top_left.x, part.place.x - half_texture_size.x)
-		top_left.y = min(top_left.y, part.place.y - half_texture_size.y)
-		bottom_right.x = max(bottom_right.x, part.place.x + half_texture_size.x)
-		bottom_right.y = max(bottom_right.y, part.place.y + half_texture_size.y)
+		top = min(top, part.place.y - half_texture_size.y)
+		bottom = max(bottom, part.place.y + half_texture_size.y)
 
-	return abs(top_left - bottom_right).length() * 0.5
+	return abs(top - bottom) * 0.5
 
 
 func get_faction(id: String) -> Faction:
@@ -147,6 +163,22 @@ func get_factions() -> Array[Faction]:
 
 func get_gimmick(id: String) -> Gimmick:
 	return gimmicks[id]
+
+
+func get_mission(id: String) -> Mission:
+	return __missions[id]
+
+
+func add_mission(mission: Mission) -> void:
+	__missions[mission.id] = mission
+
+
+func get_missions() -> Array[Mission]:
+	var missions: Array[Mission] = []
+	for mission in __missions.values():
+		missions.append(mission)
+	return missions
+
 
 
 func generate_uid() -> String:
@@ -237,17 +269,6 @@ func __import_mission(path: String) -> void:
 		__missions[mission.id] = mission
 
 
-func add_mission(mission: Mission) -> void:
-	__missions[mission.id] = mission
-
-
-func get_missions() -> Array[Mission]:
-	var missions: Array[Mission] = []
-	for mission in __missions.values():
-		missions.append(mission)
-	return missions
-
-
 func __import_part_textures(base_path: String) -> void:
 
 	assert(parts.size() + cores.size() > 0, "No parts imported")
@@ -260,7 +281,7 @@ func __import_part_textures(base_path: String) -> void:
 		var texture = load(texture_path)
 
 		if texture:
-			__part_textures[part.id] = __with_inset_margin(texture, 1)
+			__part_textures[part.id] = __with_inset_margin(texture, 2)
 		else:
 			__part_textures[part.id] = MISSING_PART_IMAGE
 			__logger.error("Failed to import texture for part '%s': %s" % [part.id, texture_path])
@@ -276,7 +297,7 @@ func __import_gimmick_textures() -> void:
 		var texture = load(texture_path)
 
 		if texture:
-			__gimmick_textures[id] = __with_inset_margin(texture, 1)
+			__gimmick_textures[id] = texture
 		else:
 			__gimmick_textures[id] = MISSING_PART_IMAGE
 			__logger.error("Failed to import texture for gimmick '%s': %s" % [id, texture_path])

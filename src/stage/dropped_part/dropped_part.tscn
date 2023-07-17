@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://cv32wh2kql0cr"]
 
 [ext_resource type="Script" path="res://stage/dropped_part/dropped_part.gd" id="1_yg2f1"]
-[ext_resource type="Material" uid="uid://bscgpp7x5c27j" path="res://common/materials/shiny_part.tres" id="2_h38mt"]
+[ext_resource type="Material" uid="uid://bscgpp7x5c27j" path="res://common/materials/shiny_part_shader_material.tres" id="2_h38mt"]
 [ext_resource type="Texture2D" uid="uid://b3bm4djf5tas8" path="res://assets/images/part_example.png" id="3_5ng6i"]
 [ext_resource type="Texture2D" uid="uid://hlcyw0kime5w" path="res://assets/images/gimmicks/bullet.png" id="4_y8gsh"]
 

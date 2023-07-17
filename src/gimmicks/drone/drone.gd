@@ -22,8 +22,3 @@ func __fire() -> void:
 
 	__cooldown_timer.start()
 	__particles.emitting = true
-
-
-
-func _on_cooldown_timer_timeout() -> void:
-	__fire()

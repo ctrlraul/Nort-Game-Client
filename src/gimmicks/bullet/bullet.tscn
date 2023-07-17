@@ -1,6 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://dln0sc730korg"]
+[gd_scene load_steps=10 format=3 uid="uid://dln0sc730korg"]
 
 [ext_resource type="Script" path="res://gimmicks/bullet/bullet.gd" id="1_p8ohm"]
+[ext_resource type="Shader" path="res://gimmicks/bullet/margin.gdshader" id="2_sfubh"]
 [ext_resource type="Texture2D" uid="uid://hlcyw0kime5w" path="res://assets/images/gimmicks/bullet.png" id="2_t1j6l"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_v2vhg"]
@@ -8,6 +9,10 @@ radius = 700.0
 
 [sub_resource type="SegmentShape2D" id="SegmentShape2D_mh3gf"]
 b = Vector2(0, -700)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_dmk35"]
+shader = ExtResource("2_sfubh")
+shader_parameter/margin = 2
 
 [sub_resource type="Curve" id="Curve_exlj0"]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -1.65129, 0.0, 0, 0]
@@ -54,7 +59,7 @@ unique_name_in_owner = true
 shape = SubResource("SegmentShape2D_mh3gf")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture_filter = 1
+material = SubResource("ShaderMaterial_dmk35")
 texture = ExtResource("2_t1j6l")
 
 [node name="GPUParticles2D" type="GPUParticles2D" parent="."]
@@ -69,6 +74,7 @@ explosiveness = 1.0
 
 [node name="CooldownTimer" type="Timer" parent="."]
 unique_name_in_owner = true
+process_callback = 0
 one_shot = true
 autostart = true
 

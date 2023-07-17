@@ -1,6 +1,7 @@
 extends Node
 signal page_changed()
 signal page_mounted()
+signal page_change_error()
 
 
 
@@ -21,8 +22,14 @@ func _ready() -> void:
 
 
 func go_to(scene_path: String, data = null) -> Signal:
+
 	tree.node_added.connect(_on_tree_node_added.bind(scene_path, data))
-	tree.change_scene_to_file(scene_path)
+
+	var err = tree.change_scene_to_file(scene_path)
+
+	if err != OK:
+		page_change_error.emit("Failed to go to page '%s': %s" % [scene_path, error_string(err)])
+
 	return page_mounted
 
 

@@ -12,6 +12,8 @@ signal blueprint_selected(blueprint: CraftBlueprint)
 
 func _ready() -> void:
 
+	super()
+
 	cancellable = true
 
 	NodeUtils.clear(blueprints_list)

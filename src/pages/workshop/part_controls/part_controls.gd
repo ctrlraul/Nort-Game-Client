@@ -18,7 +18,7 @@ const ANGLES = 16
 @onready var flip_icon: TextureRect = %FlipIcon
 
 
-var part: CraftDisplayPart
+var part: CraftDisplayPart = null : set = __set_part
 var __rotation_start_angle: float = 0
 var __last_mouse_wheel_spin: float = 0
 
@@ -61,15 +61,25 @@ func _input(event: InputEvent) -> void:
 
 
 
-func set_part(value: CraftDisplayPart) -> void:
+func __set_part(value: CraftDisplayPart) -> void:
+
+	if value != null:
+
+		var texture = Assets.get_part_texture(value.part_data.definition.id)
+
+		outline_sprite.texture = texture
+		outline_sprite.size = texture.get_size()
+
+		angle = value.angle
+		flipped = value.flipped
+
+		visible = true
+
+	else:
+		outline_sprite.texture = null
+		visible = false
 
 	part = value
-
-	outline_sprite.texture = Assets.get_part_texture(value.part_data.definition.id)
-	angle = part.angle
-	flipped = part.flipped
-
-	visible = true
 
 
 func clear() -> void:

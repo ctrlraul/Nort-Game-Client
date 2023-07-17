@@ -9,16 +9,19 @@ class_name CraftDisplayPart extends Control
 var part_data: CraftPartData = null
 
 var color: Color :
-	set(value): craft_part_display.color = value
-	get: return craft_part_display.color
+	set(value):
+		craft_part_display.color = value
+		color = value
 
 var flipped: bool :
-	set(value): craft_part_display.flipped = value
-	get: return craft_part_display.flipped
+	set(value):
+		craft_part_display.flipped = value
+		flipped = value
 
 var angle: float :
-	set(value): rotation = value
-	get: return rotation
+	set(value):
+		craft_part_display.angle = value
+		angle = value
 
 
 

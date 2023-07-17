@@ -2,8 +2,13 @@ extends Page
 
 
 
+@export var PauseOverlayScene: PackedScene
+
 @onready var hull_progress_bar: Control = %HullProgressBar
 @onready var core_progress_bar: Control = %CoreProgressBar
+
+var from_editor: bool = false
+var mission: Mission = null
 
 
 
@@ -18,10 +23,38 @@ func _mount(data) -> void:
 
 	Stage.clear()
 
-	if data:
-		Stage.load_mission(Assets.missions[data.mission])
+	if data != null:
+		from_editor = data.from_editor
+		mission = data.mission
+		Stage.load_mission(mission)
 
-	Stage.spawn_player()
+	Stage.spawn_player_craft()
+
+
+func _input(_event: InputEvent) -> void:
+	if Input.is_action_just_pressed("escape") && visible:
+		visible = false
+		var pause = PauseOverlayScene.instantiate()
+		add_child(pause)
+		pause.unpause.connect(set_deferred.bind("visible", true))
+		pause.forfeit.connect(forfeit)
+		pause.quit.connect(get_tree().quit)
+
+
+
+func forfeit() -> void:
+
+	if from_editor:
+
+		Transition.callback(
+			PagesManager.go_to.bind(GameConfig.Routes.MISSION_EDITOR, { "mission": mission })
+		)
+
+	else:
+
+		Transition.callback(
+			PagesManager.go_to.bind(GameConfig.Routes.LOBBY)
+		)
 
 
 

@@ -4,7 +4,8 @@ class_name EntitySetup
 
 enum Type {
 	CRAFT,
-	DROPPED_PART
+	PLAYER_CRAFT,
+	ORPHAN_PART
 }
 
 
@@ -39,10 +40,8 @@ static func parse(source: Dictionary) -> EntitySetup:
 	var setup: EntitySetup
 
 	match Type[source.type]:
-		Type.CRAFT:
-			setup = CraftSetup.new(source)
-		Type.DROPPED_PART:
-			setup = DroppedPartSetup.new(source)
+		Type.CRAFT: setup = CraftSetup.new(source)
+		Type.ORPHAN_PART: setup = DroppedPartSetup.new(source)
 
 	assert(setup != null, "Invalid setup")
 
