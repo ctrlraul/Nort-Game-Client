@@ -29,7 +29,6 @@ scale_curve = SubResource("CurveTexture_xx0f8")
 script = ExtResource("1_4r7mb")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture_filter = 1
 texture = ExtResource("2_3vis8")
 
 [node name="GPUParticles2D" type="GPUParticles2D" parent="."]

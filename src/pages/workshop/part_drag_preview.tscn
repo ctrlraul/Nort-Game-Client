@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://cudr7rtxdnhfl"]
+[gd_scene format=3 uid="uid://cg7vr4tm28dlp"]
 
 [node name="PartDragPreview" type="Control"]
 layout_mode = 3

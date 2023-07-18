@@ -4,5 +4,6 @@
 	"texture": "small_tail_3.png",
 	"type": "HULL",
 	"hull": 30,
-	"core": 25
+	"core": 25,
+	"mass": 10
 }

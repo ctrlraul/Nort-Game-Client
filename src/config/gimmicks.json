@@ -1,9 +1,11 @@
 [{
 	"id": "bullet",
 	"display_name": "Bullet",
-	"scene": "bullet/bullet.tscn"
+	"scene": "bullet/bullet.tscn",
+	"mass": 5
 }, {
 	"id": "drone",
 	"display_name": "Drone",
-	"scene": "drone/drone.tscn"
+	"scene": "drone/drone.tscn",
+	"mass": 15
 }]

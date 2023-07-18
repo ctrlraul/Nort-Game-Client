@@ -1,14 +1,14 @@
 [gd_scene load_steps=3 format=3 uid="uid://f58y3xr2ti0s"]
 
 [ext_resource type="Script" path="res://pages/workshop/cores_list_item.gd" id="1_8y6em"]
-[ext_resource type="PackedScene" uid="uid://uk8tpg655i5w" path="res://common/interface/craft_part_display/craft_part_display.tscn" id="2_a8x48"]
+[ext_resource type="PackedScene" uid="uid://uk8tpg655i5w" path="res://common/interface/part_display/part_display.tscn" id="2_a8x48"]
 
 [node name="CoresListItem" type="Button"]
 custom_minimum_size = Vector2(60, 60)
 flat = true
 script = ExtResource("1_8y6em")
 
-[node name="CraftPartDisplay" parent="." instance=ExtResource("2_a8x48")]
+[node name="PartDisplay" parent="." instance=ExtResource("2_a8x48")]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 8

@@ -3,7 +3,7 @@ extends PanelContainer
 
 
 @onready var container: HBoxContainer = %Container
-@onready var craft_part_display: Control = %CraftPartDisplay
+@onready var craft_part_display: Control = %PartDisplay
 @onready var name_label: Label = %NameLabel
 @onready var gimmick_icon: TextureRect = %GimmickIcon
 @onready var gimmick_label: Label = %GimmickLabel
@@ -24,12 +24,13 @@ func set_part(part: CraftDisplayPart) -> void:
 
 	__part = part
 
-	var part_data = part.part_data
-
 	if __part == null:
 		clear()
 
 	else:
+
+		var part_data = part.part_data
+
 		set_part_data(part_data)
 
 		if part_data.gimmick != null:
@@ -41,7 +42,8 @@ func set_part(part: CraftDisplayPart) -> void:
 			gimmick_label.text = ""
 
 
-func set_part_data(part_data: CraftPartData) -> void:
+
+func set_part_data(part_data: PartData) -> void:
 
 	__set_part_data(part_data)
 
@@ -54,13 +56,21 @@ func set_part_data(part_data: CraftPartData) -> void:
 		gimmick_label.text = ""
 
 
-func __set_part_data(part_data: CraftPartData) -> void:
+func __set_part_data(part_data: PartData) -> void:
+
 	container.modulate.a = 1
+
 	craft_part_display.set_part_data(part_data)
+
 	name_label.text = part_data.definition.display_name
-	name_label.modulate = Color(0, 1, 1) if part_data.shiny else Color.WHITE
 	core_label.text = str(part_data.definition.core)
 	hull_label.text = str(part_data.definition.hull)
+
+	if part_data.shiny:
+		name_label.text = "Shiny " + name_label.text
+		name_label.modulate = Color(0, 1, 1)
+	else:
+		name_label.modulate = Color.WHITE
 
 
 func clear() -> void:

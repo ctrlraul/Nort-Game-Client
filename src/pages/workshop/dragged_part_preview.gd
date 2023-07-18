@@ -2,7 +2,7 @@ extends Control
 
 
 
-@onready var craft_part_display: Control = %CraftPartDisplay
+@onready var craft_part_display: Control = %PartDisplay
 
 
 
@@ -16,7 +16,7 @@ func _input(event: InputEvent) -> void:
 
 
 
-func set_part_data(part_data: CraftPartData) -> void:
+func set_part_data(part_data: PartData) -> void:
 	visible = true
 	position = get_global_mouse_position()
 	set_process_input(true)

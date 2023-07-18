@@ -15,7 +15,7 @@ func _ready() -> void:
 	var half_size = Assets.get_blueprint_size(craft.blueprint) * 0.5
 
 	scale.x = half_size.x
-	position.y = half_size.y
+	position.y = half_size.y + 10
 
 	hull.modulate = craft.faction.color
 

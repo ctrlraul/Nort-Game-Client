@@ -1,5 +1,7 @@
 class_name Explorer extends PanelContainer
 
+
+
 const ExplorerOptionsFieldItemScene = preload("res://pages/mission_editor/explorer/field_scenes/explorer_options_field_item.tscn")
 
 

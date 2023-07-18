@@ -31,7 +31,7 @@ custom_minimum_size = Vector2(120, 120)
 layout_mode = 2
 theme_type_variation = &"PanelDarken"
 
-[node name="CraftPartDisplay" parent="Theme/Scaler/Window/VBoxContainer/HBoxContainer/Panel" index="0" instance=ExtResource("3_8rtij")]
+[node name="PartDisplay" parent="Theme/Scaler/Window/VBoxContainer/HBoxContainer/Panel" index="0" instance=ExtResource("3_8rtij")]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 8

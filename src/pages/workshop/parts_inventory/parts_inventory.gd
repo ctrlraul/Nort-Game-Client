@@ -1,8 +1,8 @@
-extends MarginContainer
+class_name PartsInventory extends MarginContainer
 
-signal part_picked(part_data: CraftPartData)
+signal part_picked(part_data: PartData)
 signal part_stored()
-signal part_hovered(part_data: CraftPartData)
+signal part_hovered(part_data: PartData)
 
 
 
@@ -15,47 +15,53 @@ signal part_hovered(part_data: CraftPartData)
 
 
 
-var items: Dictionary
-
 var color: Color :
 	set(value):
-		for item in items.values():
+		for item in __parts_container.get_children():
 			item.color = value
 		color = value
 
 
 
 func _ready() -> void:
-	items.clear()
-	NodeUtils.clear(__parts_container)
+	clear()
 	__add_part_button.visible = Game.dev
 
 
+func set_parts(parts: Array[PartData]) -> void:
 
-func set_parts(part_datas: Array[CraftPartData]) -> void:
+	__empty_text_label.visible = parts.size() == 0
 
-	__empty_text_label.visible = part_datas.size() == 0
-
-	for part_data in part_datas:
-		add_part_data(part_data)
+	for part in parts:
+		add_part_data(part)
 
 
-func add_part_data(part_data: CraftPartData) -> void:
+func add_part_data(part_data: PartData) -> void:
 
 	var item = PartsInventoryItemScene.instantiate()
 
 	__parts_container.add_child(item)
 
 	item.set_part(part_data)
-	item.color = Assets.player_faction.color
+	item.color = color
 	item.picked.connect(_on_item_picked.bind(item))
 	item.mouse_entered.connect(_on_item_mouse_entered.bind(item))
 
-	items[part_data.definition.id] = item
+
+func set_blueprint(blueprint: CraftBlueprint) -> void:
+	for part_blueprint in blueprint.parts:
+		for item in __parts_container.get_children():
+			if item.part_data.same_kind(part_blueprint.data):
+				item.count -= 1
+
+
+func clear() -> void:
+	NodeUtils.clear(__parts_container)
 
 
 
-func _on_item_picked(item: Control) -> void:
+func _on_item_picked(item: PartsInventoryItem) -> void:
+	item.count -= 1
 	part_picked.emit(item.part_data)
 
 
@@ -63,11 +69,26 @@ func _on_item_mouse_entered(item: Control) -> void:
 	part_hovered.emit(item.part_data)
 
 
-func _on_drag_receiver_got_data(_source, data) -> void:
+func _on_drag_receiver_got_data(_source, part) -> void:
 
-	if data is CraftPartDefinition:
-		if data.id in items:
-			items[data.id].count += 1
+	var part_data: PartData
+
+	if part is CraftBlueprintPart:
+		part_data = part.data
+	elif part is PartData:
+		part_data = part
+
+	assert(part_data != null)
+
+	var stored = false
+
+	for item in __parts_container.get_children():
+		if item.part_data.same_kind(part_data):
+			item.count += 1
+			stored = true
+
+	if !stored && Game.dev:
+		add_part_data(part_data)
 
 	part_stored.emit()
 
@@ -77,5 +98,5 @@ func _on_add_part_button_pressed() -> void:
 	popup.part_built.connect(_on_part_built)
 
 
-func _on_part_built(part_data: CraftPartData) -> void:
+func _on_part_built(part_data: PartData) -> void:
 	add_part_data(part_data)

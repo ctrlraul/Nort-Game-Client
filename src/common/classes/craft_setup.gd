@@ -28,7 +28,7 @@ func _init(source = null) -> void:
 
 	if source == null:
 		blueprint = Assets.initial_blueprint
-		faction = Assets.player_faction
+		faction = Assets.enemy_faction_1
 		behavior = Behavior.NONE
 		return
 

@@ -5,10 +5,14 @@ extends Node
 const MISSING_PART_IMAGE = preload("res://assets/images/part_example.png")
 const CORE_LIGHT = preload("res://assets/images/core_light.png")
 
+const MATERIAL_SHINY: ShaderMaterial = preload("res://common/materials/shiny_part_shader_material.tres")
+const MATERIAL_PART_OUTLINE: ShaderMaterial = preload("res://common/materials/part_outline_shader_material.tres")
+
 const __PARTS_DIR = "craft_parts"
 const BLUEPRINTS_DIR = "craft_blueprints"
 const __FACTIONS_DIR = "factions"
 const MISSIONS_DIR = "missions"
+const LOCAL_MISSIONS_DIR = "user://local_missions"
 const __PART_TEXTURES_DIR = "part_textures"
 const __GIMMICKS_FILE = "gimmicks.json"
 const __GIMMICK_TEXTURES_DIR = "res://assets/images/gimmicks/"
@@ -17,8 +21,8 @@ const __GIMMICK_TEXTURES_DIR = "res://assets/images/gimmicks/"
 
 var __logger = Logger.new("Assets")
 
-var parts: Dictionary = {}
-var cores: Dictionary = {}
+var __hulls: Dictionary = {}
+var __cores: Dictionary = {}
 var gimmicks: Dictionary = {}
 var __missions: Dictionary = {}
 var __blueprints: Dictionary = {}
@@ -31,6 +35,12 @@ var initial_blueprint: CraftBlueprint :
 
 var player_faction: Faction :
 	get: return __factions[GameConfig.PLAYER_FACTION]
+var enemy_faction_1: Faction :
+	get: return __factions[GameConfig.ENEMY_FACTION_1]
+var enemy_faction_2: Faction :
+	get: return __factions[GameConfig.ENEMY_FACTION_2]
+var enemy_faction_3: Faction :
+	get: return __factions[GameConfig.ENEMY_FACTION_3]
 
 
 
@@ -53,7 +63,7 @@ func import_assets(base_path: String) -> void:
 	__import_part_textures(base_path)
 	__import_gimmick_textures()
 
-	__logger.info("Items: %s" % (parts.size() + cores.size()))
+	__logger.info("Items: %s" % (__hulls.size() + __cores.size()))
 	__logger.info("Blueprints: %s" % __blueprints.size())
 	__logger.info("Factions: %s" % __factions.size())
 
@@ -64,9 +74,9 @@ func get_part_texture(reference) -> Texture2D:
 
 	if reference is String:
 		id = reference
-	elif reference is CraftPartDefinition:
+	elif reference is Part:
 		id = reference.id
-	elif reference is CraftPartData:
+	elif reference is PartData:
 		id = reference.definition.id
 	elif reference is CraftBlueprintPart:
 		id = reference.data.definition.id
@@ -100,8 +110,22 @@ func get_gimmick_texture(reference) -> Texture2D:
 	return __gimmick_textures.get(id)
 
 
-func get_part(id: String) -> CraftPartDefinition:
-	return parts[id] if id in parts else cores[id]
+func get_part(id: String) -> Part:
+	return __hulls[id] if id in __hulls else __cores[id]
+
+
+func get_hulls() -> Array[Part]:
+	var parts: Array[Part] = []
+	for part in __hulls.values():
+		parts.append(part)
+	return parts
+
+
+func get_cores() -> Array[Part]:
+	var parts: Array[Part] = []
+	for part in __cores.values():
+		parts.append(part)
+	return parts
 
 
 func get_blueprint(id: String) -> CraftBlueprint:
@@ -196,12 +220,12 @@ func generate_uid() -> String:
 
 func is_core(object) -> bool:
 
-	if object is CraftPartDefinition:
-		return object.type == CraftPartDefinition.Type.CORE
-	if object is CraftPartData:
-		return object.definition.type == CraftPartDefinition.Type.CORE
+	if object is Part:
+		return object.type == Part.Type.CORE
+	if object is PartData:
+		return object.definition.type == Part.Type.CORE
 	if object is CraftBlueprintPart:
-		return object.data.definition.type == CraftPartDefinition.Type.CORE
+		return object.data.definition.type == Part.Type.CORE
 
 	assert(false, "Not implemented")
 
@@ -230,10 +254,10 @@ func __import_part(path: String) -> void:
 	if result.error != "":
 		push_error("Failed to import craft part '%s': %s" % [path, result.error])
 	else:
-		var part = CraftPartDefinition.new(result.value)
+		var part = Part.new(result.value)
 		match part.type:
-			CraftPartDefinition.Type.CORE: cores[part.id] = part
-			CraftPartDefinition.Type.HULL: parts[part.id] = part
+			Part.Type.CORE: __cores[part.id] = part
+			Part.Type.HULL: __hulls[part.id] = part
 
 
 func __import_blueprint(path: String) -> void:
@@ -271,11 +295,11 @@ func __import_mission(path: String) -> void:
 
 func __import_part_textures(base_path: String) -> void:
 
-	assert(parts.size() + cores.size() > 0, "No parts imported")
+	assert(__hulls.size() + __cores.size() > 0, "No parts imported")
 
 	var dir_path = base_path.path_join(__PART_TEXTURES_DIR)
 
-	for part in parts.values() + cores.values():
+	for part in __hulls.values() + __cores.values():
 
 		var texture_path = dir_path.path_join(part.texture_name)
 		var texture = load(texture_path)

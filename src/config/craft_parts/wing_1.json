@@ -4,5 +4,6 @@
 	"texture": "wing_1.png",
 	"type": "HULL",
 	"hull": 35,
-	"core": 15
+	"core": 15,
+	"mass": 10
 }

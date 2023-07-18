@@ -1,4 +1,7 @@
-shader_type canvas_item;
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://butcjeuqllk5q"]
+
+[sub_resource type="Shader" id="Shader_4pfab"]
+code = "shader_type canvas_item;
 
 uniform int margin = 2;
 
@@ -24,3 +27,8 @@ void fragment() {
 	}
 
 }
+"
+
+[resource]
+shader = SubResource("Shader_4pfab")
+shader_parameter/margin = 2

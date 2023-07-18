@@ -1,8 +1,7 @@
-extends Control
+class_name PartDisplay extends Control
 
 
 
-@export var ShinyPartMaterial: ShaderMaterial
 @export var PartOutlineMaterial: ShaderMaterial
 
 @onready var sprite: TextureRect = %Sprite
@@ -18,7 +17,7 @@ var color: Color :
 
 var shiny: bool = false :
 	set(value):
-		sprite.material = ShinyPartMaterial if value else null
+		sprite.material = Assets.MATERIAL_SHINY if value else null
 		shiny = value
 
 var flipped: bool = false :
@@ -33,7 +32,7 @@ var angle: float = false :
 			__gimmick_sprite.rotation = -value
 		angle = value
 
-var definition: CraftPartDefinition = null :
+var definition: Part = null :
 	set(value):
 		__set_definition(value)
 		definition = value
@@ -53,7 +52,7 @@ func _ready() -> void:
 
 
 
-func set_part_data(part_data: CraftPartData) -> void:
+func set_part_data(part_data: PartData) -> void:
 	shiny = part_data.shiny
 	gimmick = part_data.gimmick
 	definition = part_data.definition
@@ -62,7 +61,7 @@ func set_part_data(part_data: CraftPartData) -> void:
 
 
 
-func __set_definition(value: CraftPartDefinition) -> void:
+func __set_definition(value: Part) -> void:
 
 	var texture = Assets.get_part_texture(value.id)
 	var texture_size = texture.get_size()

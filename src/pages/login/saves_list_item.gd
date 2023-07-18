@@ -1,7 +1,7 @@
 class_name SavesListItem
 extends PanelContainer
 
-signal select(player_data: PlayerData)
+signal select(player_data: Player)
 
 
 
@@ -10,11 +10,11 @@ signal select(player_data: PlayerData)
 @onready var score_label: Label = %Score
 
 
-var __player_data: PlayerData
+var __player_data: Player
 
 
 
-func set_player_data(player_data: PlayerData) -> void:
+func set_player_data(player_data: Player) -> void:
 
 	__player_data = player_data
 
@@ -29,7 +29,7 @@ func set_player_data(player_data: PlayerData) -> void:
 
 
 func __delete() -> void:
-	var result = PlayerDataManager.delete_local_player(__player_data)
+	var result = PlayerManager.delete_local_player(__player_data)
 	if result.error != "":
 		PopupsManager.error(result.error)
 

@@ -1,13 +1,13 @@
 extends Node
 signal finished_initializing()
-signal current_player_changed(new_player: PlayerData)
+signal current_player_changed(new_player: Player)
 
 
 
 var __initializing: bool = false
 var __initialized: bool = false
 
-var current_player: PlayerData :
+var current_player: Player :
 	set(value):
 		current_player = value
 		current_player_changed.emit(value)

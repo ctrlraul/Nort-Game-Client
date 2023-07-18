@@ -1,8 +1,7 @@
 {
 	"core": {
 		"data": {
-			"definition": "core_2",
-			"level": 1
+			"definition": "core_2"
 		},
 		"x": 0,
 		"y": 0
@@ -12,8 +11,7 @@
 		{
 			"angle": -68,
 			"data": {
-				"definition": "small_tail_3",
-				"level": 1
+				"definition": "small_tail_3"
 			},
 			"x": 128,
 			"y": -64
@@ -21,8 +19,7 @@
 		{
 			"angle": -112,
 			"data": {
-				"definition": "small_tail_3",
-				"level": 1
+				"definition": "small_tail_3"
 			},
 			"x": 128,
 			"y": 64
@@ -30,8 +27,7 @@
 		{
 			"angle": -247,
 			"data": {
-				"definition": "small_tail_3",
-				"level": 1
+				"definition": "small_tail_3"
 			},
 			"x": -128,
 			"y": 64
@@ -39,16 +35,14 @@
 		{
 			"angle": -293,
 			"data": {
-				"definition": "small_tail_3",
-				"level": 1
+				"definition": "small_tail_3"
 			},
 			"x": -128,
 			"y": -64
 		},
 		{
 			"data": {
-				"definition": "tail_1",
-				"level": 1
+				"definition": "tail_1"
 			},
 			"x": -48,
 			"y": -32
@@ -56,8 +50,7 @@
 		{
 			"angle": -180,
 			"data": {
-				"definition": "tail_1",
-				"level": 1
+				"definition": "tail_1"
 			},
 			"x": -48,
 			"y": 32
@@ -65,45 +58,23 @@
 		{
 			"angle": -180,
 			"data": {
-				"definition": "tail_1",
-				"level": 1
+				"definition": "tail_1"
 			},
 			"x": 48,
 			"y": 32
 		},
 		{
 			"data": {
-				"definition": "tail_1",
-				"level": 1
+				"definition": "tail_1"
 			},
 			"x": 48,
 			"y": -32
-		},
-		{
-			"data": {
-				"definition": "tail_2",
-				"gimmick": "drone",
-				"level": 0
-			},
-			"x": 0,
-			"y": -64
-		},
-		{
-			"angle": -180,
-			"data": {
-				"definition": "tail_2",
-				"gimmick": "drone",
-				"level": 0
-			},
-			"x": 0,
-			"y": 64
 		},
 		{
 			"angle": -90,
 			"data": {
 				"definition": "center_1",
-				"gimmick": "bullet",
-				"level": 0
+				"gimmick": "bullet"
 			},
 			"x": -128,
 			"y": 0
@@ -112,11 +83,26 @@
 			"angle": -90,
 			"data": {
 				"definition": "center_1",
-				"gimmick": "bullet",
-				"level": 0
+				"gimmick": "bullet"
 			},
 			"x": 128,
 			"y": 0
+		},
+		{
+			"data": {
+				"definition": "center_small_2",
+				"gimmick": "drone"
+			},
+			"x": 0,
+			"y": 80
+		},
+		{
+			"angle": -180,
+			"data": {
+				"definition": "center_small_2"
+			},
+			"x": 0,
+			"y": -80
 		}
 	]
 }

@@ -85,7 +85,7 @@ func __get_drop_rate() -> float:
 
 func __drop() -> void:
 
-	var setup = DroppedPartSetup.new()
+	var setup = OrphanPartSetup.new()
 
 	setup.place = global_position
 	setup.definition = blueprint.data.definition

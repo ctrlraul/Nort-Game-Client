@@ -9,7 +9,8 @@ extends Page
 
 
 func _ready() -> void:
-	PlayerDataManager.local_player_deleted.connect(__refresh_saves_list)
+	Stage.clear()
+	PlayerManager.local_player_deleted.connect(__refresh_saves_list)
 
 
 func _mount(_data) -> void:
@@ -22,7 +23,7 @@ func __refresh_saves_list() -> void:
 
 	NodeUtils.clear(saves_list)
 
-	for player in PlayerDataManager.get_local_players():
+	for player in PlayerManager.get_local_players():
 		var item: SavesListItem = SavesListItemScene.instantiate()
 		saves_list.add_child(item)
 		item.set_player_data(player)
@@ -38,6 +39,6 @@ func _on_refresh_button_pressed() -> void:
 	__refresh_saves_list()
 
 
-func _on_local_player_select(player: PlayerData) -> void:
+func _on_local_player_select(player: Player) -> void:
 	Game.current_player = player
 	Transition.callback(PagesManager.go_to.bind(GameConfig.Routes.LOBBY))

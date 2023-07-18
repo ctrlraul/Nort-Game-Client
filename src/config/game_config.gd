@@ -10,6 +10,9 @@ const CONFIG_PATH = "res://config/"
 
 
 const PLAYER_FACTION = "emerald"
+const ENEMY_FACTION_1 = "ruby"
+const ENEMY_FACTION_2 = "cerulean"
+const ENEMY_FACTION_3 = "amber"
 const INITIAL_BLUEPRINT = "newborn"
 const FACTIONLESS_COLOR = Color(0.5, 0.5, 0.5)
 

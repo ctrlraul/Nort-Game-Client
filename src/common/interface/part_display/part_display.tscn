@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=3 uid="uid://uk8tpg655i5w"]
+
+[ext_resource type="Script" path="res://common/interface/part_display/part_display.gd" id="1_vhs5u"]
+[ext_resource type="Material" uid="uid://igpcbk30hpxf" path="res://common/materials/part_outline_shader_material.tres" id="2_2naid"]
+[ext_resource type="Material" uid="uid://bscgpp7x5c27j" path="res://common/materials/shiny_part_shader_material.tres" id="3_yxma7"]
+[ext_resource type="Texture2D" uid="uid://b3bm4djf5tas8" path="res://assets/images/part_example.png" id="4_tq5t7"]
+
+[node name="PartDisplay" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+mouse_filter = 2
+script = ExtResource("1_vhs5u")
+PartOutlineMaterial = ExtResource("2_2naid")
+
+[node name="Sprite" type="TextureRect" parent="."]
+unique_name_in_owner = true
+self_modulate = Color(0.5, 0.5, 0.5, 1)
+material = ExtResource("3_yxma7")
+layout_mode = 2
+offset_left = -64.0
+offset_top = -54.0
+offset_right = 64.0
+offset_bottom = 54.0
+mouse_filter = 2
+texture = ExtResource("4_tq5t7")

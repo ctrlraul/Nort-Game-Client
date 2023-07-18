@@ -47,7 +47,7 @@ func spawn_entity(setup: EntitySetup) -> Node2D:
 	if setup is PlayerCraftSetup:
 		return spawn_player_craft(setup)
 
-	if setup is DroppedPartSetup:
+	if setup is OrphanPartSetup:
 		return spawn_dropped_part(setup)
 
 	assert(false, "Not implemented")
@@ -94,13 +94,13 @@ func spawn_player_craft(setup: PlayerCraftSetup = PlayerCraftSetup.new()) -> Cra
 	return player
 
 
-func spawn_dropped_part(setup: DroppedPartSetup) -> DroppedPart:
+func spawn_dropped_part(setup: OrphanPartSetup) -> DroppedPart:
 
 	var dropped_part: DroppedPart = DroppedPartScene.instantiate()
 
 	entities_container.add_child(dropped_part)
 
-	dropped_part.setup(setup)
+	dropped_part.set_setup(setup)
 
 	return dropped_part
 

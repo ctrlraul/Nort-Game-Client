@@ -1,14 +1,25 @@
 class_name EditorEntity extends Control
 
-signal selected()
+signal pressed()
+signal drag_start()
+signal drag_stop()
 
 
+
+@onready var hitbox: Button = %Hitbox
+@onready var selection_indicator: Panel = %SelectionIndicator
 
 var explorer_fields: Array
+
+var selected: bool = false :
+	set(value):
+		selection_indicator.visible = value
+		selected = value
 
 
 
 func _ready() -> void:
+	selected = false
 	explorer_fields = _init_explorer_fields()
 
 
@@ -28,12 +39,12 @@ func get_entity_setup() -> EntitySetup:
 
 
 func _on_hitbox_pressed() -> void:
-	selected.emit()
+	pressed.emit()
 
 
 func _on_hitbox_button_down() -> void:
-	set_process_input(true)
+	drag_start.emit()
 
 
 func _on_hitbox_button_up() -> void:
-	set_process_input(false)
+	drag_stop.emit()

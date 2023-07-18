@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://crxxyndc18yre"]
+[gd_scene load_steps=4 format=3 uid="uid://crxxyndc18yre"]
 
 [ext_resource type="PackedScene" uid="uid://cemloumkjywva" path="res://pages/mission_editor/explorer/field_scenes/explorer_string_field.tscn" id="1_0mtau"]
 [ext_resource type="Script" path="res://pages/mission_editor/explorer/explorer.gd" id="1_23pir"]
+[ext_resource type="LabelSettings" uid="uid://dtfxwulwc71hw" path="res://common/resources/big_label_settings.tres" id="2_lqu43"]
 
 [node name="Explorer" type="PanelContainer"]
 offset_right = 360.0
@@ -14,6 +15,7 @@ layout_mode = 2
 [node name="Label" type="Label" parent="VBoxContainer"]
 layout_mode = 2
 text = "Inspector"
+label_settings = ExtResource("2_lqu43")
 horizontal_alignment = 1
 
 [node name="PanelContainer" type="PanelContainer" parent="VBoxContainer"]

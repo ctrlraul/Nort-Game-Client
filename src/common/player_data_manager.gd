@@ -1,6 +1,6 @@
 extends Node
 
-signal local_player_deleted(player_data: PlayerData)
+signal local_player_deleted(player_data: Player)
 
 
 
@@ -8,9 +8,9 @@ const LOCAL_PLAYERS_DIR: String = "user://local_players"
 
 
 
-func new_local_player() -> PlayerData:
+func new_local_player() -> Player:
 
-	var player = PlayerData.new()
+	var player = Player.new()
 	var blueprint = Assets.initial_blueprint
 
 	player.id = Assets.generate_uid()
@@ -24,18 +24,23 @@ func new_local_player() -> PlayerData:
 	return player
 
 
-func get_local_players() -> Array[PlayerData]:
+func get_local_players() -> Array[Player]:
 
 	if !DirAccess.dir_exists_absolute(LOCAL_PLAYERS_DIR):
 		return []
 
-	var players: Array[PlayerData] = []
+	var players: Array[Player] = []
 
 	FileSystemUtils.map_files(
 		LOCAL_PLAYERS_DIR,
-		func(file_name):
-			var player = __get_local_player(file_name)
-			players.append(player)
+		func(path):
+
+			var result = __get_local_player(path)
+
+			if result.error != "":
+				PopupsManager.error("Failed to load player data from '%s':\n\t%s" % [path, result.error]).width = 800
+			else:
+				players.append(result.value)
 	)
 
 	return players
@@ -49,7 +54,7 @@ func has_local_players() -> bool:
 	return DirAccess.get_files_at(LOCAL_PLAYERS_DIR).size() > 0
 
 
-func store_local_player(player_data: PlayerData) -> Result:
+func store_local_player(player_data: Player) -> Result:
 
 	var create_dir_result = __create_local_players_dir()
 
@@ -65,7 +70,7 @@ func store_local_player(player_data: PlayerData) -> Result:
 	return Result.new()
 
 
-func delete_local_player(player_data: PlayerData) -> Result:
+func delete_local_player(player_data: Player) -> Result:
 
 	var file_name: String = "%s.json" % player_data.id
 	var file_path: String = LOCAL_PLAYERS_DIR.path_join(file_name)
@@ -79,18 +84,19 @@ func delete_local_player(player_data: PlayerData) -> Result:
 	return Result.new()
 
 
-func add_part(player_data: PlayerData, part_data: CraftPartData) -> void:
+func add_part(player_data: Player, part_data: PartData) -> void:
 	player_data.parts.append(part_data)
 
 
 
-func __get_local_player(path: String) -> PlayerData:
+func __get_local_player(path: String) -> Result:
 
 	var result = JSONUtils.from_file(path)
 
-	assert(result.error == "", "Failed to load player data at '%s'" % result.error)
+	if result.error != "":
+		return result
 
-	return PlayerData.new(result.value)
+	return Result.val(Player.new(result.value))
 
 
 func __create_local_players_dir() -> Result:

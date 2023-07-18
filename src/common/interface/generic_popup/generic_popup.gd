@@ -1,5 +1,7 @@
 class_name GenericPopup extends CanvasLayer
 
+signal removed()
+
 
 
 @onready var window: PanelContainer = %Window
@@ -24,6 +26,7 @@ func _ready() -> void:
 
 func remove() -> void:
 	animation_player.play("remove")
+	removed.emit()
 
 
 func set_ruby() -> void:

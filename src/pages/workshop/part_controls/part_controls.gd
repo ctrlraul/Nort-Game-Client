@@ -66,9 +66,12 @@ func __set_part(value: CraftDisplayPart) -> void:
 	if value != null:
 
 		var texture = Assets.get_part_texture(value.part_data.definition.id)
+		var texture_size = texture.get_size()
 
 		outline_sprite.texture = texture
-		outline_sprite.size = texture.get_size()
+		outline_sprite.size = texture_size
+		outline_sprite.pivot_offset = texture_size * 0.5
+		outline_sprite.position = -texture_size * 0.5
 
 		angle = value.angle
 		flipped = value.flipped

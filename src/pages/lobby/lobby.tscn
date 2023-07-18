@@ -1,7 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://ntcpn7ia0jqa"]
+[gd_scene load_steps=5 format=3 uid="uid://ntcpn7ia0jqa"]
 
 [ext_resource type="Script" path="res://pages/lobby/lobby.gd" id="1_kfsbx"]
 [ext_resource type="Theme" uid="uid://85byrm5eq3ab" path="res://theme/theme.tres" id="2_6hh30"]
+[ext_resource type="Texture2D" uid="uid://cblsatyv1ncqc" path="res://theme/return_button_pressed.png" id="3_80r03"]
+[ext_resource type="Texture2D" uid="uid://cxwmdeeodd6ox" path="res://theme/return_button.png" id="4_21hyg"]
 
 [node name="Lobby" type="CanvasLayer"]
 script = ExtResource("1_kfsbx")
@@ -50,7 +52,6 @@ mouse_filter = 2
 
 [node name="Footer" type="MarginContainer" parent="Theme/MarginContainer/VBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 4
 mouse_filter = 2
 theme_override_constants/margin_left = 0
 theme_override_constants/margin_top = 0
@@ -62,5 +63,17 @@ layout_mode = 2
 size_flags_horizontal = 4
 text = "Workshop"
 
+[node name="ReturnButton" type="TextureButton" parent="Theme/MarginContainer/VBoxContainer/Footer"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+texture_normal = ExtResource("3_80r03")
+texture_pressed = ExtResource("4_21hyg")
+texture_hover = ExtResource("4_21hyg")
+ignore_texture_size = true
+stretch_mode = 5
+
 [connection signal="pressed" from="Theme/MarginContainer/VBoxContainer/Header/TestButton" to="." method="_on_test_button_pressed"]
 [connection signal="pressed" from="Theme/MarginContainer/VBoxContainer/Footer/WorkshopButton" to="." method="_on_workshop_button_pressed"]
+[connection signal="pressed" from="Theme/MarginContainer/VBoxContainer/Footer/ReturnButton" to="." method="_on_return_button_pressed"]

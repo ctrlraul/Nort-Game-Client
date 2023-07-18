@@ -1,4 +1,4 @@
-class_name PlayerData
+class_name Player
 
 
 
@@ -11,8 +11,8 @@ var nick: String = DEFAULT_NICK
 var blueprints: Array[CraftBlueprint]
 var current_blueprint: CraftBlueprint
 var score: int = 0
-var cores: Array[CraftPartData] = []
-var parts: Array[CraftPartData] = []
+var cores: Array[PartData] = []
+var parts: Array[PartData] = []
 
 
 
@@ -30,11 +30,11 @@ func _init(source = null) -> void:
 		current_blueprint = blueprints[source.current_blueprint]
 		score = source.get("score", 0)
 
-		for part_data_source in source.parts:
-			var data = CraftPartData.new(part_data_source)
-			match data.definition.type:
-				CraftPartDefinition.Type.HULL: parts.append(data)
-				CraftPartDefinition.Type.CORE: cores.append(data)
+		for part_source in source.parts:
+			var part = PartInInventory.new(part_source)
+			match part.definition.type:
+				Part.Type.HULL: parts.append(part)
+				Part.Type.CORE: cores.append(part)
 
 		return
 

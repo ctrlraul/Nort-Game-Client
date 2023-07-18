@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://b3m0hjtsgn5gj"]
+[gd_scene load_steps=21 format=3 uid="uid://b3m0hjtsgn5gj"]
 
 [ext_resource type="Script" path="res://pages/workshop/workshop.gd" id="1_3gydl"]
 [ext_resource type="PackedScene" uid="uid://gyid7spgcjj0" path="res://pages/workshop/parts_inventory/parts_inventory_item.tscn" id="2_bxtng"]
@@ -8,15 +8,13 @@
 [ext_resource type="Texture2D" uid="uid://b2h5w2qbjnved" path="res://pages/workshop/hexagons_grid.png" id="5_cf5ic"]
 [ext_resource type="PackedScene" uid="uid://bjgbkm0q3g02x" path="res://common/interface/craft_display/craft_display.tscn" id="6_0w2yi"]
 [ext_resource type="Texture2D" uid="uid://b3bm4djf5tas8" path="res://assets/images/part_example.png" id="8_sjvjj"]
+[ext_resource type="Material" uid="uid://igpcbk30hpxf" path="res://common/materials/part_outline_shader_material.tres" id="9_gxb4q"]
 [ext_resource type="PackedScene" uid="uid://c5f0wfx25glsh" path="res://pages/workshop/part_controls/part_controls.tscn" id="9_kkkqs"]
 [ext_resource type="PackedScene" uid="uid://cwl7mn40ut30d" path="res://pages/workshop/parts_inventory/parts_inventory.tscn" id="11_tputx"]
+[ext_resource type="PackedScene" uid="uid://ctqu4tyxogk4d" path="res://pages/workshop/craft_summary/craft_summary.tscn" id="12_hcf8o"]
 [ext_resource type="PackedScene" uid="uid://f58y3xr2ti0s" path="res://pages/workshop/cores_list_item.tscn" id="12_nhu0i"]
 [ext_resource type="PackedScene" uid="uid://drp484ne1xpxt" path="res://pages/workshop/part_inspector/part_inspector.tscn" id="13_3cpb8"]
-[ext_resource type="LabelSettings" uid="uid://dtfxwulwc71hw" path="res://common/resources/big_label_settings.tres" id="14_8i0qh"]
-[ext_resource type="Texture2D" uid="uid://cy854js4gmuv8" path="res://assets/images/icons/core.png" id="14_ut6dy"]
 [ext_resource type="PackedScene" uid="uid://c21jgpf6mtj8a" path="res://pages/workshop/dragged_part_preview.tscn" id="14_yo3fk"]
-[ext_resource type="Texture2D" uid="uid://do6ocyo4yi4oe" path="res://assets/images/icons/hull.png" id="15_6hs65"]
-[ext_resource type="Texture2D" uid="uid://cvj2hi0lqxt65" path="res://assets/images/icons/mass.png" id="16_doi2m"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_i0onw"]
 radius = 8.0
@@ -44,25 +42,6 @@ border_width_bottom = 2
 border_color = Color(1, 1, 1, 1)
 border_blend = true
 
-[sub_resource type="Shader" id="Shader_gwlvk"]
-code = "shader_type canvas_item;
-
-void fragment() {
-
-	float brightness = texture(TEXTURE, UV).r;
-
-	if (brightness > 0.5) {
-		COLOR.a = min(COLOR.a, pow(brightness, 3));
-	} else {
-		COLOR.a = 0.0;
-	}
-
-}
-"
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_qhi3n"]
-shader = SubResource("Shader_gwlvk")
-
 [node name="Workshop" type="CanvasLayer"]
 script = ExtResource("1_3gydl")
 BlueprintSelectorPopupScene = ExtResource("2_cnyw3")
@@ -89,6 +68,7 @@ unique_name_in_owner = true
 
 [node name="MouseArea" type="Area2D" parent="SubViewportContainer/SubViewport/Node2D"]
 unique_name_in_owner = true
+position = Vector2(99999, 99999)
 collision_layer = 0
 collision_mask = 256
 monitorable = false
@@ -201,20 +181,12 @@ scale = Vector2(1, 1)
 [node name="HoveredPartOutline" type="Control" parent="Theme/Container/Canvas"]
 unique_name_in_owner = true
 visible = false
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-grow_horizontal = 2
-grow_vertical = 2
+anchors_preset = 0
 mouse_filter = 2
 
 [node name="HoveredPartOutlineSprite" type="TextureRect" parent="Theme/Container/Canvas/HoveredPartOutline"]
 unique_name_in_owner = true
-self_modulate = Color(0, 1, 0, 1)
-material = SubResource("ShaderMaterial_qhi3n")
+material = ExtResource("9_gxb4q")
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -229,7 +201,6 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 texture = ExtResource("8_sjvjj")
-stretch_mode = 5
 
 [node name="PartControls" parent="Theme/Container" instance=ExtResource("9_kkkqs")]
 unique_name_in_owner = true
@@ -294,11 +265,21 @@ size_flags_horizontal = 4
 placeholder_text = "ID"
 alignment = 1
 
-[node name="BuildButton" type="Button" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/Center"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/Center"]
+layout_mode = 2
+alignment = 1
+
+[node name="BuildButton" type="Button" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/Center/HBoxContainer"]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Build"
+
+[node name="ClearButton" type="Button" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/Center/HBoxContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Clear"
 
 [node name="Spacer" type="Control" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/Center"]
 layout_mode = 2
@@ -342,78 +323,9 @@ size_flags_horizontal = 10
 size_flags_vertical = 3
 mouse_filter = 2
 
-[node name="CraftSummary" type="PanelContainer" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+[node name="CraftSummary" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer" instance=ExtResource("12_hcf8o")]
+unique_name_in_owner = true
 layout_mode = 2
-size_flags_vertical = 3
-
-[node name="VBoxContainer" type="VBoxContainer" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/CraftSummary"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/CraftSummary/VBoxContainer"]
-layout_mode = 2
-text = "Summary"
-label_settings = ExtResource("14_8i0qh")
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="PanelContainer" type="PanelContainer" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/CraftSummary/VBoxContainer"]
-layout_mode = 2
-theme_type_variation = &"PanelContainerDarken"
-
-[node name="HBoxContainer" type="HBoxContainer" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/CraftSummary/VBoxContainer/PanelContainer"]
-layout_mode = 2
-theme_override_constants/separation = 5
-
-[node name="Icons" type="VBoxContainer" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/CraftSummary/VBoxContainer/PanelContainer/HBoxContainer"]
-custom_minimum_size = Vector2(24, 0)
-layout_mode = 2
-
-[node name="TextureRect" type="TextureRect" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/CraftSummary/VBoxContainer/PanelContainer/HBoxContainer/Icons"]
-layout_mode = 2
-texture = ExtResource("14_ut6dy")
-expand_mode = 4
-stretch_mode = 5
-
-[node name="TextureRect2" type="TextureRect" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/CraftSummary/VBoxContainer/PanelContainer/HBoxContainer/Icons"]
-layout_mode = 2
-texture = ExtResource("15_6hs65")
-expand_mode = 4
-stretch_mode = 5
-
-[node name="TextureRect3" type="TextureRect" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/CraftSummary/VBoxContainer/PanelContainer/HBoxContainer/Icons"]
-layout_mode = 2
-texture = ExtResource("16_doi2m")
-expand_mode = 4
-stretch_mode = 5
-
-[node name="Labels" type="VBoxContainer" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/CraftSummary/VBoxContainer/PanelContainer/HBoxContainer"]
-layout_mode = 2
-
-[node name="Core" type="Label" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/CraftSummary/VBoxContainer/PanelContainer/HBoxContainer/Labels"]
-custom_minimum_size = Vector2(0, 24)
-layout_mode = 2
-text = "100"
-vertical_alignment = 1
-
-[node name="Hull" type="Label" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/CraftSummary/VBoxContainer/PanelContainer/HBoxContainer/Labels"]
-custom_minimum_size = Vector2(0, 24)
-layout_mode = 2
-text = "100"
-vertical_alignment = 1
-
-[node name="Mass" type="Label" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/CraftSummary/VBoxContainer/PanelContainer/HBoxContainer/Labels"]
-custom_minimum_size = Vector2(0, 24)
-layout_mode = 2
-text = "100"
-vertical_alignment = 1
-
-[node name="PanelContainer2" type="PanelContainer" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/CraftSummary/VBoxContainer"]
-layout_mode = 2
-theme_type_variation = &"PanelContainerDarken"
-
-[node name="Label" type="Label" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/CraftSummary/VBoxContainer/PanelContainer2"]
-layout_mode = 2
-text = "Parts: 10"
 
 [node name="PartInspector" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer" instance=ExtResource("13_3cpb8")]
 unique_name_in_owner = true
@@ -435,5 +347,6 @@ unique_name_in_owner = true
 [connection signal="part_stored" from="Theme/MarginContainer/VBoxContainer/HBoxContainer/Right/PartsInventory" to="." method="_on_parts_inventory_part_stored"]
 [connection signal="pressed" from="Theme/MarginContainer/VBoxContainer/HBoxContainer/Right/BlueprintButtons/ImportButton" to="." method="_on_import_button_pressed"]
 [connection signal="pressed" from="Theme/MarginContainer/VBoxContainer/HBoxContainer/Right/BlueprintButtons/ExportButton" to="." method="_on_export_button_pressed"]
-[connection signal="pressed" from="Theme/MarginContainer/VBoxContainer/HBoxContainer/Center/BuildButton" to="." method="_on_build_button_pressed"]
+[connection signal="pressed" from="Theme/MarginContainer/VBoxContainer/HBoxContainer/Center/HBoxContainer/BuildButton" to="." method="_on_build_button_pressed"]
+[connection signal="pressed" from="Theme/MarginContainer/VBoxContainer/HBoxContainer/Center/HBoxContainer/ClearButton" to="." method="_on_clear_button_pressed"]
 [connection signal="got_data" from="Theme/MarginContainer/VBoxContainer/HBoxContainer/Center/CoresListContainer/CoresDragReceiver" to="." method="_on_cores_drag_receiver_got_data"]

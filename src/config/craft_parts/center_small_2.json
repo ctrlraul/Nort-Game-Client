@@ -4,5 +4,6 @@
 	"texture": "center_small_2.png",
 	"type": "HULL",
 	"hull": 30,
-	"core": 30
+	"core": 30,
+	"mass": 10
 }

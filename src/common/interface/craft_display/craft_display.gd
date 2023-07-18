@@ -68,7 +68,7 @@ func to_blueprint() -> CraftBlueprint:
 
 	for part in parts:
 
-		if part == core:
+		if part == core || part.is_queued_for_deletion():
 			continue
 
 		blueprint.parts.append(part.to_blueprint())

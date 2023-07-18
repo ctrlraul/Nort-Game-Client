@@ -2,11 +2,11 @@ class_name CraftDisplayPart extends Control
 
 
 
-@onready var craft_part_display: Control = %CraftPartDisplay
+@onready var craft_part_display: Control = %PartDisplay
 
 
 
-var part_data: CraftPartData = null
+var part_data: PartData = null
 
 var color: Color :
 	set(value):

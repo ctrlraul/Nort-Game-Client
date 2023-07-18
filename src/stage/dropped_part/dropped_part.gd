@@ -14,7 +14,7 @@ func _ready() -> void:
 	__animation_player.play("float")
 
 
-func set_up(setup: DroppedPartSetup) -> void:
+func set_up(setup: OrphanPartSetup) -> void:
 
 	position = setup.place
 	rotation = setup.angle

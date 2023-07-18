@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://chd8jfxbo0vp"]
+[gd_scene load_steps=9 format=3 uid="uid://chd8jfxbo0vp"]
 
 [ext_resource type="Script" path="res://pages/mission_editor/mission_editor.gd" id="1_rhan0"]
 [ext_resource type="PackedScene" uid="uid://c87dkvb7uucra" path="res://pages/mission_editor/editor_entities/editor_craft.tscn" id="2_mjqfs"]
@@ -6,6 +6,18 @@
 [ext_resource type="PackedScene" uid="uid://crxxyndc18yre" path="res://pages/mission_editor/explorer/explorer.tscn" id="3_q5kjq"]
 [ext_resource type="PackedScene" uid="uid://bh8tfanbcbflj" path="res://pages/mission_editor/editor_entities/editor_player_craft.tscn" id="4_n5f8v"]
 [ext_resource type="LabelSettings" uid="uid://c17ibv5bt7jtw" path="res://common/resources/small_transparent_label_settings.tres" id="5_84hrd"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_1t3wh"]
+font_size = 40
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i0cpm"]
+bg_color = Color(0, 1, 1, 0.0627451)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0, 1, 1, 1)
+border_blend = true
 
 [node name="MissionEditor" type="CanvasLayer"]
 script = ExtResource("1_rhan0")
@@ -22,6 +34,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Sandbox" type="Control" parent="Theme"]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -29,7 +42,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Container" type="Control" parent="Theme/Sandbox"]
+[node name="Canvas" type="Control" parent="Theme/Sandbox"]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 8
@@ -41,7 +54,52 @@ grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.5, 0.5)
 
-[node name="EditorPlayerCraft" parent="Theme/Sandbox/Container" instance=ExtResource("4_n5f8v")]
+[node name="Grid" type="Control" parent="Theme/Sandbox/Canvas"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="Theme/Sandbox/Canvas/Grid"]
+self_modulate = Color(1, 1, 1, 0.25098)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -50.0
+offset_top = -10.0
+offset_right = 50.0
+offset_bottom = 10.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "0x0"
+label_settings = SubResource("LabelSettings_1t3wh")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="EntitiesContainer" type="Control" parent="Theme/Sandbox/Canvas"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="EditorPlayerCraft" parent="Theme/Sandbox/Canvas/EntitiesContainer" instance=ExtResource("4_n5f8v")]
+
+[node name="SelectionRect" type="Panel" parent="Theme/Sandbox/Canvas"]
+unique_name_in_owner = true
+layout_mode = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_i0cpm")
 
 [node name="MarginContainer" type="MarginContainer" parent="Theme"]
 layout_mode = 1
@@ -66,8 +124,9 @@ theme_override_constants/separation = 0
 [node name="PanelContainer" type="PanelContainer" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(360, 0)
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 2
 size_flags_vertical = 3
+mouse_filter = 2
 
 [node name="VBoxContainer3" type="VBoxContainer" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/PanelContainer"]
 layout_mode = 2
@@ -134,6 +193,7 @@ text = "Add Craft"
 custom_minimum_size = Vector2(360, 0)
 layout_mode = 2
 size_flags_horizontal = 3
+mouse_filter = 2
 theme_override_constants/margin_left = 0
 theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 0
@@ -141,7 +201,9 @@ theme_override_constants/margin_bottom = 0
 
 [node name="Explorer" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer" instance=ExtResource("3_q5kjq")]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(360, 0)
 layout_mode = 2
+size_flags_horizontal = 8
 
 [node name="AddCraftButton" type="Button" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer"]
 visible = false

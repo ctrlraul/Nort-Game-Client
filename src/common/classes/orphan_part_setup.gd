@@ -1,8 +1,8 @@
-class_name DroppedPartSetup extends EntitySetup
+class_name OrphanPartSetup extends EntitySetup
 
 
 
-var definition: CraftPartDefinition
+var definition: Part
 var angle: float
 var flipped: bool
 var gimmick: Gimmick

@@ -6,8 +6,6 @@ const DialogPopupScene: PackedScene = preload("res://common/interface/dialog_pop
 
 
 
-
-
 func info(message: String, title = "") -> DialogPopup:
 
 	var popup = DialogPopupScene.instantiate()

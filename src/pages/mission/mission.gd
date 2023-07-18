@@ -28,8 +28,6 @@ func _mount(data) -> void:
 		mission = data.mission
 		Stage.load_mission(mission)
 
-	Stage.spawn_player_craft()
-
 
 func _input(_event: InputEvent) -> void:
 	if Input.is_action_just_pressed("escape") && visible:

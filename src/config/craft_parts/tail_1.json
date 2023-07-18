@@ -4,5 +4,6 @@
 	"texture": "tail_1.png",
 	"type": "HULL",
 	"hull": 30,
-	"core": 20
+	"core": 20,
+	"mass": 10
 }

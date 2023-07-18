@@ -12,16 +12,6 @@ var behavior: String : set = set_behavior
 
 
 
-func _ready() -> void:
-	super()
-	set_process_input(false)
-
-
-func _input(event: InputEvent) -> void:
-	if event is InputEventMouseMotion:
-		position += event.relative / get_global_transform().get_scale()
-
-
 func _init_explorer_fields() -> Array[ExplorerField]:
 
 	var get_behaviors = func():
@@ -56,6 +46,8 @@ func set_setup(setup: CraftSetup) -> void:
 
 func set_blueprint(value: CraftBlueprint) -> void:
 	__craft_display.set_blueprint(value)
+	hitbox.size = Assets.get_blueprint_size(value)
+	hitbox.position = -hitbox.size * 0.5
 	blueprint = value
 
 

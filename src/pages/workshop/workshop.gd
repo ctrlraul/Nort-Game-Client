@@ -25,7 +25,8 @@ const ZOOM_MAX = 1
 @onready var part_controls: Control = %PartControls
 @onready var blueprint_id_input: LineEdit = %BlueprintIDInput
 @onready var craft_display: CraftDisplay = %CraftDisplay
-@onready var parts_inventory: Control = %PartsInventory
+@onready var parts_inventory: PartsInventory = %PartsInventory
+@onready var craft_summary: CraftSummary = %CraftSummary
 @onready var part_inspector: PanelContainer = %PartInspector
 @onready var blueprint_buttons: HBoxContainer = %BlueprintButtons
 @onready var dragged_part_preview: Control = %DraggedPartPreview
@@ -42,14 +43,7 @@ var selected_part: CraftDisplayPart = null
 var panning: bool = false
 var area_for_part: Dictionary = {}
 var part_for_area: Dictionary = {}
-
-var color: Color = GameConfig.FACTIONLESS_COLOR :
-	set(value):
-		craft_display.color = value
-		parts_inventory.color = value
-		part_inspector.color = value
-		dragged_part_preview.set_color(value)
-		color = value
+var color: Color : set = set_color
 
 
 
@@ -66,57 +60,37 @@ func _mount(_data) -> void:
 
 	await Game.initialize()
 
+	repopulate_inventory()
+
 	if Game.current_player:
-		init_for_player()
+		blueprint_id_input.visible = false
+		blueprint_buttons.visible = false
+		set_blueprint(Game.current_player.current_blueprint)
+		color = Assets.player_faction.color
 	else:
-		init_for_dev()
+		blueprint_id_input.visible = true
+		blueprint_buttons.visible = true
+		set_blueprint(Assets.initial_blueprint)
+		blueprint_id_input.text = ""
+		color = Assets.enemy_faction_1.color
 
 
 
-func init_for_player() -> void:
+func set_color(value: Color) -> void:
 
-	var player = Game.current_player
+	craft_display.color = value
+	parts_inventory.color = value
+	part_inspector.color = value
 
-	color = Assets.player_faction.color
+	dragged_part_preview.set_color(value)
 
-	set_blueprint(player.current_blueprint)
+	for item in cores_list.get_children():
+		item.color = value
 
-	parts_inventory.set_parts(player.parts)
-
-	for core in player.cores:
-		add_core_button(core)
-
-	cores_list_container.visible = player.cores.size() > 1
-	blueprint_id_input.visible = false
-	blueprint_buttons.visible = false
+	color = value
 
 
-func init_for_dev() -> void:
-
-	color = Assets.player_faction.color
-
-	set_blueprint(Assets.initial_blueprint)
-
-	var hulls: Array[CraftPartData] = []
-	var cores: Array[CraftPartData] = []
-
-	for part in Assets.parts.values():
-		var part_data = CraftPartData.new(part)
-		match part.type:
-			CraftPartDefinition.Type.CORE: cores.append(part_data)
-			CraftPartDefinition.Type.HULL: hulls.append(part_data)
-
-	parts_inventory.set_parts(hulls)
-
-	for core in Assets.cores.values():
-		add_core_button(CraftPartData.new(core))
-
-	cores_list_container.visible = Assets.cores.size() > 1
-	blueprint_id_input.visible = true
-	blueprint_buttons.visible = true
-
-
-func add_core_button(part_data: CraftPartData) -> void:
+func add_core_button(part_data: PartData) -> void:
 
 	var item = CoresListItemScene.instantiate()
 	var blueprint = CraftBlueprintPart.new(part_data)
@@ -124,7 +98,7 @@ func add_core_button(part_data: CraftPartData) -> void:
 	cores_list.add_child(item)
 
 	item.part_data = part_data
-	item.color = Assets.player_faction.color
+	item.color = color
 	item.pressed.connect(set_core_blueprint.bind(blueprint))
 	item.mouse_entered.connect(part_inspector.set_part_data.bind(part_data))
 
@@ -132,9 +106,10 @@ func add_core_button(part_data: CraftPartData) -> void:
 func set_core_blueprint(blueprint: CraftBlueprintPart) -> void:
 	craft_display.set_core_blueprint(blueprint)
 	if hovered_part == craft_display.core:
-		hovered_part_outline_sprite.texture = Assets.get_part_texture(blueprint)
+		set_hovered_part_outline(blueprint)
 	if part_controls.part == craft_display.core:
 		part_controls.part = craft_display.core
+	craft_summary.set_blueprint(craft_display.to_blueprint())
 
 
 func set_blueprint(blueprint: CraftBlueprint) -> void:
@@ -152,14 +127,68 @@ func set_blueprint(blueprint: CraftBlueprint) -> void:
 		add_part(blueprint.core, true)
 
 	part_inspector.set_part(craft_display.core)
+	parts_inventory.set_blueprint(blueprint)
+
+	craft_summary.set_blueprint(craft_display.to_blueprint())
+
+
+func set_hovered_part_outline(blueprint: CraftBlueprintPart) -> void:
+
+	var texture = Assets.get_part_texture(blueprint)
+	var texture_size = texture.get_size()
+
+	hovered_part_outline_sprite.texture = texture
+	hovered_part_outline_sprite.size = texture_size
+	hovered_part_outline_sprite.pivot_offset = texture_size * 0.5
+	hovered_part_outline_sprite.position = -texture_size * 0.5
+	hovered_part_outline_sprite.flip_h = blueprint.flipped
 
 
 func clear() -> void:
-	blueprint_id_input.text = ""
-	craft_display.clear()
+
+#	blueprint_id_input.text = ""
+
 	area_for_part.clear()
 	part_for_area.clear()
+	part_controls.clear()
+	craft_display.clear()
+	part_inspector.clear()
+
+	hovered_part_outline.visible = false
+
+	craft_summary.set_blueprint(craft_display.to_blueprint())
+
+	repopulate_inventory()
+
 	NodeUtils.clear(part_areas)
+
+
+func repopulate_inventory() -> void:
+
+	var hulls: Array[PartData]
+	var cores: Array[PartData]
+
+	if Game.dev:
+		hulls = []
+		cores = []
+		for part in Assets.get_hulls():
+			hulls.append(PartData.new(part))
+		for part in Assets.get_cores():
+			cores.append(PartData.new(part))
+
+	else:
+		hulls = Game.current_player.parts
+		cores = Game.current_player.cores
+
+	parts_inventory.clear()
+	parts_inventory.set_parts(hulls)
+
+	NodeUtils.clear(cores_list)
+
+	for core in cores:
+		add_core_button(core)
+
+	cores_list_container.visible = cores.size() > 1
 
 
 func zoom(delta: int) -> void:
@@ -214,6 +243,7 @@ func add_part(blueprint: CraftBlueprintPart, core = false) -> CraftDisplayPart:
 func add_and_drag_part(blueprint: CraftBlueprintPart) -> void:
 	dragged_part = add_part(blueprint)
 	hovered_part_outline.visible = false
+	craft_summary.set_blueprint(craft_display.to_blueprint())
 
 
 func remove_part(part: CraftDisplayPart) -> void:
@@ -229,6 +259,8 @@ func remove_part(part: CraftDisplayPart) -> void:
 	area.queue_free()
 	part.queue_free()
 
+	craft_summary.set_blueprint(craft_display.to_blueprint())
+
 
 func update_hovered_part() -> void:
 
@@ -243,8 +275,7 @@ func update_hovered_part() -> void:
 		hovered_part_outline.visible = true
 		hovered_part_outline.position = hovered_part.position
 		hovered_part_outline.rotation = hovered_part.angle
-		hovered_part_outline_sprite.texture = Assets.get_part_texture(hovered_part.part_data)
-		hovered_part_outline_sprite.flip_h = hovered_part.flipped
+		set_hovered_part_outline(hovered_part.to_blueprint())
 		part_inspector.set_part(hovered_part)
 	else:
 		hovered_part_outline.visible = false
@@ -311,7 +342,7 @@ func _on_hitbox_gui_input(event: InputEvent) -> void:
 			update_hovered_part()
 
 
-func _on_parts_inventory_part_picked(part_data: CraftPartData) -> void:
+func _on_parts_inventory_part_picked(part_data: PartData) -> void:
 	part_controls.clear()
 	dragged_part_preview.set_part_data(part_data)
 
@@ -320,7 +351,7 @@ func _on_parts_inventory_part_stored() -> void:
 	dragged_part_preview.clear()
 
 
-func _on_parts_inventory_part_hovered(part_data: CraftPartData) -> void:
+func _on_parts_inventory_part_hovered(part_data: PartData) -> void:
 	part_inspector.set_part_data(part_data)
 
 
@@ -333,7 +364,7 @@ func _on_hitbox_drag_receiver_drag_enter() -> void:
 	if DragEmitter.data is CraftBlueprintPart:
 		blueprint = DragEmitter.data
 
-	elif DragEmitter.data is CraftPartData:
+	elif DragEmitter.data is PartData:
 		blueprint = CraftBlueprintPart.new(DragEmitter.data)
 
 	blueprint.place = snapped(canvas.get_local_mouse_position() - drag_offset, GRID_SNAP)
@@ -400,7 +431,7 @@ func _on_import_button_pressed() -> void:
 
 func _on_cores_drag_receiver_got_data(_source, data) -> void:
 
-	if data is CraftPartData:
+	if data is PartData:
 		add_core_button(data)
 	elif data is CraftBlueprintPart:
 		add_core_button(data.data)
@@ -416,5 +447,9 @@ func _on_build_button_pressed() -> void:
 	if Game.current_player:
 		Game.current_player.current_blueprint = craft_display.to_blueprint()
 		Game.current_player.blueprints[0] = Game.current_player.current_blueprint
-		PlayerDataManager.store_local_player(Game.current_player)
+		PlayerManager.store_local_player(Game.current_player)
 	PagesManager.go_to(GameConfig.Routes.LOBBY)
+
+
+func _on_clear_button_pressed() -> void:
+	clear()

@@ -1,4 +1,4 @@
-class_name CraftPartDefinition
+class_name Part
 
 
 
@@ -10,8 +10,9 @@ var id: String
 var display_name: String
 var texture_name: String
 var type: Type
-var core: float
-var hull: float
+var core: int
+var hull: int
+var mass: int
 
 
 
@@ -22,3 +23,4 @@ func _init(source) -> void:
 	type = Type[source.type]
 	core = source.core
 	hull = source.hull
+	mass = source.mass
