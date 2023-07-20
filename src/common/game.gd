@@ -21,14 +21,15 @@ var dev: bool :
 
 func _ready() -> void:
 
+	PagesManager.default_scene_path = GameConfig.Routes.MAIN_MENU
+	PagesManager.page_change_error.connect(PopupsManager.error)
+
 	if __is_running_main_scene():
 		Transition.cover_instantly()
 		await initialize()
 		Transition.uncover()
 	else:
 		Transition.uncover_instantly()
-
-	PagesManager.page_change_error.connect(_on_page_change_error)
 
 
 
@@ -59,10 +60,3 @@ func __is_running_main_scene() -> bool:
 	var main_scene_path: String = ProjectSettings.get("application/run/main_scene")
 	var current_scene_path = get_tree().current_scene.scene_file_path
 	return main_scene_path == current_scene_path
-
-
-
-func _on_page_change_error(error: String) -> void:
-	PopupsManager.error(error)
-	if Transition.is_covered:
-		Transition.uncover()

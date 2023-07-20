@@ -7,13 +7,13 @@ signal drag_stop()
 
 
 @onready var hitbox: Button = %Hitbox
-@onready var selection_indicator: Panel = %SelectionIndicator
+@onready var __selection_indicator: Panel = %SelectionIndicator
 
 var explorer_fields: Array
 
 var selected: bool = false :
 	set(value):
-		selection_indicator.visible = value
+		__selection_indicator.visible = value
 		selected = value
 
 

@@ -34,7 +34,10 @@ const ZOOM_MAX = 1
 
 var drag_offsets: Dictionary = {}
 var logger: Logger = Logger.new("MissionEditor")
+var selection_start: Vector2 = Vector2.ZERO
 var selection: Array[EditorEntity] = []
+var copy_offsets: Dictionary = {}
+var copied: Array[EditorEntity] = []
 var action: Action = Action.NONE
 
 
@@ -58,11 +61,21 @@ func _mount(data) -> void:
 	Stage.clear()
 
 
+func _unhandled_key_input(_event: InputEvent) -> void:
+	if Input.is_action_just_pressed("copy"):
+		shortcut_copy()
+	elif Input.is_action_just_pressed("paste"):
+		shortcut_paste()
+	elif Input.is_action_just_pressed("select_all"):
+		shortcut_select_all()
+	elif Input.is_action_just_pressed("delete"):
+		shortcut_select_all()
+
+
 func _input(event: InputEvent) -> void:
 
 	if action == Action.NONE:
 		return
-
 
 	if event is InputEventMouseMotion:
 
@@ -71,23 +84,81 @@ func _input(event: InputEvent) -> void:
 		match action:
 
 			Action.MULTI_SELECT:
-				selection_rect.size = abs(mouse - selection_rect.position)
-				selection_rect.scale.x = -1 if mouse.x < selection_rect.position.x else 1
-				selection_rect.scale.y = -1 if mouse.y < selection_rect.position.y else 1
+				selection_rect.size = abs(mouse - selection_start)
+				selection_rect.position.x = mouse.x if mouse.x < selection_start.x else selection_start.x
+				selection_rect.position.y = mouse.y if mouse.y < selection_start.y else selection_start.y
 
 			Action.DRAG_SELECTION:
 				for entity in selection:
 					entity.position = snapped(canvas.get_local_mouse_position() - drag_offsets[entity], GRID_SNAP)
 
 			Action.MOUSE_DOWN:
-				action = Action.PANNING
-				canvas.position += event.relative
-				update_stage_camera_transform()
+
+				if Input.is_action_pressed("shift"):
+					action = Action.MULTI_SELECT
+					selection_start = canvas.get_local_mouse_position()
+					selection_rect.position = Vector2.ZERO
+					selection_rect.size = Vector2.ZERO
+					selection_rect.visible = true
+
+				else:
+					action = Action.PANNING
+					canvas.position += event.relative
+					update_stage_camera_transform()
 
 			Action.PANNING:
 				canvas.position += event.relative
 				update_stage_camera_transform()
 
+
+
+func shortcut_copy() -> void:
+
+	copy_offsets.clear()
+	copied.clear()
+	copied.append_array(selection.duplicate())
+
+	var canvas_center = get_visual_canvas_center()
+
+	for copied_entity in copied:
+		copy_offsets[copied_entity] = copied_entity.position - canvas_center
+
+
+func shortcut_paste() -> void:
+
+	clear_selection()
+
+	var canvas_center = get_visual_canvas_center()
+	var pasted_entities: Array[EditorEntity] = []
+
+	for copied_entity in copied:
+
+		var setup = copied_entity.get_entity_setup()
+
+		if setup is PlayerCraftSetup:
+			continue
+
+		var pasted_entity = add_entity(setup)
+
+		pasted_entity.position = snapped(canvas_center + copy_offsets[copied_entity], GRID_SNAP)
+		pasted_entities.append(pasted_entity)
+
+		select(pasted_entity, false)
+
+
+func shortcut_select_all() -> void:
+	for entity in entities_container.get_children():
+		if !selection.has(entity):
+			select(entity, false)
+
+
+func shortcut_delete() -> void:
+	for entity in selection:
+
+		if entity.get_entity_setup() is PlayerCraftSetup:
+			continue
+
+		entity.queue_free()
 
 
 func zoom(delta: int) -> void:
@@ -113,23 +184,18 @@ func update_stage_camera_transform() -> void:
 func sandbox_moused(event: InputEventMouseButton) -> void:
 
 	if event.pressed:
-
-		if Input.is_action_pressed("shift"):
-			action = Action.MULTI_SELECT
-			selection_rect.position = canvas.get_local_mouse_position()
-			selection_rect.size = Vector2.ZERO
-
-		else:
-			action = Action.MOUSE_DOWN
+		action = Action.MOUSE_DOWN
 
 	else:
 
 		match action:
 
 			Action.MULTI_SELECT:
-				selection_rect.position = Vector2.ZERO
-				selection_rect.size = Vector2.ZERO
-				# Do select stuff in area
+				var selection_area = selection_rect.get_global_rect()
+				for entity in entities_container.get_children():
+					if !selection.has(entity) && selection_area.intersects(entity.hitbox.get_global_rect()):
+						select(entity)
+				selection_rect.visible = false
 
 			Action.MOUSE_DOWN:
 				clear_selection()
@@ -207,12 +273,15 @@ func clear_selection() -> void:
 	selection.clear()
 
 
-func select(entity: EditorEntity) -> void:
+func select(entity: EditorEntity, clear_current_selection: bool = true) -> void:
 
 	if selection.has(entity):
+		if Input.is_action_pressed("shift"):
+			entity.selected = false
+			selection.erase(entity)
 		return
 
-	if !Input.is_action_pressed("shift"):
+	if clear_current_selection && !Input.is_action_pressed("shift"):
 		clear_selection()
 
 	entity.selected = true
@@ -240,6 +309,7 @@ func store_mission(directory: String) -> void:
 
 func _on_sandbox_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
+		mission_name_line_edit.release_focus()
 		match event.button_index:
 			MOUSE_BUTTON_LEFT: sandbox_moused(event)
 			MOUSE_BUTTON_WHEEL_UP: zoom(1)
@@ -247,7 +317,18 @@ func _on_sandbox_gui_input(event: InputEvent) -> void:
 
 
 func _on_add_craft_button_pressed() -> void:
-	explorer.set_entity(add_entity(CraftSetup.new()))
+
+	var entity = add_entity(CraftSetup.new())
+
+	entity.position = snapped(get_visual_canvas_center(), GRID_SNAP)
+
+	if selection.is_empty():
+		select(entity)
+		explorer.set_entity(entity)
+
+
+func get_visual_canvas_center() -> Vector2:
+	return -(canvas.position - sandbox.size * 0.5) / canvas.scale
 
 
 func _on_entity_pressed(entity: EditorEntity) -> void:
@@ -258,7 +339,6 @@ func _on_entity_pressed(entity: EditorEntity) -> void:
 func _on_entity_drag_start(entity: EditorEntity) -> void:
 
 	explorer.clear()
-	select(entity)
 
 	for selected_entity in selection:
 		drag_offsets[selected_entity] = canvas.get_local_mouse_position() - selected_entity.position
@@ -306,6 +386,9 @@ func _on_export_button_pressed() -> void:
 		popup.add_button("In-Game")
 
 		await popup.removed
+
+		if popup.canceled:
+			return
 
 		if save_locally[""]:
 			store_mission(Assets.LOCAL_MISSIONS_DIR)

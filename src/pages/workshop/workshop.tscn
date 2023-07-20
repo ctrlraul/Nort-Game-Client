@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://b3m0hjtsgn5gj"]
+[gd_scene load_steps=22 format=3 uid="uid://b3m0hjtsgn5gj"]
 
 [ext_resource type="Script" path="res://pages/workshop/workshop.gd" id="1_3gydl"]
 [ext_resource type="PackedScene" uid="uid://gyid7spgcjj0" path="res://pages/workshop/parts_inventory/parts_inventory_item.tscn" id="2_bxtng"]
@@ -11,6 +11,7 @@
 [ext_resource type="Material" uid="uid://igpcbk30hpxf" path="res://common/materials/part_outline_shader_material.tres" id="9_gxb4q"]
 [ext_resource type="PackedScene" uid="uid://c5f0wfx25glsh" path="res://pages/workshop/part_controls/part_controls.tscn" id="9_kkkqs"]
 [ext_resource type="PackedScene" uid="uid://cwl7mn40ut30d" path="res://pages/workshop/parts_inventory/parts_inventory.tscn" id="11_tputx"]
+[ext_resource type="PackedScene" uid="uid://cdwor48b8w6ca" path="res://common/interface/return_button.tscn" id="12_a3hip"]
 [ext_resource type="PackedScene" uid="uid://ctqu4tyxogk4d" path="res://pages/workshop/craft_summary/craft_summary.tscn" id="12_hcf8o"]
 [ext_resource type="PackedScene" uid="uid://f58y3xr2ti0s" path="res://pages/workshop/cores_list_item.tscn" id="12_nhu0i"]
 [ext_resource type="PackedScene" uid="uid://drp484ne1xpxt" path="res://pages/workshop/part_inspector/part_inspector.tscn" id="13_3cpb8"]
@@ -218,6 +219,17 @@ theme_type_variation = &"WindowMarginContainer"
 [node name="VBoxContainer" type="VBoxContainer" parent="Theme/MarginContainer"]
 layout_mode = 2
 mouse_filter = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Theme/MarginContainer/VBoxContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="ReturnButton" parent="Theme/MarginContainer/VBoxContainer/MarginContainer" instance=ExtResource("12_a3hip")]
+layout_mode = 2
 
 [node name="HBoxContainer" type="GridContainer" parent="Theme/MarginContainer/VBoxContainer"]
 layout_mode = 2

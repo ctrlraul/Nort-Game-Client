@@ -8,12 +8,6 @@ func _mount(_data) -> void:
 
 
 
-func _on_return_button_pressed() -> void:
-	Transition.callback(
-		PagesManager.go_to.bind(GameConfig.Routes.LOGIN)
-	)
-
-
 func _on_workshop_button_pressed() -> void:
 	Transition.callback(
 		PagesManager.go_to.bind(GameConfig.Routes.WORKSHOP)

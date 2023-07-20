@@ -14,7 +14,7 @@ func info(message: String, title = "") -> DialogPopup:
 
 	popup.title = title
 	popup.message = message
-	popup.cancellable = true
+	popup.cancelable = true
 
 	return popup
 
@@ -27,7 +27,7 @@ func error(message: String, title = "Error") -> DialogPopup:
 
 	popup.title = title
 	popup.message = message
-	popup.cancellable = true
+	popup.cancelable = true
 
 	popup.set_ruby()
 	popup.add_button("Ok")

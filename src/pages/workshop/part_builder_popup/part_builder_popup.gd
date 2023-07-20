@@ -15,7 +15,7 @@ func _ready() -> void:
 
 	super()
 
-	cancellable = true
+	cancelable = true
 
 	var parts = Assets.get_hulls()
 

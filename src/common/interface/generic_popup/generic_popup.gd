@@ -9,7 +9,12 @@ signal removed()
 
 
 
-var cancellable: bool = false
+
+var canceled: bool = false
+var cancelable: bool = false :
+	set(value):
+		set_process_unhandled_input(value)
+		cancelable = value
 
 var width: int :
 	set(value):
@@ -23,10 +28,26 @@ func _ready() -> void:
 	animation_player.play("appear")
 
 
+func _unhandled_input(_event: InputEvent) -> void:
+	if Input.is_action_just_pressed("escape"):
+		cancel()
+
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_WM_GO_BACK_REQUEST:
+		cancel()
+
+
 
 func remove() -> void:
 	animation_player.play("remove")
 	removed.emit()
+
+
+func cancel() -> void:
+	if cancelable:
+		canceled = true
+		remove()
 
 
 func set_ruby() -> void:
@@ -39,8 +60,7 @@ func set_amber() -> void:
 
 
 func _on_outside_pressed() -> void:
-	if cancellable:
-		remove()
+	cancel()
 
 
 func _on_animation_player_animation_finished(anim_name: StringName) -> void:

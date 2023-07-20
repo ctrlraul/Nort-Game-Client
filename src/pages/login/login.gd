@@ -31,10 +31,6 @@ func __refresh_saves_list() -> void:
 
 
 
-func _on_return_button_pressed() -> void:
-	PagesManager.go_to(GameConfig.Routes.MAIN_MENU)
-
-
 func _on_refresh_button_pressed() -> void:
 	__refresh_saves_list()
 

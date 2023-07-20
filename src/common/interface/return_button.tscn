@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://cdwor48b8w6ca"]
+
+[ext_resource type="Texture2D" uid="uid://cblsatyv1ncqc" path="res://theme/return_button_pressed.png" id="1_wju7f"]
+[ext_resource type="Texture2D" uid="uid://cxwmdeeodd6ox" path="res://theme/return_button.png" id="2_x1xp8"]
+[ext_resource type="Script" path="res://common/interface/return_button.gd" id="3_memfv"]
+
+[node name="ReturnButton" type="TextureButton"]
+custom_minimum_size = Vector2(40, 40)
+size_flags_horizontal = 0
+size_flags_vertical = 8
+texture_normal = ExtResource("1_wju7f")
+texture_pressed = ExtResource("2_x1xp8")
+texture_hover = ExtResource("2_x1xp8")
+ignore_texture_size = true
+stretch_mode = 5
+script = ExtResource("3_memfv")
+
+[connection signal="pressed" from="." to="." method="_on_pressed"]

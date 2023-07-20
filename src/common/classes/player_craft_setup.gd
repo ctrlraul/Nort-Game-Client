@@ -17,7 +17,7 @@ func _init(source = null) -> void:
 		return
 
 	if source is Dictionary:
-		test_blueprint = Assets.get_blueprint(source.blueprint)
+		test_blueprint = Assets.get_blueprint(source.test_blueprint)
 		return
 
 	assert(source == null, "Invalid source")

@@ -22,6 +22,7 @@ signal stats_changed(craft: Craft)
 		TractorComponent,
 		PlayerControlsComponent
 	],
+	CraftSetup.Behavior.NONE: [],
 	CraftSetup.Behavior.FIGHTER: [
 		FlightComponent,
 #		FighterAIComponent,

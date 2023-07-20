@@ -1,10 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://c2k2ofs6xr5sr"]
+[gd_scene load_steps=5 format=3 uid="uid://c2k2ofs6xr5sr"]
 
 [ext_resource type="Theme" uid="uid://85byrm5eq3ab" path="res://theme/theme.tres" id="1_5m4j7"]
 [ext_resource type="Script" path="res://pages/login/login.gd" id="2_o1b0i"]
 [ext_resource type="PackedScene" uid="uid://cigqt0kjqfuw2" path="res://pages/login/saves_list_item.tscn" id="3_4ywes"]
-[ext_resource type="Texture2D" uid="uid://cxwmdeeodd6ox" path="res://theme/return_button.png" id="5_sbtst"]
-[ext_resource type="Texture2D" uid="uid://cblsatyv1ncqc" path="res://theme/return_button_pressed.png" id="6_5hfl4"]
+[ext_resource type="PackedScene" uid="uid://cdwor48b8w6ca" path="res://common/interface/return_button.tscn" id="4_kmef1"]
 
 [node name="Login" type="CanvasLayer"]
 script = ExtResource("2_o1b0i")
@@ -79,16 +78,8 @@ layout_mode = 2
 [node name="SavesListItem3" parent="Theme/MarginContainer/CenterContainer/Panel/VBoxContainer/Control/SavesList" instance=ExtResource("3_4ywes")]
 layout_mode = 2
 
-[node name="ReturnButton" type="TextureButton" parent="Theme/MarginContainer"]
-custom_minimum_size = Vector2(40, 40)
+[node name="ReturnButton" parent="Theme/MarginContainer" instance=ExtResource("4_kmef1")]
 layout_mode = 2
-size_flags_horizontal = 0
-size_flags_vertical = 8
-texture_normal = ExtResource("6_5hfl4")
-texture_pressed = ExtResource("5_sbtst")
-texture_hover = ExtResource("5_sbtst")
-ignore_texture_size = true
-stretch_mode = 5
+size_flags_vertical = 0
 
 [connection signal="pressed" from="Theme/MarginContainer/CenterContainer/Panel/VBoxContainer/Header/RefreshButton" to="." method="_on_refresh_button_pressed"]
-[connection signal="pressed" from="Theme/MarginContainer/ReturnButton" to="." method="_on_return_button_pressed"]

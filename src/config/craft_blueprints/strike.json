@@ -1,9 +1,9 @@
 {
 	"core": {
+		"angle": -180,
 		"data": {
-			"definition": "tail_2",
-			"gimmick": "bullet",
-			"level": 0
+			"definition": "tiny_center_1",
+			"gimmick": "bullet"
 		},
 		"x": 0,
 		"y": 0
@@ -11,10 +11,8 @@
 	"id": "strike",
 	"parts": [
 		{
-			"angle": -180,
 			"data": {
-				"definition": "tail_1",
-				"level": 1
+				"definition": "tiny_tail_1"
 			},
 			"x": 0,
 			"y": 0

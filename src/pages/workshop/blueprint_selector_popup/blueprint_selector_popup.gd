@@ -14,7 +14,7 @@ func _ready() -> void:
 
 	super()
 
-	cancellable = true
+	cancelable = true
 
 	NodeUtils.clear(blueprints_list)
 

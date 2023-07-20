@@ -41,7 +41,7 @@ static func parse(source: Dictionary) -> EntitySetup:
 
 	match Type[source.type]:
 		Type.CRAFT: setup = CraftSetup.new(source)
-		Type.PLAYER_CRAFT: setup = CraftSetup.new(source)
+		Type.PLAYER_CRAFT: setup = PlayerCraftSetup.new(source)
 		Type.ORPHAN_PART: setup = OrphanPartSetup.new(source)
 
 	assert(setup != null, "Invalid setup")
