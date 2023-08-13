@@ -14,18 +14,16 @@ func _ready() -> void:
 	__animation_player.play("float")
 
 
-func set_up(setup: OrphanPartSetup) -> void:
+func set_setup(setup: OrphanPartSetup) -> void:
 
 	position = setup.place
 	rotation = setup.angle
 
 	__sprite.texture = Assets.get_part_texture(setup.definition)
 	__sprite.flip_h = setup.flipped
+	__sprite.material = Assets.MATERIAL_SHINY if setup.shiny else null
 
 	if setup.gimmick:
 		__gimmick.texture = Assets.get_gimmick_texture(setup.gimmick.id)
 	else:
 		__gimmick.queue_free()
-
-	if !setup.shiny:
-		__sprite.material = null

@@ -4,6 +4,11 @@
 	"scene": "bullet/bullet.tscn",
 	"mass": 5
 }, {
+	"id": "core_bullet",
+	"display_name": "Core Bullet",
+	"scene": "core_bullet/core_bullet.tscn",
+	"mass": 5
+}, {
 	"id": "drone",
 	"display_name": "Drone",
 	"scene": "drone/drone.tscn",

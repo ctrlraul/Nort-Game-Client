@@ -9,7 +9,7 @@ signal destroyed()
 @onready var __hitbox_collision_shape: CollisionShape2D = %CollisionShape2D
 @onready var __sprite: Sprite2D = %Sprite2D
 
-var gimmick: Node2D
+var gimmicks: Array[Node2D] = []
 var body: CraftBody
 var hull: float = 10
 var hull_max: float = 10
@@ -42,15 +42,22 @@ func set_blueprint(value: CraftBlueprintPart) -> void:
 	shape.size = __sprite.texture.get_size()
 	__hitbox_collision_shape.shape = shape
 
+	var gimmick_definitions: Array[Gimmick] = []
+
 	if Assets.is_core(blueprint):
+		gimmick_definitions.append(Assets.get_gimmick("bullet"))
 		var core_light = Sprite2D.new()
 		core_light.texture = Assets.CORE_LIGHT
 		add_child(core_light)
 
 	if blueprint.data.gimmick != null:
-		gimmick = blueprint.data.gimmick.scene.instantiate()
+		gimmick_definitions.append(blueprint.data.gimmick)
+
+	for gimmick_def in gimmick_definitions:
+		var gimmick = gimmick_def.scene.instantiate()
 		gimmick.position = position
 		gimmick.part = self
+		gimmicks.append(gimmick)
 
 
 func take_damage(damage: float) -> void:
@@ -67,7 +74,7 @@ func take_damage(damage: float) -> void:
 
 		NodeUtils.remove_self(self)
 
-		if gimmick != null:
+		for gimmick in gimmicks:
 			NodeUtils.remove_self(gimmick)
 
 
@@ -88,9 +95,10 @@ func __drop() -> void:
 	var setup = OrphanPartSetup.new()
 
 	setup.place = global_position
+	setup.angle = global_rotation
 	setup.definition = blueprint.data.definition
 	setup.flipped = blueprint.flipped
 	setup.gimmick = blueprint.data.gimmick
-	setup.shiny = blueprint.data.shiny || randf() > GameConfig.DROP_RATE_SHINY
+	setup.shiny = blueprint.data.shiny || randf() <= GameConfig.DROP_RATE_SHINY
 
 	Stage.spawn_dropped_part(setup)

@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://bet5rxmhei2mq"]
 
-[ext_resource type="Script" path="res://stage/craft_components/player_controls.gd" id="1_rqn43"]
+[ext_resource type="Script" path="res://stage/entity_components/player_controls.gd" id="1_rqn43"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0jwcy"]
 size = Vector2(10, 10)

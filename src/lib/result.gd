@@ -5,12 +5,19 @@ var value = null
 var error: String = ""
 
 
-static func val(_value) -> Result:
+
+func has_error() -> bool:
+	return error != ""
+
+
+
+static func with_value(val) -> Result:
 	var result = Result.new()
-	result.value = _value
+	result.value = val
 	return result
 
-static func err(_error: String) -> Result:
+
+static func with_error(message: String) -> Result:
 	var result = Result.new()
-	result.error = _error
+	result.error = message
 	return result

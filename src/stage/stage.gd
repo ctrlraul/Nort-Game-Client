@@ -14,7 +14,7 @@ signal player_destroyed()
 
 
 var player: Craft = null
-var player_flight_comp: CraftComponentFlight = null
+var player_flight_comp: FlightComponent = null
 var logger: Logger = Logger.new("Stage")
 
 
@@ -82,7 +82,7 @@ func spawn_player_craft(setup: PlayerCraftSetup = PlayerCraftSetup.new()) -> Cra
 
 	player.destroyed.connect(_on_player_destroyed)
 
-	player_flight_comp = player.get_component(CraftComponentFlight)
+	player_flight_comp = player.get_component(FlightComponent)
 
 	camera.position = player.position
 	camera.zoom = Vector2.ONE * 0.5

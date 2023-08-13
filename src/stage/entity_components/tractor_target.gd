@@ -1,7 +1,4 @@
-class_name CraftComponentTractorTarget extends CraftComponent
-
-signal targeted()
-signal released()
+class_name TractorTargetComponent extends EntityComponent
 
 
 
@@ -22,7 +19,17 @@ var in_range: bool = false :
 func _ready() -> void:
 	super()
 	animation_player.play("hide")
-	craft.set_component(CraftComponentTractorTarget, self)
+	entity.set_component(TractorTargetComponent, self)
+
+
+
+func targeted(_by: Craft) -> void:
+	pass
+
+
+func released(_from: Craft) -> void:
+	pass
+
 
 
 func _on_animation_player_animation_finished(anim_name: StringName) -> void:

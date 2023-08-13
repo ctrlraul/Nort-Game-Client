@@ -137,7 +137,7 @@ theme_override_constants/separation = 0
 [node name="PanelContainer" type="PanelContainer" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(360, 0)
 layout_mode = 2
-size_flags_horizontal = 2
+size_flags_horizontal = 0
 size_flags_vertical = 3
 mouse_filter = 2
 
@@ -174,11 +174,6 @@ label_settings = ExtResource("5_84hrd")
 [node name="VBoxContainer2" type="HBoxContainer" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer3"]
 layout_mode = 2
 
-[node name="TestButton" type="Button" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer3/VBoxContainer2"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "Test"
-
 [node name="ExportButton" type="Button" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer3/VBoxContainer2"]
 layout_mode = 2
 size_flags_horizontal = 3
@@ -189,23 +184,39 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "Import"
 
-[node name="Center" type="PanelContainer" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Center" type="MarginContainer" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 6
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="TopButtons" type="HBoxContainer" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/Center"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+
+[node name="TestButton" type="Button" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/Center/TopButtons"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "Test"
+
+[node name="CraftBuilder" type="Button" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/Center/TopButtons"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "Craft Builder"
+
+[node name="BottomButtons" type="HBoxContainer" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/Center"]
+layout_mode = 2
+size_flags_horizontal = 4
 size_flags_vertical = 8
-size_flags_stretch_ratio = 2.0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/Center"]
-layout_mode = 2
-
-[node name="AddCraftButton" type="Button" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/Center/HBoxContainer"]
+[node name="AddCraftButton" type="Button" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/Center/BottomButtons"]
+custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 text = "Add Craft"
 
 [node name="MarginContainer" type="MarginContainer" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(360, 0)
 layout_mode = 2
-size_flags_horizontal = 3
 mouse_filter = 2
 theme_override_constants/margin_left = 0
 theme_override_constants/margin_top = 0
@@ -225,8 +236,9 @@ size_flags_horizontal = 3
 text = "+ Craft"
 
 [connection signal="gui_input" from="Theme/Sandbox" to="." method="_on_sandbox_gui_input"]
-[connection signal="pressed" from="Theme/MarginContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer3/VBoxContainer2/TestButton" to="." method="_on_test_button_pressed"]
 [connection signal="pressed" from="Theme/MarginContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer3/VBoxContainer2/ExportButton" to="." method="_on_export_button_pressed"]
 [connection signal="pressed" from="Theme/MarginContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer3/VBoxContainer2/ImportButton" to="." method="_on_import_button_pressed"]
-[connection signal="pressed" from="Theme/MarginContainer/VBoxContainer/HBoxContainer/Center/HBoxContainer/AddCraftButton" to="." method="_on_add_craft_button_pressed"]
+[connection signal="pressed" from="Theme/MarginContainer/VBoxContainer/HBoxContainer/Center/TopButtons/TestButton" to="." method="_on_test_button_pressed"]
+[connection signal="pressed" from="Theme/MarginContainer/VBoxContainer/HBoxContainer/Center/TopButtons/CraftBuilder" to="." method="_on_craft_builder_pressed"]
+[connection signal="pressed" from="Theme/MarginContainer/VBoxContainer/HBoxContainer/Center/BottomButtons/AddCraftButton" to="." method="_on_add_craft_button_pressed"]
 [connection signal="pressed" from="Theme/MarginContainer/VBoxContainer/HBoxContainer/AddCraftButton" to="." method="_on_add_craft_button_pressed"]

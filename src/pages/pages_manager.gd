@@ -1,6 +1,7 @@
 extends Node
+
+signal __page_mounted()
 signal page_changed()
-signal page_mounted()
 signal page_change_error()
 
 
@@ -12,60 +13,61 @@ signal page_change_error()
 var default_scene_path: String
 var history: Array[String] = []
 
-var current_page: Page :
-	get:
-		return tree.current_scene if tree.current_scene is Page else null
-
 
 
 func _ready() -> void:
 
 	assert(default_scene_path != "", "Set default scene path asap")
 
+	var current_page: Page = get_current_page()
+
+	if current_page:
+		await current_page._mount(null)
+		__page_mounted.emit()
+
+
+
+func get_current_page() -> Page:
 	if tree.current_scene is Page:
-		await tree.current_scene._mount(null)
-		page_mounted.emit()
+		return tree.current_scene
+	return null
+
+
+func go_to(scene_path: String, data: Dictionary = {}) -> Signal:
+
+	if __change_page(scene_path, data).has_error():
+		return TimeUtils.instant()
+
+	history.append(scene_path)
+
+	return __page_mounted
+
+
+func pop(data: Dictionary = {}) -> Signal:
+
+	history.pop_back()
+
+	var scene_path = default_scene_path if history.is_empty() else history.back()
+
+	if __change_page(scene_path, data).has_error():
+		return TimeUtils.instant()
+
+	return __page_mounted
 
 
 
-func go_to(scene_path: String, data = null) -> Signal:
+func __change_page(scene_path: String, data = null) -> Result:
+
+	var issue = tree.change_scene_to_file(scene_path)
+
+	if issue != OK:
+		var message = "Failed to go to page '%s': %s" % [scene_path, error_string(issue)]
+		page_change_error.emit(message)
+		return Result.with_error(message)
 
 	tree.node_added.connect(_on_tree_node_added.bind(scene_path, data))
 
-	var err = tree.change_scene_to_file(scene_path)
-
-	if err != OK:
-		page_change_error.emit("Failed to go to page '%s': %s" % [scene_path, error_string(err)])
-		tree.node_added.disconnect(_on_tree_node_added)
-		return tree.create_timer(0.0001).timeout
-
-	else:
-		history.append(scene_path)
-
-	return page_mounted
-
-
-func pop(data = null) -> Signal:
-
-	var scene_path = history.pop_front()
-
-	if scene_path == null:
-		scene_path = default_scene_path
-
-	return __change_scene(scene_path, data)
-
-
-
-func __change_scene(scene_path: String, data = null) -> Signal:
-
-	tree.node_added.connect(_on_tree_node_added.bind(scene_path, data))
-
-	var err = tree.change_scene_to_file(scene_path)
-
-	if err != OK:
-		page_change_error.emit("Failed to go to page '%s': %s" % [scene_path, error_string(err)])
-
-	return page_mounted
+	return Result.new()
 
 
 
@@ -83,4 +85,4 @@ func _on_tree_node_added(node: Node, scene_path: String, data) -> void:
 	await node.ready
 	await node._mount(data)
 
-	page_mounted.emit()
+	__page_mounted.emit()

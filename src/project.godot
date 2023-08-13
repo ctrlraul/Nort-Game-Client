@@ -22,6 +22,7 @@ boot_splash/minimum_display_time=500
 
 [autoload]
 
+TimeUtils="*res://lib/time_utils.gd"
 Background="*res://stage/background.tscn"
 Stage="*res://stage/stage.tscn"
 Transition="*res://transition/transition.tscn"
@@ -34,7 +35,7 @@ DragEmitter="*res://common/drag_emitter.gd"
 
 [display]
 
-window/size/viewport_width=1536
+window/size/viewport_width=1506
 window/size/viewport_height=864
 
 [filesystem]

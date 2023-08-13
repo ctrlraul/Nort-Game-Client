@@ -1,4 +1,4 @@
-class_name CraftComponentDroneAI extends CraftComponent
+class_name DroneAIComponent extends EntityComponent
 
 
 
@@ -7,7 +7,7 @@ const __PATH_POINT_DISTANCE_TOLERANCE = 200
 
 
 
-var __flight_comp: CraftComponentFlight
+var __flight_comp: FlightComponent
 var __check_time_offset = randi() % __FRAMES_BETWEEN_CHECKS
 var path: Array[Vector2] = []
 
@@ -15,11 +15,11 @@ var path: Array[Vector2] = []
 
 func _ready() -> void:
 	super()
-	craft.set_component(CraftComponentDroneAI, self)
+	craft.set_component(DroneAIComponent, self)
 
 
 func _post_ready() -> void:
-	__flight_comp = craft.get_component(CraftComponentFlight)
+	__flight_comp = craft.get_component(FlightComponent)
 
 
 func _physics_process(_delta: float) -> void:

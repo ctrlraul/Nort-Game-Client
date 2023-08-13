@@ -1,4 +1,4 @@
-class_name CraftComponentStats extends CraftComponent
+class_name StatsComponent extends EntityComponent
 
 
 
@@ -10,7 +10,7 @@ class_name CraftComponentStats extends CraftComponent
 func _ready() -> void:
 
 	super()
-	craft.set_component(CraftComponentStats, self)
+	craft.set_component(StatsComponent, self)
 
 	var half_size = Assets.get_blueprint_size(craft.blueprint) * 0.5
 

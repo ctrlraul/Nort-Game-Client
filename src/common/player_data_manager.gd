@@ -59,13 +59,13 @@ func store_local_player(player_data: Player) -> Result:
 	var create_dir_result = __create_local_players_dir()
 
 	if create_dir_result.error != "":
-		return Result.err("Failed create local player data directory: %s" % create_dir_result.error)
+		return Result.with_error("Failed create local player data directory: %s" % create_dir_result.error)
 
 	var path = LOCAL_PLAYERS_DIR.path_join("%s.json" % player_data.id)
 	var store_result = JSONUtils.to_file(path, player_data.to_dictionary(), "\t")
 
 	if store_result.error != "":
-		return Result.err("Failed to store local player data: %s" % store_result.error)
+		return Result.with_error("Failed to store local player data: %s" % store_result.error)
 
 	return Result.new()
 
@@ -77,7 +77,7 @@ func delete_local_player(player_data: Player) -> Result:
 	var remove_error = DirAccess.remove_absolute(file_path)
 
 	if remove_error != OK:
-		return Result.err("Failed to delete local player: %s" % error_string(remove_error))
+		return Result.with_error("Failed to delete local player: %s" % error_string(remove_error))
 
 	local_player_deleted.emit(player_data)
 
@@ -96,7 +96,7 @@ func __get_local_player(path: String) -> Result:
 	if result.error != "":
 		return result
 
-	return Result.val(Player.new(result.value))
+	return Result.with_value(Player.new(result.value))
 
 
 func __create_local_players_dir() -> Result:
@@ -107,6 +107,6 @@ func __create_local_players_dir() -> Result:
 	var error: int = DirAccess.make_dir_recursive_absolute(LOCAL_PLAYERS_DIR)
 
 	if error != OK:
-		return Result.err(error_string(error))
+		return Result.with_error(error_string(error))
 
 	return Result.new()

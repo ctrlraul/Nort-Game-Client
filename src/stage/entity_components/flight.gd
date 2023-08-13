@@ -1,4 +1,4 @@
-class_name CraftComponentFlight extends CraftComponent
+class_name FlightComponent extends EntityComponent
 
 
 
@@ -16,7 +16,7 @@ var __acceleration: float = 1
 
 func _ready() -> void:
 	super()
-	craft.set_component(CraftComponentFlight, self)
+	craft.set_component(FlightComponent, self)
 
 
 func _physics_process(delta: float) -> void:

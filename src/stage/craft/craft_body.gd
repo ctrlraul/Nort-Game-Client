@@ -30,8 +30,10 @@ func _ready() -> void:
 
 
 func set_blueprint(blueprint: CraftBlueprint) -> void:
+
 	for part_blueprint in blueprint.parts:
 		__add_part(part_blueprint)
+
 	core = __add_part(blueprint.core)
 
 
@@ -55,7 +57,7 @@ func __add_part(blueprint: CraftBlueprintPart) -> CraftPart:
 	part.set_blueprint(blueprint)
 	part.destroyed.connect(func(): part_destroyed.emit(part))
 
-	if part.gimmick:
-		gimmicks_container.add_child(part.gimmick)
+	for gimmick in part.gimmicks:
+		gimmicks_container.add_child(gimmick)
 
 	return part

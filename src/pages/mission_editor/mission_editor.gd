@@ -10,7 +10,7 @@ enum Action {
 	PANNING,
 }
 
-const GRID_SNAP = Vector2.ONE * 32
+const GRID_SNAP = Vector2.ONE * 64
 const ZOOM_STEP = 0.1
 const ZOOM_MIN = 0.1
 const ZOOM_MAX = 1
@@ -52,8 +52,10 @@ func _mount(data) -> void:
 
 	NodeUtils.clear(entities_container)
 
-	if data != null:
-		set_mission(data.mission)
+	var mission = data.get("mission", null)
+
+	if mission != null:
+		set_mission(mission)
 	else:
 		mission_id_label.text = Assets.generate_uid()
 		add_entity(PlayerCraftSetup.new())
@@ -336,7 +338,7 @@ func _on_entity_pressed(entity: EditorEntity) -> void:
 	select(entity)
 
 
-func _on_entity_drag_start(entity: EditorEntity) -> void:
+func _on_entity_drag_start(_entity: EditorEntity) -> void:
 
 	explorer.clear()
 
@@ -358,6 +360,15 @@ func _on_test_button_pressed() -> void:
 			"from_editor": true
 		})
 	)
+
+
+func _on_craft_builder_pressed() -> void:
+	Transition.callback(
+		PagesManager.go_to.bind(GameConfig.Routes.WORKSHOP, {
+			"editor_mode": true
+		})
+	)
+
 
 
 func _on_export_button_pressed() -> void:

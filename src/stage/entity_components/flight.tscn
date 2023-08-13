@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://p46oi0to68au"]
+
+[ext_resource type="Script" path="res://stage/entity_components/flight.gd" id="1_13w1j"]
+
+[node name="Flight" type="Node2D"]
+script = ExtResource("1_13w1j")

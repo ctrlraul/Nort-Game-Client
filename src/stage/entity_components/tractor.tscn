@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://c5uvcuoayidxg"]
 
-[ext_resource type="Script" path="res://stage/craft_components/tractor.gd" id="1_1n403"]
+[ext_resource type="Script" path="res://stage/entity_components/tractor.gd" id="1_1n403"]
 [ext_resource type="Texture2D" uid="uid://c8ieoxpurelc0" path="res://assets/images/smooth_line_texture.png" id="1_nr0j0"]
 
 [node name="Tractor" type="Node2D"]

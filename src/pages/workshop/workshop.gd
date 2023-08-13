@@ -44,6 +44,7 @@ var panning: bool = false
 var area_for_part: Dictionary = {}
 var part_for_area: Dictionary = {}
 var color: Color : set = set_color
+var editor_mode: bool
 
 
 
@@ -56,23 +57,25 @@ func _ready() -> void:
 	update_camera()
 
 
-func _mount(_data) -> void:
+func _mount(data) -> void:
 
 	await Game.initialize()
 
+	editor_mode = Game.dev || data.get("editor_mode", false)
+
 	repopulate_inventory()
 
-	if Game.current_player:
-		blueprint_id_input.visible = false
-		blueprint_buttons.visible = false
-		set_blueprint(Game.current_player.current_blueprint)
-		color = Assets.player_faction.color
-	else:
+	if editor_mode:
 		blueprint_id_input.visible = true
 		blueprint_buttons.visible = true
 		set_blueprint(Assets.initial_blueprint)
 		blueprint_id_input.text = ""
 		color = Assets.enemy_faction_1.color
+	else:
+		blueprint_id_input.visible = false
+		blueprint_buttons.visible = false
+		set_blueprint(Game.current_player.current_blueprint)
+		color = Assets.player_faction.color
 
 
 
@@ -168,7 +171,7 @@ func repopulate_inventory() -> void:
 	var hulls: Array[PartData]
 	var cores: Array[PartData]
 
-	if Game.dev:
+	if editor_mode:
 		hulls = []
 		cores = []
 		for part in Assets.get_hulls():
@@ -196,16 +199,17 @@ func zoom(delta: int) -> void:
 	var change = canvas.scale.x + delta * ZOOM_STEP * canvas.scale.x
 	var new_zoom = Vector2.ONE * clamp(change, ZOOM_MIN, ZOOM_MAX)
 
-	if new_zoom != canvas.scale:
+	if new_zoom == canvas.scale:
+		return
 
-		var local_mouse = canvas.get_local_mouse_position()
+	var local_mouse = canvas.get_local_mouse_position()
 
-		canvas.scale = new_zoom
-		canvas.position -= local_mouse * canvas.scale * ZOOM_STEP * delta
+	canvas.scale = new_zoom
+	canvas.position -= local_mouse * canvas.scale * ZOOM_STEP * delta
 
-		update_camera()
+	update_camera()
 
-		part_controls.update_transform(canvas)
+	part_controls.update_transform(canvas)
 
 
 func update_camera() -> void:

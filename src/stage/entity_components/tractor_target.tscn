@@ -1,7 +1,7 @@
 [gd_scene load_steps=9 format=3 uid="uid://bthskvmroiyr"]
 
-[ext_resource type="Script" path="res://stage/craft_components/tractor_target.gd" id="1_t8hf1"]
-[ext_resource type="Texture2D" uid="uid://v3cdjlnj27p3" path="res://assets/images/tractor_target_section.png" id="1_wk7cl"]
+[ext_resource type="Script" path="res://stage/entity_components/tractor_target.gd" id="1_f3lrr"]
+[ext_resource type="Texture2D" uid="uid://v3cdjlnj27p3" path="res://assets/images/tractor_target_section.png" id="2_yd1it"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_5uyh7"]
 radius = 100.0
@@ -128,7 +128,7 @@ _data = {
 
 [node name="TractorTarget" type="Node2D"]
 z_index = 1
-script = ExtResource("1_t8hf1")
+script = ExtResource("1_f3lrr")
 
 [node name="Area2D" type="Area2D" parent="."]
 unique_name_in_owner = true
@@ -144,21 +144,21 @@ shape = SubResource("CircleShape2D_5uyh7")
 
 [node name="Sprite" type="Sprite2D" parent="Sections/Section"]
 position = Vector2(0, -100)
-texture = ExtResource("1_wk7cl")
+texture = ExtResource("2_yd1it")
 
 [node name="Section2" type="Node2D" parent="Sections"]
 rotation = 2.0944
 
 [node name="Sprite" type="Sprite2D" parent="Sections/Section2"]
 position = Vector2(0, -100)
-texture = ExtResource("1_wk7cl")
+texture = ExtResource("2_yd1it")
 
 [node name="Section3" type="Node2D" parent="Sections"]
 rotation = -2.09439
 
 [node name="Sprite" type="Sprite2D" parent="Sections/Section3"]
 position = Vector2(0, -100)
-texture = ExtResource("1_wk7cl")
+texture = ExtResource("2_yd1it")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 unique_name_in_owner = true

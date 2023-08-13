@@ -1,18 +1,18 @@
-class_name CraftComponentPlayerControls extends CraftComponent
+class_name PlayerControlsComponent extends EntityComponent
 
 
 
 @onready var __cursor_area: Area2D = %CursorArea
 
 var __interactable: Area2D
-var __tractor_comp: CraftComponentTractor
-var __flight_comp: CraftComponentFlight
+var __tractor_comp: TractorComponent
+var __flight_comp: FlightComponent
 
 
 
 func _ready() -> void:
 	super()
-	craft.set_component(CraftComponentPlayerControls, self)
+	craft.set_component(PlayerControlsComponent, self)
 	set_process_unhandled_input(false)
 
 
@@ -31,8 +31,8 @@ func _unhandled_input(_event: InputEvent) -> void:
 
 
 func _post_ready() -> void:
-	__tractor_comp = craft.get_component(CraftComponentTractor)
-	__flight_comp = craft.get_component(CraftComponentFlight)
+	__tractor_comp = craft.get_component(TractorComponent)
+	__flight_comp = craft.get_component(FlightComponent)
 
 
 
@@ -57,7 +57,7 @@ func __interact() -> void:
 	if __interactable == null:
 		Logger.error_static("Player Controls", "Interaction with '%s' is not implemented" % __interactable)
 
-	if __interactable.owner is CraftComponentTractorTarget:
+	if __interactable.owner is TractorTargetComponent:
 		__tractor_comp.target = __interactable.owner
 
 
@@ -68,7 +68,7 @@ func __update_interactable() -> void:
 
 	if nearest_area != __interactable:
 
-		if __interactable != null && __interactable.owner is CraftComponentTractorTarget:
+		if __interactable != null && __interactable.owner is TractorTargetComponent:
 			__interactable.owner.in_range = false
 
 		__interactable = nearest_area
@@ -78,7 +78,7 @@ func __update_interactable() -> void:
 
 		else:
 			set_process_unhandled_input(true)
-			if __interactable.owner is CraftComponentTractorTarget:
+			if __interactable.owner is TractorTargetComponent:
 				__interactable.owner.in_range = true
 
 

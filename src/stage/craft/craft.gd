@@ -1,16 +1,15 @@
-class_name Craft extends Node2D
+class_name Craft extends Entity
 
 signal destroyed()
-signal stats_changed(craft: Craft)
 
 
 
-@export var FlightComponent: Script
-@export var PlayerControlsComponent: PackedScene
-@export var TractorComponent: PackedScene
-@export var TractorTargetComponent: PackedScene
-@export var DroneAIComponent: PackedScene
-@export var StatsDisplayComponent: PackedScene
+@export var FlightComponentScene: PackedScene
+@export var PlayerControlsComponentScene: PackedScene
+@export var TractorComponentScene: PackedScene
+@export var TractorTargetComponentScene: PackedScene
+@export var DroneAIComponentScene: PackedScene
+@export var StatsDisplayComponentScene: PackedScene
 
 
 
@@ -18,39 +17,38 @@ signal stats_changed(craft: Craft)
 
 @onready var behavior_component_sets = {
 	CraftSetup.Behavior.PLAYER: [
-		FlightComponent,
-		TractorComponent,
-		PlayerControlsComponent
+		FlightComponentScene,
+		TractorComponentScene,
+		PlayerControlsComponentScene
 	],
 	CraftSetup.Behavior.NONE: [],
 	CraftSetup.Behavior.FIGHTER: [
-		FlightComponent,
-#		FighterAIComponent,
-		StatsDisplayComponent,
+		FlightComponentScene,
+#		FighterAIComponentScene,
+		StatsDisplayComponentScene,
 	],
 	CraftSetup.Behavior.DRONE: [
-		FlightComponent,
-		TractorTargetComponent,
-		DroneAIComponent,
-		StatsDisplayComponent,
+		FlightComponentScene,
+		TractorTargetComponentScene,
+		DroneAIComponentScene,
+		StatsDisplayComponentScene,
 	],
 	CraftSetup.Behavior.TURRET: [
-		TractorTargetComponent,
-		StatsDisplayComponent,
+		TractorTargetComponentScene,
+		StatsDisplayComponentScene,
 	],
 	CraftSetup.Behavior.CARRIER: [
-#		CarrierAIComponent
-		StatsDisplayComponent,
+#		CarrierAIComponentScene,
+		StatsDisplayComponentScene,
 	],
 	CraftSetup.Behavior.OUTPOST: [
-#		OutpostAIComponent
-		StatsDisplayComponent,
+#		OutpostAIComponentScene,
+		StatsDisplayComponentScene,
 	]
 }
 
 
 
-var __components: Dictionary = {}
 var faction: Faction
 var crippled: bool = false
 var hull: float = 30
@@ -82,8 +80,6 @@ func set_blueprint(value: CraftBlueprint) -> void:
 
 	body.set_blueprint(blueprint)
 
-	stats_changed.emit(self)
-
 
 func set_faction(value: Faction) -> void:
 	faction = value
@@ -92,28 +88,14 @@ func set_faction(value: Faction) -> void:
 
 func set_behavior(behavior: CraftSetup.Behavior) -> void:
 	for Component in behavior_component_sets[behavior]:
-		if Component is PackedScene:
-			add_child(Component.instantiate())
-		else:
-			add_child(Component.new())
+		add_child(Component.instantiate())
 
 
-func get_component(type):
-	return __components.get(type, null)
+func take_hit(source, part: CraftPart) -> void:
 
+	if source is BulletGimmick:
 
-func set_component(type, instance: Node) -> void:
-	if __components.has(type):
-		push_error("Only one instance of each component allowed")
-	else:
-		__components[type] = instance
-
-
-func take_hit(source: CraftPart, part: CraftPart) -> void:
-
-	if source.gimmick is BulletGimmick:
-
-		hull -= source.gimmick.DAMAGE
+		hull -= source.DAMAGE
 
 		if hull < 0:
 
@@ -129,8 +111,6 @@ func take_hit(source: CraftPart, part: CraftPart) -> void:
 
 			hull = 0
 
-		stats_changed.emit(self)
-
 
 
 func __destroy() -> void:
@@ -143,8 +123,6 @@ func __destroy() -> void:
 
 	queue_free()
 	destroyed.emit()
-
-	stats_changed.emit(self)
 
 
 

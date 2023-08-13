@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://b4v5a6vfbueqm"]
 
-[ext_resource type="Script" path="res://stage/craft_components/stats_display.gd" id="1_uqnim"]
+[ext_resource type="Script" path="res://stage/entity_components/stats_display.gd" id="1_uqnim"]
 [ext_resource type="Texture2D" uid="uid://befuwhu6fhiow" path="res://assets/images/white_pixel.png" id="2_knlil"]
 
 [node name="StatsDisplay" type="Node2D"]
