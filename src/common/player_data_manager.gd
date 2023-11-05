@@ -1,3 +1,4 @@
+
 extends Node
 
 signal local_player_deleted(player_data: Player)

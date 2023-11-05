@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=43 format=3 uid="uid://85byrm5eq3ab"]
+[gd_resource type="Theme" load_steps=44 format=3 uid="uid://85byrm5eq3ab"]
 
 [ext_resource type="Texture2D" uid="uid://dl7vqe6sde21r" path="res://theme/checkbox_checked.png" id="4_ip0fr"]
 [ext_resource type="Texture2D" uid="uid://b47a121qc1p71" path="res://theme/checkbox.png" id="5_ial58"]
@@ -170,6 +170,18 @@ corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 corner_detail = 1
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v3y74"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+bg_color = Color(0.4, 0.768627, 0.407843, 0.0470588)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+corner_detail = 1
+
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_r3fum"]
 content_margin_left = 15.0
 content_margin_top = 15.0
@@ -268,7 +280,7 @@ corner_detail = 1
 
 [resource]
 default_font = ExtResource("8_pl8tx")
-default_font_size = 20
+default_font_size = 22
 BoxContainer/constants/separation = 10
 Button/styles/hover = SubResource("StyleBoxTexture_ea0kh")
 Button/styles/normal = SubResource("StyleBoxTexture_y4ojj")
@@ -283,6 +295,7 @@ CheckBox/styles/normal = SubResource("StyleBoxEmpty_pyhw8")
 CheckBox/styles/pressed = SubResource("StyleBoxEmpty_03fju")
 GridContainer/constants/h_separation = 10
 GridContainer/constants/v_separation = 10
+Label/colors/font_color = Color(0.729412, 1, 0.854902, 0.729412)
 MarginContainer/constants/margin_bottom = 10
 MarginContainer/constants/margin_left = 10
 MarginContainer/constants/margin_right = 10
@@ -302,6 +315,8 @@ PanelContainerAmber/base_type = &"PanelContainer"
 PanelContainerAmber/styles/panel = SubResource("StyleBoxTexture_yfs5t")
 PanelContainerDarken/base_type = &"PanelContainer"
 PanelContainerDarken/styles/panel = SubResource("StyleBoxFlat_1tfn4")
+PanelContainerLight/base_type = &"PanelContainer"
+PanelContainerLight/styles/panel = SubResource("StyleBoxFlat_v3y74")
 PanelContainerRuby/base_type = &"PanelContainer"
 PanelContainerRuby/styles/panel = SubResource("StyleBoxTexture_r3fum")
 PanelDarken/base_type = &"Panel"
@@ -320,6 +335,7 @@ PopupMenu/styles/labeled_separator_right = SubResource("StyleBoxLine_6ru4c")
 PopupMenu/styles/panel = SubResource("StyleBoxTexture_cp5fa")
 PopupMenu/styles/panel_disabled = SubResource("StyleBoxTexture_keuds")
 PopupMenu/styles/separator = SubResource("StyleBoxLine_ammhd")
+RichTextLabel/colors/default_color = Color(0.86, 1, 0.925333, 0.831373)
 ScrollContainer/styles/panel = SubResource("StyleBoxEmpty_o7f1p")
 VScrollBar/styles/grabber = SubResource("StyleBoxFlat_skr45")
 VScrollBar/styles/grabber_highlight = SubResource("StyleBoxFlat_7y6or")

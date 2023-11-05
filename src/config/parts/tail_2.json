@@ -1,0 +1,9 @@
+{
+	"id": "tail_2",
+	"displayName": "Rocket",
+	"textureName": "tail_2.png",
+	"type": "HULL",
+	"hull": 35,
+	"core": 25,
+	"mass": 10
+}

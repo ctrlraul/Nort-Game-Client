@@ -1,9 +1,0 @@
-{
-	"id": "tiny_center_1",
-	"display_name": "Tiny Center",
-	"texture": "tiny_center_1.png",
-	"type": "HULL",
-	"hull": 10,
-	"core": 10,
-	"mass": 5
-}

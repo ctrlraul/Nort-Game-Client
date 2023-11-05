@@ -1,13 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://6wfise1ybf04"]
+[gd_scene load_steps=2 format=3 uid="uid://6wfise1ybf04"]
 
-[ext_resource type="Script" path="res://stage/stage.gd" id="1_xoyjq"]
-[ext_resource type="PackedScene" uid="uid://b1xci2ckb2rvw" path="res://stage/craft/craft.tscn" id="2_ptkh3"]
-[ext_resource type="PackedScene" uid="uid://cv32wh2kql0cr" path="res://stage/dropped_part/dropped_part.tscn" id="3_g11cx"]
+[ext_resource type="Script" path="res://Nort/Stage.cs" id="1_8dh8q"]
 
 [node name="Stage" type="Node2D"]
-script = ExtResource("1_xoyjq")
-CraftScene = ExtResource("2_ptkh3")
-DroppedPartScene = ExtResource("3_g11cx")
+script = ExtResource("1_8dh8q")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 unique_name_in_owner = true

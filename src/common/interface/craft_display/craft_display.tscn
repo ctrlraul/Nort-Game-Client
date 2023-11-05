@@ -1,15 +1,14 @@
 [gd_scene load_steps=3 format=3 uid="uid://bjgbkm0q3g02x"]
 
-[ext_resource type="Script" path="res://common/interface/craft_display/craft_display.gd" id="1_cuc7t"]
+[ext_resource type="Script" path="res://Nort/UI/DisplayCraft.cs" id="1_fgu7t"]
 [ext_resource type="PackedScene" uid="uid://d3adgnvi6si7i" path="res://common/interface/craft_display/craft_display_part.tscn" id="2_oi64w"]
 
-[node name="CraftDisplay" type="Control"]
+[node name="DisplayCraft" type="Control"]
 layout_mode = 3
 anchors_preset = 0
 scale = Vector2(0.5, 0.5)
 mouse_filter = 2
-script = ExtResource("1_cuc7t")
-PartScene = ExtResource("2_oi64w")
+script = ExtResource("1_fgu7t")
 
 [node name="PartsContainer" type="Control" parent="."]
 unique_name_in_owner = true

@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://lym42cvdb0b3"]
 
-[ext_resource type="Script" path="res://common/interface/generic_popup/generic_popup.gd" id="1_fasxf"]
+[ext_resource type="Script" path="res://Nort/Popup/GenericPopup.cs" id="1_2vat5"]
 [ext_resource type="Theme" uid="uid://85byrm5eq3ab" path="res://theme/theme.tres" id="2_vwwqx"]
 [ext_resource type="Texture2D" uid="uid://bb2c5v84mdbhh" path="res://assets/images/vignette.png" id="3_bmsiv"]
 
@@ -192,7 +192,7 @@ _data = {
 
 [node name="GenericPopup" type="CanvasLayer"]
 layer = 2
-script = ExtResource("1_fasxf")
+script = ExtResource("1_2vat5")
 
 [node name="Theme" type="Control" parent="."]
 layout_mode = 3
@@ -248,9 +248,10 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+unique_name_in_owner = true
 libraries = {
 "": SubResource("AnimationLibrary_kaj3e")
 }
 
 [connection signal="pressed" from="Theme/Outside" to="." method="_on_outside_pressed"]
-[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="OnAnimationPlayerAnimationFinished"]

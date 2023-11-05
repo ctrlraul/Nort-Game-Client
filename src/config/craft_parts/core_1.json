@@ -1,9 +1,0 @@
-{
-	"id": "core_1",
-	"display_name": "Core One",
-	"texture": "core_1.png",
-	"type": "CORE",
-	"hull": 40,
-	"core": 20,
-	"mass": 15
-}

@@ -1,5 +1,5 @@
 {
 	"id": "emerald",
-	"display_name": "Emerald",
-	"color": "#00ff80"
+	"displayName": "Emerald",
+	"colorHex": "#00ff80"
 }

@@ -21,9 +21,9 @@ var dev: bool :
 
 func _ready() -> void:
 
-	PagesManager.default_scene_path = GameConfig.Routes.MAIN_MENU
-	PagesManager.page_change_error.connect(PopupsManager.error)
-	PagesManager.page_changed.connect(Stage.clear)
+#	PagesManager.default_scene_path = GameConfig.Routes.MAIN_MENU
+#	PagesManager.page_change_error.connect(PopupsManager.error)
+#	PagesManager.page_changed.connect(Stage.clear)
 
 	if __is_running_main_scene():
 		Transition.cover_instantly()

@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://d3adgnvi6si7i"]
 
 [ext_resource type="Script" path="res://common/interface/craft_display/craft_display_part.gd" id="1_j0avd"]
-[ext_resource type="PackedScene" uid="uid://uk8tpg655i5w" path="res://common/interface/part_display/part_display.tscn" id="2_m1uc2"]
+[ext_resource type="PackedScene" uid="uid://uk8tpg655i5w" path="res://Scenes/UI/part_display.tscn" id="2_m1uc2"]
 
 [node name="CraftDisplayPart" type="Control"]
 layout_mode = 3

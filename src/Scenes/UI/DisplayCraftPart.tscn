@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://crsj1rgbvamo"]
+
+[ext_resource type="Script" path="res://Nort/UI/DisplayCraftPart.cs" id="1_ug8kq"]
+[ext_resource type="PackedScene" uid="uid://uk8tpg655i5w" path="res://Scenes/UI/DisplayPart.tscn" id="2_g7cuw"]
+
+[node name="DisplayCraftPart" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+mouse_filter = 2
+script = ExtResource("1_ug8kq")
+
+[node name="DisplayPart" parent="." instance=ExtResource("2_g7cuw")]
+unique_name_in_owner = true

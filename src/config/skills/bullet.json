@@ -1,0 +1,6 @@
+﻿{
+  "id": "bullet",
+  "displayName": "Bullet",
+  "scenePath": "bullet/bullet.tscn",
+  "mass": 5
+}

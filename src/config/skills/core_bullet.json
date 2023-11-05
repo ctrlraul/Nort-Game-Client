@@ -1,0 +1,6 @@
+﻿{
+  "id": "core_bullet",
+  "displayName": "Core Bullet",
+  "scenePath": "core_bullet/core_bullet.tscn",
+  "mass": 5
+}

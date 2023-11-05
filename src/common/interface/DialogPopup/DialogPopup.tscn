@@ -1,0 +1,42 @@
+[gd_scene load_steps=4 format=3 uid="uid://b2b440ra056gj"]
+
+[ext_resource type="PackedScene" uid="uid://lym42cvdb0b3" path="res://common/interface/generic_popup/generic_popup.tscn" id="1_gdecb"]
+[ext_resource type="Script" path="res://Nort/Popup/DialogPopup.cs" id="2_cb2ph"]
+[ext_resource type="FontVariation" uid="uid://d3mpjilq7jk34" path="res://theme/fonts/AireExterior.tres" id="3_5lmgr"]
+
+[node name="DialogPopup" instance=ExtResource("1_gdecb")]
+script = ExtResource("2_cb2ph")
+
+[node name="Window" parent="Theme/Scaler" index="0"]
+custom_minimum_size = Vector2(600, 0)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Theme/Scaler/Window" index="0"]
+layout_mode = 2
+
+[node name="TitleLabel" type="Label" parent="Theme/Scaler/Window/VBoxContainer" index="0"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Title"
+horizontal_alignment = 1
+
+[node name="MessageContainer" type="PanelContainer" parent="Theme/Scaler/Window/VBoxContainer" index="1"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"PanelContainerLight"
+
+[node name="MessageLabel" type="RichTextLabel" parent="Theme/Scaler/Window/VBoxContainer/MessageContainer" index="0"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+theme_override_fonts/normal_font = ExtResource("3_5lmgr")
+text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."
+fit_content = true
+
+[node name="ButtonsContainer" type="HBoxContainer" parent="Theme/Scaler/Window/VBoxContainer" index="2"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Button" type="Button" parent="Theme/Scaler/Window/VBoxContainer/ButtonsContainer" index="0"]
+layout_mode = 2
+theme_type_variation = &"PanelButton"
+text = "Button"

@@ -1,0 +1,6 @@
+﻿{
+  "id": "drone",
+  "displayName": "Drone Spawn",
+  "scenePath": "drone/drone.tscn",
+  "mass": 15
+}

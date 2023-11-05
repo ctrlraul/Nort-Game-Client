@@ -16,43 +16,6 @@ var core: CraftBlueprintPart
 var parts: Array[CraftBlueprintPart] = []
 
 
-
-func _init(source = null) -> void:
-
-	if source is Dictionary:
-		id = source.id
-		core = CraftBlueprintPart.new(source.core)
-
-		for source_part in source.parts:
-			parts.append(CraftBlueprintPart.new(source_part))
-
-		return
-
-	assert(source == null, "Invalid source")
-
-
-
-func to_dictionary() -> Dictionary:
-	return {
-		"id": id,
-		"core": core.to_dictionary(),
-		"parts": parts.map(func(p): return p.to_dictionary())
-	}
-
-
-
-static func get_core(blueprint: CraftBlueprint) -> int:
-
-	var result = 0
-
-	result += blueprint.core.data.definition.core
-
-	for part in blueprint.parts:
-		result += part.data.definition.core
-
-	return result
-
-
 static func get_hull(blueprint: CraftBlueprint) -> int:
 
 	var result = 0

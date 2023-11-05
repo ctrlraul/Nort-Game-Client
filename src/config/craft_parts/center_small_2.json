@@ -1,9 +1,0 @@
-{
-	"id": "center_small_2",
-	"display_name": "Basic Center",
-	"texture": "center_small_2.png",
-	"type": "HULL",
-	"hull": 30,
-	"core": 30,
-	"mass": 10
-}

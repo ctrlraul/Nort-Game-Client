@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3 uid="uid://cxdrb6lxh18qh"]
+
+[ext_resource type="Script" path="res://Nort/UI/DisplayCraft.cs" id="1_6u3l6"]
+[ext_resource type="PackedScene" uid="uid://crsj1rgbvamo" path="res://Scenes/UI/DisplayCraftPart.tscn" id="2_5bjeg"]
+
+[node name="DisplayCraft" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+scale = Vector2(0.5, 0.5)
+mouse_filter = 2
+script = ExtResource("1_6u3l6")
+displayCraftPartScene = ExtResource("2_5bjeg")
+
+[node name="PartsContainer" type="Control" parent="."]
+unique_name_in_owner = true
+anchors_preset = 0
+mouse_filter = 2
+
+[node name="Core" parent="." instance=ExtResource("2_5bjeg")]
+unique_name_in_owner = true

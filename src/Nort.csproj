@@ -1,0 +1,20 @@
+<Project Sdk="Godot.NET.Sdk/4.2.0-beta.4">
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <EnableDynamicLoading>true</EnableDynamicLoading>
+    <RootNamespace />
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="config\skills\bullet.json" />
+    <Content Include="config\skills\core_bullet.json" />
+    <Content Include="config\skills\drone.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="common\classes\" />
+    <Folder Include="lib\" />
+    <Folder Include="stage\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+</Project>
