@@ -1,0 +1,24 @@
+[gd_scene load_steps=3 format=3 uid="uid://f58y3xr2ti0s"]
+
+[ext_resource type="Script" path="res://Nort/Listing/CoresListItem.cs" id="1_4ow4u"]
+[ext_resource type="PackedScene" uid="uid://uk8tpg655i5w" path="res://Scenes/UI/DisplayPart.tscn" id="2_a8x48"]
+
+[node name="CoresListItem" type="Button"]
+custom_minimum_size = Vector2(60, 60)
+flat = true
+script = ExtResource("1_4ow4u")
+
+[node name="PartDisplay" parent="." instance=ExtResource("2_a8x48")]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.5, 0.5)
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

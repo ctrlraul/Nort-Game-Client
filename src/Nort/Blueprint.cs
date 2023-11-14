@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
+using Godot;
 using Newtonsoft.Json;
 using Nort.Interface;
+using Shouldly;
 
 namespace Nort;
 
@@ -46,6 +48,8 @@ public class Blueprint : ISavable
 
     public static BlueprintStats GetStats(Blueprint blueprint)
     {
+        blueprint.ShouldNotBeNull();
+        
         BlueprintStats stats = new()
         {
             torque = 1,
@@ -54,12 +58,14 @@ public class Blueprint : ISavable
             hull = blueprint.core.Part.hull,
             mass = blueprint.core.Mass
         };
+        
         foreach (BlueprintPart hull in blueprint.hulls)
         {
             stats.core += hull.Part.core;
             stats.hull += hull.Part.hull;
             stats.mass += hull.Mass;
         }
+        
         return stats;
     }
 }

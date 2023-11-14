@@ -22,9 +22,11 @@ boot_splash/minimum_display_time=500
 
 [autoload]
 
+Game="*res://Nort/Game.cs"
 Background="*res://stage/background.tscn"
 Stage="*res://stage/stage.tscn"
 PopupsManager="*res://Nort/PopupsManager.cs"
+PagesNavigator="*res://Nort/PagesNavigator.cs"
 
 [display]
 

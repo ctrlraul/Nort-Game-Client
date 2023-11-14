@@ -2,13 +2,16 @@ using System;
 using System.Threading.Tasks;
 using CtrlRaul;
 using Godot;
-using Nort.Page;
+using Nort.Pages;
 
 namespace Nort;
 
-public class Game : Singleton<Game>
+public partial class Game : Node
 {
-    private event Action<Player> PlayerChanged;
+    public static Game Instance { get; private set; }
+    private readonly Logger logger;
+    private event Action Initialized;
+    public event Action<Player> PlayerChanged;
 
     private Task initializationTask = null;
 
@@ -22,17 +25,23 @@ public class Game : Singleton<Game>
             PlayerChanged?.Invoke(value);
         }
     }
-    
-    // public bool Initialized => initializationTask?.IsCompleted ?? false;
-    // public bool Initializing => initializationTask is { IsCompleted: false };
+
+    public bool IsInitialized => initializationTask?.IsCompleted ?? false;
+    public bool IsInitializing => initializationTask is { IsCompleted: false };
+
+    public bool Dev => OS.HasFeature("editor");
 
     public Game()
-    { 
+    {
+        Instance = this;
+        logger = new(GetType().Name);
+    }
+
+    public override void _Ready()
+    {
+        base._Ready();
         PagesNavigator.Instance.SetDefaultScene(GameConfig.Pages.MainMenu);
-        PagesNavigator.Instance.PageDataLoading += OnPageDataLoading;
-        PagesNavigator.Instance.PageDataLoaded += OnPageDataLoaded;
-        PagesNavigator.Instance.PageDataLoadError += OnPageDataLoadError;
-        PagesNavigator.Instance.PageChangeError += OnPageChangeError;
+        PagesNavigator.Instance.AddMiddleware(PageChangeMiddleware);
     }
 
     public Task Initialize()
@@ -43,33 +52,37 @@ public class Game : Singleton<Game>
     private async Task InitializeSub()
     {
         await Assets.Instance.ImportAssets(GameConfig.ConfigPath);
+        Initialized?.Invoke();
     }
 
-    private void OnPageDataLoading(PageScene page)
+    private async Task PageChangeMiddleware(Node node)
     {
-        // if (!Transitions.Instance.Covered)
-        // {
-        //     Transitions.Instance.Cover(Transitions.Instance.pixelated);
-        // }
-    }
+        if (node is not Page page)
+        {
+            if (!PagesNavigator.Instance.IsFirstScene(node)) // Likely not testing something
+            {
+                logger.Warn($"'{node.GetType().Name}' does not extend {nameof(Page)}");
+            }
+            return;
+        }
 
-    private void OnPageDataLoaded(PageScene page)
-    {
-        //Transitions.Instance.Uncover();
-    }
+        Task coveringTask = TransitionsManager.Instance.Cover();
 
-    private void OnPageDataLoadError(PageScene page, string message)
-    {
-        // if (Transitions.Instance.Covered)
-        // {
-        //     Transitions.Instance.Uncover();
-        // }
+        try
+        {
+            await page.Initialize();
+        }
+        catch (Exception exception)
+        {
+            logger.Error(exception);
 
-        PopupsManager.Instance.Error(message);
-    }
+            PopupsManager.Instance.Error(exception.Message, $"Failed to initialize {page.Name} page!");
+            PagesNavigator.Instance.Cancel();
+        }
 
-    private void OnPageChangeError(PackedScene scene, string message)
-    {
-        PopupsManager.Instance.Error(message);
+        if (!coveringTask.IsCompleted)
+            await coveringTask;
+
+        _ = TransitionsManager.Instance.Uncover();
     }
 }

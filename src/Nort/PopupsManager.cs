@@ -1,5 +1,5 @@
 using Godot;
-using Nort.Popup;
+using Nort.Popups;
 
 namespace Nort;
 
@@ -7,7 +7,7 @@ public partial class PopupsManager : Node
 {
     public static PopupsManager Instance { get; private set; }
 
-    private PackedScene dialogPopupScene = GD.Load<PackedScene>("res://common/interface/DialogPopup/DialogPopup.tscn");
+    private PackedScene dialogPopupScene = GD.Load<PackedScene>("res://Scenes/Popups/DialogPopup.tscn");
 
     // private PackedScene settingsPopupScene =
     //     GD.Load<PackedScene>("res://common/interface/SettingsPopup/SettingsPopup.tscn");

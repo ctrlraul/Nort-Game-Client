@@ -24,7 +24,7 @@ public partial class DisplayCraftPart : Control
         set => displayPart.Rotation = value;
     }
 	
-    private PartData partData;
+    public PartData partData;
 
     public BlueprintPart Blueprint
     {

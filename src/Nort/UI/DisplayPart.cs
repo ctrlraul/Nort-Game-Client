@@ -61,7 +61,7 @@ public partial class DisplayPart : Control
 	}
 	
 	private bool _outline;
-	private bool Outline
+	public bool Outline
 	{
 		get => _outline;
 		set

@@ -11,6 +11,6 @@ public partial class ReturnButton : TextureButton
             return;
         }
         
-        PagesNavigator.Instance.GoBack();
+        _ = PagesNavigator.Instance.GoBack();
     }
 }

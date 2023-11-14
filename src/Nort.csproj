@@ -8,13 +8,16 @@
     <Content Include="config\skills\bullet.json" />
     <Content Include="config\skills\core_bullet.json" />
     <Content Include="config\skills\drone.json" />
+    <Content Include="Scenes\Transitions.tscn" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="common\classes\" />
     <Folder Include="lib\" />
+    <Folder Include="Scenes\Entities\Components\" />
     <Folder Include="stage\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Shouldly" Version="4.2.1" />
   </ItemGroup>
 </Project>

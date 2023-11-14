@@ -86,7 +86,7 @@ public class LocalPlayersManager : Singleton<LocalPlayersManager>
 
         try
         {
-            SaveJson(player, path);
+            player.SaveJson(path);
         }
         catch (Exception exception)
         {
@@ -122,34 +122,5 @@ public class LocalPlayersManager : Singleton<LocalPlayersManager>
     private static string GetPathForPlayerFile(string playerId)
     {
         return GameConfig.Storage.LocalPlayers.PathJoin(playerId + ".json");
-    }
-
-    private static void SaveJson(ISavable savable, string path)
-    {
-        string dirPath = path.GetBaseDir();
-
-        Error createDirError = DirAccess.MakeDirRecursiveAbsolute(dirPath);
-
-        if (createDirError != Error.Ok)
-            throw new Exception($"Failed to create directory: {createDirError}");
-
-#if DEBUG
-        const Formatting formatting = Formatting.Indented;
-#else
-        const Formatting formatting = Formatting.None;
-#endif
-        
-        string json = JsonConvert.SerializeObject(savable, formatting);
-        
-        GD.Print("FUCKYEREIRI");
-
-        FileAccess file = FileAccess.Open(path, FileAccess.ModeFlags.Write);
-        GD.Print("FUCKYEREsssssssssssssIRI");
-
-        if (file == null)
-            throw new Exception($"Failed to write file: {FileAccess.GetOpenError()}");
-
-        GD.Print("FUCKYEdfsdfsdfsdfsdfREsssssssssssssIRI");
-        file.StoreString(json);
     }
 }

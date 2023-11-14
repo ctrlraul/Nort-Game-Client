@@ -1,6 +1,6 @@
 [gd_scene load_steps=9 format=3 uid="uid://dln0sc730korg"]
 
-[ext_resource type="Script" path="res://gimmicks/bullet/bullet.gd" id="1_p8ohm"]
+[ext_resource type="Script" path="res://Nort/Entities/Components/CraftBodyPartBulletSkill.cs" id="1_k65sy"]
 [ext_resource type="Material" uid="uid://butcjeuqllk5q" path="res://common/materials/smooth_rect_border_shader_material.tres" id="2_0820g"]
 [ext_resource type="Texture2D" uid="uid://hlcyw0kime5w" path="res://assets/images/gimmicks/bullet.png" id="2_t1j6l"]
 
@@ -21,19 +21,17 @@ curve = SubResource("Curve_exlj0")
 particle_flag_disable_z = true
 direction = Vector3(0, -1, 0)
 spread = 10.0
-gravity = Vector3(0, 0, 0)
 initial_velocity_min = 200.0
 initial_velocity_max = 1000.0
-orbit_velocity_min = 0.0
-orbit_velocity_max = 0.0
+gravity = Vector3(0, 0, 0)
 damping_min = 1000.0
 damping_max = 1000.0
 scale_min = 8.0
 scale_max = 16.0
 scale_curve = SubResource("CurveTexture_xx0f8")
 
-[node name="BulletGimmick" type="Node2D"]
-script = ExtResource("1_p8ohm")
+[node name="BulletSkill" type="Node2D"]
+script = ExtResource("1_k65sy")
 
 [node name="RangeArea" type="Area2D" parent="."]
 unique_name_in_owner = true

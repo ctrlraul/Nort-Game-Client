@@ -1,0 +1,23 @@
+[gd_scene load_steps=2 format=3 uid="uid://b4v5a6vfbueqm"]
+
+[ext_resource type="Texture2D" uid="uid://befuwhu6fhiow" path="res://assets/images/white_pixel.png" id="1_hd183"]
+
+[node name="StatsDisplayComponent" type="Node2D"]
+z_index = 1
+scale = Vector2(100, 1)
+
+[node name="Hull" type="Node2D" parent="."]
+unique_name_in_owner = true
+modulate = Color(1, 0, 1, 1)
+
+[node name="Bar" type="Sprite2D" parent="Hull"]
+scale = Vector2(1, 5)
+texture = ExtResource("1_hd183")
+
+[node name="Core" type="Node2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, 5)
+
+[node name="Bar" type="Sprite2D" parent="Core"]
+scale = Vector2(1, 5)
+texture = ExtResource("1_hd183")

@@ -9,6 +9,12 @@ public partial class Entity : Node2D
 {
     private readonly Dictionary<Type, EntityComponent> components = new();
 
+    protected void InitComponents()
+    {
+        foreach (EntityComponent component in components.Values)
+            component.Init();
+    }
+
     protected void AddComponent<T>(T component) where T : EntityComponent
     {
         components.Add(typeof(T), component);

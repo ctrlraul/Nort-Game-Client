@@ -1,0 +1,169 @@
+[gd_scene load_steps=9 format=3 uid="uid://bthskvmroiyr"]
+
+[ext_resource type="Script" path="res://Nort/Entities/Components/TractorTargetComponent.cs" id="1_ypm6i"]
+[ext_resource type="Texture2D" uid="uid://v3cdjlnj27p3" path="res://assets/images/tractor_target_section.png" id="2_eo1wb"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_5uyh7"]
+radius = 100.0
+
+[sub_resource type="Animation" id="Animation_3ppaw"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sections:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sections:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sections:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_lok4x"]
+resource_name = "hide"
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sections:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_8w0p4"]
+resource_name = "rotate"
+length = 0.5
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sections:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 2.0944]
+}
+
+[sub_resource type="Animation" id="Animation_hojf4"]
+resource_name = "show"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sections:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 2.0944]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sections:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sections:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(0.3, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_l88tq"]
+_data = {
+"RESET": SubResource("Animation_3ppaw"),
+"hide": SubResource("Animation_lok4x"),
+"rotate": SubResource("Animation_8w0p4"),
+"show": SubResource("Animation_hojf4")
+}
+
+[node name="TractorTargetComponent" type="Node2D"]
+z_index = 1
+script = ExtResource("1_ypm6i")
+
+[node name="Area2D" type="Area2D" parent="."]
+unique_name_in_owner = true
+collision_layer = 256
+collision_mask = 256
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_5uyh7")
+
+[node name="Sections" type="Node2D" parent="."]
+
+[node name="Section" type="Node2D" parent="Sections"]
+
+[node name="Sprite" type="Sprite2D" parent="Sections/Section"]
+position = Vector2(0, -100)
+texture = ExtResource("2_eo1wb")
+
+[node name="Section2" type="Node2D" parent="Sections"]
+rotation = 2.0944
+
+[node name="Sprite" type="Sprite2D" parent="Sections/Section2"]
+position = Vector2(0, -100)
+texture = ExtResource("2_eo1wb")
+
+[node name="Section3" type="Node2D" parent="Sections"]
+rotation = -2.09439
+
+[node name="Sprite" type="Sprite2D" parent="Sections/Section3"]
+position = Vector2(0, -100)
+texture = ExtResource("2_eo1wb")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+unique_name_in_owner = true
+libraries = {
+"": SubResource("AnimationLibrary_l88tq")
+}
+
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]

@@ -5,24 +5,13 @@ namespace Nort.Entities.Components;
 
 public partial class FlightComponent : EntityComponent
 {
-    private readonly float Damp = 0.95f;
+    private const float Damp = 0.95f;
 
     public Vector2 Direction { get; set; } = Vector2.Zero;
     public Vector2 Velocity { get; private set; } = Vector2.Zero;
 
     private float torque = 1f;
     private float acceleration = 1f;
-    
-    private Craft craft;
-
-    public override void _Ready()
-    {
-        base._Ready();
-        craft = entity as Craft;
-
-        if (craft == null)
-            throw new Exception($"Expected Craft as parent");
-    }
 
     public override void _PhysicsProcess(double delta)
     {
@@ -36,7 +25,7 @@ public partial class FlightComponent : EntityComponent
             Direction = Vector2.Zero;
         }
 
-        entity.Position += Velocity * (float)delta;
+        Craft.Position += Velocity * (float)delta;
         Velocity *= Damp;
     }
     
@@ -48,11 +37,11 @@ public partial class FlightComponent : EntityComponent
 
     private void RotateTowardsAngle(float angle, float amount)
     {
-        float distance = Mathf.Abs(DeltaAngle(craft.Body.Rotation, angle));
-        craft.Body.Rotation = (
+        float distance = Mathf.Abs(DeltaAngle(Craft.Body.Rotation, angle));
+        Craft.Body.Rotation = (
             amount > distance
             ? angle
-            : Mathf.LerpAngle(craft.Body.Rotation, angle, amount / distance)
+            : Mathf.LerpAngle(Craft.Body.Rotation, angle, amount / distance)
         );
     }
 }

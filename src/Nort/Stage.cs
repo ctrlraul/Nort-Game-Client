@@ -14,6 +14,7 @@ public partial class Stage : Node2D
 	public event Action<Craft> PlayerSpawned; 
 	public event Action PlayerDestroyed;
 	
+	[Export] private PackedScene craftScene;
 	[Export] private PackedScene playerCraftScene;
 	[Export] private PackedScene orphanPartScene;
 
@@ -75,9 +76,9 @@ public partial class Stage : Node2D
 
 	public Craft Spawn(CraftSetup setup)
 	{
-		//Craft entity = Craft.FromSetup(setup);
-		Craft entity = new Craft();
+		Craft entity = new();
 		entitiesContainer.AddChild(entity);
+		entity.SetSetup(setup);
 		return entity;
 	}
 

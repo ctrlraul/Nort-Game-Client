@@ -10,7 +10,6 @@ public partial class DisplayCraft : Control
 	[Export] private PackedScene displayCraftPartScene;
 	
 	private Control _partsContainer;
-	private DisplayCraftPart _core;
 
 	private Color _color;
 	public Color Color
@@ -23,6 +22,8 @@ public partial class DisplayCraft : Control
 				UpdateColor();
 		}
 	}
+	
+	public DisplayCraftPart Core { get; private set; }
 
 	public Blueprint Blueprint
 	{
@@ -35,11 +36,11 @@ public partial class DisplayCraft : Control
 	public override void _Ready()
 	{
 		_partsContainer = GetNode<Control>("%PartsContainer");
-		_core = GetNode<DisplayCraftPart>("%Core");
+		Core = GetNode<DisplayCraftPart>("%Core");
 		Clear();
 	}
 
-	private void Clear()
+	public void Clear()
 	{
 		_partsContainer.QueueFreeChildren();
 	}
@@ -49,8 +50,8 @@ public partial class DisplayCraft : Control
 		return new Blueprint
 		{
 			id = Assets.Instance.GenerateUuid(),
-			core = _core.Blueprint,
-			hulls = Parts.Where(displayCraftPart => displayCraftPart != _core && !displayCraftPart.IsQueuedForDeletion()) // TODO: Pretty weird to check if it's queued for deletion here
+			core = Core.Blueprint,
+			hulls = Parts.Where(displayCraftPart => displayCraftPart != Core && !displayCraftPart.IsQueuedForDeletion()) // TODO: Pretty weird to check if it's queued for deletion here
 				.Select(displayCraftPart => displayCraftPart.Blueprint)
 				.ToList()
 		};
@@ -65,7 +66,7 @@ public partial class DisplayCraft : Control
 			AddPart(blueprintPart);
 		}
 
-		SerCoreBlueprint(blueprint.core);
+		SetCoreBlueprint(blueprint.core);
 	}
 
 	public DisplayCraftPart AddPart(BlueprintPart blueprintPart)
@@ -80,15 +81,15 @@ public partial class DisplayCraft : Control
 		return part;
 	}
 
-	public DisplayCraftPart SerCoreBlueprint(BlueprintPart blueprintPart)
+	public DisplayCraftPart SetCoreBlueprint(BlueprintPart blueprintPart)
 	{
-		_core.Blueprint = blueprintPart;
-		return _core;
+		Core.Blueprint = blueprintPart;
+		return Core;
 	}
 
 	private void UpdateColor()
 	{
-		_core.Color = _color;
+		Core.Color = _color;
 		foreach (DisplayCraftPart displayPart in Parts)
 		{
 			displayPart.Color = _color;

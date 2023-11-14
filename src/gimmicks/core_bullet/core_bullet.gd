@@ -11,9 +11,9 @@ const __RANGE_RADIUS = 700
 @onready var __range_area_collision_shape: CollisionShape2D = %RangeAreaCollisionShape2D
 @onready var __cooldown_timer: Timer = %CooldownTimer
 
-var part: CraftPart
+var part
 
-var target: CraftPart : set = __set_target
+var target : set = __set_target
 
 
 
@@ -57,7 +57,7 @@ func __get_foe_parts_in_area(area: Area2D) -> Array:
 	)
 
 
-func __set_target(value: CraftPart) -> void:
+func __set_target(value) -> void:
 
 	if value == target:
 		return

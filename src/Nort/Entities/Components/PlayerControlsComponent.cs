@@ -1,4 +1,5 @@
-﻿using Nort.Interface;
+﻿using CtrlRaul.Godot.Linq;
+using Godot.Collections;
 
 namespace Nort.Entities.Components;
 
@@ -11,14 +12,20 @@ public partial class PlayerControlsComponent : EntityComponent
     private Area2D cursorArea;
 
     private Area2D interactable;
-    private Craft craft;
+    private FlightComponent flightComponent;
+    private TractorComponent tractorComponent;
 
-    /*public override void _Ready()
+    public override void _Ready()
     {
         base._Ready();
-        playerCraft = entity as PlayerCraft;
         SetProcessUnhandledInput(false);
         cursorArea = GetNode<Area2D>(cursorAreaPath);
+    }
+
+    public override void Init()
+    {
+        flightComponent = Craft.GetComponent<FlightComponent>();
+        tractorComponent = Craft.GetComponent<TractorComponent>();
     }
 
     public override void _Process(double delta)
@@ -29,7 +36,7 @@ public partial class PlayerControlsComponent : EntityComponent
 
     public override void _PhysicsProcess(double delta)
     {
-        //playerCraft.FlightComp.Direction = GetKeyboardMotionDirection();
+        flightComponent.Direction = GetKeyboardMotionDirection();
     }
 
     public override void _UnhandledInput(InputEvent @event)
@@ -65,36 +72,32 @@ public partial class PlayerControlsComponent : EntityComponent
 
         if (interactable.Owner is TractorTargetComponent)
         {
-            playerCraft.TractorComp.target = interactable.Owner as TractorTargetComponent;
+            tractorComponent.target = interactable.Owner as TractorTargetComponent;
         }
     }
 
     private void UpdateInteractable()
     {
-        var areas = cursorArea.GetOverlappingAreas();
-        var nearestArea = NodeUtils.FindNearest(areas, cursorArea.GlobalPosition);
+        Array<Area2D> areas = cursorArea.GetOverlappingAreas();
+        Area2D nearestArea = areas.FindNearest(cursorArea.GlobalPosition, true);
 
-        if (nearestArea != interactable)
+        if (nearestArea == interactable)
+            return;
+        
+        if (interactable is { Owner: TractorTargetComponent })
+            ((TractorTargetComponent)interactable.Owner).InRange = false;
+
+        interactable = nearestArea;
+
+        if (nearestArea == null)
         {
-            if (interactable != null && interactable.Owner is TractorTargetComponent)
-            {
-                (interactable.Owner as TractorTargetComponent).inRange = false;
-            }
-
-            interactable = nearestArea;
-
-            if (nearestArea == null)
-            {
-                SetProcessUnhandledInput(false);
-            }
-            else
-            {
-                SetProcessUnhandledInput(true);
-                if (interactable.Owner is TractorTargetComponent)
-                {
-                    (interactable.Owner as TractorTargetComponent).inRange = true;
-                }
-            }
+            SetProcessUnhandledInput(false);
+        }
+        else
+        {
+            SetProcessUnhandledInput(true);
+            if (interactable.Owner is TractorTargetComponent component)
+                component.InRange = true;
         }
     }
 
@@ -106,5 +109,5 @@ public partial class PlayerControlsComponent : EntityComponent
     private void _OnCursorAreaAreaExited(Area2D area)
     {
         UpdateInteractable();
-    }*/
+    }
 }

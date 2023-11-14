@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://di6wg5igk5hpe"]
+[gd_scene load_steps=6 format=3 uid="uid://di6wg5igk5hpe"]
 
-[ext_resource type="Script" path="res://Nort/Page/MainMenuPage.cs" id="1_cr51s"]
+[ext_resource type="Script" path="res://Nort/Pages/MainMenuPage.cs" id="1_cr51s"]
 [ext_resource type="Theme" uid="uid://85byrm5eq3ab" path="res://theme/theme.tres" id="2_byrfk"]
+[ext_resource type="Material" uid="uid://bscgpp7x5c27j" path="res://common/materials/shiny_part_shader_material.tres" id="3_kerjt"]
 [ext_resource type="Texture2D" uid="uid://dgqwtel1q4ppk" path="res://assets/branding/logo_themed.png" id="3_wxxib"]
 [ext_resource type="PackedScene" uid="uid://cxdrb6lxh18qh" path="res://Scenes/UI/DisplayCraft.tscn" id="4_lvv8a"]
 
@@ -37,6 +38,7 @@ size_flags_vertical = 3
 layout_mode = 2
 
 [node name="TextureRect" type="TextureRect" parent="Theme/MarginContainer/VBoxContainer/LogoContainer/Control"]
+material = ExtResource("3_kerjt")
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5

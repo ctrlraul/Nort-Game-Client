@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Godot;
 using Nort.Entities.Components;
 using Nort.Interface;
@@ -9,14 +8,6 @@ namespace Nort.Entities;
 public partial class Craft : Entity, IFactionMember
 {
     public event Action Destroyed;
-    
-    [Export] public PackedScene craftBodyComponentScene;
-    [Export] private PackedScene flightComponentScene;
-    [Export] private PackedScene playerControlsComponentScene;
-    [Export] private PackedScene tractorComponentScene;
-    [Export] private PackedScene tractorTargetComponentScene;
-    [Export] private PackedScene droneAIComponentScene;
-    [Export] private PackedScene statsDisplayComponentScene;
     
     public enum ComponentSet {
         None,
@@ -28,129 +19,113 @@ public partial class Craft : Entity, IFactionMember
         Outpost
     }
 
-    private PackedScene[] GetComponentsForSet(ComponentSet set)
-    {
-        return set switch
-        {
-            ComponentSet.None => Array.Empty<PackedScene>(),
-            ComponentSet.Player => new[]
-            {
-                craftBodyComponentScene,
-                flightComponentScene,
-                tractorComponentScene,
-                playerControlsComponentScene,
-            },
-            ComponentSet.Fighter => new[]
-            {
-                craftBodyComponentScene,
-                flightComponentScene,
-                statsDisplayComponentScene,
-            },
-            ComponentSet.Drone => new[]
-            {
-                craftBodyComponentScene,
-                flightComponentScene,
-                tractorTargetComponentScene,
-            },
-            ComponentSet.Turret => new[]
-            {
-                craftBodyComponentScene,
-                tractorTargetComponentScene,
-            },
-            ComponentSet.Carrier => new[]
-            {
-                craftBodyComponentScene,
-                statsDisplayComponentScene,
-            },
-            ComponentSet.Outpost => new[]
-            {
-                craftBodyComponentScene,
-                statsDisplayComponentScene,
-            },
-            _ => throw new ArgumentOutOfRangeException(nameof(set), set, null)
-        };
-    }
-
-
     public Faction Faction { get; private set; }
     public CraftBodyComponent Body { get; private set; }
-
-    private Blueprint _blueprint;
     public Blueprint Blueprint { get; private set; }
 
 
-    public float coreMax;
-    public float core;
-    public float hullMax;
-    public float hull;
+    public float CoreMax { get; private set; }
+    public float Core { get; private set; }
+    public float HullMax { get; private set; }
+    public float Hull { get; private set; }
 
 
-    public override void _Ready()
+    public void SetSetup(CraftSetup setup)
     {
-        base._Ready();
+        Position = setup.Place;
+        Faction = setup.Faction;
+        Blueprint = setup.Blueprint;
+
+        AddComponents(setup.componentSet);
+        InitComponents();
+
+        BlueprintStats stats = Blueprint.GetStats(Blueprint);
         
-        BlueprintStats stats = Blueprint.GetStats(_blueprint);
-        
-        coreMax = stats.core;
-        hullMax = stats.hull;
+        CoreMax = stats.core;
+        HullMax = stats.hull;
 
         Body = GetComponentOrThrow<CraftBodyComponent>();
-        Body.SetBlueprint(_blueprint);
+        Body.SetBlueprint(Blueprint);
+    }
+
+    private void AddComponents(ComponentSet set)
+    {
+        AddComponent(EntityComponent.Create<CraftBodyComponent>());
+        
+        switch (set)
+        {
+            case ComponentSet.None:
+                return;
+            
+            case ComponentSet.Player:
+                AddComponent(EntityComponent.Create<PlayerControlsComponent>());
+                AddComponent(EntityComponent.Create<FlightComponent>());
+                AddComponent(EntityComponent.Create<TractorComponent>());
+                break;
+            
+            case ComponentSet.Fighter:
+                AddComponent(EntityComponent.Create<FlightComponent>());
+                AddComponent(EntityComponent.Create<TractorComponent>());
+                AddComponent(EntityComponent.Create<StatsDisplayComponent>());
+                break;
+            
+            case ComponentSet.Drone:
+                AddComponent(EntityComponent.Create<FlightComponent>());
+                AddComponent(EntityComponent.Create<TractorTargetComponent>());
+                break;
+            
+            case ComponentSet.Turret:
+                AddComponent(EntityComponent.Create<TractorTargetComponent>());
+                break;
+            
+            case ComponentSet.Carrier:
+                AddComponent(EntityComponent.Create<StatsDisplayComponent>());
+                break;
+            
+            case ComponentSet.Outpost:
+                AddComponent(EntityComponent.Create<StatsDisplayComponent>());
+                break;
+            
+            default:
+                throw new NotImplementedException($"Component set not implemented for set '{set}'");
+        }
     }
 
     public void TakeHit(CraftBodyPartSkill sourceSkill, CraftBodyPart part)
     {
         if (sourceSkill is CraftBodyPartBulletSkill bulletSkill)
         {
-            hull -= bulletSkill.damage;
+            Hull -= bulletSkill.damage;
 
-            if (hull >= 0)
+            if (Hull >= 0)
                 return;
             
             if (part == Body.Core)
             {
-                core += hull;
+                Core += Hull;
 
-                if (core <= 0)
+                if (Core <= 0)
                     Destroy();
             }
             else
             {
-                part.TakeDamage(hull * -1);
+                part.TakeDamage(Hull * -1);
             }
 
-            hull = 0;
+            Hull = 0;
         }
     }
 
 
     private void Destroy()
     {
-        hull = 0;
-        core = 0;
+        Hull = 0;
+        Core = 0;
 
         foreach (CraftBodyPart part in Body.GetParts())
             part.Destroy();
         
         QueueFree();
         Destroyed?.Invoke();
-    }
-
-
-    public Craft FromSetup(CraftSetup setup)
-    {
-        Craft craft = new();
-
-        craft.Position = setup.Place;
-        craft.Faction = setup.Faction;
-        craft.Blueprint = setup.Blueprint;
-
-        foreach (PackedScene componentScene in GetComponentsForSet(setup.componentSet))
-        {
-            EntityComponent component = componentScene.Instantiate<EntityComponent>();
-            craft.AddComponent(component);
-        }
-
-        return craft;
     }
 }

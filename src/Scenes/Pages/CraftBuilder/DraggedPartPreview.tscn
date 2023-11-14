@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://c21jgpf6mtj8a"]
+
+[ext_resource type="Script" path="res://Nort/Pages/CraftBuilder/DraggedPartPreview.cs" id="1_4t4u2"]
+[ext_resource type="PackedScene" uid="uid://uk8tpg655i5w" path="res://Scenes/UI/DisplayPart.tscn" id="1_jol1y"]
+
+[node name="DraggedPartPreview" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+mouse_filter = 2
+script = ExtResource("1_4t4u2")
+
+[node name="DisplayPart" parent="." instance=ExtResource("1_jol1y")]
+unique_name_in_owner = true
+scale = Vector2(0.5, 0.5)

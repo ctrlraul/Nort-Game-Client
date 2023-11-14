@@ -10,20 +10,19 @@ public partial class CraftBodyComponent : EntityComponent
 {
     public event Action<CraftBodyPart> PartDestroyed;
 
-    [Export] private static PackedScene _craftBodyPartScene;
+    [Export] private PackedScene craftBodyPartScene;
 
     private Node2D partsContainer;
     private Node2D skillsContainer;
 
-    public Craft Craft { get; private set;  }
-    private Color color = GameConfig.FactionlessColor;
+    public Color Color => Craft.Faction.Color;
     public CraftBodyPart Core { get; private set; }
 
     public override void _Ready()
     {
+        base._Ready();
         partsContainer = GetNode<Node2D>("%PartsContainer");
         skillsContainer = GetNode<Node2D>("%SkillsContainer");
-        Craft = entity as Craft;
         partsContainer.QueueFreeChildren();
     }
 
@@ -47,11 +46,10 @@ public partial class CraftBodyComponent : EntityComponent
 
     private CraftBodyPart AddPart(BlueprintPart blueprint)
     {
-        CraftBodyPart part = _craftBodyPartScene.Instantiate<CraftBodyPart>();
+        CraftBodyPart part = craftBodyPartScene.Instantiate<CraftBodyPart>();
 
         partsContainer.AddChild(part);
 
-        part.Color = Craft.Faction.Color;
         part.body = this;
         part.SetBlueprint(blueprint);
         part.Destroyed += () => PartDestroyed?.Invoke(part);

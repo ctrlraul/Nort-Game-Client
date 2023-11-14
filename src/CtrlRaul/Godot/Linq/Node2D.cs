@@ -7,7 +7,7 @@ namespace CtrlRaul.Godot.Linq;
 
 public static partial class Extensions
 {
-    public static T FindNearest<T>(this IEnumerable<T> nodes, Vector2 position, bool useGlobalPosition) where T : Node2D
+    public static T FindNearest<T>(this IEnumerable<T> nodes, Vector2 position, bool useGlobalPosition = false) where T : Node2D
     {
         string positionProp = useGlobalPosition ? "global_position" : "position";
         return nodes

@@ -7,27 +7,17 @@ namespace Nort.Entities.Components;
 
 public partial class CraftBodyPart : Node2D
 {
+    private static readonly Color SemiTransparent = new(1, 1, 1, 0.2f);
     public event Action Destroyed;
 
     private CollisionShape2D hitboxCollisionShape;
     private Sprite2D sprite;
 
-    private Color _color;
-    public Color Color
-    {
-        get => _color;
-        set
-        {
-            _color = value;
-            UpdateColor();
-        }
-    }
-    
     public bool IsDestroyed { get; private set; }
     
     private BlueprintPart _blueprint;
-    public List<CraftBodyPartSkill> skills = new();
     public CraftBodyComponent body;
+    public readonly List<CraftBodyPartSkill> skills = new();
     public float hullMax;
     public float hull;
     
@@ -35,8 +25,6 @@ public partial class CraftBodyPart : Node2D
     {
         hitboxCollisionShape = GetNode<CollisionShape2D>("%CollisionShape2D");
         sprite = GetNode<Sprite2D>("%Sprite2D");
-        if (body == null)
-            throw new Exception("Set body before adding to tree, for good measure.");
     }
 
     public void SetBlueprint(BlueprintPart blueprint)
@@ -57,26 +45,28 @@ public partial class CraftBodyPart : Node2D
         rectangleShape2D.Size = sprite.Texture.GetSize();
         hitboxCollisionShape.Shape = rectangleShape2D;
 
-        List<Skill> skillzz = new();
+        // List<Skill> skillzz = new();
         
         if (Assets.Instance.IsCore(blueprint))
         {
-            skillzz.Add(Assets.Instance.DefaultCoreSkill);
+            // skillzz.Add(Assets.Instance.DefaultCoreSkill);
             Sprite2D coreLight = new();
             coreLight.Texture = Assets.CORE_LIGHT_TEXTURE;
             AddChild(coreLight);
         }
 
-        if (!string.IsNullOrEmpty(blueprint.skillId))
-            skillzz.Add(blueprint.Skill);
-
-        foreach (Skill skill in skillzz)
-        {
-            CraftBodyPartSkill cbpSkill = skill.Scene.Instantiate<CraftBodyPartSkill>();
-            cbpSkill.Position = Position;
-            cbpSkill.part = this;
-            skills.Add(cbpSkill);
-        }
+        // if (!string.IsNullOrEmpty(blueprint.skillId))
+        //     skillzz.Add(blueprint.Skill);
+        //
+        // foreach (Skill skill in skillzz)
+        // {
+        //     CraftBodyPartSkill cbpSkill = skill.Scene.Instantiate<CraftBodyPartSkill>();
+        //     cbpSkill.Position = Position;
+        //     cbpSkill.part = this;
+        //     skills.Add(cbpSkill);
+        // }
+        
+        UpdateColor();
     }
 
     public void TakeDamage(float damage)
@@ -122,9 +112,16 @@ public partial class CraftBodyPart : Node2D
 
     private void UpdateColor()
     {
-        float weight = Mathf.Max(0, hull) / hullMax;
-        sprite.SelfModulate = GameConfig.FactionlessColor.Lerp(_color, weight);
-        hitboxCollisionShape.DebugColor = _color * new Color(1, 1, 1, 0.2f);
+        Color color = GameConfig.FactionlessColor;
+        
+        if (hullMax > 0)
+        {
+            float weight = Mathf.Max(0, hull) / hullMax;
+            color = color.Lerp(body.Color, weight);
+        }
+        
+        sprite.SelfModulate = color;
+        hitboxCollisionShape.DebugColor = color * SemiTransparent;
     }
     
     private float GetDropRate()

@@ -1,0 +1,70 @@
+[gd_scene load_steps=5 format=3 uid="uid://cwl7mn40ut30d"]
+
+[ext_resource type="Theme" uid="uid://85byrm5eq3ab" path="res://theme/theme.tres" id="1_wg1bi"]
+[ext_resource type="PackedScene" uid="uid://gyid7spgcjj0" path="res://Scenes/Lists/PartsListItem.tscn" id="2_wlwwl"]
+[ext_resource type="Script" path="res://Nort/Listing/PartsList.cs" id="2_ye3bf"]
+[ext_resource type="PackedScene" uid="uid://bk5m6deoy4705" path="res://common/interface/drag_receiver/drag_receiver.tscn" id="3_gntig"]
+
+[node name="PartsList" type="MarginContainer"]
+offset_right = 324.0
+offset_bottom = 641.0
+theme = ExtResource("1_wg1bi")
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+script = ExtResource("2_ye3bf")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 2
+
+[node name="PartsContainer" type="GridContainer" parent="MarginContainer/VBoxContainer/ScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+columns = 4
+
+[node name="PartsListItem" parent="MarginContainer/VBoxContainer/ScrollContainer/PartsContainer" instance=ExtResource("2_wlwwl")]
+layout_mode = 2
+
+[node name="PartsListItem2" parent="MarginContainer/VBoxContainer/ScrollContainer/PartsContainer" instance=ExtResource("2_wlwwl")]
+layout_mode = 2
+
+[node name="PartsListItem3" parent="MarginContainer/VBoxContainer/ScrollContainer/PartsContainer" instance=ExtResource("2_wlwwl")]
+layout_mode = 2
+
+[node name="PartsListItem4" parent="MarginContainer/VBoxContainer/ScrollContainer/PartsContainer" instance=ExtResource("2_wlwwl")]
+layout_mode = 2
+
+[node name="AddPartButton" type="Button" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"PanelButton"
+text = "Add Part"
+
+[node name="DragReceiver" parent="." instance=ExtResource("3_gntig")]
+visible = false
+layout_mode = 2
+
+[node name="EmptyTextLabel" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+text = "You have no parts, yet!"
+horizontal_alignment = 1
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/AddPartButton" to="." method="_on_add_part_button_pressed"]

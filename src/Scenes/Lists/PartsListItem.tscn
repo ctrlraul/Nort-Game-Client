@@ -1,0 +1,55 @@
+[gd_scene load_steps=5 format=3 uid="uid://gyid7spgcjj0"]
+
+[ext_resource type="Script" path="res://Nort/Listing/PartsListItem.cs" id="1_hi4b5"]
+[ext_resource type="Texture2D" uid="uid://cpvu7gu8m0rod" path="res://assets/images/lists/parts_list_item_frame.png" id="2_waumf"]
+[ext_resource type="PackedScene" uid="uid://uk8tpg655i5w" path="res://Scenes/UI/DisplayPart.tscn" id="7_13fuq"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_3s4op"]
+outline_size = 8
+outline_color = Color(0, 0, 0, 1)
+
+[node name="PartsListItem" type="Button"]
+self_modulate = Color(1, 1, 1, 0)
+custom_minimum_size = Vector2(64, 64)
+flat = true
+script = ExtResource("1_hi4b5")
+
+[node name="Frame" type="TextureRect" parent="."]
+unique_name_in_owner = true
+self_modulate = Color(0, 1, 0.498039, 1)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("2_waumf")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="DisplayPart" parent="." instance=ExtResource("7_13fuq")]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.5, 0.5)
+
+[node name="Count" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 18.0
+grow_horizontal = 2
+text = "x99"
+label_settings = SubResource("LabelSettings_3s4op")
+
+[connection signal="button_down" from="." to="." method="_on_button_down"]
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
