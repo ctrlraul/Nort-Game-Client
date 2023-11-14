@@ -76,6 +76,11 @@ public partial class Game : Node
         {
             logger.Error(exception);
 
+            // if (PagesNavigator.Instance.IsFirstScene(page))
+            // {
+            //     
+            // }
+
             PopupsManager.Instance.Error(exception.Message, $"Failed to initialize {page.Name} page!");
             PagesNavigator.Instance.Cancel();
         }

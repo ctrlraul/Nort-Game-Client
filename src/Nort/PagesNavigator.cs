@@ -33,9 +33,18 @@ public partial class PagesNavigator : Node
     public override void _Ready()
     {
         base._Ready();
+        
         tree = GetTree();
         firstSceneInstanceId = tree.CurrentScene.GetInstanceId();
-        _ = RunMiddlewares(tree.CurrentScene);
+        
+        if (tree.CurrentScene.IsNodeReady())
+        {
+            _ = RunMiddlewares(tree.CurrentScene);
+        }
+        else
+        {
+            tree.CurrentScene.Ready += async () => await RunMiddlewares(tree.CurrentScene);
+        }
     }
 
     public void SetDefaultScene(PackedScene scene)
