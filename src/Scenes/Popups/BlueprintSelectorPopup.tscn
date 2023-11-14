@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://lym42cvdb0b3" path="res://Scenes/Popups/GenericPopup.tscn" id="1_wfgjh"]
 [ext_resource type="Script" path="res://Nort/Popups/BlueprintSelectorPopup.cs" id="2_opak5"]
-[ext_resource type="PackedScene" uid="uid://8e0734sbmdy0" path="res://pages/workshop/blueprint_selector_popup/BlueprintsListItem.tscn" id="3_lqhn7"]
+[ext_resource type="PackedScene" uid="uid://8e0734sbmdy0" path="res://Scenes/Lists/BlueprintsListItem.tscn" id="3_lqhn7"]
 
 [node name="BlueprintSelectorPopup" instance=ExtResource("1_wfgjh")]
 script = ExtResource("2_opak5")
