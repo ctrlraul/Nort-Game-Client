@@ -25,7 +25,7 @@ public partial class PartsListItem : Button
 	{
 		set
 		{
-			displayPart.Modulate = value;
+			displayPart.Color = value;
 			frame.SelfModulate = value;
 		}
 	}
@@ -65,26 +65,25 @@ public partial class PartsListItem : Button
 		else
 		{
 			Modulate = Modulate with { A = 1 };
-			countLabel.Text = value > 1 && value < 10000 ? $"x{value}" : "";
+			countLabel.Text = value is > 1 and < 10000 ? $"x{value}" : "";
 		}
 	}
 
-	private void _onMouseEntered()
+	private void OnMouseEntered()
 	{
 		displayPart.Outline = true;
 	}
 
-	private void _onMouseExited()
+	private void OnMouseExited()
 	{
 		displayPart.Outline = false;
 	}
 
-	private void _onButtonDown()
+	private void OnButtonDown()
 	{
 		if (_count > 0 || Game.Instance.Dev)
 		{
-			GD.Print($"PartsListItem: Start drag {PartData.partId}");
-			//DragEmitter.Drag(this, PartData);
+			DragEmitter.Instance.Drag(this, PartData);
 			Picked?.Invoke();
 		}
 	}

@@ -42,7 +42,10 @@ public partial class PlayerControlsComponent : EntityComponent
     public override void _UnhandledInput(InputEvent @event)
     {
         if (Input.IsActionJustPressed("select"))
+        {
             Interact();
+            GetViewport().SetInputAsHandled();
+        }
     }
 
     private Vector2 GetKeyboardMotionDirection()

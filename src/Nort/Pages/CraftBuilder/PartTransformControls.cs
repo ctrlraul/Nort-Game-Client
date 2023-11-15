@@ -82,13 +82,13 @@ public partial class PartTransformControls : Control
 	{
 		base._Ready();
 
-		outlineSpriteContainer = GetNode<Control>("OutlineSpriteContainer");
-		outlineSprite = GetNode<TextureRect>("OutlineSprite");
-		buttonsMargin = GetNode<Control>("ButtonsMargin");
-		rotateIconCenterer = GetNode<Control>("RotateIconCenterer");
-		rotateIconContainer = GetNode<Control>("RotateIconContainer");
-		line = GetNode<Line2D>("Line2D");
-		flipIcon = GetNode<TextureRect>("FlipIcon");
+		outlineSpriteContainer = GetNode<Control>("%OutlineSpriteContainer");
+		outlineSprite = GetNode<TextureRect>("%OutlineSprite");
+		buttonsMargin = GetNode<Control>("%ButtonsMargin");
+		rotateIconCenterer = GetNode<Control>("%RotateIconCenterer");
+		rotateIconContainer = GetNode<Control>("%RotateIconContainer");
+		line = GetNode<Line2D>("%Line2D");
+		flipIcon = GetNode<TextureRect>("%FlipIcon");
 
 		SetProcessInput(false);
 		line.Visible = false;

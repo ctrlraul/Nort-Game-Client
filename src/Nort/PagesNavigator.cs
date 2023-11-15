@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
+using System.Runtime.ExceptionServices;
 using CtrlRaul;
 using Godot;
 using Shouldly;
@@ -128,6 +129,12 @@ public partial class PagesNavigator : Node
         tree.Root.AddChild(node);
 
         await RunMiddlewares(node);
+
+        if (Canceled)
+        {
+            node.QueueFree();
+            return;
+        }
         
         tree.CurrentScene = node;
 
@@ -136,23 +143,21 @@ public partial class PagesNavigator : Node
 
     private async Task RunMiddlewares(Node node)
     {
-        GD.Print($"RunMiddlewares: {node.Name}");
-        
         foreach (Middleware middleware in middlewares)
         {
             try
             {
                 await middleware.Invoke(node);
             }
-            catch (Exception exception)
+            catch (Exception shittyException)
             {
                 logger.Error("Middleware exception");
-                logger.Error(exception);
+                logger.Error(ExceptionDispatchInfo.Capture(shittyException).SourceException);
             }
 
             if (Canceled)
             {
-                node.QueueFree();
+                logger.Log("Canceled!");
                 return;
             }
         }

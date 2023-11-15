@@ -1,0 +1,91 @@
+[gd_scene load_steps=7 format=3 uid="uid://civc8ny0v2omp"]
+
+[ext_resource type="PackedScene" uid="uid://lym42cvdb0b3" path="res://Scenes/Popups/GenericPopup.tscn" id="1_2mjio"]
+[ext_resource type="Script" path="res://Nort/Popups/PartBuilderPopup.cs" id="2_c7j3o"]
+[ext_resource type="PackedScene" uid="uid://uk8tpg655i5w" path="res://Scenes/UI/DisplayPart.tscn" id="3_nkthf"]
+[ext_resource type="Texture2D" uid="uid://b3bm4djf5tas8" path="res://assets/images/part_example.png" id="4_kvnmx"]
+[ext_resource type="PackedScene" uid="uid://yu4ujxccdpgt" path="res://Scenes/UI/SkillOptions.tscn" id="5_pyy0m"]
+[ext_resource type="Theme" uid="uid://85byrm5eq3ab" path="res://theme/theme.tres" id="6_fqjc5"]
+
+[node name="PartBuilderPopup" instance=ExtResource("1_2mjio")]
+script = ExtResource("2_c7j3o")
+
+[node name="Window" parent="Theme/Scaler" index="0"]
+custom_minimum_size = Vector2(400, 0)
+offset_top = -40.0
+offset_bottom = 40.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Theme/Scaler/Window" index="0"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Theme/Scaler/Window/VBoxContainer" index="0"]
+layout_mode = 2
+text = "Part Builder"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Theme/Scaler/Window/VBoxContainer" index="1"]
+layout_mode = 2
+
+[node name="Panel" type="Panel" parent="Theme/Scaler/Window/VBoxContainer/HBoxContainer" index="0"]
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 2
+theme_type_variation = &"PanelDarken"
+
+[node name="DisplayPart" parent="Theme/Scaler/Window/VBoxContainer/HBoxContainer/Panel" index="0" instance=ExtResource("3_nkthf")]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.5, 0.5)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Theme/Scaler/Window/VBoxContainer/HBoxContainer" index="1"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="PartOptions" type="OptionButton" parent="Theme/Scaler/Window/VBoxContainer/HBoxContainer/VBoxContainer" index="0"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+expand_icon = true
+item_count = 1
+selected = 0
+popup/item_0/text = "Part"
+popup/item_0/icon = ExtResource("4_kvnmx")
+popup/item_0/id = 0
+
+[node name="SkillOptions" parent="Theme/Scaler/Window/VBoxContainer/HBoxContainer/VBoxContainer" index="1" instance=ExtResource("5_pyy0m")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Theme/Scaler/Window/VBoxContainer/HBoxContainer/VBoxContainer" index="2"]
+layout_mode = 2
+
+[node name="ShinyCheckBox" type="CheckBox" parent="Theme/Scaler/Window/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer" index="0"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("6_fqjc5")
+
+[node name="Label" type="Label" parent="Theme/Scaler/Window/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer/ShinyCheckBox" index="0"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 34.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Shiny"
+vertical_alignment = 1
+
+[node name="BuildButton" type="Button" parent="Theme/Scaler/Window/VBoxContainer" index="2"]
+layout_mode = 2
+theme_type_variation = &"PanelButton"
+text = "Build"
+
+[connection signal="item_selected" from="Theme/Scaler/Window/VBoxContainer/HBoxContainer/VBoxContainer/PartOptions" to="." method="OnPartOptionsItemSelected"]
+[connection signal="toggled" from="Theme/Scaler/Window/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer/ShinyCheckBox" to="." method="OnShinyCheckBoxToggled"]
+[connection signal="pressed" from="Theme/Scaler/Window/VBoxContainer/BuildButton" to="." method="OnBuildButtonPressed"]

@@ -48,6 +48,7 @@ public partial class GenericPopup : CanvasLayer
 		if (Input.IsActionJustPressed("escape"))
 		{
 			Cancel();
+			GetViewport().SetInputAsHandled();
 		}
 	}
 

@@ -31,7 +31,7 @@ public partial class BlueprintsListItem : MarginContainer
 	{
 		base._Ready();
 
-		displayCraft = GetNode<DisplayCraft>("CraftDisplay");
+		displayCraft = GetNode<DisplayCraft>("DisplayCraft");
 		idLabel = GetNode<Label>("IDLabel");
 		coreLabel = GetNode<Label>("CoreLabel");
 		partsCountLabel = GetNode<Label>("PartsCountLabel");

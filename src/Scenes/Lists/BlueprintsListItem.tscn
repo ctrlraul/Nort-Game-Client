@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://8e0734sbmdy0"]
 
 [ext_resource type="Script" path="res://Nort/Listing/BlueprintsListItem.cs" id="1_achc2"]
-[ext_resource type="PackedScene" uid="uid://bjgbkm0q3g02x" path="res://common/interface/craft_display/craft_display.tscn" id="1_rbuqd"]
+[ext_resource type="PackedScene" uid="uid://cxdrb6lxh18qh" path="res://Scenes/UI/DisplayCraft.tscn" id="2_55jma"]
 
 [node name="BlueprintsListItem" type="MarginContainer"]
 theme_override_constants/margin_left = 0
@@ -20,7 +20,7 @@ custom_minimum_size = Vector2(100, 100)
 layout_mode = 2
 theme_type_variation = &"PanelDarken"
 
-[node name="CraftDisplay" parent="HBoxContainer/Panel" instance=ExtResource("1_rbuqd")]
+[node name="DisplayCraft" parent="HBoxContainer/Panel" instance=ExtResource("2_55jma")]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 8
@@ -30,7 +30,7 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
-scale = Vector2(0.25, 0.25)
+scale = Vector2(0.37, 0.37)
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
 layout_mode = 2

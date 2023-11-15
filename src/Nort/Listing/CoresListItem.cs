@@ -9,15 +9,10 @@ public partial class CoresListItem : Button
 
 	private DisplayPart displayPart;
 
-	private Color _color;
 	public Color Color
 	{
-		set
-		{
-			displayPart.Modulate = value;
-			_color = value;
-		}
-		get => _color;
+		get => displayPart.Color;
+		set => displayPart.Color = value;
 	}
 
 	private PartData _partData;
@@ -34,7 +29,7 @@ public partial class CoresListItem : Button
 	public override void _Ready()
 	{
 		base._Ready();
-		displayPart = GetNode<DisplayPart>("PartDisplay");
+		displayPart = GetNode<DisplayPart>("%DisplayPart");
 	}
 
 	public void OnMouseEntered()

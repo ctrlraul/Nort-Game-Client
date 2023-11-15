@@ -13,8 +13,8 @@ public partial class PartsList : MarginContainer
 	public event Action PartStored;
 	public event Action<PartData> PartHovered;
 
-	public PackedScene PartBuilderPopupScene;
-	public PackedScene PartsListItemScene;
+	[Export] private PackedScene partBuilderPopupScene;
+	[Export] private PackedScene partsListItemScene;
 
 	private Control partsContainer;
 	private Label emptyTextLabel;
@@ -27,12 +27,9 @@ public partial class PartsList : MarginContainer
 		get => _color;
 		set
 		{
-			foreach (Node item in partsContainer.GetChildren())
+			foreach (PartsListItem listItem in partsContainer.GetChildren().Cast<PartsListItem>())
 			{
-				if (item is Control controlItem)
-				{
-					controlItem.Modulate = value;
-				}
+				listItem.Color = value;
 			}
 			_color = value;
 		}
@@ -41,18 +38,18 @@ public partial class PartsList : MarginContainer
 	public override void _Ready()
 	{
 		base._Ready();
-		Clear();
 		partsContainer = GetNode<Control>("%PartsContainer");
 		emptyTextLabel = GetNode<Label>("%EmptyTextLabel");
 		addPartButton = GetNode<Button>("%AddPartButton");
 		addPartButton.Visible = Game.Instance.Dev;
+		Clear();
 	}
 
-	public void SetParts(IEnumerable<PartData> parts)
+	public void SetParts(List<PartData> parts)
 	{
-		emptyTextLabel.Visible = parts.Any();
+		emptyTextLabel.Visible = !parts.Any();
 
-		foreach (var part in parts)
+		foreach (PartData part in parts)
 		{
 			AddPartData(part);
 		}
@@ -60,11 +57,11 @@ public partial class PartsList : MarginContainer
 
 	public void AddPartData(PartData partData)
 	{
-		PartsListItem item = PartsListItemScene.Instantiate<PartsListItem>();
+		PartsListItem item = partsListItemScene.Instantiate<PartsListItem>();
 		partsContainer.AddChild(item);
 
 		item.SetPart(partData);
-		item.Modulate = Color;
+		item.Color = Color;
 		item.Picked += () => OnItemPicked(item);
 		item.MouseEntered += () => OnItemMouseEntered(item);
 	}
@@ -103,7 +100,7 @@ public partial class PartsList : MarginContainer
 		PartHovered?.Invoke(((PartsListItem)item).PartData);
 	}
 
-	private void OnDragReceiverGotData(object source, object part)
+	private void OnDragReceiverReceived(Control source, RefCounted part)
 	{
 		PartData partData = null;
 
@@ -139,7 +136,7 @@ public partial class PartsList : MarginContainer
 
 	private void OnAddPartButtonPressed()
 	{
-		PartBuilderPopup popup = PopupsManager.Instance.Custom<PartBuilderPopup>(PartBuilderPopupScene);
+		PartBuilderPopup popup = PopupsManager.Instance.Custom<PartBuilderPopup>(partBuilderPopupScene);
 		popup.PartBuilt += OnPartBuilt;
 	}
 

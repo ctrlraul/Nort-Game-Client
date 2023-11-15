@@ -1,10 +1,11 @@
 #nullable enable
+using Godot;
 using Newtonsoft.Json;
 using Nort.Interface;
 
 namespace Nort;
 
-public class PartData : ISavable
+public partial class PartData : RefCounted, ISavable
 {
     [JsonProperty] public bool shiny;
     [JsonProperty] public string? partId;

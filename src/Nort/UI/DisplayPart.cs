@@ -49,7 +49,7 @@ public partial class DisplayPart : Control
 		set
 		{
 			skill = value;
-			UpdateGimmick();
+			UpdateSkill();
 		}
 	}
 
@@ -163,7 +163,7 @@ public partial class DisplayPart : Control
 		}
 	}
 
-	private void UpdateGimmick()
+	private void UpdateSkill()
 	{
 		if (skill != null)
 		{

@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using CtrlRaul;
 using CtrlRaul.Godot.Linq;
 using Nort.UI;
 using Nort.Listing;
@@ -14,7 +13,7 @@ namespace Nort.Pages.CraftBuilder;
 
 public partial class CraftBuilderPage : Page
 {
-    private readonly Vector2 GridSnap = Vector2.One * 16.0f;
+    private readonly Vector2 gridSnap = Vector2.One * 16.0f;
     private const float ZoomStep = 0.1f;
     private const float ZoomMin = 0.5f;
     private const float ZoomMax = 1.0f;
@@ -28,14 +27,13 @@ public partial class CraftBuilderPage : Page
     private Node2D partAreas;
     private Camera2D camera;
 
-    private Control hitBox;
     private Control canvas;
     private Control hoveredPartOutline;
     private TextureRect hoveredPartOutlineSprite;
     private PartTransformControls partTransformControls;
     private LineEdit blueprintIdInput;
     private DisplayCraft displayCraft;
-    private PartsList partsInventory;
+    private PartsList partsList;
     private CraftSummary craftSummary;
     private PartInspector partInspector;
     private HBoxContainer blueprintButtons;
@@ -49,9 +47,29 @@ public partial class CraftBuilderPage : Page
     private DisplayCraftPart selectedPart;
     private readonly Dictionary<object, Area2D> areaForPart = new();
     private readonly Dictionary<object, DisplayCraftPart> partForArea = new();
-    private Color color;
     private bool editorMode;
     private bool panning;
+
+    private Color _color = GameConfig.FactionlessColor;
+    private Color Color
+    {
+        get => _color;
+        set
+        {
+            displayCraft.Color = value;
+            partsList.Color = value;
+            partInspector.Color = value;
+
+            draggedPartPreview.SetColor(value);
+
+            foreach (CoresListItem item in coresList.GetChildren().Cast<CoresListItem>())
+            {
+                item.Color = value;
+            }
+
+            _color = value;
+        }
+    }
 
     public override void _Ready()
     {
@@ -62,14 +80,13 @@ public partial class CraftBuilderPage : Page
         coreArea = GetNode<Area2D>("%CoreArea");
         partAreas = GetNode<Node2D>("%PartAreas");
         camera = GetNode<Camera2D>("%Camera2D");
-        hitBox = GetNode<Control>("%Hitbox");
         canvas = GetNode<Control>("%Canvas");
         hoveredPartOutline = GetNode<Control>("%HoveredPartOutline");
         hoveredPartOutlineSprite = GetNode<TextureRect>("%HoveredPartOutlineSprite");
         partTransformControls = GetNode<PartTransformControls>("%PartTransformControls");
         blueprintIdInput = GetNode<LineEdit>("%BlueprintIDInput");
         displayCraft = GetNode<DisplayCraft>("%CraftDisplay");
-        partsInventory = GetNode<PartsList>("%PartsInventory");
+        partsList = GetNode<PartsList>("%PartsList");
         craftSummary = GetNode<CraftSummary>("%CraftSummary");
         partInspector = GetNode<PartInspector>("%PartInspector");
         blueprintButtons = GetNode<HBoxContainer>("%BlueprintButtons");
@@ -77,53 +94,36 @@ public partial class CraftBuilderPage : Page
         coresListContainer = GetNode<Control>("%CoresListContainer");
         coresList = GetNode<Control>("%CoresList");
 
-        coresList.QueueFreeChildren();
-        partTransformControls.Clear();
-        draggedPartPreview.Clear();
-        Stage.Instance.Clear();
-        canvas.Scale = Vector2.One * 0.5f;
-        UpdateCamera();
+        GetTree().Root.SizeChanged += UpdateSupViewportSize;
+        UpdateSupViewportSize();
+    }
+
+    public override void _ExitTree()
+    {
+        base._ExitTree();
+        GetTree().Root.SizeChanged -= UpdateSupViewportSize;
     }
 
     public override async Task Initialize()
     {
         await Game.Instance.Initialize();
 
-        editorMode = OS.HasFeature("editor") && false;
-
-        RepopulateInventory();
+        editorMode = Game.Instance.Dev;
 
         if (editorMode)
         {
             blueprintIdInput.Visible = true;
             blueprintButtons.Visible = true;
             SetBlueprint(Assets.Instance.InitialBlueprint);
-            blueprintIdInput.Text = "";
-            color = Assets.Instance.EnemyFaction1.Color;
+            Color = Assets.Instance.EnemyFaction1.Color;
         }
         else
         {
             blueprintIdInput.Visible = false;
             blueprintButtons.Visible = false;
             SetBlueprint(Game.Instance.CurrentPlayer.CurrentBlueprint);
-            color = Assets.Instance.PlayerFaction.Color;
+            Color = Assets.Instance.PlayerFaction.Color;
         }
-    }
-
-    private void SetColor(Color value)
-    {
-        displayCraft.Color = value;
-        partsInventory.Color = value;
-        partInspector.Color = value;
-
-        draggedPartPreview.SetColor(value);
-
-        foreach (CoresListItem item in coresList.GetChildren().Cast<CoresListItem>())
-        {
-            item.Color = value;
-        }
-
-        color = value;
     }
 
 
@@ -135,7 +135,7 @@ public partial class CraftBuilderPage : Page
         coresList.AddChild(item);
 
         item.PartData = partData;
-        item.Color = color;
+        item.Color = Color;
         item.Pressed += () => SetCoreBlueprint(blueprint);
         item.MouseEntered += () => partInspector.SetPartData(partData);
     }
@@ -178,16 +178,14 @@ public partial class CraftBuilderPage : Page
         }
 
         partInspector.SetPart(displayCraft.Core);
-        partsInventory.SetBlueprint(blueprint);
-
+        partsList.SetBlueprint(blueprint);
         craftSummary.SetBlueprint(displayCraft.Blueprint);
     }
-
-
+    
     private void SetHoveredPartOutline(BlueprintPart blueprint)
     {
-        var texture = Assets.Instance.GetPartTexture(blueprint);
-        var textureSize = texture.GetSize();
+        Texture2D texture = Assets.Instance.GetPartTexture(blueprint);
+        Vector2 textureSize = texture.GetSize();
 
         hoveredPartOutlineSprite.Texture = texture;
         hoveredPartOutlineSprite.Size = textureSize;
@@ -198,21 +196,24 @@ public partial class CraftBuilderPage : Page
 
     private void Clear()
     {
+        canvas.Scale = Vector2.One * 0.5f;
         blueprintIdInput.Text = "";
+        hoveredPartOutline.Visible = false;
 
         areaForPart.Clear();
         partForArea.Clear();
         partTransformControls.Clear();
         displayCraft.Clear();
         partInspector.Clear();
-
-        hoveredPartOutline.Visible = false;
-
-        craftSummary.SetBlueprint(displayCraft.Blueprint);
+        draggedPartPreview.Clear();
+        craftSummary.Clear();
+        Stage.Instance.Clear();
+        
+        coresList.QueueFreeChildren();
+        partAreas.QueueFreeChildren();
 
         RepopulateInventory();
-
-        partAreas.QueueFreeChildren();
+        UpdateCamera();
     }
 
     private void RepopulateInventory()
@@ -222,14 +223,8 @@ public partial class CraftBuilderPage : Page
 
         if (editorMode)
         {
-            hulls = new();
-            cores = new();
-
-            foreach (var part in Assets.Instance.GetHullParts())
-                hulls.Add(PartData.From(part));
-
-            foreach (var part in Assets.Instance.GetCoreParts())
-                cores.Add(PartData.From(part));
+            hulls = Assets.Instance.GetHullParts().Select(PartData.From).ToList();
+            cores = Assets.Instance.GetCoreParts().Select(PartData.From).ToList();
         }
         else
         {
@@ -237,12 +232,12 @@ public partial class CraftBuilderPage : Page
             cores = Game.Instance.CurrentPlayer.Cores.ToList();
         }
 
-        partsInventory.Clear();
-        partsInventory.SetParts(hulls);
+        partsList.Clear();
+        partsList.SetParts(hulls);
 
         coresList.QueueFreeChildren();
 
-        foreach (var core in cores)
+        foreach (PartData core in cores)
         {
             AddCoreButton(core);
         }
@@ -325,7 +320,7 @@ public partial class CraftBuilderPage : Page
             return;
         }
 
-        var area = GetAreaForPart(part);
+        Area2D area = GetAreaForPart(part);
 
         partForArea.Remove(area);
         areaForPart.Remove(part);
@@ -412,7 +407,7 @@ public partial class CraftBuilderPage : Page
         }
     }
 
-    private void OnHitboxGuiInput(InputEvent inputEvent)
+    private void OnPartDragAreaGuiInput(InputEvent inputEvent)
     {
         if (inputEvent is InputEventMouseButton eventMouseButton)
         {
@@ -461,35 +456,34 @@ public partial class CraftBuilderPage : Page
         partInspector.SetPartData(partData);
     }
 
-    private void OnHitboxDragReceiverDragEnter()
+    private void OnPartDragAreaDragReceiverDragEnter()
     {
-        // TODO
-        // draggedPartPreview.Clear();
+        draggedPartPreview.Clear();
 
-        // BlueprintPart blueprint;
+        BlueprintPart blueprint;
 
-        // if (DragEmitter.Data is BlueprintPart)
-        // {
-        //     blueprint = (BlueprintPart)DragEmitter.Data;
-        // }
-        // else if (DragEmitter.Data is PartData)
-        // {
-        //     blueprint = BlueprintPart.From((PartData)DragEmitter.Data);
-        // }
-        // else
-        // {
-        //     return;
-        // }
+        switch (DragEmitter.Instance.Data)
+        {
+            case BlueprintPart:
+                blueprint = (BlueprintPart)DragEmitter.Instance.Data;
+                break;
+            case PartData:
+                blueprint = BlueprintPart.From((PartData)DragEmitter.Instance.Data);
+                break;
+            default:
+                return;
+        }
 
-        // blueprint.Place = (canvas.GetLocalMousePosition() - dragOffset).Snapped(GridSnap);
+        blueprint.Place = (canvas.GetLocalMousePosition() - dragOffset).Snapped(gridSnap);
 
-        // // Adding children to the tree on the same frame as the mouse entered the
-        // // drag receiver triggers another mouse enter event, which causes a stack
-        // // overflow, pretty bizarre.
-        // CallDeferred(nameof(AddAndDragPart), blueprint);
+        // Adding children to the tree on the same frame as the mouse entered the
+        // drag receiver triggers another mouse enter event, which causes a stack
+        // overflow, pretty bizarre.
+        //CallDeferred(nameof(AddAndDragPart), blueprint);
+        AddAndDragPart(blueprint);
     }
 
-    private void OnHitboxDragReceiverDragLeave()
+    private void OnPartDragAreaDragReceiverDragLeave()
     {
         draggedPartPreview.SetPartData(draggedPart.partData);
 
@@ -499,18 +493,17 @@ public partial class CraftBuilderPage : Page
         dragOffset = Vector2.Zero;
     }
 
-    private void OnHitboxDragReceiverDragOver()
+    private void OnPartDragAreaDragReceiverDragOver()
     {
-        if (draggedPart != null)
-        {
-            // Might be null because we defer setting it
-            var place = canvas.GetLocalMousePosition() - dragOffset;
-            draggedPart.Position = place.Snapped(GridSnap);
-            GetAreaForPart(draggedPart).Position = draggedPart.Position;
-        }
+        if (draggedPart == null)
+            return;
+        // Might be null because we defer setting it
+        Vector2 place = canvas.GetLocalMousePosition() - dragOffset;
+        draggedPart.Position = place.Snapped(gridSnap);
+        GetAreaForPart(draggedPart).Position = draggedPart.Position;
     }
 
-    private void OnHitboxDragReceiverGotData(object source, object data)
+    private void OnPartDragAreaDragReceiverReceived(Control source, RefCounted data)
     {
         partTransformControls.Part = draggedPart;
         partTransformControls.CallDeferred("UpdateTransform", canvas);
@@ -553,7 +546,7 @@ public partial class CraftBuilderPage : Page
 
         if (success)
         {
-            logger.Info($"Exported blueprint '{path}'");
+            logger.Log($"Exported blueprint '{path}'");
             DialogPopup popup = PopupsManager.Instance.Info($"Exported to '{path}'");
             popup.Width = 700;
         }
@@ -565,8 +558,10 @@ public partial class CraftBuilderPage : Page
         popup.BlueprintSelected += SetBlueprint;
     }
 
-    private void OnCoresDragReceiverGotData(object source, object data)
+    private void OnCoresDragReceiverReceived(Control source, RefCounted data)
     {
+        logger.Log($"OnCoresDragReceiverReceived :: {data.GetType().Name}");
+        
         switch (data)
         {
             case PartData partData:
@@ -581,10 +576,9 @@ public partial class CraftBuilderPage : Page
         draggedPartPreview.Clear();
     }
 
-    private void OnThemeResized()
+    private void UpdateSupViewportSize()
     {
-        logger.Warn("TODO: subViewport.Size = GetViewport().Size;");
-        // subViewport.Size = GetViewport().Size;
+        subViewport.Size = GetTree().Root.Size;
     }
 
     private void OnBuildButtonPressed()

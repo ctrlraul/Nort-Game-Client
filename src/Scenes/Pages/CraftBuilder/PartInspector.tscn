@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://uk8tpg655i5w" path="res://Scenes/UI/DisplayPart.tscn" id="1_yodry"]
 [ext_resource type="Texture2D" uid="uid://cy854js4gmuv8" path="res://assets/images/icons/core.png" id="2_w5n4u"]
 [ext_resource type="Texture2D" uid="uid://do6ocyo4yi4oe" path="res://assets/images/icons/hull.png" id="3_l8vfu"]
-[ext_resource type="Texture2D" uid="uid://hlcyw0kime5w" path="res://assets/images/gimmicks/bullet.png" id="3_r7jxd"]
+[ext_resource type="Texture2D" uid="uid://hlcyw0kime5w" path="res://assets/images/skills/bullet.png" id="3_r7jxd"]
 [ext_resource type="LabelSettings" uid="uid://dtfxwulwc71hw" path="res://common/resources/big_label_settings.tres" id="4_ovors"]
 
 [node name="PartInspector" type="PanelContainer"]
@@ -22,7 +22,7 @@ custom_minimum_size = Vector2(120, 120)
 layout_mode = 2
 theme_type_variation = &"PanelDarken"
 
-[node name="PartDisplay" parent="Container/Image" instance=ExtResource("1_yodry")]
+[node name="DisplayPart" parent="Container/Image" instance=ExtResource("1_yodry")]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 8
@@ -56,7 +56,7 @@ label_settings = ExtResource("4_ovors")
 [node name="HBoxContainer3" type="HBoxContainer" parent="Container/Details/VBoxContainer"]
 layout_mode = 2
 
-[node name="GimmickIcon" type="TextureRect" parent="Container/Details/VBoxContainer/HBoxContainer3"]
+[node name="SkillIcon" type="TextureRect" parent="Container/Details/VBoxContainer/HBoxContainer3"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(16, 16)
 layout_mode = 2
@@ -64,7 +64,7 @@ texture = ExtResource("3_r7jxd")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="GimmickLabel" type="Label" parent="Container/Details/VBoxContainer/HBoxContainer3"]
+[node name="SkillLabel" type="Label" parent="Container/Details/VBoxContainer/HBoxContainer3"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Bullet"

@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://yu4ujxccdpgt"]
+
+[ext_resource type="Texture2D" uid="uid://hlcyw0kime5w" path="res://assets/images/skills/bullet.png" id="1_e2qrl"]
+[ext_resource type="Script" path="res://Nort/UI/SkillOptions.cs" id="2_0fxit"]
+
+[node name="GimmickOptions" type="OptionButton"]
+offset_right = 200.0
+offset_bottom = 33.0
+expand_icon = true
+item_count = 1
+selected = 0
+popup/item_0/text = "Bullet"
+popup/item_0/icon = ExtResource("1_e2qrl")
+popup/item_0/id = 0
+script = ExtResource("2_0fxit")
+
+[connection signal="item_selected" from="." to="." method="OnItemSelected"]

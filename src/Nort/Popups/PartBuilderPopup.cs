@@ -13,6 +13,7 @@ public partial class PartBuilderPopup : GenericPopup
 
 	private DisplayPart displayPart;
 	private OptionButton partOptions;
+	private SkillOptions skillOptions;
 
 	private readonly PartData partData = new();
 	private readonly IEnumerable<Part> hulls = Assets.Instance.GetHullParts();
@@ -21,8 +22,9 @@ public partial class PartBuilderPopup : GenericPopup
 	{
 		base._Ready();
 
-		displayPart = GetNode<DisplayPart>("PartDisplay");
-		partOptions = GetNode<OptionButton>("PartOptions");
+		displayPart = GetNode<DisplayPart>("%DisplayPart");
+		partOptions = GetNode<OptionButton>("%PartOptions");
+		skillOptions = GetNode<SkillOptions>("%SkillOptions");
 
 		Cancelable = true;
 
@@ -39,6 +41,8 @@ public partial class PartBuilderPopup : GenericPopup
 		partOptions.Selected = 0;
 		partData.Part = hulls.First();
 		displayPart.PartData = partData;
+
+		skillOptions.SkillSelected += OnSkillOptionsSkillSelected;
 	}
 
 	private void OnSkillOptionsSkillSelected(Skill skill)

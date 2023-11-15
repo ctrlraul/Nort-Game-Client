@@ -1,10 +1,11 @@
-[gd_scene load_steps=20 format=3 uid="uid://b3m0hjtsgn5gj"]
+[gd_scene load_steps=21 format=3 uid="uid://b3m0hjtsgn5gj"]
 
 [ext_resource type="Script" path="res://Nort/Pages/CraftBuilder/CraftBuilderPage.cs" id="1_ktesj"]
 [ext_resource type="Theme" uid="uid://85byrm5eq3ab" path="res://theme/theme.tres" id="2_iqx6o"]
-[ext_resource type="PackedScene" uid="uid://bk5m6deoy4705" path="res://common/interface/drag_receiver/drag_receiver.tscn" id="3_xhpot"]
-[ext_resource type="Texture2D" uid="uid://b2h5w2qbjnved" path="res://pages/workshop/hexagons_grid.png" id="4_yfhnh"]
-[ext_resource type="PackedScene" uid="uid://bjgbkm0q3g02x" path="res://common/interface/craft_display/craft_display.tscn" id="5_ammyt"]
+[ext_resource type="PackedScene" uid="uid://bxbkn2h7dsnm5" path="res://Scenes/Popups/BlueprintSelectorPopup.tscn" id="2_u4s8h"]
+[ext_resource type="PackedScene" uid="uid://bk5m6deoy4705" path="res://Scenes/UI/DragReceiver.tscn" id="3_xhpot"]
+[ext_resource type="Texture2D" uid="uid://b2h5w2qbjnved" path="res://assets/images/hexagons_grid_tile.png" id="4_yfhnh"]
+[ext_resource type="PackedScene" uid="uid://cxdrb6lxh18qh" path="res://Scenes/UI/DisplayCraft.tscn" id="5_ammyt"]
 [ext_resource type="Material" uid="uid://igpcbk30hpxf" path="res://common/materials/part_outline_shader_material.tres" id="6_f8ml6"]
 [ext_resource type="Texture2D" uid="uid://b3bm4djf5tas8" path="res://assets/images/part_example.png" id="7_uxgl3"]
 [ext_resource type="PackedScene" uid="uid://c5f0wfx25glsh" path="res://Scenes/Pages/CraftBuilder/PartTransformControls.tscn" id="8_8xprg"]
@@ -43,6 +44,8 @@ border_blend = true
 
 [node name="CraftBuilder" type="CanvasLayer"]
 script = ExtResource("1_ktesj")
+BlueprintSelectorPopupScene = ExtResource("2_u4s8h")
+CoresListItemScene = ExtResource("11_8is45")
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="."]
 anchors_preset = 15
@@ -95,7 +98,7 @@ grow_vertical = 2
 mouse_filter = 2
 theme = ExtResource("2_iqx6o")
 
-[node name="Hitbox" type="Control" parent="Theme"]
+[node name="PartDragArea" type="Control" parent="Theme"]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
@@ -104,8 +107,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="HitboxDragReceiver" parent="Theme/Hitbox" instance=ExtResource("3_xhpot")]
-visible = false
+[node name="PartDragAreaDragReceiver" parent="Theme/PartDragArea" instance=ExtResource("3_xhpot")]
 layout_mode = 1
 
 [node name="Container" type="Control" parent="Theme"]
@@ -238,7 +240,7 @@ size_flags_horizontal = 2
 size_flags_vertical = 3
 mouse_filter = 2
 
-[node name="PartsInventory" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/Right" instance=ExtResource("10_2bx82")]
+[node name="PartsList" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/Right" instance=ExtResource("10_2bx82")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(331, 0)
 layout_mode = 2
@@ -246,7 +248,6 @@ size_flags_vertical = 3
 
 [node name="BlueprintButtons" type="HBoxContainer" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/Right"]
 unique_name_in_owner = true
-visible = false
 layout_mode = 2
 
 [node name="ImportButton" type="Button" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/Right/BlueprintButtons"]
@@ -321,7 +322,6 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="CoresDragReceiver" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/Center/CoresListContainer" instance=ExtResource("3_xhpot")]
-visible = false
 layout_mode = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer"]
@@ -343,8 +343,13 @@ size_flags_horizontal = 8
 unique_name_in_owner = true
 
 [connection signal="resized" from="Theme" to="." method="_on_theme_resized"]
-[connection signal="gui_input" from="Theme/Hitbox" to="." method="_on_hitbox_gui_input"]
+[connection signal="gui_input" from="Theme/PartDragArea" to="." method="OnPartDragAreaGuiInput"]
+[connection signal="DragEnter" from="Theme/PartDragArea/PartDragAreaDragReceiver" to="." method="OnPartDragAreaDragReceiverDragEnter"]
+[connection signal="DragLeave" from="Theme/PartDragArea/PartDragAreaDragReceiver" to="." method="OnPartDragAreaDragReceiverDragLeave"]
+[connection signal="DragOver" from="Theme/PartDragArea/PartDragAreaDragReceiver" to="." method="OnPartDragAreaDragReceiverDragOver"]
+[connection signal="Received" from="Theme/PartDragArea/PartDragAreaDragReceiver" to="." method="OnPartDragAreaDragReceiverReceived"]
 [connection signal="pressed" from="Theme/MarginContainer/VBoxContainer/HBoxContainer/Right/BlueprintButtons/ImportButton" to="." method="_on_import_button_pressed"]
 [connection signal="pressed" from="Theme/MarginContainer/VBoxContainer/HBoxContainer/Right/BlueprintButtons/ExportButton" to="." method="_on_export_button_pressed"]
-[connection signal="pressed" from="Theme/MarginContainer/VBoxContainer/HBoxContainer/Center/HBoxContainer/BuildButton" to="." method="_on_build_button_pressed"]
-[connection signal="pressed" from="Theme/MarginContainer/VBoxContainer/HBoxContainer/Center/HBoxContainer/ClearButton" to="." method="_on_clear_button_pressed"]
+[connection signal="pressed" from="Theme/MarginContainer/VBoxContainer/HBoxContainer/Center/HBoxContainer/BuildButton" to="." method="OnBuildButtonPressed"]
+[connection signal="pressed" from="Theme/MarginContainer/VBoxContainer/HBoxContainer/Center/HBoxContainer/ClearButton" to="." method="OnClearButtonPressed"]
+[connection signal="Received" from="Theme/MarginContainer/VBoxContainer/HBoxContainer/Center/CoresListContainer/CoresDragReceiver" to="." method="OnCoresDragReceiverReceived"]

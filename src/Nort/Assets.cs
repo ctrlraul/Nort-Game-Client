@@ -12,7 +12,7 @@ namespace Nort;
 public class Assets : Singleton<Assets>
 {
     public static readonly Texture2D MISSING_PART_TEXTURE;
-    //public static readonly Texture2D MISSING_SKILL_TEXTURE;
+    public static readonly Texture2D MISSING_SKILL_TEXTURE;
     public static readonly Texture2D CORE_LIGHT_TEXTURE;
     public static readonly ShaderMaterial SHINY_MATERIAL;
     public static readonly ShaderMaterial PART_OUTLINE_MATERIAL;
@@ -45,7 +45,7 @@ public class Assets : Singleton<Assets>
     static Assets()
     {
         MISSING_PART_TEXTURE = GD.Load<Texture2D>("res://assets/images/part_example.png");
-        // MISSING_SKILL_TEXTURE = GD.Load<Texture2D>("res://assets/images/missing_skill.png");
+        MISSING_SKILL_TEXTURE = null;//GD.Load<Texture2D>("res://assets/images/missing_skill.png"); TODO
         CORE_LIGHT_TEXTURE = GD.Load<Texture2D>("res://assets/images/core_light.png");
         SHINY_MATERIAL = GD.Load<ShaderMaterial>("res://common/materials/shiny_part_shader_material.tres");
         PART_OUTLINE_MATERIAL = GD.Load<ShaderMaterial>("res://common/materials/part_outline_shader_material.tres");
@@ -63,13 +63,15 @@ public class Assets : Singleton<Assets>
         ImportMissions();
         ImportFactions();
         ImportPartTextures();
+        ImportSkillTextures();
 
         logger.Log($"Skills: {_skills.Count}");
         logger.Log($"Parts: {_parts.Count}");
         logger.Log($"Blueprints: {_blueprints.Count}");
         logger.Log($"Missions: {_missions.Count}");
         logger.Log($"Factions: {_factions.Count}");
-        logger.Log($"Skill Textures: {_partTextures.Count}");
+        logger.Log($"Part Textures: {_partTextures.Count}");
+        logger.Log($"Skill Textures: {_skillTextures.Count}");
 
         return Task.CompletedTask;
     }
@@ -152,6 +154,31 @@ public class Assets : Singleton<Assets>
             _partTextures[part.id] = texture;
         }
     }
+  
+    private void ImportSkillTextures()
+    {
+        if (!_skills.Any())
+        {
+            logger.Warn("ImportSkillTextures :: No skills loaded!");
+            return;
+        }
+        
+        _skillTextures.Clear();
+
+        foreach (Skill skill in _skills.Values)
+        {
+            string path = SkillTexturesDirectory.PathJoin(skill.id + ".png");
+            Texture2D texture = GD.Load<Texture2D>(path);
+
+            if (texture == null)
+            {
+                logger.Error($"Failed to load texture for skill '{skill.displayName}' (id {skill.id}) from '{path}'");
+                continue;
+            }
+            
+            _skillTextures[skill.id] = texture;
+        }
+    }
 
     public IEnumerable<Part> GetParts() => _parts.Select(kvp => kvp.Value);
 
@@ -215,8 +242,7 @@ public class Assets : Singleton<Assets>
 
     public Texture2D GetSkillTexture(string id)
     {
-        return _skillTextures.TryGetValue(id, out Texture2D texture) ? texture : null;
-        //return _skillTextures.TryGetValue(id, out Texture2D texture) ? texture : MISSING_SKILL_TEXTURE;
+        return _skillTextures.TryGetValue(id, out Texture2D texture) ? texture : MISSING_SKILL_TEXTURE;
     }
 
     public bool IsCore(Part part)

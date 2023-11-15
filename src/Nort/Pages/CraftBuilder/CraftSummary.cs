@@ -26,4 +26,12 @@ public partial class CraftSummary : PanelContainer
 		massLabel.Text = stats.mass.ToString();
 		partsLabel.Text = $"Parts: {blueprint.hulls.Count + 1}"; // +1 is the core
 	}
+
+	public void Clear()
+	{
+		coreLabel.Text = "0";
+		hullLabel.Text = "0";
+		massLabel.Text = "0";
+		partsLabel.Text = "Parts: 0";
+	}
 }

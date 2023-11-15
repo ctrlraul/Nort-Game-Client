@@ -18,20 +18,20 @@ public partial class PartInspector : PanelContainer
 
 	public Color Color
 	{
-		set => displayPart.Modulate = value;
-		get => displayPart.Modulate;
+		set => displayPart.Color = value;
+		get => displayPart.Color;
 	}
 
 	public override void _Ready()
 	{
 		base._Ready();
-		container = GetNode<HBoxContainer>("Container");
-		displayPart = GetNode<DisplayPart>("DisplayPart");
-		nameLabel = GetNode<Label>("NameLabel");
-		skillIcon = GetNode<TextureRect>("SkillIcon");
-		skillLabel = GetNode<Label>("SkillLabel");
-		coreLabel = GetNode<Label>("CoreLabel");
-		hullLabel = GetNode<Label>("HullLabel");
+		container = GetNode<HBoxContainer>("%Container");
+		displayPart = GetNode<DisplayPart>("%DisplayPart");
+		nameLabel = GetNode<Label>("%NameLabel");
+		skillIcon = GetNode<TextureRect>("%SkillIcon");
+		skillLabel = GetNode<Label>("%SkillLabel");
+		coreLabel = GetNode<Label>("%CoreLabel");
+		hullLabel = GetNode<Label>("%HullLabel");
 	}
 
 	public void SetPart(DisplayCraftPart part)

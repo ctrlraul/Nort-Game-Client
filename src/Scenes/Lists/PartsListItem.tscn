@@ -9,7 +9,6 @@ outline_size = 8
 outline_color = Color(0, 0, 0, 1)
 
 [node name="PartsListItem" type="Button"]
-self_modulate = Color(1, 1, 1, 0)
 custom_minimum_size = Vector2(64, 64)
 flat = true
 script = ExtResource("1_hi4b5")
@@ -50,6 +49,6 @@ grow_horizontal = 2
 text = "x99"
 label_settings = SubResource("LabelSettings_3s4op")
 
-[connection signal="button_down" from="." to="." method="_on_button_down"]
-[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
-[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
+[connection signal="button_down" from="." to="." method="OnButtonDown"]
+[connection signal="mouse_entered" from="." to="." method="OnMouseEntered"]
+[connection signal="mouse_exited" from="." to="." method="OnMouseExited"]

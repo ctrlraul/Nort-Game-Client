@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.ExceptionServices;
 using System.Threading.Tasks;
 using CtrlRaul;
 using Godot;
@@ -29,7 +30,7 @@ public partial class Game : Node
     public bool IsInitialized => initializationTask?.IsCompleted ?? false;
     public bool IsInitializing => initializationTask is { IsCompleted: false };
 
-    public bool Dev => OS.HasFeature("editor");
+    public bool Dev => CurrentPlayer == null;
 
     public Game()
     {
@@ -42,6 +43,16 @@ public partial class Game : Node
         base._Ready();
         PagesNavigator.Instance.SetDefaultScene(GameConfig.Pages.MainMenu);
         PagesNavigator.Instance.AddMiddleware(PageChangeMiddleware);
+    }
+
+    public override void _UnhandledInput(InputEvent @event)
+    {
+        base._UnhandledInput(@event);
+        if (Input.IsActionJustPressed("toggle_fullscreen"))
+        {
+            ToggleFullscreen();
+            GetViewport().SetInputAsHandled();
+        }
     }
 
     public Task Initialize()
@@ -72,13 +83,15 @@ public partial class Game : Node
         {
             await page.Initialize();
         }
-        catch (Exception exception)
+        catch (Exception shittyException)
         {
+            Exception exception = ExceptionDispatchInfo.Capture(shittyException).SourceException;
+            
             logger.Error(exception);
 
             // if (PagesNavigator.Instance.IsFirstScene(page))
             // {
-            //     
+            //     // Show something special about the game itself failing to launch and dev contact
             // }
 
             PopupsManager.Instance.Error(exception.Message, $"Failed to initialize {page.Name} page!");
@@ -89,5 +102,14 @@ public partial class Game : Node
             await coveringTask;
 
         _ = TransitionsManager.Instance.Uncover();
+    }
+
+    private static void ToggleFullscreen()
+    {
+        DisplayServer.WindowSetMode(
+            DisplayServer.WindowGetMode() == DisplayServer.WindowMode.ExclusiveFullscreen
+                ? DisplayServer.WindowMode.Windowed
+                : DisplayServer.WindowMode.ExclusiveFullscreen
+        );
     }
 }

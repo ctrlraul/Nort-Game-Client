@@ -8,7 +8,7 @@ custom_minimum_size = Vector2(60, 60)
 flat = true
 script = ExtResource("1_4ow4u")
 
-[node name="PartDisplay" parent="." instance=ExtResource("2_a8x48")]
+[node name="DisplayPart" parent="." instance=ExtResource("2_a8x48")]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 8

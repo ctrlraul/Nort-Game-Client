@@ -4,13 +4,142 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="177eb88b-292c-4853-820a-5a9fe0daac9a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Scenes/Lists/BlueprintsListItem.tscn" afterDir="false" />
+    <list default="true" id="177eb88b-292c-4853-820a-5a9fe0daac9a" name="Changes" comment="idk generated shit?">
+      <change afterPath="$PROJECT_DIR$/CtrlRaul/ILogger.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nort/Console.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nort/DragEmitter.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nort/UI/DragReceiver.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nort/UI/SkillOptions.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/OtherResources/ConsoleLabelSettings.tres" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Scenes/Console.tscn" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Scenes/Popups/PartBuilderPopup.tscn" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Scenes/UI/DragReceiver.tscn" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Scenes/UI/SkillOptions.tscn" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/Fonts/monofonto_rg.otf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/Fonts/monofonto_rg.otf.import" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/Fonts/monofonto_rg.tres" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/images/hexagons_grid_tile.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/images/hexagons_grid_tile.png.import" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/images/icons/bug.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/images/icons/bug.png.import" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../image_sources/interface.fla" beforeDir="false" afterPath="$PROJECT_DIR$/../image_sources/interface.fla" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Nort/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Nort/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CtrlRaul/Logger.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CtrlRaul/Logger.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Nort/Assets.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Nort/Assets.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Nort/BlueprintPart.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Nort/BlueprintPart.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Nort/Entities/Components/PlayerControlsComponent.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Nort/Entities/Components/PlayerControlsComponent.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Nort/Game.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Nort/Game.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Nort/GameConfig.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Nort/GameConfig.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Nort/Listing/BlueprintsListItem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Nort/Listing/BlueprintsListItem.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Nort/Listing/CoresListItem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Nort/Listing/CoresListItem.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Nort/Listing/PartsList.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Nort/Listing/PartsList.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Nort/Listing/PartsListItem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Nort/Listing/PartsListItem.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Nort/Pages/CraftBuilder/CraftBuilderPage.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Nort/Pages/CraftBuilder/CraftBuilderPage.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Nort/Pages/CraftBuilder/CraftSummary.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Nort/Pages/CraftBuilder/CraftSummary.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Nort/Pages/CraftBuilder/PartInspector.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Nort/Pages/CraftBuilder/PartInspector.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Nort/Pages/CraftBuilder/PartTransformControls.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Nort/Pages/CraftBuilder/PartTransformControls.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Nort/PagesNavigator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Nort/PagesNavigator.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Scenes/Popups/BlueprintSelectorPopup.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/Scenes/Popups/BlueprintSelectorPopup.tscn" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/workshop/blueprint_selector_popup/BlueprintsListItem.tscn" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Nort/PartData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Nort/PartData.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Nort/Popups/GenericPopup.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Nort/Popups/GenericPopup.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Nort/Popups/PartBuilderPopup.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Nort/Popups/PartBuilderPopup.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Nort/UI/DisplayPart.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Nort/UI/DisplayPart.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scenes/Lists/BlueprintsListItem.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/Scenes/Lists/BlueprintsListItem.tscn" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scenes/Lists/CoresListItem.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/Scenes/Lists/CoresListItem.tscn" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scenes/Lists/PartsList.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/Scenes/Lists/PartsList.tscn" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scenes/Lists/PartsListItem.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/Scenes/Lists/PartsListItem.tscn" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scenes/Pages/CraftBuilder/CraftBuilder.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/Scenes/Pages/CraftBuilder/CraftBuilder.tscn" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scenes/Pages/CraftBuilder/PartBuilderPopup.tscn" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scenes/Pages/CraftBuilder/PartInspector.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/Scenes/Pages/CraftBuilder/PartInspector.tscn" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/.build_version" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/build/.gdignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/build/AndroidManifest.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/build/assetPacks/installTime/build.gradle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/build/build.gradle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/build/config.gradle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/build/gradle.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/build/gradle/wrapper/gradle-wrapper.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/build/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/build/gradlew" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/build/gradlew.bat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/build/libs/debug/godot-lib.template_debug.aar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/build/libs/release/godot-lib.template_release.aar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/build/res/drawable-nodpi/splash.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/build/res/drawable-nodpi/splash_bg_color.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/build/res/drawable/splash_drawable.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/build/res/values-ar/godot_project_name_string.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/build/res/values-bg/godot_project_name_string.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/build/res/values-ca/godot_project_name_string.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/build/res/values-cs/godot_project_name_string.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/build/res/values-da/godot_project_name_string.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/build/res/values-de/godot_project_name_string.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/build/res/values-el/godot_project_name_string.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/build/res/values-en/godot_project_name_string.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/build/res/values-es-rES/godot_project_name_string.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/build/res/values-es/godot_project_name_string.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/build/res/values-fa/godot_project_name_string.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/build/res/values-fi/godot_project_name_string.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/build/res/values-fr/godot_project_name_string.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/build/res/values-hi/godot_project_name_string.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/build/res/values-hr/godot_project_name_string.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/build/res/values-hu/godot_project_name_string.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/build/res/values-in/godot_project_name_string.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/build/res/values-it/godot_project_name_string.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/build/res/values-iw/godot_project_name_string.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/build/res/values-ja/godot_project_name_string.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/build/res/values-ko/godot_project_name_string.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/build/res/values-lt/godot_project_name_string.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/build/res/values-lv/godot_project_name_string.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/build/res/values-nb/godot_project_name_string.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/build/res/values-nl/godot_project_name_string.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/build/res/values-pl/godot_project_name_string.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/build/res/values-pt/godot_project_name_string.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/build/res/values-ro/godot_project_name_string.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/build/res/values-ru/godot_project_name_string.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/build/res/values-sk/godot_project_name_string.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/build/res/values-sl/godot_project_name_string.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/build/res/values-sr/godot_project_name_string.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/build/res/values-sv/godot_project_name_string.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/build/res/values-th/godot_project_name_string.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/build/res/values-tl/godot_project_name_string.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/build/res/values-tr/godot_project_name_string.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/build/res/values-uk/godot_project_name_string.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/build/res/values-vi/godot_project_name_string.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/build/res/values-zh-rHK/godot_project_name_string.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/build/res/values-zh-rTW/godot_project_name_string.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/build/res/values-zh/godot_project_name_string.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/build/res/values/godot_project_name_string.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/build/res/values/themes.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/build/settings.gradle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/build/src/com/godot/game/GodotApp.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/images/gimmicks/bullet.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/images/skills/bullet.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/images/gimmicks/bullet.png.import" beforeDir="false" afterPath="$PROJECT_DIR$/assets/images/skills/bullet.png.import" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/images/gimmicks/core_bullet.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/images/skills/core_bullet.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/images/gimmicks/core_bullet.png.import" beforeDir="false" afterPath="$PROJECT_DIR$/assets/images/skills/core_bullet.png.import" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/images/gimmicks/drone.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/images/skills/drone.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/images/gimmicks/drone.png.import" beforeDir="false" afterPath="$PROJECT_DIR$/assets/images/skills/drone.png.import" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/classes/craft_blueprint.gd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/classes/craft_blueprint_part.gd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/classes/gimmick.gd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/drag_emitter.gd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/interface/DialogPopup/dialog_popup.gd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/interface/craft_display/craft_display.gd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/interface/craft_display/craft_display.tscn" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/interface/craft_display/craft_display_part.gd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/interface/craft_display/craft_display_part.tscn" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/interface/drag_receiver/drag_receiver.gd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/interface/drag_receiver/drag_receiver.tscn" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/interface/generic_popup/generic_popup.gd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/interface/gimmick_options/gimmick_options.gd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/interface/gimmick_options/gimmick_options.tscn" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/game_config.gd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gimmicks/bullet/bullet.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/gimmicks/bullet/bullet.tscn" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gimmicks/drone/drone.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/gimmicks/drone/drone.tscn" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/mission_editor/editor_entities/editor_craft.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/pages/mission_editor/editor_entities/editor_craft.tscn" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/mission_editor/mission_selector_popup/missions_list_item.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/pages/mission_editor/mission_selector_popup/missions_list_item.tscn" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/workshop/hexagons_grid.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/workshop/hexagons_grid.png.import" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/project.godot" beforeDir="false" afterPath="$PROJECT_DIR$/project.godot" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/stage/dropped_part/dropped_part.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/stage/dropped_part/dropped_part.tscn" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,9 +163,9 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/7d0bd2f6a17c4ad08f3f4ac1ae7fb36d834b0/5e/ab137e4d/Enumerable.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/d7bb3dca9b4348e4ac37ed98f2b0d9d9459200/b5/eb54fcbb/PackedScene.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/ea9458842aad47e8a05443837c438552a24ab0/18/cc0d1831/DefaultInterpolatedStringHandler.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Nort/Autoload/Transitions.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://D:/projects/Nort-Game-Client/src/Nort/Game.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Nort/Game.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Nort/Popup/DialogPopup.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://D:/projects/Nort-Game-Client/src/Nort/PagesNavigator.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Nort/PopupsManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Nort/UI/DisplayCraft.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
@@ -128,7 +257,8 @@
       <workItem from="1699911105084" duration="1911000" />
       <workItem from="1699945872514" duration="37000" />
       <workItem from="1699948353396" duration="1979000" />
-      <workItem from="1700000123221" duration="725000" />
+      <workItem from="1700000123221" duration="1372000" />
+      <workItem from="1700001695209" duration="22085000" />
     </task>
     <task id="LOCAL-00001" summary="Added gitignore">
       <option name="closed" value="true" />
@@ -138,7 +268,23 @@
       <option name="project" value="LOCAL" />
       <updated>1698421814735</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Fixed error on first screen">
+      <option name="closed" value="true" />
+      <created>1700000877968</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1700000877968</updated>
+    </task>
+    <task id="LOCAL-00003" summary="idk generated shit?">
+      <option name="closed" value="true" />
+      <created>1700000890792</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1700000890792</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -149,6 +295,8 @@
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
     <MESSAGE value="Added gitignore" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added gitignore" />
+    <MESSAGE value="Fixed error on first screen" />
+    <MESSAGE value="idk generated shit?" />
+    <option name="LAST_COMMIT_MESSAGE" value="idk generated shit?" />
   </component>
 </project>
