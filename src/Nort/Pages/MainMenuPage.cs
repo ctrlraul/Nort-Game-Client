@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using CtrlRaul.Godot;
 using Godot;
 using Nort.UI;
 
@@ -7,17 +8,13 @@ namespace Nort.Pages;
 
 public partial class MainMenuPage : Page
 {
-    private DisplayCraft displayCraft;
-
-    public override async Task Initialize()
-    {
-        await Game.Instance.Initialize();
-        UpdatePlayerCraftDisplay(Game.Instance.CurrentPlayer);
-    }
+    [Ready("%DisplayCraft")] public DisplayCraft displayCraft;
+    [Ready("%Test")] public Node test;
 
     public override void _Ready()
     {
-        displayCraft = GetNode<DisplayCraft>("%DisplayCraft");
+        base._Ready();
+        this.InitializeReady();
 
         Stage.Instance.Clear();
         Stage.Instance.camera.Set("zoom", new Vector2(0.25f, 0.25f));
@@ -35,10 +32,19 @@ public partial class MainMenuPage : Page
         TreeExiting += () => Game.Instance.PlayerChanged -= UpdatePlayerCraftDisplay;
     }
 
-    // public override void _ExitTree()
-    // {
-    //     Game.Instance.PlayerChanged -= UpdatePlayerCraftDisplay;
-    // }
+    public override void _ExitTree()
+    {
+        base._ExitTree();
+        Game.Instance.PlayerChanged -= UpdatePlayerCraftDisplay;
+    }
+
+    public override async Task Initialize()
+    {
+        await Game.Instance.Initialize();
+        await Task.Delay(2000);
+        displayCraft.GetParent().RemoveChild(displayCraft);
+        //UpdatePlayerCraftDisplay(Game.Instance.CurrentPlayer);
+    }
 
     private void UpdatePlayerCraftDisplay(Player player)
     {

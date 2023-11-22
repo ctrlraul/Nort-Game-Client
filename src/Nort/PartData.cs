@@ -1,15 +1,16 @@
 #nullable enable
-using Godot;
 using Newtonsoft.Json;
 using Nort.Interface;
 
 namespace Nort;
 
-public partial class PartData : RefCounted, ISavable
+public class PartData : ISavable
 {
     [JsonProperty] public bool shiny;
     [JsonProperty] public string? partId;
     [JsonProperty] public string? skillId;
+
+    [JsonIgnore] public string Discriminator => $"{(partId, skillId, shiny)}";
 
     [JsonIgnore] public Part Part
     {
@@ -39,8 +40,12 @@ public partial class PartData : RefCounted, ISavable
         };
     }
 
-    public static bool SameKind(PartData a, PartData b)
-    {
-        return a.partId == b.partId && a.skillId == b.skillId && a.shiny == b.shiny;
-    }
+    #region Override == and !=
+    
+    public override bool Equals(object? obj) => obj is PartData partData && Discriminator == partData.Discriminator;
+    public override int GetHashCode() => Discriminator.GetHashCode();
+    public static bool operator ==(PartData? obj1, PartData? obj2) => ReferenceEquals(obj1, obj2) && obj1 is not null && obj1.Equals(obj2);
+    public static bool operator !=(PartData obj1, PartData obj2) => !(obj1 == obj2);
+
+    #endregion
 }

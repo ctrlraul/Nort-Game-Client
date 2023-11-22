@@ -1,20 +1,34 @@
+using CtrlRaul;
 using Godot;
 using Nort.UI;
-using System;
+using CtrlRaul.Godot;
+using CtrlRaul.Interfaces;
 
 namespace Nort.Listing;
 
-public partial class PartsListItem : Button
+public partial class PartsListItem : Button, IListItem<PartData>
 {
-	public event Action Picked;
+	#region IListItem Implementation
 
-	private TextureRect frame;
-	private DisplayPart displayPart;
-	private Label countLabel;
+	public PartData Value { get; private set; }
 
-	public PartData PartData => displayPart.PartData;
+	public void SetFor(PartData partData)
+	{
+		Value = partData;
+		Count = int.MaxValue;
+		frame.Material = partData.shiny ? Assets.SHINY_MATERIAL : null;
+		displayPart.PartData = partData;
+	}
+
+	#endregion
+
+	[Ready("Frame")] public TextureRect frame;
+	[Ready("DisplayPart")] public DisplayPart displayPart;
+	[Ready("Count")] public Label countLabel;
+
+	private bool mouseDown;
+
 	private int _count = 1;
-
 	public int Count
 	{
 		get => _count;
@@ -23,6 +37,7 @@ public partial class PartsListItem : Button
 
 	public Color Color
 	{
+		get => displayPart.Color;
 		set
 		{
 			displayPart.Color = value;
@@ -33,24 +48,8 @@ public partial class PartsListItem : Button
 	public override void _Ready()
 	{
 		base._Ready();
-		frame = GetNode<TextureRect>("Frame");
-		displayPart = GetNode<DisplayPart>("DisplayPart");
-		countLabel = GetNode<Label>("Count");
-	}
-
-	public void SetPart(PartData partData)
-	{
-		_count = int.MaxValue;
-		frame.Material = partData.shiny ? Assets.SHINY_MATERIAL : null;
-		displayPart.PartData = partData;
-	}
-
-	public void SetPart(Part part)
-	{
-		_count = int.MaxValue;
-		PartData partData = PartData.From(part);
-		frame.Material = partData.shiny ? Assets.SHINY_MATERIAL : null;
-		displayPart.PartData = partData;
+		this.InitializeReady();
+		SetProcessInput(false);
 	}
 
 	private void SetCount(int value)
@@ -72,19 +71,27 @@ public partial class PartsListItem : Button
 	private void OnMouseEntered()
 	{
 		displayPart.Outline = true;
+		if (!mouseDown)
+			GuiInput += OnGuiInput;
 	}
 
 	private void OnMouseExited()
 	{
 		displayPart.Outline = false;
+		if (!mouseDown)
+			GuiInput -= OnGuiInput;
 	}
 
-	private void OnButtonDown()
+	private void OnGuiInput(InputEvent inputEvent)
 	{
-		if (_count > 0 || Game.Instance.Dev)
+		if (inputEvent is InputEventMouseButton mouseButtonEvent)
 		{
-			DragEmitter.Instance.Drag(this, PartData);
-			Picked?.Invoke();
+			mouseDown = mouseButtonEvent.Pressed;
+		}
+		else if (inputEvent is InputEventMouseMotion && mouseDown)
+		{
+			GuiInput -= OnGuiInput;
+			DragManager.Instance.Drag(this, displayPart.PartData);
 		}
 	}
 }

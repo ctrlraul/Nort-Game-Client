@@ -1,6 +1,7 @@
 using Godot;
 using System.Collections.Generic;
 using System.Linq;
+using CtrlRaul.Godot;
 using CtrlRaul.Godot.Linq;
 
 namespace Nort.UI;
@@ -9,7 +10,8 @@ public partial class DisplayCraft : Control
 {
 	[Export] private PackedScene displayCraftPartScene;
 	
-	private Control _partsContainer;
+	[Ready("%PartsContainer")] public Control _partsContainer;
+	[Ready("%Core")] public DisplayCraftPart Core { get; private set; }
 
 	private Color _color;
 	public Color Color
@@ -22,8 +24,6 @@ public partial class DisplayCraft : Control
 				UpdateColor();
 		}
 	}
-	
-	public DisplayCraftPart Core { get; private set; }
 
 	public Blueprint Blueprint
 	{
@@ -35,8 +35,8 @@ public partial class DisplayCraft : Control
 	
 	public override void _Ready()
 	{
-		_partsContainer = GetNode<Control>("%PartsContainer");
-		Core = GetNode<DisplayCraftPart>("%Core");
+		base._Ready();
+		this.InitializeReady();
 		Clear();
 	}
 

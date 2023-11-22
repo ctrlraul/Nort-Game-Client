@@ -73,33 +73,28 @@ public partial class DisplayPart : Control
 
 	public PartData PartData
 	{
-		get => GetPartData();
-		set => SetPartData(value);
-	}
-
-
-	private PartData GetPartData()
-	{
-		return new PartData
+		get
 		{
-			shiny = Shiny,
-			Skill = Skill,
-			Part = Part,
-		};
+			return new PartData
+			{
+				shiny = Shiny,
+				Skill = Skill,
+				Part = Part,
+			};
+		}
+		set
+		{
+			Shiny = value.shiny;
+			Skill = value.Skill;
+			Part = value.Part;
+			Flipped = false;
+			Angle = 0;
+		}
 	}
 
 	public override void _Ready()
 	{
 		textureRect = GetNode<TextureRect>("%TextureRect");
-	}
-
-	private void SetPartData(PartData partData)
-	{
-		Shiny = partData.shiny;
-		Skill = partData.Skill;
-		Part = partData.Part;
-		Flipped = false;
-		Angle = 0;
 	}
 
 	private void SetPart(Part part)

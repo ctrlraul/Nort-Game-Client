@@ -3,18 +3,18 @@
 [ext_resource type="Script" path="res://Nort/Pages/CraftBuilder/CraftBuilderPage.cs" id="1_ktesj"]
 [ext_resource type="Theme" uid="uid://85byrm5eq3ab" path="res://theme/theme.tres" id="2_iqx6o"]
 [ext_resource type="PackedScene" uid="uid://bxbkn2h7dsnm5" path="res://Scenes/Popups/BlueprintSelectorPopup.tscn" id="2_u4s8h"]
-[ext_resource type="PackedScene" uid="uid://bk5m6deoy4705" path="res://Scenes/UI/DragReceiver.tscn" id="3_xhpot"]
 [ext_resource type="Texture2D" uid="uid://b2h5w2qbjnved" path="res://assets/images/hexagons_grid_tile.png" id="4_yfhnh"]
 [ext_resource type="PackedScene" uid="uid://cxdrb6lxh18qh" path="res://Scenes/UI/DisplayCraft.tscn" id="5_ammyt"]
 [ext_resource type="Material" uid="uid://igpcbk30hpxf" path="res://common/materials/part_outline_shader_material.tres" id="6_f8ml6"]
 [ext_resource type="Texture2D" uid="uid://b3bm4djf5tas8" path="res://assets/images/part_example.png" id="7_uxgl3"]
 [ext_resource type="PackedScene" uid="uid://c5f0wfx25glsh" path="res://Scenes/Pages/CraftBuilder/PartTransformControls.tscn" id="8_8xprg"]
 [ext_resource type="PackedScene" uid="uid://cdwor48b8w6ca" path="res://common/interface/return_button.tscn" id="9_s3hta"]
-[ext_resource type="PackedScene" uid="uid://cwl7mn40ut30d" path="res://Scenes/Lists/PartsList.tscn" id="10_2bx82"]
+[ext_resource type="PackedScene" uid="uid://cwl7mn40ut30d" path="res://Scenes/Pages/CraftBuilder/PartsInventory.tscn" id="10_2bx82"]
 [ext_resource type="PackedScene" uid="uid://f58y3xr2ti0s" path="res://Scenes/Lists/CoresListItem.tscn" id="11_8is45"]
 [ext_resource type="PackedScene" uid="uid://ctqu4tyxogk4d" path="res://Scenes/Pages/CraftBuilder/CraftSummary.tscn" id="12_ckjrn"]
 [ext_resource type="PackedScene" uid="uid://drp484ne1xpxt" path="res://Scenes/Pages/CraftBuilder/PartInspector.tscn" id="13_33nvf"]
-[ext_resource type="PackedScene" uid="uid://c21jgpf6mtj8a" path="res://Scenes/Pages/CraftBuilder/DraggedPartPreview.tscn" id="14_wiktw"]
+[ext_resource type="PackedScene" uid="uid://chne5swds1prn" path="res://Scenes/UI/DragReceiver.tscn" id="13_u0daf"]
+[ext_resource type="PackedScene" uid="uid://c21jgpf6mtj8a" path="res://Scenes/Pages/CraftBuilder/DraggedPartPreview.tscn" id="15_e0q3y"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_i0onw"]
 radius = 8.0
@@ -88,29 +88,27 @@ shape = SubResource("RectangleShape2D_rq4b1")
 [node name="PartAreas" type="Node2D" parent="SubViewportContainer/SubViewport/Node2D"]
 unique_name_in_owner = true
 
-[node name="Theme" type="Control" parent="."]
+[node name="Control" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
 theme = ExtResource("2_iqx6o")
 
-[node name="PartDragArea" type="Control" parent="Theme"]
+[node name="PartDragArea" type="Button" parent="Control"]
 unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 1
 
-[node name="PartDragAreaDragReceiver" parent="Theme/PartDragArea" instance=ExtResource("3_xhpot")]
-layout_mode = 1
-
-[node name="Container" type="Control" parent="Theme"]
+[node name="Container" type="Control" parent="Control"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -121,7 +119,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="Canvas" type="Control" parent="Theme/Container"]
+[node name="Canvas" type="Control" parent="Control/Container"]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 8
@@ -133,7 +131,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="Grid" type="TextureRect" parent="Theme/Container/Canvas"]
+[node name="Grid" type="TextureRect" parent="Control/Container/Canvas"]
 texture_filter = 2
 material = SubResource("ShaderMaterial_q5yqe")
 layout_mode = 1
@@ -154,7 +152,7 @@ mouse_filter = 2
 texture = ExtResource("4_yfhnh")
 stretch_mode = 1
 
-[node name="Panel" type="Panel" parent="Theme/Container/Canvas/Grid"]
+[node name="Panel" type="Panel" parent="Control/Container/Canvas/Grid"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -164,7 +162,7 @@ grow_vertical = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_4n1lx")
 
-[node name="CraftDisplay" parent="Theme/Container/Canvas" instance=ExtResource("5_ammyt")]
+[node name="CraftDisplay" parent="Control/Container/Canvas" instance=ExtResource("5_ammyt")]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 8
@@ -176,13 +174,13 @@ grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(1, 1)
 
-[node name="HoveredPartOutline" type="Control" parent="Theme/Container/Canvas"]
+[node name="HoveredPartOutline" type="Control" parent="Control/Container/Canvas"]
 unique_name_in_owner = true
 visible = false
 anchors_preset = 0
 mouse_filter = 2
 
-[node name="HoveredPartOutlineSprite" type="TextureRect" parent="Theme/Container/Canvas/HoveredPartOutline"]
+[node name="HoveredPartOutlineSprite" type="TextureRect" parent="Control/Container/Canvas/HoveredPartOutline"]
 unique_name_in_owner = true
 material = ExtResource("6_f8ml6")
 layout_mode = 1
@@ -200,10 +198,10 @@ grow_vertical = 2
 mouse_filter = 2
 texture = ExtResource("7_uxgl3")
 
-[node name="PartTransformControls" parent="Theme/Container" instance=ExtResource("8_8xprg")]
+[node name="PartTransformControls" parent="Control/Container" instance=ExtResource("8_8xprg")]
 unique_name_in_owner = true
 
-[node name="MarginContainer" type="MarginContainer" parent="Theme"]
+[node name="MarginContainer" type="MarginContainer" parent="Control"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -213,11 +211,15 @@ grow_vertical = 2
 mouse_filter = 2
 theme_type_variation = &"WindowMarginContainer"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Theme/MarginContainer"]
+[node name="OverallDragReceiver" parent="Control/MarginContainer" instance=ExtResource("13_u0daf")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/MarginContainer"]
 layout_mode = 2
 mouse_filter = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="Theme/MarginContainer/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="Control/MarginContainer/VBoxContainer"]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/margin_left = 0
@@ -225,47 +227,51 @@ theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 0
 theme_override_constants/margin_bottom = 0
 
-[node name="ReturnButton" parent="Theme/MarginContainer/VBoxContainer/MarginContainer" instance=ExtResource("9_s3hta")]
+[node name="ReturnButton" parent="Control/MarginContainer/VBoxContainer/MarginContainer" instance=ExtResource("9_s3hta")]
 layout_mode = 2
 
-[node name="HBoxContainer" type="GridContainer" parent="Theme/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="GridContainer" parent="Control/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 2
 columns = 3
 
-[node name="Right" type="VBoxContainer" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Right" type="VBoxContainer" parent="Control/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 2
 size_flags_vertical = 3
 mouse_filter = 2
 
-[node name="PartsList" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/Right" instance=ExtResource("10_2bx82")]
+[node name="PartsInventory" parent="Control/MarginContainer/VBoxContainer/HBoxContainer/Right" instance=ExtResource("10_2bx82")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(331, 0)
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="BlueprintButtons" type="HBoxContainer" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/Right"]
+[node name="PartsInventoryDragReceiver" parent="Control/MarginContainer/VBoxContainer/HBoxContainer/Right/PartsInventory" instance=ExtResource("13_u0daf")]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="ImportButton" type="Button" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/Right/BlueprintButtons"]
+[node name="BlueprintButtons" type="HBoxContainer" parent="Control/MarginContainer/VBoxContainer/HBoxContainer/Right"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="ImportButton" type="Button" parent="Control/MarginContainer/VBoxContainer/HBoxContainer/Right/BlueprintButtons"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Import"
 
-[node name="ExportButton" type="Button" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/Right/BlueprintButtons"]
+[node name="ExportButton" type="Button" parent="Control/MarginContainer/VBoxContainer/HBoxContainer/Right/BlueprintButtons"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Export"
 
-[node name="Center" type="VBoxContainer" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Center" type="VBoxContainer" parent="Control/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 2
 
-[node name="BlueprintIDInput" type="LineEdit" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/Center"]
+[node name="BlueprintIDInput" type="LineEdit" parent="Control/MarginContainer/VBoxContainer/HBoxContainer/Center"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(256, 0)
 layout_mode = 2
@@ -273,83 +279,73 @@ size_flags_horizontal = 4
 placeholder_text = "ID"
 alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/Center"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/MarginContainer/VBoxContainer/HBoxContainer/Center"]
 layout_mode = 2
+mouse_filter = 2
 alignment = 1
 
-[node name="BuildButton" type="Button" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/Center/HBoxContainer"]
+[node name="BuildButton" type="Button" parent="Control/MarginContainer/VBoxContainer/HBoxContainer/Center/HBoxContainer"]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Build"
 
-[node name="ClearButton" type="Button" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/Center/HBoxContainer"]
+[node name="ClearButton" type="Button" parent="Control/MarginContainer/VBoxContainer/HBoxContainer/Center/HBoxContainer"]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Clear"
 
-[node name="Spacer" type="Control" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/Center"]
-layout_mode = 2
-size_flags_vertical = 3
-mouse_filter = 2
-
-[node name="CoresListContainer" type="MarginContainer" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/Center"]
+[node name="CoresListContainer" type="MarginContainer" parent="Control/MarginContainer/VBoxContainer/HBoxContainer/Center"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
-size_flags_vertical = 8
+size_flags_vertical = 10
 mouse_filter = 2
 theme_override_constants/margin_left = 0
 theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 0
 theme_override_constants/margin_bottom = 0
 
-[node name="PanelContainer" type="PanelContainer" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/Center/CoresListContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="Control/MarginContainer/VBoxContainer/HBoxContainer/Center/CoresListContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 8
 
-[node name="CoresList" type="HBoxContainer" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/Center/CoresListContainer/PanelContainer"]
+[node name="CoresList" type="HBoxContainer" parent="Control/MarginContainer/VBoxContainer/HBoxContainer/Center/CoresListContainer/PanelContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 20
 
-[node name="CoresListItem" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/Center/CoresListContainer/PanelContainer/CoresList" instance=ExtResource("11_8is45")]
+[node name="CoresListItem" parent="Control/MarginContainer/VBoxContainer/HBoxContainer/Center/CoresListContainer/PanelContainer/CoresList" instance=ExtResource("11_8is45")]
 layout_mode = 2
 
-[node name="CoresListItem2" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/Center/CoresListContainer/PanelContainer/CoresList" instance=ExtResource("11_8is45")]
+[node name="CoresListItem2" parent="Control/MarginContainer/VBoxContainer/HBoxContainer/Center/CoresListContainer/PanelContainer/CoresList" instance=ExtResource("11_8is45")]
 layout_mode = 2
 
-[node name="CoresDragReceiver" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/Center/CoresListContainer" instance=ExtResource("3_xhpot")]
+[node name="CoresListDragReceiver" parent="Control/MarginContainer/VBoxContainer/HBoxContainer/Center/CoresListContainer" instance=ExtResource("13_u0daf")]
+unique_name_in_owner = true
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 10
 size_flags_vertical = 3
 mouse_filter = 2
 
-[node name="CraftSummary" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer" instance=ExtResource("12_ckjrn")]
+[node name="CraftSummary" parent="Control/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer" instance=ExtResource("12_ckjrn")]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="PartInspector" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer" instance=ExtResource("13_33nvf")]
+[node name="PartInspector" parent="Control/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer" instance=ExtResource("13_33nvf")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 8
 
-[node name="DraggedPartPreview" parent="Theme" instance=ExtResource("14_wiktw")]
+[node name="DraggedPartPreview" parent="Control" instance=ExtResource("15_e0q3y")]
 unique_name_in_owner = true
 
-[connection signal="resized" from="Theme" to="." method="_on_theme_resized"]
-[connection signal="gui_input" from="Theme/PartDragArea" to="." method="OnPartDragAreaGuiInput"]
-[connection signal="DragEnter" from="Theme/PartDragArea/PartDragAreaDragReceiver" to="." method="OnPartDragAreaDragReceiverDragEnter"]
-[connection signal="DragLeave" from="Theme/PartDragArea/PartDragAreaDragReceiver" to="." method="OnPartDragAreaDragReceiverDragLeave"]
-[connection signal="DragOver" from="Theme/PartDragArea/PartDragAreaDragReceiver" to="." method="OnPartDragAreaDragReceiverDragOver"]
-[connection signal="Received" from="Theme/PartDragArea/PartDragAreaDragReceiver" to="." method="OnPartDragAreaDragReceiverReceived"]
-[connection signal="pressed" from="Theme/MarginContainer/VBoxContainer/HBoxContainer/Right/BlueprintButtons/ImportButton" to="." method="_on_import_button_pressed"]
-[connection signal="pressed" from="Theme/MarginContainer/VBoxContainer/HBoxContainer/Right/BlueprintButtons/ExportButton" to="." method="_on_export_button_pressed"]
-[connection signal="pressed" from="Theme/MarginContainer/VBoxContainer/HBoxContainer/Center/HBoxContainer/BuildButton" to="." method="OnBuildButtonPressed"]
-[connection signal="pressed" from="Theme/MarginContainer/VBoxContainer/HBoxContainer/Center/HBoxContainer/ClearButton" to="." method="OnClearButtonPressed"]
-[connection signal="Received" from="Theme/MarginContainer/VBoxContainer/HBoxContainer/Center/CoresListContainer/CoresDragReceiver" to="." method="OnCoresDragReceiverReceived"]
+[connection signal="pressed" from="Control/MarginContainer/VBoxContainer/HBoxContainer/Right/BlueprintButtons/ImportButton" to="." method="_on_import_button_pressed"]
+[connection signal="pressed" from="Control/MarginContainer/VBoxContainer/HBoxContainer/Right/BlueprintButtons/ExportButton" to="." method="_on_export_button_pressed"]
+[connection signal="pressed" from="Control/MarginContainer/VBoxContainer/HBoxContainer/Center/HBoxContainer/BuildButton" to="." method="OnBuildButtonPressed"]
+[connection signal="pressed" from="Control/MarginContainer/VBoxContainer/HBoxContainer/Center/HBoxContainer/ClearButton" to="." method="OnClearButtonPressed"]

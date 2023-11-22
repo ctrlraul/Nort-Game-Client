@@ -1,3 +1,4 @@
+using CtrlRaul;
 using Godot;
 using Nort.UI;
 
@@ -7,11 +8,29 @@ public partial class DraggedPartPreview : Control
 {
     private DisplayPart displayPart;
 
+    public Color Color
+    {
+        get => displayPart.Color;
+        set => displayPart.Color = value;
+    }
+
+    public PartData PartData
+    {
+        get => displayPart.PartData;
+        set
+        {
+            SetProcessInput(true);
+            Position = GetGlobalMousePosition();
+            displayPart.PartData = value;
+        }
+    }
+
     public override void _Ready()
     {
         base._Ready();
         displayPart = GetNode<DisplayPart>("DisplayPart");
         SetProcessInput(false);
+        Hide();
     }
 
     public override void _Input(InputEvent @event)
@@ -20,19 +39,6 @@ public partial class DraggedPartPreview : Control
         {
             Position = mouseMotionEvent.GlobalPosition;
         }
-    }
-
-    public void SetPartData(PartData partData)
-    {
-        Visible = true;
-        Position = GetGlobalMousePosition();
-        SetProcessInput(true);
-        displayPart.PartData = partData;
-    }
-
-    public void SetColor(Color color)
-    {
-        displayPart.Modulate = color;
     }
 
     public void Clear()

@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using CtrlRaul;
+using CtrlRaul.Interfaces;
 
 namespace Nort;
 

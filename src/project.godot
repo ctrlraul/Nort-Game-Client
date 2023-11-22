@@ -22,19 +22,20 @@ boot_splash/minimum_display_time=500
 
 [autoload]
 
-Console="*res://Scenes/Console.tscn"
+DragManager="*res://Nort/DragManager.cs"
+PagesNavigator="*res://Nort/PagesNavigator.cs"
 Game="*res://Nort/Game.cs"
+Console="*res://Scenes/Console.tscn"
 Background="*res://stage/background.tscn"
 Stage="*res://stage/stage.tscn"
 PopupsManager="*res://Nort/PopupsManager.cs"
-PagesNavigator="*res://Nort/PagesNavigator.cs"
-DragEmitter="*res://Nort/DragEmitter.cs"
 
 [display]
 
 window/size/viewport_width=1920
 window/size/viewport_height=1080
-window/size/mode=4
+window/size/mode=2
+window/energy_saving/keep_screen_on=false
 
 [dotnet]
 

@@ -1,25 +1,21 @@
-using Godot;
-using Shouldly;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using Nort.Popups;
+using CtrlRaul.Godot;
+using CtrlRaul.Interfaces;
+using Godot;
 
 namespace Nort.Listing;
 
-public partial class PartsList : MarginContainer
+public partial class PartsList : MarginContainer, IItemsList<PartsListItem, PartData>
 {
-	public event Action<PartData> PartPicked;
-	public event Action PartStored;
-	public event Action<PartData> PartHovered;
+	[Export] public PackedScene ListItemScene { get; private set; }
 
-	[Export] private PackedScene partBuilderPopupScene;
-	[Export] private PackedScene partsListItemScene;
+	[Ready("%ListItemsContainer")] public Control ListItemsContainer { get; private set; }
+	[Ready("%EmptyTextLabel")] public Control EmptyTextLabel { get; private set; }
 
-	private Control partsContainer;
-	private Label emptyTextLabel;
-	private Button addPartButton;
+	private readonly Dictionary<PartData, PartsListItem> valueToListItem = new();
 
+	
 	private Color _color;
 
 	public Color Color
@@ -27,121 +23,68 @@ public partial class PartsList : MarginContainer
 		get => _color;
 		set
 		{
-			foreach (PartsListItem listItem in partsContainer.GetChildren().Cast<PartsListItem>())
-			{
-				listItem.Color = value;
-			}
 			_color = value;
+			foreach (PartsListItem listItem in GetItems())
+				listItem.Color = _color;
 		}
 	}
-
+	
 	public override void _Ready()
 	{
 		base._Ready();
-		partsContainer = GetNode<Control>("%PartsContainer");
-		emptyTextLabel = GetNode<Label>("%EmptyTextLabel");
-		addPartButton = GetNode<Button>("%AddPartButton");
-		addPartButton.Visible = Game.Instance.Dev;
+		this.InitializeReady();
 		Clear();
-	}
-
-	public void SetParts(List<PartData> parts)
-	{
-		emptyTextLabel.Visible = !parts.Any();
-
-		foreach (PartData part in parts)
-		{
-			AddPartData(part);
-		}
-	}
-
-	public void AddPartData(PartData partData)
-	{
-		PartsListItem item = partsListItemScene.Instantiate<PartsListItem>();
-		partsContainer.AddChild(item);
-
-		item.SetPart(partData);
-		item.Color = Color;
-		item.Picked += () => OnItemPicked(item);
-		item.MouseEntered += () => OnItemMouseEntered(item);
 	}
 
 	public void SetBlueprint(Blueprint blueprint)
 	{
-		foreach (BlueprintPart blueprintPart in blueprint.hulls)
+		foreach (PartsListItem listItem in blueprint.hulls.Select(PartData.From).Select(GetItem))
 		{
-			foreach (PartsListItem listItem in partsContainer.GetChildren().Cast<PartsListItem>())
-			{
-				if (PartData.SameKind(listItem.PartData, PartData.From(blueprintPart)))
-				{
-					listItem.Count -= 1;
-				}
-			}
+			listItem.Count -= 1;
 		}
+	}
+	
+	public IEnumerable<PartsListItem> GetItems()
+	{
+		return ListItemsContainer.GetChildren().Cast<PartsListItem>();
+	}
+
+	public PartsListItem GetItem(PartData value)
+	{
+		return valueToListItem.TryGetValue(value, out PartsListItem listItem) ? listItem : null;
+	}
+
+	public IEnumerable<PartsListItem> AddItems(IEnumerable<PartData> values)
+	{
+		return values.Select(AddItem);
+	}
+
+	public PartsListItem AddItem(PartData value)
+	{
+		EmptyTextLabel.Visible = false;
+		PartsListItem listItem = ListItemScene.Instantiate<PartsListItem>();
+		ListItemsContainer.AddChild(listItem);
+		listItem.SetFor(value);
+		valueToListItem.Add(value, listItem);
+		return listItem;
+	}
+
+	public bool RemoveItem(PartData value)
+	{
+		PartsListItem listItem = valueToListItem[value];
+		listItem.QueueFree();
+		ListItemsContainer.RemoveChild(listItem);
+		if (ListItemsContainer.GetChildCount() == 0)
+			EmptyTextLabel.Visible = true;
+		return valueToListItem.Remove(value);
 	}
 
 	public void Clear()
 	{
-		foreach (Node item in partsContainer.GetChildren())
+		EmptyTextLabel.Visible = true;
+		foreach (Node child in ListItemsContainer.GetChildren())
 		{
-			partsContainer.RemoveChild(item);
-			item.QueueFree();
+			child.QueueFree();
 		}
-	}
-
-	private void OnItemPicked(PartsListItem item)
-	{
-		item.Count -= 1;
-		PartPicked?.Invoke(item.PartData);
-	}
-
-	private void OnItemMouseEntered(Control item)
-	{
-		PartHovered?.Invoke(((PartsListItem)item).PartData);
-	}
-
-	private void OnDragReceiverReceived(Control source, RefCounted part)
-	{
-		PartData partData = null;
-
-		if (part is BlueprintPart blueprintPart)
-		{
-			partData = PartData.From(blueprintPart);
-		}
-		else if (part is PartData data)
-		{
-			partData = data;
-		}
-
-		partData.ShouldNotBeNull();
-
-		bool stored = false;
-
-		foreach (PartsListItem listItem in partsContainer.GetChildren().Cast<PartsListItem>())
-		{
-			if (PartData.SameKind(listItem.PartData, partData))
-			{
-				listItem.Count += 1;
-				stored = true;
-			}
-		}
-
-		if (!stored && Game.Instance.Dev)
-		{
-			AddPartData(partData);
-		}
-
-		PartStored?.Invoke();
-	}
-
-	private void OnAddPartButtonPressed()
-	{
-		PartBuilderPopup popup = PopupsManager.Instance.Custom<PartBuilderPopup>(partBuilderPopupScene);
-		popup.PartBuilt += OnPartBuilt;
-	}
-
-	private void OnPartBuilt(PartData partData)
-	{
-		AddPartData(partData);
 	}
 }

@@ -1,13 +1,14 @@
 using Godot;
 using Nort.UI;
 using System;
+using CtrlRaul;
 
 namespace Nort.Pages.CraftBuilder;
 
 public partial class PartTransformControls : Control
 {
 	public event Action<bool> Flip;
-	public event Action<float> Rotated;
+	public event Action<float> Rotate;
 
 	private const int Angles = 16;
 
@@ -22,16 +23,15 @@ public partial class PartTransformControls : Control
 	private float rotationStartAngle;
 	private float lastMouseWheelSpin;
 
-	private bool isFlipped;
 	private float currentAngle;
 
 	public bool Flipped
 	{
+		get => outlineSprite.FlipH;
 		set
 		{
-			isFlipped = value;
-			flipIcon.FlipH = value;
 			outlineSprite.FlipH = value;
+			flipIcon.FlipH = value;
 		}
 	}
 
@@ -46,7 +46,7 @@ public partial class PartTransformControls : Control
 	}
 
 
-	public DisplayCraftPart part;
+	private DisplayCraftPart part;
 	public DisplayCraftPart Part
 	{
 		get => part;
@@ -96,7 +96,7 @@ public partial class PartTransformControls : Control
 
 	public override void _Input(InputEvent @event)
 	{
-		if (@event is InputEventMouseMotion mouseMotionEvent)
+		if (@event is InputEventMouseMotion)
 		{
 			Vector2 mouse = GetLocalMousePosition();
 			float mouseAngle = mouse.Angle();
@@ -111,9 +111,9 @@ public partial class PartTransformControls : Control
 			}
 
 			line.Rotation = mouseAngle;
-			line.Points[1].X = mouse.Length();
+			line.Scale = line.Scale with { X = mouse.Length() };
 
-			Rotated?.Invoke(currentAngle);
+			Rotate?.Invoke(currentAngle);
 		}
 	}
 
@@ -147,7 +147,7 @@ public partial class PartTransformControls : Control
 
 		line.Visible = true;
 		line.Rotation = mouseAngle;
-		line.Points[1].X = mouse.Length();
+		line.Scale = line.Scale with { X = mouse.Length() };
 
 		SetProcessInput(true);
 	}
@@ -160,9 +160,9 @@ public partial class PartTransformControls : Control
 
 	private void OnFlipButtonPressed()
 	{
-		isFlipped = !isFlipped;
-		Part.Flipped = isFlipped;
-		Flip?.Invoke(isFlipped);
+		Flipped = !Flipped;
+		Part.Flipped = Flipped;
+		Flip?.Invoke(Flipped);
 	}
 
 	private void OnRotateButtonGuiInput(InputEvent @event)

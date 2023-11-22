@@ -1,37 +1,16 @@
-[gd_scene load_steps=2 format=3 uid="uid://bk5m6deoy4705"]
+[gd_scene load_steps=2 format=3 uid="uid://chne5swds1prn"]
 
-[ext_resource type="Script" path="res://Nort/UI/DragReceiver.cs" id="1_pf547"]
+[ext_resource type="Script" path="res://Nort/UI/DragReceiver.cs" id="1_dhe1a"]
 
-[node name="DragReceiver" type="Control"]
-layout_mode = 3
+[node name="DragReceiver" type="ColorRect"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_pf547")
+color = Color(0, 1, 0, 0.129412)
+script = ExtResource("1_dhe1a")
 
-[node name="ColorRect" type="ColorRect" parent="."]
-unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-color = Color(1, 0, 1, 0.156863)
-
-[node name="Label" type="Label" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "Drag Drop Area"
-horizontal_alignment = 1
-vertical_alignment = 1
-
+[connection signal="gui_input" from="." to="." method="OnGuiInput"]
 [connection signal="mouse_entered" from="." to="." method="OnMouseEntered"]
 [connection signal="mouse_exited" from="." to="." method="OnMouseExited"]
