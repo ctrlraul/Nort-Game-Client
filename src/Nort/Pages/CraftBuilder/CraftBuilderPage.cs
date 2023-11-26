@@ -2,58 +2,48 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Linq;
+using CtrlRaul.Godot;
 using CtrlRaul.Godot.Linq;
 using Nort.UI;
 using Nort.Listing;
-using System.Linq;
-using CtrlRaul.Godot;
 using Nort.Popups;
 using Nort.Interface;
-using Shouldly;
 
 namespace Nort.Pages.CraftBuilder;
 
 public partial class CraftBuilderPage : Page
 {
-    private enum MouseAction
-    {
-        None,
-        MouseDown,
-        Panning,
-        DraggingPart,
-    }
-    
     private readonly Vector2 gridSnap = Vector2.One * 16.0f;
     private const float ZoomStep = 0.1f;
     private const float ZoomMin = 0.5f;
     private const float ZoomMax = 1.0f;
 
-    [Export] private PackedScene BlueprintSelectorPopupScene;
-    [Export] private PackedScene CoresListItemScene;
+    [Export] private PackedScene blueprintSelectorPopupScene;
+    [Export] private PackedScene coresListItemScene;
 
-    [Ready("%SubViewport")] public SubViewport subViewport;
-    [Ready("%MouseArea")] public Area2D mouseArea;
-    [Ready("%CoreArea")] public Area2D coreArea;
-    [Ready("%PartAreas")] public Node2D partAreas;
-    [Ready("%Camera2D")] public Camera2D camera;
+    [Ready] public SubViewport subViewport;
+    [Ready] public Area2D mouseArea;
+    [Ready] public Area2D coreArea;
+    [Ready] public Node2D partAreas;
+    [Ready] public Camera2D camera;
 
-    [Ready("%PartDragArea")] public Control partDragArea;
-    [Ready("%OverallDragReceiver")] public DragReceiver overallDragReceiver;
-    [Ready("%Canvas")] public Control canvas;
-    [Ready("%HoveredPartOutline")] public Control hoveredPartOutline;
-    [Ready("%HoveredPartOutlineSprite")] public TextureRect hoveredPartOutlineSprite;
-    [Ready("%PartTransformControls")] public PartTransformControls partTransformControls;
-    [Ready("%BlueprintIDInput")] public LineEdit blueprintIdInput;
-    [Ready("%CraftDisplay")] public DisplayCraft displayCraft;
-    [Ready("%PartsInventory")] public PartsInventory partsInventory;
-    [Ready("%CraftSummary")] public CraftSummary craftSummary;
-    [Ready("%PartInspector")] public PartInspector partInspector;
-    [Ready("%BlueprintButtons")] public HBoxContainer blueprintButtons;
-    [Ready("%CoresListContainer")] public Control coresListContainer;
-    [Ready("%CoresList")] public Control coresList;
-    [Ready("%DraggedPartPreview")] public DraggedPartPreview draggedPartPreview;
-    [Ready("%PartsInventoryDragReceiver")] public DragReceiver partsInventoryDragReceiver;
-    [Ready("%CoresListDragReceiver")] public DragReceiver coresListDragReceiver;
+    [Ready] public Control canvasManipulationHitBox;
+    [Ready] public DragReceiver dragReceiver;
+    [Ready] public Control canvas;
+    [Ready] public Control hoveredPartOutline;
+    [Ready] public TextureRect hoveredPartOutlineSprite;
+    [Ready] public PartTransformControls partTransformControls;
+    [Ready] public LineEdit blueprintIdInput;
+    [Ready] public DisplayCraft displayCraft;
+    [Ready] public PartsInventory partsInventory;
+    [Ready] public CraftSummary craftSummary;
+    [Ready] public PartInspector partInspector;
+    [Ready] public HBoxContainer blueprintButtons;
+    [Ready] public Control coresListContainer;
+    [Ready] public Control coresList;
+    [Ready] public DraggedPartPreview draggedPartPreview;
+    [Ready] public DragReceiver partsInventoryDragReceiver;
 
     private Vector2 dragOffset = Vector2.Zero;
     private DisplayCraftPart draggedPart;
@@ -63,8 +53,7 @@ public partial class CraftBuilderPage : Page
     private readonly Dictionary<object, DisplayCraftPart> partForArea = new();
     private bool editorMode;
     private bool panning;
-
-    private MouseAction mouseAction = MouseAction.None;
+    private bool mouseDownOnCanvasManipulationHitBox;
 
     private Color _color = GameConfig.FactionlessColor;
     private Color Color
@@ -91,94 +80,49 @@ public partial class CraftBuilderPage : Page
         base._Ready();
         this.InitializeReady();
 
-        partsInventory.PartHovered += partData => partInspector.SetPartData(partData);
+        displayCraft.BlueprintChanged += craftSummary.SetBlueprint;
+        dragReceiver.DragEntered += OnDragReceiverDragEntered;
+        partsInventory.PartHovered += partInspector.SetPartData;
+        partsInventoryDragReceiver.DragEntered += OnPartsInventoryDragReceiverDragEntered;
+        partsInventoryDragReceiver.DragExited += OnPartsInventoryDragReceiverDragExited;
+        partsInventoryDragReceiver.DragDrop += OnPartsInventoryDragReceiverDragDrop;
         partTransformControls.Rotate += OnPartTransformControlsRotate;
         partTransformControls.Flip += OnPartTransformControlsFlip;
-        overallDragReceiver.DragEntered += OnOverallDragReceiverDragEntered;
-        overallDragReceiver.DragExited += OnOverallDragReceiverDragExited;
-        overallDragReceiver.DragDrop += OnOverallDragReceiverDragDrop;
-        overallDragReceiver.DragOver += OnOverallReceiverDragOver;
-        partsInventoryDragReceiver.DragDrop += OnPartsInventoryDragReceiverDragDrop;
-        coresListDragReceiver.DragDrop += OnCoresListDragReceiverDragDrop;
 
-        DragManager.Instance.DragStart += OnDragStart;
-
+        DragManager.Instance.DragStop += OnDragManagerDragStop;
+        
         GetTree().Root.SizeChanged += UpdateSupViewportSize;
         UpdateSupViewportSize();
-    }
-
-    private void OnDragStart(DragData dragData)
-    {
-        PartData partData = DragManager.Instance.DragData.data switch
-        {
-            PartData partData2 => partData2,
-            BlueprintPart blueprintPart => PartData.From(blueprintPart.Part),
-            _ => null
-        };
-
-        if (partData != null)
-        {
-            draggedPartPreview.PartData = partData;
-            draggedPartPreview.Visible = true;
-        }
-        else
-        {
-            draggedPartPreview.Clear();
-        }
-    }
-
-    private void OnOverallDragReceiverDragEntered()
-    {
-        draggedPartPreview.Visible = false;
-        switch (DragManager.Instance.DragData.data)
-        {
-            case PartData partData:
-                AddAndDragPart(BlueprintPart.From(partData));
-                break;
-            
-            case BlueprintPart blueprintPart:
-                AddAndDragPart(blueprintPart);
-                break;
-            
-            default:
-                logger.Log($"Fuck is this {DragManager.Instance.DragData.data.GetType().Name}");
-                break;
-        }
-    }
-
-    private void OnOverallDragReceiverDragExited()
-    {
-        
-        draggedPartPreview.Show();
-        RemovePart(draggedPart);
-        draggedPart = null;
-    }
-    
-    private void OnOverallDragReceiverDragDrop(DragData dragData)
-    {
-        logger.Log("dropped in!");
-    }
-    
-    private void OnOverallReceiverDragOver(InputEventMouseMotion mouseMotionEvent)
-    {
-        if (draggedPart == null)
-        {
-            canvas.Position += mouseMotionEvent.Relative;
-            UpdateCamera();
-            partTransformControls.UpdateTransform(canvas);
-        }
-        else
-        {
-            Vector2 place = (canvas.GetLocalMousePosition() - dragOffset).Snapped(gridSnap);
-            draggedPart.Position = place;
-            GetAreaForPart(draggedPart).Position = place;
-        }
     }
     
     public override void _ExitTree()
     {
         base._ExitTree();
         GetTree().Root.SizeChanged -= UpdateSupViewportSize;
+    }
+
+    public override void _Input(InputEvent @event)
+    {
+        base._Input(@event);
+        if (@event is InputEventMouseMotion mouseMotionEvent)
+        {
+            if (draggedPart != null)
+            {
+                Vector2 place = GetSnappedMousePosition();
+                draggedPart.Position = place;
+                GetAreaForPart(draggedPart).Position = place;
+            }
+            else if (panning)
+            {
+                canvas.Position += mouseMotionEvent.Relative;
+                UpdateCamera();
+                partTransformControls.UpdateTransform(canvas);
+            }
+            else
+            {
+                UpdateHoveredPart();
+            }
+        }
     }
 
     public override async Task Initialize()
@@ -205,7 +149,7 @@ public partial class CraftBuilderPage : Page
     
     private void AddCoreButton(PartData partData)
     {
-        CoresListItem item = CoresListItemScene.Instantiate<CoresListItem>();
+        CoresListItem item = coresListItemScene.Instantiate<CoresListItem>();
         BlueprintPart blueprint = BlueprintPart.From(partData);
 
         coresList.AddChild(item);
@@ -335,8 +279,8 @@ public partial class CraftBuilderPage : Page
         canvas.Position -= localMouse * canvas.Scale * ZoomStep * delta;
 
         UpdateCamera();
-
-        partTransformControls.CallDeferred("UpdateTransform", canvas);
+        UpdateHoveredPart();
+        partTransformControls.UpdateTransform(canvas);
     }
 
     private void UpdateCamera()
@@ -377,7 +321,8 @@ public partial class CraftBuilderPage : Page
 
     private void RemovePart(DisplayCraftPart part)
     {
-        part.ShouldNotBeNull();
+        if (part == draggedPart)
+            draggedPart = null;
 
         Area2D area = GetAreaForPart(part);
 
@@ -392,6 +337,8 @@ public partial class CraftBuilderPage : Page
 
     private void UpdateHoveredPart()
     {
+        mouseArea.Position = canvas.GetLocalMousePosition();
+        
         Godot.Collections.Array<Area2D> areas = mouseArea.GetOverlappingAreas();
 
         hoveredPart = areas.Count switch
@@ -427,138 +374,19 @@ public partial class CraftBuilderPage : Page
         return partForArea.TryGetValue(area.GetInstanceId(), out DisplayCraftPart part) ? part : null;
     }
 
-    private void OnPartDragAreaMouseButtonEvent(InputEventMouseButton mouseButtonEvent)
+    private Vector2 GetSnappedMousePosition()
     {
-        switch (mouseButtonEvent.ButtonIndex)
-        {
-            case MouseButton.Left:
-                if (mouseButtonEvent.Pressed)
-                {
-                    mouseAction = MouseAction.MouseDown;
-                }
-                else
-                {
-                    OnPartDragAreaMouseUp();
-                }
-                break;
-
-            case MouseButton.WheelUp:
-                Zoom(1);
-                break;
-
-            case MouseButton.WheelDown:
-                Zoom(-1);
-                break;
-        }
+        return (canvas.GetLocalMousePosition() - dragOffset).Snapped(gridSnap);
     }
 
-    public void OnPartDragAreaMouseEntered()
+    private void UpdateSupViewportSize()
     {
-        if (draggedPart != null)
-        {
-            draggedPart.Show();
-            draggedPartPreview.Hide();
-        }
+        subViewport.Size = GetTree().Root.Size;
     }
 
-    public void OnPartDragAreaMouseExited()
-    {
-        if (draggedPart != null)
-        {
-            draggedPart.Hide();
-            draggedPartPreview.Show();
-        }
-    }
-
-    private void OnPartDragAreaMouseUp()
-    {
-        switch (mouseAction)
-        {
-            case MouseAction.MouseDown:
-                partTransformControls.Part = hoveredPart;
-                partTransformControls.UpdateTransform(canvas);
-                break;
-
-            case MouseAction.Panning:
-                // Stopped panning
-                break;
-                        
-            case MouseAction.DraggingPart:
-                // if it was dropped into the inventory it's queued for deletion
-                if (!draggedPart.IsQueuedForDeletion())
-                {
-                    draggedPart.Show();
-                    partTransformControls.Part = draggedPart;
-                    partTransformControls.UpdateTransform(canvas);
-                }
-                draggedPartPreview.Clear();
-                draggedPart = null;
-                dragOffset = Vector2.Zero;
-                break;
-
-            // default:
-            //     throw new ArgumentOutOfRangeException();
-        }
-        mouseAction = MouseAction.None;
-    }
-
-    private void OnPartDragAreaMouseMotionEvent(InputEventMouseMotion mouseMotionEvent)
-    {
-        switch (mouseAction)
-        {
-            case MouseAction.None:
-                mouseArea.GlobalPosition = mouseArea.GetGlobalMousePosition();
-                UpdateHoveredPart();
-                break;
-            
-            case MouseAction.MouseDown:
-                if (hoveredPart != null)
-                {
-                    mouseAction = MouseAction.DraggingPart;
-                    draggedPart = hoveredPart;
-                    draggedPartPreview.PartData = draggedPart.partData;
-                    dragOffset = mouseMotionEvent.Position - hoveredPart.GlobalPosition;
-                    partTransformControls.Clear();
-                    hoveredPartOutline.Visible = false;
-                    DragManager.Instance.Drag(draggedPart, draggedPart.Blueprint);
-                }
-                else
-                {
-                    mouseAction = MouseAction.Panning;
-                }
-                break;
-                    
-            case MouseAction.Panning:
-                canvas.Position += mouseMotionEvent.Relative;
-                UpdateCamera();
-                partTransformControls.UpdateTransform(canvas);
-                break;
-            
-            case MouseAction.DraggingPart:
-                Vector2 place = (canvas.GetLocalMousePosition() - dragOffset).Snapped(gridSnap);
-                draggedPart.Position = place;
-                GetAreaForPart(draggedPart).Position = place;
-                break;
-            
-            default:
-                throw new ArgumentOutOfRangeException();
-        }
-    }
-
-    private void OnPartDragAreaGuiInput(InputEvent inputEvent)
-    {
-        switch (inputEvent)
-        {
-            case InputEventMouseButton mouseButtonEvent:
-                OnPartDragAreaMouseButtonEvent(mouseButtonEvent);
-                break;
-            
-            case InputEventMouseMotion mouseMotionEvent:
-                OnPartDragAreaMouseMotionEvent(mouseMotionEvent);
-                break;
-        }
-    }
     
+    #region EventHandlers
+
     private void OnPartsInventoryPartsListItemHovered(PartsListItem partsListItem)
     {
         partInspector.SetPartData(partsListItem.Value);
@@ -610,31 +438,11 @@ public partial class CraftBuilderPage : Page
             popup.Width = 700;
         }
     }
-
+    
     private void OnImportButtonPressed()
     {
-        BlueprintSelectorPopup popup = PopupsManager.Instance.Custom<BlueprintSelectorPopup>(BlueprintSelectorPopupScene);
+        BlueprintSelectorPopup popup = PopupsManager.Instance.Custom<BlueprintSelectorPopup>(blueprintSelectorPopupScene);
         popup.BlueprintSelected += SetBlueprint;
-    }
-
-    private void OnPartsInventoryDragReceiverDragDrop(DragData dragData)
-    {
-        if (dragData.data is not BlueprintPart blueprintPart)
-            return;
-        
-        partsInventory.PutPart(PartData.From(blueprintPart));
-        RemovePart(draggedPart);
-    }
-    
-    private void OnCoresListDragReceiverDragDrop(DragData dragData)
-    {
-        if (dragData.data is PartData partData)
-            AddCoreButton(partData);
-    }
-
-    private void UpdateSupViewportSize()
-    {
-        subViewport.Size = GetTree().Root.Size;
     }
 
     private void OnBuildButtonPressed()
@@ -653,4 +461,133 @@ public partial class CraftBuilderPage : Page
     {
         Clear();
     }
+    
+    private void OnDragReceiverDragEntered()
+    {
+        draggedPartPreview.Clear();
+
+        if (draggedPart != null)
+            return;
+        
+        BlueprintPart blueprintPart = DragManager.Instance.DragData.data switch
+        {
+            PartData partData => BlueprintPart.From(partData),
+            BlueprintPart blueprintPart2 => blueprintPart2,
+            _ => null,
+        };
+
+        if (blueprintPart == null)
+            return;
+        
+        AddAndDragPart(blueprintPart);
+        craftSummary.SetBlueprint(displayCraft.Blueprint);
+    }
+
+    private void OnDragManagerDragStop(DragData dragData)
+    {
+        partTransformControls.Part = draggedPart;
+        partTransformControls.UpdateTransform(canvas);
+        draggedPart = null;
+
+    }
+
+    private void OnPartsInventoryDragReceiverDragEntered()
+    {
+        if (draggedPart != null)
+        {
+            draggedPartPreview.PartData = draggedPart.partData;
+            RemovePart(draggedPart);
+        }
+        else switch (DragManager.Instance.DragData.data)
+        {
+            case PartData partData:
+                draggedPartPreview.PartData = partData;
+                break;
+        
+            case BlueprintPart blueprintPart:
+                draggedPartPreview.PartData = PartData.From(blueprintPart);
+                break;
+        }
+
+        dragOffset = Vector2.Zero;
+        draggedPartPreview.Show();
+    }
+
+    private void OnPartsInventoryDragReceiverDragExited()
+    {
+        draggedPartPreview.Clear();
+    }
+
+    private void OnPartsInventoryDragReceiverDragDrop(DragData dragData)
+    {
+        switch (dragData.data)
+        {
+            case PartData partData:
+                partsInventory.PutPart(partData);
+                break;
+            
+            case BlueprintPart blueprintPart:
+                partsInventory.PutPart(PartData.From(blueprintPart));
+                break;
+            
+        }
+    }
+
+    private void OnCanvasManipulationHitBoxGuiInput(InputEvent inputEvent)
+    {
+        switch (inputEvent)
+        {
+            case InputEventMouseButton mouseButtonEvent:
+                switch (mouseButtonEvent.ButtonIndex)
+                {
+                    case MouseButton.Left:
+                        mouseDownOnCanvasManipulationHitBox = mouseButtonEvent.Pressed;
+                        if (!mouseButtonEvent.Pressed)
+                        {
+                            panning = false;
+                            if (hoveredPart != null)
+                            {
+                                partTransformControls.Part = hoveredPart;
+                                partTransformControls.UpdateTransform(canvas);
+                                displayCraft.MovePartToTop(hoveredPart);
+                            }
+                            else
+                            {
+                                partTransformControls.Clear();
+                            }
+                        }
+                        break;
+                    
+                    case MouseButton.WheelUp:
+                        Zoom(1);
+                        break;
+                    
+                    case MouseButton.WheelDown:
+                        Zoom(-1);
+                        break;
+                }
+                break;
+            
+            case InputEventMouseMotion:
+                if (!mouseDownOnCanvasManipulationHitBox || panning || DragManager.Instance.DragData != null)
+                    return;
+            
+                if (hoveredPart != null)
+                {
+                    draggedPart = hoveredPart;
+                    dragOffset = draggedPart.GetLocalMousePosition();
+                    partTransformControls.Clear();
+                    hoveredPartOutline.Hide();
+                    DragManager.Instance.Drag(canvasManipulationHitBox, draggedPart.partData);
+                }
+                else
+                {
+                    panning = true;
+                }
+            
+                break;
+        }
+    }
+
+    #endregion
 }

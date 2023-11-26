@@ -1,3 +1,4 @@
+using System;
 using Godot;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,10 +9,12 @@ namespace Nort.UI;
 
 public partial class DisplayCraft : Control
 {
+	public event Action<Blueprint> BlueprintChanged;  
+
 	[Export] private PackedScene displayCraftPartScene;
 	
-	[Ready("%PartsContainer")] public Control _partsContainer;
-	[Ready("%Core")] public DisplayCraftPart Core { get; private set; }
+	[Ready] public Control partsContainer;
+	[Ready] public DisplayCraftPart Core { get; private set; }
 
 	private Color _color;
 	public Color Color
@@ -27,11 +30,30 @@ public partial class DisplayCraft : Control
 
 	public Blueprint Blueprint
 	{
-		get => GetBlueprint();
-		set => SetBlueprint(value);
+		get
+		{
+			return new Blueprint
+			{
+				id = Assets.Instance.GenerateUuid(),
+				core = Core.Blueprint,
+				hulls = Parts.Where(displayCraftPart => displayCraftPart != Core && !displayCraftPart.IsQueuedForDeletion()) // TODO: Pretty weird to check if it's queued for deletion here
+					.Select(displayCraftPart => displayCraftPart.Blueprint)
+					.ToList()
+			};
+		}
+		set
+		{
+			Clear();
+			
+			foreach (BlueprintPart blueprintPart in value.hulls)
+				AddPart(blueprintPart);
+			
+			SetCoreBlueprint(value.core);
+			BlueprintChanged?.Invoke(value);
+		}
 	}
 
-	public IEnumerable<DisplayCraftPart> Parts => _partsContainer.GetChildren().Cast<DisplayCraftPart>();
+	public IEnumerable<DisplayCraftPart> Parts => partsContainer.GetChildren().Cast<DisplayCraftPart>();
 	
 	public override void _Ready()
 	{
@@ -42,38 +64,14 @@ public partial class DisplayCraft : Control
 
 	public void Clear()
 	{
-		_partsContainer.QueueFreeChildren();
-	}
-
-	private Blueprint GetBlueprint()
-	{
-		return new Blueprint
-		{
-			id = Assets.Instance.GenerateUuid(),
-			core = Core.Blueprint,
-			hulls = Parts.Where(displayCraftPart => displayCraftPart != Core && !displayCraftPart.IsQueuedForDeletion()) // TODO: Pretty weird to check if it's queued for deletion here
-				.Select(displayCraftPart => displayCraftPart.Blueprint)
-				.ToList()
-		};
-	}
-
-	private void SetBlueprint(Blueprint blueprint)
-	{
-		Clear();
-
-		foreach (BlueprintPart blueprintPart in blueprint.hulls)
-		{
-			AddPart(blueprintPart);
-		}
-
-		SetCoreBlueprint(blueprint.core);
+		partsContainer.QueueFreeChildren();
 	}
 
 	public DisplayCraftPart AddPart(BlueprintPart blueprintPart)
 	{
 		DisplayCraftPart part = displayCraftPartScene.Instantiate<DisplayCraftPart>();
 		
-		_partsContainer.AddChild(part);
+		partsContainer.AddChild(part);
 
 		part.Color = Color;
 		part.Blueprint = blueprintPart;
@@ -96,4 +94,8 @@ public partial class DisplayCraft : Control
 		}
 	}
 
+	public void MovePartToTop(DisplayCraftPart part)
+	{
+		partsContainer.MoveChild(part, -1);
+	}
 }

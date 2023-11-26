@@ -14,6 +14,11 @@ public class ReadyAttribute : Attribute
     {
         Path = path;
     }
+
+    public ReadyAttribute()
+    {
+        Path = null;
+    }
 }
 
 public static class NodeExtensions
@@ -40,9 +45,15 @@ public static class NodeExtensions
         {
             if (!field.IsPublic)
                 throw new Exception("Can only initialize public fields with Ready");
+            
             ReadyAttribute attribute = field.GetCustomAttribute<ReadyAttribute>();
-            if (attribute != null)
-                field.SetValue(node, node.GetNode(attribute.Path));
+
+            if (attribute == null)
+                continue;
+            
+            string path = attribute.Path ?? "%" + char.ToUpper(field.Name[0]) + field.Name[1..];
+            
+            field.SetValue(node, node.GetNode(path));
         }
         
         PropertyInfo[] properties;
@@ -59,8 +70,13 @@ public static class NodeExtensions
         foreach (PropertyInfo property in properties)
         {
             ReadyAttribute attribute = property.GetCustomAttribute<ReadyAttribute>();
-            if (attribute != null)
-                property.SetValue(node, node.GetNode(attribute.Path));
+            
+            if (attribute == null)
+                continue;
+            
+            string path = attribute.Path ?? "%" + char.ToUpper(property.Name[0]) + property.Name[1..];
+
+            property.SetValue(node, node.GetNode(path));
         }
     }
 }

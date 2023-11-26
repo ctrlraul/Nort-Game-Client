@@ -44,8 +44,8 @@ border_blend = true
 
 [node name="CraftBuilder" type="CanvasLayer"]
 script = ExtResource("1_ktesj")
-BlueprintSelectorPopupScene = ExtResource("2_u4s8h")
-CoresListItemScene = ExtResource("11_8is45")
+blueprintSelectorPopupScene = ExtResource("2_u4s8h")
+coresListItemScene = ExtResource("11_8is45")
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="."]
 anchors_preset = 15
@@ -62,7 +62,7 @@ render_target_update_mode = 4
 
 [node name="Node2D" type="Node2D" parent="SubViewportContainer/SubViewport"]
 
-[node name="Camera2D" type="Camera2D" parent="SubViewportContainer/SubViewport/Node2D"]
+[node name="Camera" type="Camera2D" parent="SubViewportContainer/SubViewport/Node2D"]
 unique_name_in_owner = true
 
 [node name="MouseArea" type="Area2D" parent="SubViewportContainer/SubViewport/Node2D"]
@@ -97,9 +97,9 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("2_iqx6o")
 
-[node name="PartDragArea" type="Button" parent="Control"]
+[node name="CanvasManipulationHitBox" type="Button" parent="Control"]
 unique_name_in_owner = true
-modulate = Color(1, 1, 1, 0)
+self_modulate = Color(1, 1, 1, 0)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -107,6 +107,10 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
+
+[node name="DragReceiver" parent="Control/CanvasManipulationHitBox" instance=ExtResource("13_u0daf")]
+unique_name_in_owner = true
+layout_mode = 1
 
 [node name="Container" type="Control" parent="Control"]
 layout_mode = 1
@@ -162,7 +166,7 @@ grow_vertical = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_4n1lx")
 
-[node name="CraftDisplay" parent="Control/Container/Canvas" instance=ExtResource("5_ammyt")]
+[node name="DisplayCraft" parent="Control/Container/Canvas" instance=ExtResource("5_ammyt")]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 8
@@ -182,6 +186,7 @@ mouse_filter = 2
 
 [node name="HoveredPartOutlineSprite" type="TextureRect" parent="Control/Container/Canvas/HoveredPartOutline"]
 unique_name_in_owner = true
+self_modulate = Color(1, 1, 1, 0.486275)
 material = ExtResource("6_f8ml6")
 layout_mode = 1
 anchors_preset = 8
@@ -210,10 +215,6 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 theme_type_variation = &"WindowMarginContainer"
-
-[node name="OverallDragReceiver" parent="Control/MarginContainer" instance=ExtResource("13_u0daf")]
-unique_name_in_owner = true
-layout_mode = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Control/MarginContainer"]
 layout_mode = 2
@@ -271,7 +272,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 2
 
-[node name="BlueprintIDInput" type="LineEdit" parent="Control/MarginContainer/VBoxContainer/HBoxContainer/Center"]
+[node name="BlueprintIdInput" type="LineEdit" parent="Control/MarginContainer/VBoxContainer/HBoxContainer/Center"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(256, 0)
 layout_mode = 2
@@ -323,10 +324,6 @@ layout_mode = 2
 [node name="CoresListItem2" parent="Control/MarginContainer/VBoxContainer/HBoxContainer/Center/CoresListContainer/PanelContainer/CoresList" instance=ExtResource("11_8is45")]
 layout_mode = 2
 
-[node name="CoresListDragReceiver" parent="Control/MarginContainer/VBoxContainer/HBoxContainer/Center/CoresListContainer" instance=ExtResource("13_u0daf")]
-unique_name_in_owner = true
-layout_mode = 2
-
 [node name="VBoxContainer" type="VBoxContainer" parent="Control/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 10
@@ -345,6 +342,7 @@ size_flags_horizontal = 8
 [node name="DraggedPartPreview" parent="Control" instance=ExtResource("15_e0q3y")]
 unique_name_in_owner = true
 
+[connection signal="gui_input" from="Control/CanvasManipulationHitBox" to="." method="OnCanvasManipulationHitBoxGuiInput"]
 [connection signal="pressed" from="Control/MarginContainer/VBoxContainer/HBoxContainer/Right/BlueprintButtons/ImportButton" to="." method="_on_import_button_pressed"]
 [connection signal="pressed" from="Control/MarginContainer/VBoxContainer/HBoxContainer/Right/BlueprintButtons/ExportButton" to="." method="_on_export_button_pressed"]
 [connection signal="pressed" from="Control/MarginContainer/VBoxContainer/HBoxContainer/Center/HBoxContainer/BuildButton" to="." method="OnBuildButtonPressed"]

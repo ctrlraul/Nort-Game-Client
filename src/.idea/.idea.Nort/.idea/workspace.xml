@@ -5,37 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="177eb88b-292c-4853-820a-5a9fe0daac9a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/CtrlRaul/Godot/CSharpReady.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CtrlRaul/Interfaces/IItemsList.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CtrlRaul/Interfaces/IListItem.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Nort.csproj.old" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Nort/DragData.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Nort/DragManager.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Nort/Listing/ItemsList.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Nort/Pages/CraftBuilder/PartDragArea.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Nort/Pages/CraftBuilder/PartsInventory.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Nort/UI/MouseDetector.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Scenes/Pages/CraftBuilder/PartsInventory.tscn" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nort.csproj.old.1" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Nort/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Nort/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CtrlRaul/ILogger.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/CtrlRaul/Logger.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CtrlRaul/Logger.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CtrlRaul/Godot/CSharpReady.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CtrlRaul/Godot/CSharpReady.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Nort.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Nort.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Nort/Console.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Nort/Console.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Nort/DragEmitter.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Nort/Listing/PartsList.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Nort/Listing/PartsList.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Nort/Listing/PartsListItem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Nort/Listing/PartsListItem.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Nort/Pages/CraftBuilder/CraftBuilderPage.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Nort/Pages/CraftBuilder/CraftBuilderPage.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Nort/Pages/CraftBuilder/DraggedPartPreview.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Nort/Pages/CraftBuilder/DraggedPartPreview.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Nort/Pages/CraftBuilder/PartTransformControls.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Nort/Pages/CraftBuilder/PartTransformControls.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Nort/Pages/MainMenuPage.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Nort/Pages/MainMenuPage.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Nort/PartData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Nort/PartData.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Nort/UI/DisplayCraft.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Nort/UI/DisplayCraft.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Nort/UI/DisplayPart.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Nort/UI/DisplayPart.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Nort/UI/DragReceiver.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Nort/UI/DragReceiver.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Scenes/Lists/PartsList.tscn" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scenes/Lists/PartsListItem.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/Scenes/Lists/PartsListItem.tscn" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Scenes/Pages/CraftBuilder/CraftBuilder.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/Scenes/Pages/CraftBuilder/CraftBuilder.tscn" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Scenes/Pages/CraftBuilder/PartTransformControls.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/Scenes/Pages/CraftBuilder/PartTransformControls.tscn" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Scenes/Pages/MainMenuPage.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/Scenes/Pages/MainMenuPage.tscn" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scenes/Pages/CraftBuilder/PartsInventory.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/Scenes/Pages/CraftBuilder/PartsInventory.tscn" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Scenes/UI/DragReceiver.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/Scenes/UI/DragReceiver.tscn" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/project.godot" beforeDir="false" afterPath="$PROJECT_DIR$/project.godot" afterDir="false" />
     </list>
@@ -49,6 +29,13 @@
       <list>
         <option value="JSON File" />
       </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$/.." value="multiple_drag_handlers" />
+      </map>
     </option>
   </component>
   <component name="HighlightingSettingsPerFile">
@@ -75,29 +62,29 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "ignore.virus.scanning.warn.message": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "CodeLensConfigurable",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;rider.external.source.directories&quot;: [
-      &quot;C:\\Users\\Raul\\AppData\\Roaming\\JetBrains\\Rider2023.1\\resharper-host\\DecompilerCache&quot;,
-      &quot;C:\\Users\\Raul\\AppData\\Roaming\\JetBrains\\Rider2023.1\\resharper-host\\SourcesCache&quot;,
-      &quot;C:\\Users\\Raul\\AppData\\Local\\Symbols\\src&quot;
+  "keyToStringList": {
+    "rider.external.source.directories": [
+      "C:\\Users\\Raul\\AppData\\Roaming\\JetBrains\\Rider2023.1\\resharper-host\\DecompilerCache",
+      "C:\\Users\\Raul\\AppData\\Roaming\\JetBrains\\Rider2023.1\\resharper-host\\SourcesCache",
+      "C:\\Users\\Raul\\AppData\\Local\\Symbols\\src"
     ]
   }
-}</component>
+}]]></component>
   <component name="RunManager" selected=".NET Executable.Player">
     <configuration name="Editor" type="RunExe" factoryName=".NET Executable">
       <option name="EXE_PATH" value="$PROJECT_DIR$/../../../programs/Godot/Godot_v4.2-dev5_mono_win64/Godot_v4.2-dev5_mono_win64.exe" />
@@ -164,6 +151,8 @@
       <workItem from="1700435750237" duration="8807000" />
       <workItem from="1700518478250" duration="540000" />
       <workItem from="1700623976225" duration="3573000" />
+      <workItem from="1700645992858" duration="9103000" />
+      <workItem from="1700982634350" duration="2897000" />
     </task>
     <task id="LOCAL-00001" summary="Added gitignore">
       <option name="closed" value="true" />
@@ -203,5 +192,9 @@
     <MESSAGE value="Fixed error on first screen" />
     <MESSAGE value="idk generated shit?" />
     <option name="LAST_COMMIT_MESSAGE" value="idk generated shit?" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>

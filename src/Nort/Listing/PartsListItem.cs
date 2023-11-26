@@ -22,9 +22,9 @@ public partial class PartsListItem : Button, IListItem<PartData>
 
 	#endregion
 
-	[Ready("Frame")] public TextureRect frame;
-	[Ready("DisplayPart")] public DisplayPart displayPart;
-	[Ready("Count")] public Label countLabel;
+	[Ready] public TextureRect frame;
+	[Ready] public DisplayPart displayPart;
+	[Ready] public Label countLabel;
 
 	private bool mouseDown;
 
@@ -32,7 +32,21 @@ public partial class PartsListItem : Button, IListItem<PartData>
 	public int Count
 	{
 		get => _count;
-		set => SetCount(value);
+		set
+		{
+			_count = value;
+
+			if (value == 0)
+			{
+				Modulate = Modulate with { A = 0.5f };
+				countLabel.Text = "";
+			}
+			else
+			{
+				Modulate = Modulate with { A = 1 };
+				countLabel.Text = value is > 1 and < 10000 ? $"x{value}" : "";
+			}
+		}
 	}
 
 	public Color Color
@@ -50,22 +64,18 @@ public partial class PartsListItem : Button, IListItem<PartData>
 		base._Ready();
 		this.InitializeReady();
 		SetProcessInput(false);
+		DragManager.Instance.DragStop += OnDragStop;
 	}
 
-	private void SetCount(int value)
+	public override void _ExitTree()
 	{
-		_count = value;
+		base._ExitTree();
+		DragManager.Instance.DragStop -= OnDragStop;
+	}
 
-		if (value == 0)
-		{
-			Modulate = Modulate with { A = 0.5f };
-			countLabel.Text = "";
-		}
-		else
-		{
-			Modulate = Modulate with { A = 1 };
-			countLabel.Text = value is > 1 and < 10000 ? $"x{value}" : "";
-		}
+	private void OnDragStop(DragData dragData)
+	{
+		mouseDown = false;
 	}
 
 	private void OnMouseEntered()

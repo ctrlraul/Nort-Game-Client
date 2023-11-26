@@ -13,6 +13,7 @@
 [node name="PartTransformControls" type="Control"]
 layout_mode = 3
 anchors_preset = 0
+mouse_filter = 2
 script = ExtResource("1_uboqp")
 
 [node name="Line2D" type="Line2D" parent="."]
@@ -28,6 +29,7 @@ texture_mode = 2
 [node name="OutlineSpriteContainer" type="Control" parent="."]
 unique_name_in_owner = true
 anchors_preset = 0
+mouse_filter = 2
 
 [node name="OutlineSprite" type="TextureRect" parent="OutlineSpriteContainer"]
 unique_name_in_owner = true
