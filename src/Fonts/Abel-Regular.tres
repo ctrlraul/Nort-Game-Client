@@ -1,0 +1,7 @@
+[gd_resource type="FontVariation" load_steps=2 format=3 uid="uid://b3wagjeldoojk"]
+
+[ext_resource type="FontFile" uid="uid://b3lleio305vxn" path="res://Fonts/Abel-Regular.ttf" id="1_6y3id"]
+
+[resource]
+base_font = ExtResource("1_6y3id")
+variation_embolden = 0.1

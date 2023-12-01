@@ -1,14 +1,14 @@
 [gd_scene load_steps=10 format=3 uid="uid://c5f0wfx25glsh"]
 
 [ext_resource type="Script" path="res://Nort/Pages/CraftBuilder/PartTransformControls.cs" id="1_uboqp"]
-[ext_resource type="Material" uid="uid://igpcbk30hpxf" path="res://common/materials/part_outline_shader_material.tres" id="3_ed3f3"]
-[ext_resource type="Texture2D" uid="uid://b3bm4djf5tas8" path="res://assets/images/part_example.png" id="3_t7umq"]
-[ext_resource type="Texture2D" uid="uid://c8ieoxpurelc0" path="res://assets/images/smooth_line_texture.png" id="4_3epxp"]
-[ext_resource type="Texture2D" uid="uid://dh6ypsv6d5wqq" path="res://assets/images/theme/hexagon_button.png" id="5_h8ufq"]
-[ext_resource type="Texture2D" uid="uid://sk3om7028qo4" path="res://assets/images/theme/hexagon_button_pressed.png" id="6_arr5t"]
-[ext_resource type="Texture2D" uid="uid://cxngr55sbrtc6" path="res://assets/images/theme/hexagon_button_hovered.png" id="7_ny1h0"]
-[ext_resource type="Texture2D" uid="uid://ni64oky6nphi" path="res://assets/images/icons/rotate.png" id="8_60jn7"]
-[ext_resource type="Texture2D" uid="uid://dacwkt2vqhxia" path="res://assets/images/icons/flip.png" id="9_f11qq"]
+[ext_resource type="Material" uid="uid://igpcbk30hpxf" path="res://Materials/part_outline_shader_material.tres" id="3_ed3f3"]
+[ext_resource type="Texture2D" uid="uid://b3bm4djf5tas8" path="res://Images/part_example.png" id="3_t7umq"]
+[ext_resource type="Texture2D" uid="uid://c8ieoxpurelc0" path="res://Images/smooth_line_texture.png" id="4_3epxp"]
+[ext_resource type="Texture2D" uid="uid://dh6ypsv6d5wqq" path="res://Images/theme/hexagon_button.png" id="5_h8ufq"]
+[ext_resource type="Texture2D" uid="uid://sk3om7028qo4" path="res://Images/theme/hexagon_button_pressed.png" id="6_arr5t"]
+[ext_resource type="Texture2D" uid="uid://cxngr55sbrtc6" path="res://Images/theme/hexagon_button_hovered.png" id="7_ny1h0"]
+[ext_resource type="Texture2D" uid="uid://ni64oky6nphi" path="res://Images/icons/rotate.png" id="8_60jn7"]
+[ext_resource type="Texture2D" uid="uid://dacwkt2vqhxia" path="res://Images/icons/flip.png" id="9_f11qq"]
 
 [node name="PartTransformControls" type="Control"]
 layout_mode = 3

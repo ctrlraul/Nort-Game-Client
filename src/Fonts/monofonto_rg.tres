@@ -1,0 +1,7 @@
+[gd_resource type="FontVariation" load_steps=2 format=3 uid="uid://88s3y2gopbuy"]
+
+[ext_resource type="FontFile" uid="uid://cg0piurce428j" path="res://Fonts/monofonto_rg.otf" id="1_5f04l"]
+
+[resource]
+base_font = ExtResource("1_5f04l")
+variation_embolden = -2.0

@@ -12,10 +12,10 @@ public partial class PlayerListItem : PanelContainer
     private Label nickLabel;
     private Label scoreLabel;
 
-    private Player _player;
+    private Player player;
     public Player Player
     {
-        get => _player;
+        get => player;
         set => SetPlayer(value);
     }
     
@@ -28,17 +28,17 @@ public partial class PlayerListItem : PanelContainer
 
     private void SetPlayer(Player value)
     {
-        _player = value;
-        nickLabel.Text = _player.nick;
+        player = value;
+        nickLabel.Text = player.nick;
         scoreLabel.Text = "0";
-        displayCraft.Blueprint = _player.CurrentBlueprint;
+        displayCraft.Blueprint = player.blueprint;
         displayCraft.Color = Assets.Instance.PlayerFaction.Color;
-        displayCraft.Scale = Vector2.One * Mathf.Clamp(1f / (_player.parts.Count * 0.225f) * 0.5f, 0.25f, 0.5f);
+        displayCraft.Scale = Vector2.One * Mathf.Clamp(1f / (player.parts.Count * 0.225f) * 0.5f, 0.25f, 0.5f);
     }
 
     private void OnDeleteButtonPressed()
     {
-        Error error = LocalPlayersManager.Instance.Delete(_player.id);
+        Error error = LocalPlayersManager.Instance.Delete(player.id);
         if (error != Error.Ok)
             PopupsManager.Instance.Error($"Failed to delete local player: {error}");
     }

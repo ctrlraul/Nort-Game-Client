@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://c5uvcuoayidxg"]
 
-[ext_resource type="Texture2D" uid="uid://c8ieoxpurelc0" path="res://assets/images/smooth_line_texture.png" id="1_nr0j0"]
+[ext_resource type="Texture2D" uid="uid://c8ieoxpurelc0" path="res://Images/smooth_line_texture.png" id="1_nr0j0"]
 [ext_resource type="Script" path="res://Nort/Entities/Components/TractorComponent.cs" id="1_pq6e6"]
 
 [node name="TractorComponent" type="Node2D"]

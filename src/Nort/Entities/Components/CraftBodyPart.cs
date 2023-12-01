@@ -47,7 +47,7 @@ public partial class CraftBodyPart : Node2D
 
         // List<Skill> skillzz = new();
         
-        if (Assets.Instance.IsCore(blueprint))
+        if (Assets.IsCore(blueprint.Part))
         {
             // skillzz.Add(Assets.Instance.DefaultCoreSkill);
             Sprite2D coreLight = new();
@@ -112,7 +112,7 @@ public partial class CraftBodyPart : Node2D
 
     private void UpdateColor()
     {
-        Color color = GameConfig.FactionlessColor;
+        Color color = Config.FactionlessColor;
         
         if (hullMax > 0)
         {
@@ -126,11 +126,11 @@ public partial class CraftBodyPart : Node2D
     
     private float GetDropRate()
     {
-        return Part.IsCore(_blueprint.Part) ? GameConfig.DropRateCore : GameConfig.DropRateHull;
+        return Part.IsCore(_blueprint.Part) ? Config.DropRateCore : Config.DropRateHull;
     }
 
     private bool ShinyDropRoll()
     {
-        return GD.Randf() <= GameConfig.DropRateShiny;
+        return GD.Randf() <= Config.DropRateShiny;
     }
 }

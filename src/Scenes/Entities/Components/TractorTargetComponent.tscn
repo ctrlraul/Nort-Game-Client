@@ -1,7 +1,7 @@
 [gd_scene load_steps=9 format=3 uid="uid://bthskvmroiyr"]
 
 [ext_resource type="Script" path="res://Nort/Entities/Components/TractorTargetComponent.cs" id="1_ypm6i"]
-[ext_resource type="Texture2D" uid="uid://v3cdjlnj27p3" path="res://assets/images/tractor_target_section.png" id="2_eo1wb"]
+[ext_resource type="Texture2D" uid="uid://v3cdjlnj27p3" path="res://Images/tractor_target_section.png" id="2_eo1wb"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_5uyh7"]
 radius = 100.0

@@ -41,7 +41,7 @@ public partial class Game : Node
     public override void _Ready()
     {
         base._Ready();
-        PagesNavigator.Instance.SetDefaultScene(GameConfig.Pages.MainMenu);
+        PagesNavigator.Instance.SetDefaultScene(Config.Pages.MainMenu);
         PagesNavigator.Instance.AddMiddleware(PageChangeMiddleware);
     }
 
@@ -62,7 +62,7 @@ public partial class Game : Node
 
     private async Task InitializeSub()
     {
-        await Assets.Instance.ImportAssets(GameConfig.ConfigPath);
+        await Assets.Instance.ImportAssets();
         Initialized?.Invoke();
     }
 

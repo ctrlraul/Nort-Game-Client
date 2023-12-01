@@ -11,5 +11,5 @@ public class Skill
     [JsonProperty] public int mass;
 
     private PackedScene _scene;
-    public PackedScene Scene => _scene ??= GD.Load<PackedScene>(GameConfig.SkillsPath.PathJoin(scenePath));
+    public PackedScene Scene => _scene ??= GD.Load<PackedScene>(Config.SkillsPath.PathJoin(scenePath));
 }

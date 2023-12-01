@@ -36,7 +36,7 @@ public partial class BlueprintsListItem : MarginContainer
 		coreLabel = GetNode<Label>("CoreLabel");
 		partsCountLabel = GetNode<Label>("PartsCountLabel");
 
-		displayCraft.Color = GameConfig.FactionlessColor;
+		displayCraft.Color = Config.FactionlessColor;
 	}
 
 	public void OnButtonPressed()

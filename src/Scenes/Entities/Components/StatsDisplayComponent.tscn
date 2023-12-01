@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://b4v5a6vfbueqm"]
 
-[ext_resource type="Texture2D" uid="uid://befuwhu6fhiow" path="res://assets/images/white_pixel.png" id="1_hd183"]
+[ext_resource type="Texture2D" uid="uid://befuwhu6fhiow" path="res://Images/white_pixel.png" id="1_hd183"]
 
 [node name="StatsDisplayComponent" type="Node2D"]
 z_index = 1

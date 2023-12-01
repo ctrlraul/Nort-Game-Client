@@ -1,10 +1,10 @@
 [gd_scene load_steps=6 format=3 uid="uid://ctqu4tyxogk4d"]
 
 [ext_resource type="Script" path="res://Nort/Pages/CraftBuilder/CraftSummary.cs" id="1_85jiq"]
-[ext_resource type="LabelSettings" uid="uid://dtfxwulwc71hw" path="res://common/resources/big_label_settings.tres" id="1_arv67"]
-[ext_resource type="Texture2D" uid="uid://cy854js4gmuv8" path="res://assets/images/icons/core.png" id="2_14j8g"]
-[ext_resource type="Texture2D" uid="uid://do6ocyo4yi4oe" path="res://assets/images/icons/hull.png" id="3_it5lq"]
-[ext_resource type="Texture2D" uid="uid://cvj2hi0lqxt65" path="res://assets/images/icons/mass.png" id="4_wq11m"]
+[ext_resource type="LabelSettings" uid="uid://dtfxwulwc71hw" path="res://OtherResources/big_label_settings.tres" id="1_arv67"]
+[ext_resource type="Texture2D" uid="uid://cy854js4gmuv8" path="res://Images/icons/core.png" id="2_14j8g"]
+[ext_resource type="Texture2D" uid="uid://do6ocyo4yi4oe" path="res://Images/icons/hull.png" id="3_it5lq"]
+[ext_resource type="Texture2D" uid="uid://cvj2hi0lqxt65" path="res://Images/icons/mass.png" id="4_wq11m"]
 
 [node name="CraftSummary" type="PanelContainer"]
 offset_right = 336.0

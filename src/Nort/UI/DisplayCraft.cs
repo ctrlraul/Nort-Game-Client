@@ -34,7 +34,7 @@ public partial class DisplayCraft : Control
 		{
 			return new Blueprint
 			{
-				id = Assets.Instance.GenerateUuid(),
+				id = Assets.GenerateUuid(),
 				core = Core.Blueprint,
 				hulls = Parts.Where(displayCraftPart => displayCraftPart != Core && !displayCraftPart.IsQueuedForDeletion()) // TODO: Pretty weird to check if it's queued for deletion here
 					.Select(displayCraftPart => displayCraftPart.Blueprint)

@@ -14,7 +14,7 @@ public partial class OrphanPart : Entity
         _skillSprite = GetNode<Sprite2D>("%SkillSprite");
         _animationPlayer = GetNode<AnimationPlayer>("%AnimationPlayer");
 
-        _sprite.SelfModulate = GameConfig.FactionlessColor;
+        _sprite.SelfModulate = Config.FactionlessColor;
         _skillSprite.GlobalRotation = 0;
         _animationPlayer.Play("float");
     }

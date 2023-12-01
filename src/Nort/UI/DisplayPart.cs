@@ -100,7 +100,7 @@ public partial class DisplayPart : Control
 	private void SetPart(Part part)
 	{
 		_part = part;
-		_coreLight = Assets.Instance.IsCore(part);
+		_coreLight = Assets.IsCore(part);
 		
 		textureRect.Texture = Assets.Instance.GetPartTexture(part);
 

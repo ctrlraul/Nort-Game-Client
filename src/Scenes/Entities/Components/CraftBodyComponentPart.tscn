@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://c8vjpl3s8tb65"]
 
 [ext_resource type="Script" path="res://Nort/Entities/Components/CraftBodyPart.cs" id="1_wjoa6"]
-[ext_resource type="Texture2D" uid="uid://b3bm4djf5tas8" path="res://assets/images/part_example.png" id="3_5ac37"]
+[ext_resource type="Texture2D" uid="uid://b3bm4djf5tas8" path="res://Images/part_example.png" id="3_5ac37"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5hmw0"]
 size = Vector2(128, 108)

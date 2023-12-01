@@ -41,7 +41,7 @@ public partial class LocalPlayersPage : Page
     private void OnLocalPlayerSelected(Player player)
     {
         Game.Instance.CurrentPlayer = player;
-        _ = PagesNavigator.Instance.GoTo(GameConfig.Pages.Lobby);
+        _ = PagesNavigator.Instance.GoTo(Config.Pages.Lobby);
     }
 
     private void OnLocalPlayerDeleted(string playerId)

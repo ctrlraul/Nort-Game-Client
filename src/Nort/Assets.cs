@@ -5,199 +5,208 @@ using System.Threading.Tasks;
 using CtrlRaul;
 using CtrlRaul.Godot.Linq;
 using Godot;
-using Newtonsoft.Json;
+using Nort.Interface;
 
 namespace Nort;
 
 public class Assets : Singleton<Assets>
 {
-    public static readonly Texture2D MISSING_PART_TEXTURE;
-    public static readonly Texture2D MISSING_SKILL_TEXTURE;
-    public static readonly Texture2D CORE_LIGHT_TEXTURE;
-    public static readonly ShaderMaterial SHINY_MATERIAL;
-    public static readonly ShaderMaterial PART_OUTLINE_MATERIAL;
-
-    private const string SkillsDirectoryName = "skills";
-    private const string PartsDirectoryName = "parts";
-    private const string FactionsDirectoryName = "factions";
-    private const string MissionsDirectoryName = "missions";
-    private const string PartTexturesDirectoryName = "part_textures";
-    private const string SkillTexturesDirectory = "res://assets/images/skills";
-    public const string BlueprintsDirectoryName = "blueprints";
-    public const string LocalMissionsDirectory = "user://local_missions";
-
-    private string _assetsPath;
-    private readonly Dictionary<string, Skill> _skills = new();
-    private readonly Dictionary<string, Part> _parts = new();
-    private readonly Dictionary<string, Blueprint> _blueprints = new();
-    private readonly Dictionary<string, Faction> _factions = new();
-    private readonly Dictionary<string, Mission> _missions = new();
-    private readonly Dictionary<string, Texture2D> _partTextures = new();
-    private readonly Dictionary<string, Texture2D> _skillTextures = new();
-
-    public Faction PlayerFaction => _factions[GameConfig.PlayerFaction];
-    public Faction EnemyFaction1 => _factions[GameConfig.EnemyFaction1];
-    public Faction EnemyFaction2 => _factions[GameConfig.EnemyFaction2];
-    public Faction EnemyFaction3 => _factions[GameConfig.EnemyFaction3];
-    public Blueprint InitialBlueprint => _blueprints[GameConfig.InitialBlueprint];
-    public Skill DefaultCoreSkill => _skills[GameConfig.DefaultCoreSkill];
-
-    static Assets()
+    private class AssetsLibrary
     {
-        MISSING_PART_TEXTURE = GD.Load<Texture2D>("res://assets/images/part_example.png");
-        MISSING_SKILL_TEXTURE = null;//GD.Load<Texture2D>("res://assets/images/missing_skill.png"); TODO
-        CORE_LIGHT_TEXTURE = GD.Load<Texture2D>("res://assets/images/core_light.png");
-        SHINY_MATERIAL = GD.Load<ShaderMaterial>("res://common/materials/shiny_part_shader_material.tres");
-        PART_OUTLINE_MATERIAL = GD.Load<ShaderMaterial>("res://common/materials/part_outline_shader_material.tres");
+        public readonly Dictionary<string, Skill> skills = new();
+        public readonly Dictionary<string, Part> parts = new();
+        public readonly Dictionary<string, Blueprint> blueprints = new();
+        public readonly Dictionary<string, Faction> factions = new();
+        public readonly Dictionary<string, Mission> missions = new();
+
+        public void Clear()
+        {
+            skills.Clear();
+            parts.Clear();
+            blueprints.Clear();
+            factions.Clear();
+            missions.Clear();
+        }
     }
+    
+    public static readonly Texture2D MISSING_PART_TEXTURE = GD.Load<Texture2D>("res://images/part_example.png");
+    public static readonly Texture2D MISSING_SKILL_TEXTURE = GD.Load<Texture2D>("res://images/skill_placeholder.png");
+    public static readonly Texture2D CORE_LIGHT_TEXTURE = GD.Load<Texture2D>("res://images/core_light.png");
+    public static readonly ShaderMaterial SHINY_MATERIAL = GD.Load<ShaderMaterial>("res://Materials/shiny_part_shader_material.tres");
+    public static readonly ShaderMaterial PART_OUTLINE_MATERIAL = GD.Load<ShaderMaterial>("res://Materials/part_outline_shader_material.tres");
 
-    public Task ImportAssets(string assetsPath)
+    public const string SkillTexturesDirectory = "res://images/skills";
+    public const string SkillsDirectoryName = "skills";
+    public const string PartsDirectoryName = "parts";
+    public const string PartTexturesDirectoryName = "part_textures";
+    public const string FactionsDirectoryName = "factions";
+    public const string MissionsDirectoryName = "missions";
+    public const string BlueprintsDirectoryName = "blueprints";
+
+    private readonly Dictionary<string, Texture2D> skillTextures = new();
+    private readonly Dictionary<string, Texture2D> partTextures = new();
+    private readonly AssetsLibrary vendorAssets = new();
+    private readonly AssetsLibrary customAssets = new();
+
+    
+    public Faction PlayerFaction => GetFaction(Config.PlayerFaction);
+    public Faction DefaultEnemyFaction => GetFaction(Config.DefaultEnemyFaction);
+    public Blueprint InitialBlueprint => GetBlueprint(Config.InitialBlueprint);
+    public Skill DefaultCoreSkill => GetSkill(Config.DefaultCoreSkill);
+
+    
+    public async Task ImportAssets()
     {
-        _assetsPath = assetsPath;
-        
         logger.Log("Importing Assets...");
+        
+        if (!DirAccess.DirExistsAbsolute(Config.VendorAssetsDirectory))
+            throw new Exception($"Vendor assets directory '{Config.VendorAssetsDirectory}' not found");
+        
+        DirAccess.MakeDirRecursiveAbsolute(Config.CustomAssetsDirectory);
+        
+        partTextures.Clear();
+        vendorAssets.Clear();
+        customAssets.Clear();
+        
+        await HydrateAssetsLibrary(vendorAssets, Config.VendorAssetsDirectory);
+        await HydrateAssetsLibrary(customAssets, Config.CustomAssetsDirectory);
 
-        ImportSkills();
-        ImportParts();
-        ImportBlueprints();
-        ImportMissions();
-        ImportFactions();
-        ImportPartTextures();
-        ImportSkillTextures();
+        RunSanityChecks();
 
-        logger.Log($"Skills: {_skills.Count}");
-        logger.Log($"Parts: {_parts.Count}");
-        logger.Log($"Blueprints: {_blueprints.Count}");
-        logger.Log($"Missions: {_missions.Count}");
-        logger.Log($"Factions: {_factions.Count}");
-        logger.Log($"Part Textures: {_partTextures.Count}");
-        logger.Log($"Skill Textures: {_skillTextures.Count}");
+        logger.Log($"Skills: {vendorAssets.skills.Count + customAssets.skills.Count}");
+        logger.Log($"Parts: {vendorAssets.parts.Count + customAssets.parts.Count}");
+        logger.Log($"Blueprints: {vendorAssets.blueprints.Count + customAssets.blueprints.Count}");
+        logger.Log($"Missions: {vendorAssets.missions.Count + customAssets.missions.Count}");
+        logger.Log($"Factions: {vendorAssets.factions.Count + customAssets.factions.Count}");
+    }
+    
+    private Task HydrateAssetsLibrary(AssetsLibrary assetsLibrary, string assetsDirectory)
+    {
+        string skillsDirectoryPath = assetsDirectory.PathJoin(SkillsDirectoryName);
+        string partsDirectoryPath = assetsDirectory.PathJoin(PartsDirectoryName);
+        string partTexturesDirectoryPath = assetsDirectory.PathJoin(PartTexturesDirectoryName);
+        string blueprintsDirectoryPath = assetsDirectory.PathJoin(BlueprintsDirectoryName);
+        string factionsDirectoryPath = assetsDirectory.PathJoin(FactionsDirectoryName);
+        string missionsDirectoryPath = assetsDirectory.PathJoin(MissionsDirectoryName);
+
+        if (DirAccess.DirExistsAbsolute(skillsDirectoryPath))
+        {
+            foreach (Skill skill in OpenDirOrThrow(skillsDirectoryPath).ParseJsonFiles<Skill>())
+            {
+                assetsLibrary.skills.Add(skill.id, skill);
+            
+                string path = SkillTexturesDirectory.PathJoin(skill.id + ".png");
+                Texture2D texture = GD.Load<Texture2D>(path);
+
+                if (texture == null)
+                {
+                    logger.Error($"Failed to load texture for skill '{skill.id}' from '{path}'");
+                    continue;
+                }
+            
+                skillTextures.Add(skill.id, texture);
+            }
+        }
+
+        if (DirAccess.DirExistsAbsolute(partsDirectoryPath))
+        {
+            foreach (Part part in OpenDirOrThrow(partsDirectoryPath).ParseJsonFiles<Part>())
+            {
+                assetsLibrary.parts.Add(part.id, part);
+            
+                string path = partTexturesDirectoryPath.PathJoin(part.textureName);
+                Texture2D texture = GD.Load<Texture2D>(path);
+
+                if (texture == null)
+                {
+                    logger.Error($"Failed to load texture for part '{part.id}' from '{path}'");
+                    continue;
+                }
+            
+                partTextures.Add(part.id, texture);
+            }
+        }
+
+        if (DirAccess.DirExistsAbsolute(blueprintsDirectoryPath))
+        {
+            foreach (Blueprint item in OpenDirOrThrow(blueprintsDirectoryPath).ParseJsonFiles<Blueprint>())
+            {
+                assetsLibrary.blueprints.Add(item.id, item);
+            }
+        }
+
+        if (DirAccess.DirExistsAbsolute(factionsDirectoryPath))
+        {
+            foreach (Faction item in OpenDirOrThrow(factionsDirectoryPath).ParseJsonFiles<Faction>())
+            {
+                assetsLibrary.factions.Add(item.id, item);
+            }
+        }
+
+        if (DirAccess.DirExistsAbsolute(missionsDirectoryPath))
+        {
+            foreach (Mission item in OpenDirOrThrow(missionsDirectoryPath).ParseJsonFiles<Mission>())
+            {
+                assetsLibrary.missions.Add(item.id, item);
+            }
+        }
 
         return Task.CompletedTask;
     }
-    
-    private void ImportSkills() => MapJsonDirIntoDict(SkillsDirectoryName, _skills, skill => skill.id);
 
-    private void ImportParts() => MapJsonDirIntoDict(PartsDirectoryName, _parts, part => part.id);
-
-    private void ImportBlueprints()
+    private void RunSanityChecks()
     {
-        MapJsonDirIntoDict(BlueprintsDirectoryName, _blueprints, blueprint => blueprint.id);
-
-        if (!_blueprints.ContainsKey(GameConfig.InitialBlueprint))
-            throw new Exception($"No blueprint imported with the id set in 'GameConfig.InitialBlueprint' ({GameConfig.InitialBlueprint})");
+        if (!vendorAssets.blueprints.ContainsKey(Config.InitialBlueprint))
+            throw new Exception($"No matching blueprint for initial blueprint with id '{Config.InitialBlueprint}'");
     }
-
-    private void ImportMissions() => MapJsonDirIntoDict(MissionsDirectoryName, _missions, mission => mission.id);
-
-    private void ImportFactions() => MapJsonDirIntoDict(FactionsDirectoryName, _factions, faction => faction.id);
-
-    private void MapJsonDirIntoDict<T>(string dirName, IDictionary<string, T> dictionary, Func<T, string> keyFn)
+    
+    private static DirAccess OpenDirOrThrow(string directoryPath)
     {
-        string dirPath = _assetsPath.PathJoin(dirName);
-        
-        DirAccess dir = DirAccess.Open(dirPath);
+        DirAccess dir = DirAccess.Open(directoryPath);
 
         if (dir == null)
-            throw new Exception($"Failed to open '{dirPath}': {DirAccess.GetOpenError()}");
+            throw new Exception($"Failed to open '{directoryPath}': {DirAccess.GetOpenError()}");
 
-        foreach (string fileName in dir.Files())
-        {
-            string path = dirPath.PathJoin(fileName);
-
-            FileAccess file = FileAccess.Open(path, FileAccess.ModeFlags.Read);
-
-            if (file == null)
-            {
-                PopupsManager.Instance.Error($"Failed to read {typeof(T).Name} file '{path}': {FileAccess.GetOpenError()}");
-                continue;
-            }
-
-            T result;
-            
-            try
-            {
-                result = JsonConvert.DeserializeObject<T>(file.GetAsText());
-            }
-            catch (Exception exception)
-            {
-                throw new Exception($"Failed to parse json file '{path}': {exception.Message}");
-            }
-            
-            dictionary.Add(keyFn.Invoke(result), result);
-        }
+        return dir;
     }
 
-    private void ImportPartTextures()
+    
+    public IEnumerable<Part> GetParts()
     {
-        if (!_parts.Any())
-        {
-            logger.Warn("ImportPartTextures :: No parts loaded!");
-            return;
-        }
-        
-        _partTextures.Clear();
-        
-        string dirPath = _assetsPath.PathJoin(PartTexturesDirectoryName);
-
-        foreach (Part part in _parts.Values)
-        {
-            string path = dirPath.PathJoin(part.textureName);
-            Texture2D texture = GD.Load<Texture2D>(path);
-
-            if (texture == null)
-            {
-                logger.Error($"Failed to load texture for part '{part.displayName}' (id {part.id}) from '{path}'");
-                continue;
-            }
-            
-            _partTextures[part.id] = texture;
-        }
+        return vendorAssets.parts.Values.Concat(customAssets.parts.Values);
     }
-  
-    private void ImportSkillTextures()
+    
+    public IEnumerable<Part> GetCoreParts()
     {
-        if (!_skills.Any())
-        {
-            logger.Warn("ImportSkillTextures :: No skills loaded!");
-            return;
-        }
-        
-        _skillTextures.Clear();
-
-        foreach (Skill skill in _skills.Values)
-        {
-            string path = SkillTexturesDirectory.PathJoin(skill.id + ".png");
-            Texture2D texture = GD.Load<Texture2D>(path);
-
-            if (texture == null)
-            {
-                logger.Error($"Failed to load texture for skill '{skill.displayName}' (id {skill.id}) from '{path}'");
-                continue;
-            }
-            
-            _skillTextures[skill.id] = texture;
-        }
+        return GetParts().Where(IsCore);
     }
 
-    public IEnumerable<Part> GetParts() => _parts.Select(kvp => kvp.Value);
-
-    public IEnumerable<Part> GetCoreParts() => _parts.Where(kvp => IsCore(kvp.Value)).Select(kvp => kvp.Value);
-
-    public IEnumerable<Part> GetHullParts() => _parts.Where(kvp => !IsCore(kvp.Value)).Select(kvp => kvp.Value);
-
-    public Part GetPart(string id) => _parts[id];
-
-    public IEnumerable<Blueprint> GetBlueprints() => _blueprints.Select(kvp => kvp.Value);
-
-    public Blueprint GetBlueprint(string id) => _blueprints[id];
-
-    public void AddBlueprint(Blueprint blueprint)
+    public IEnumerable<Part> GetHullParts()
     {
-        _blueprints.Add(blueprint.id, blueprint);
+        return GetParts().Where(IsNotCore);
+    }
+    
+    public Part GetPart(string id)
+    {
+        return vendorAssets.parts.TryGetValue(id, out Part item)
+            ? item
+            : customAssets.parts[id];
     }
 
-    public Vector2 GetBlueprintSize(Blueprint blueprint)
+    
+    public IEnumerable<Blueprint> GetBlueprints()
+    {
+        return vendorAssets.blueprints.Values.Concat(customAssets.blueprints.Values);
+    }
+
+    public Blueprint GetBlueprint(string id)
+    {
+        return vendorAssets.blueprints.TryGetValue(id, out Blueprint item)
+            ? item
+            : customAssets.blueprints[id];
+    }
+    
+    public Vector2 GetBlueprintVisualSize(Blueprint blueprint)
     {
         Vector2 topLeft = new(float.PositiveInfinity, float.PositiveInfinity);
         Vector2 bottomRight = new(float.NegativeInfinity, float.NegativeInfinity);
@@ -217,17 +226,103 @@ public class Assets : Singleton<Assets>
         return (bottomRight - topLeft).Abs();
     }
     
-    public Faction GetFaction(string id) => _factions[id];
+    public void StoreBlueprint(Blueprint blueprint)
+    {
+        string assetsDirectory;
+        AssetsLibrary assetsLibrary;
 
-    public IEnumerable<Skill> GetSkills() => _skills.Select(kvp => kvp.Value);
+        if (Game.Instance.Dev)
+        {
+            assetsDirectory = Config.VendorAssetsDirectory;
+            assetsLibrary = vendorAssets;
+        }
+        else
+        {
+            assetsDirectory = Config.CustomAssetsDirectory;
+            assetsLibrary = customAssets;
+        }
+        
+        string path = assetsDirectory
+            .PathJoin(BlueprintsDirectoryName)
+            .PathJoin(blueprint.id + ".json");
+        
+        blueprint.SaveJson(path);
 
-    public Skill GetSkill(string id) => _skills[id];
-
-    public string GenerateUuid() => Guid.NewGuid().ToString();
+        assetsLibrary.blueprints[blueprint.id] = blueprint;
+        
+        logger.Log($"Blueprint stored at '{path}'");
+    }
     
+    public void StoreMission(Mission mission)
+    {
+        string assetsDirectory;
+        AssetsLibrary assetsLibrary;
+
+        if (Game.Instance.Dev)
+        {
+            assetsDirectory = Config.VendorAssetsDirectory;
+            assetsLibrary = vendorAssets;
+        }
+        else
+        {
+            assetsDirectory = Config.CustomAssetsDirectory;
+            assetsLibrary = customAssets;
+        }
+        
+        string path = assetsDirectory
+            .PathJoin(MissionsDirectoryName)
+            .PathJoin(mission.id + ".json");
+        
+        mission.SaveJson(path);
+
+        assetsLibrary.missions[mission.id] = mission;
+        
+        logger.Log($"Mission stored at '{path}'");
+    }
+    
+    
+    public IEnumerable<Faction> GetFactions()
+    {
+        return vendorAssets.factions.Values.Concat(customAssets.factions.Values);
+    }
+
+    public Faction GetFaction(string id)
+    {
+        return vendorAssets.factions.TryGetValue(id, out Faction item)
+            ? item
+            : customAssets.factions[id];
+    }
+    
+    
+    public IEnumerable<Skill> GetSkills()
+    {
+        return vendorAssets.skills.Values.Concat(customAssets.skills.Values);
+    }
+
+    public Skill GetSkill(string id)
+    {
+        return vendorAssets.skills.TryGetValue(id, out Skill item)
+            ? item
+            : customAssets.skills[id];
+    }
+
+
+    public IEnumerable<Mission> GetMissions()
+    {
+        return vendorAssets.missions.Values.Concat(customAssets.missions.Values);
+    }
+
+    public Mission GetMission(string id)
+    {
+        return vendorAssets.missions.TryGetValue(id, out Mission item)
+            ? item
+            : customAssets.missions[id];
+    }
+
+
     public Texture2D GetPartTexture(string partId)
     {
-        return _partTextures.TryGetValue(partId, out Texture2D texture) ? texture : MISSING_PART_TEXTURE;
+        return partTextures.TryGetValue(partId, out Texture2D texture) ? texture : MISSING_PART_TEXTURE;
     }
 
     public Texture2D GetPartTexture(Part part)
@@ -240,18 +335,26 @@ public class Assets : Singleton<Assets>
         return GetPartTexture(blueprintPart.partId);
     }
 
+    
     public Texture2D GetSkillTexture(string id)
     {
-        return _skillTextures.TryGetValue(id, out Texture2D texture) ? texture : MISSING_SKILL_TEXTURE;
+        return skillTextures.TryGetValue(id, out Texture2D texture) ? texture : MISSING_SKILL_TEXTURE;
     }
+    
 
-    public bool IsCore(Part part)
+    public static bool IsCore(Part part)
     {
         return part.type == Part.Type.Core;
     }
 
-    public bool IsCore(BlueprintPart blueprintPart)
+    public static bool IsNotCore(Part part)
     {
-        return IsCore(blueprintPart.Part);
+        return !IsCore(part);
+    }
+
+
+    public static string GenerateUuid()
+    {
+        return Guid.NewGuid().ToString();
     }
 }

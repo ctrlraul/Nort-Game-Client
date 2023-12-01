@@ -15,9 +15,9 @@ config/description="The ships game!"
 run/main_scene="res://Scenes/Pages/MainMenuPage.tscn"
 config/features=PackedStringArray("4.2", "C#", "Forward Plus")
 boot_splash/bg_color=Color(0, 0, 0, 1)
-boot_splash/image="res://assets/branding/splash_screen.png"
-config/icon="res://assets/branding/icon256x256.png"
-config/windows_native_icon="res://assets/branding/icon16x16.ico"
+boot_splash/image="res://Images/branding/splash_screen.png"
+config/icon="res://Images/branding/icon256x256.png"
+config/windows_native_icon="res://images/branding/icon16x16.ico"
 boot_splash/minimum_display_time=500
 
 [autoload]

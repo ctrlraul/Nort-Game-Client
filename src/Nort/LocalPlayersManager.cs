@@ -13,15 +13,16 @@ public class LocalPlayersManager : Singleton<LocalPlayersManager>
 {
     public event Action<string> LocalPlayerDeleted;
 
-    public Player NewLocalPlayer()
+    public static Player NewLocalPlayer()
     {
-        Player player = new();
-        Blueprint blueprint = Assets.Instance.InitialBlueprint;
+        Player player = new()
+        {
+            id = Assets.GenerateUuid(),
+            nick = "noob",
+            blueprint = Blueprint.From(Assets.Instance.InitialBlueprint)
+        };
 
-        player.id = Assets.Instance.GenerateUuid();
-        player.blueprints.Add(blueprint);
-        player.parts.Add(PartData.From(blueprint.core));
-        player.parts.AddRange(blueprint.hulls.Select(PartData.From));
+        AddPartsForBlueprint(player, player.blueprint);
 
         return player;
     }
@@ -29,7 +30,7 @@ public class LocalPlayersManager : Singleton<LocalPlayersManager>
     public List<Player> GetPlayers()
     {
         var players = new List<Player>();
-        const string path = GameConfig.Storage.LocalPlayers;
+        const string path = Config.Storage.LocalPlayers;
         
         if (!DirAccess.DirExistsAbsolute(path))
         {
@@ -72,17 +73,17 @@ public class LocalPlayersManager : Singleton<LocalPlayersManager>
 
     public static bool HasLocalPlayers()
     {
-        if (!DirAccess.DirExistsAbsolute(GameConfig.Storage.LocalPlayers))
+        if (!DirAccess.DirExistsAbsolute(Config.Storage.LocalPlayers))
         {
             return false;
         }
 
-        return DirAccess.GetFilesAt(GameConfig.Storage.LocalPlayers).Length > 0;
+        return DirAccess.GetFilesAt(Config.Storage.LocalPlayers).Length > 0;
     }
     
     public void StoreLocalPlayer(Player player)
     {
-        string path = GameConfig.Storage.LocalPlayers.PathJoin($"{player.id}.json");
+        string path = Config.Storage.LocalPlayers.PathJoin($"{player.id}.json");
 
         try
         {
@@ -111,16 +112,22 @@ public class LocalPlayersManager : Singleton<LocalPlayersManager>
     
     // private static Error CreateLocalPlayersDir()
     // {
-    //     if (DirAccess.DirExistsAbsolute(GameConfig.Storage.LocalPlayers))
+    //     if (DirAccess.DirExistsAbsolute(Config.Storage.LocalPlayers))
     //     {
     //         return Error.Ok;
     //     }
     //
-    //     return DirAccess.MakeDirRecursiveAbsolute(GameConfig.Storage.LocalPlayers);
+    //     return DirAccess.MakeDirRecursiveAbsolute(Config.Storage.LocalPlayers);
     // }
 
     private static string GetPathForPlayerFile(string playerId)
     {
-        return GameConfig.Storage.LocalPlayers.PathJoin(playerId + ".json");
+        return Config.Storage.LocalPlayers.PathJoin(playerId + ".json");
+    }
+    
+    private static void AddPartsForBlueprint(Player player, Blueprint blueprint)
+    {
+        player.parts.Add(PartData.From(blueprint.core));
+        player.parts.AddRange(blueprint.hulls.Select(PartData.From));
     }
 }

@@ -8,12 +8,21 @@ using CtrlRaul.Godot.Linq;
 using Nort.UI;
 using Nort.Listing;
 using Nort.Popups;
-using Nort.Interface;
 
 namespace Nort.Pages.CraftBuilder;
 
 public partial class CraftBuilderPage : Page
 {
+    public class NavigationData
+    {
+        public bool FromEditor { get; }
+
+        public NavigationData(bool fromEditor)
+        {
+            FromEditor = fromEditor;
+        }
+    }
+    
     private readonly Vector2 gridSnap = Vector2.One * 16.0f;
     private const float ZoomStep = 0.1f;
     private const float ZoomMin = 0.5f;
@@ -55,7 +64,7 @@ public partial class CraftBuilderPage : Page
     private bool panning;
     private bool mouseDownOnCanvasManipulationHitBox;
 
-    private Color _color = GameConfig.FactionlessColor;
+    private Color _color = Config.FactionlessColor;
     private Color Color
     {
         get => _color;
@@ -136,13 +145,13 @@ public partial class CraftBuilderPage : Page
             blueprintIdInput.Visible = true;
             blueprintButtons.Visible = true;
             SetBlueprint(Assets.Instance.InitialBlueprint);
-            Color = Assets.Instance.EnemyFaction1.Color;
+            Color = Assets.Instance.DefaultEnemyFaction.Color;
         }
         else
         {
             blueprintIdInput.Visible = false;
             blueprintButtons.Visible = false;
-            SetBlueprint(Game.Instance.CurrentPlayer.CurrentBlueprint);
+            SetBlueprint(Game.Instance.CurrentPlayer.blueprint);
             Color = Assets.Instance.PlayerFaction.Color;
         }
     }
@@ -408,35 +417,22 @@ public partial class CraftBuilderPage : Page
         Blueprint blueprint = displayCraft.Blueprint;
 
         if (!string.IsNullOrEmpty(blueprintIdInput.Text))
-        {
             blueprint.id = blueprintIdInput.Text;
-        }
-
-        string path = GameConfig.ConfigPath
-            .PathJoin(Assets.BlueprintsDirectoryName)
-            .PathJoin(blueprint.id + ".json");
-        
-        bool success = false;
 
         try
         {
-            blueprint.SaveJson(path);
-            Assets.Instance.AddBlueprint(blueprint);
-            success = true;
+            Assets.Instance.StoreBlueprint(blueprint);
         }
         catch (Exception exception)
         {
             string message = $"Failed to export blueprint: {exception.Message}";
             logger.Error(message);
             PopupsManager.Instance.Error(message);
+            return;
         }
 
-        if (success)
-        {
-            logger.Log($"Exported blueprint '{path}'");
-            DialogPopup popup = PopupsManager.Instance.Info($"Exported to '{path}'");
-            popup.Width = 700;
-        }
+        // TODO: Use action texts instead of popup for this
+        PopupsManager.Instance.Info("Blueprint exported!");
     }
     
     private void OnImportButtonPressed()
@@ -445,16 +441,15 @@ public partial class CraftBuilderPage : Page
         popup.BlueprintSelected += SetBlueprint;
     }
 
-    private void OnBuildButtonPressed()
+    private async void OnBuildButtonPressed()
     {
         if (Game.Instance.CurrentPlayer != null)
         {
-            Game.Instance.CurrentPlayer.CurrentBlueprint = displayCraft.Blueprint;
-            Game.Instance.CurrentPlayer.CurrentBlueprint = Game.Instance.CurrentPlayer.CurrentBlueprint;
+            Game.Instance.CurrentPlayer.blueprint = displayCraft.Blueprint;
             LocalPlayersManager.Instance.StoreLocalPlayer(Game.Instance.CurrentPlayer);
         }
 
-        _ = PagesNavigator.Instance.GoTo(GameConfig.Pages.Lobby);
+        await PagesNavigator.Instance.GoBack();
     }
 
     private void OnClearButtonPressed()

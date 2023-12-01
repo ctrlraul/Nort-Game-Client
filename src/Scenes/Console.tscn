@@ -1,8 +1,8 @@
 [gd_scene load_steps=4 format=3 uid="uid://dw356ow55yc2t"]
 
 [ext_resource type="Script" path="res://Nort/Console.cs" id="1_xogfn"]
-[ext_resource type="Texture2D" uid="uid://bb2c5v84mdbhh" path="res://assets/images/vignette.png" id="2_0a5vg"]
-[ext_resource type="Texture2D" uid="uid://cliyyksspwsp0" path="res://assets/branding/logo_stencil.png" id="2_hh3f1"]
+[ext_resource type="Texture2D" uid="uid://bb2c5v84mdbhh" path="res://Images/vignette.png" id="2_0a5vg"]
+[ext_resource type="Texture2D" uid="uid://cliyyksspwsp0" path="res://Images/branding/logo_stencil.png" id="2_hh3f1"]
 
 [node name="Console" type="CanvasLayer"]
 layer = 100

@@ -21,8 +21,19 @@ public partial class Craft : Entity, IFactionMember
 
     public Faction Faction { get; private set; }
     public CraftBodyComponent Body { get; private set; }
-    public Blueprint Blueprint { get; private set; }
 
+    private Blueprint blueprint;
+    public Blueprint Blueprint
+    {
+        get => blueprint;
+        private set
+        {
+            BlueprintStats stats = Blueprint.GetStats(value);
+            CoreMax = stats.core;
+            HullMax = stats.hull;
+            blueprint = value;
+        }
+    }
 
     public float CoreMax { get; private set; }
     public float Core { get; private set; }
@@ -39,14 +50,23 @@ public partial class Craft : Entity, IFactionMember
         AddComponents(setup.componentSet);
         InitComponents();
 
-        BlueprintStats stats = Blueprint.GetStats(Blueprint);
+        Body = GetComponentOrThrow<CraftBodyComponent>();
+        Body.SetBlueprint(Blueprint);
+    }
+
+    public void SetSetup(PlayerCraftSetup setup)
+    {
+        Position = setup.Place;
+        Faction = Assets.Instance.PlayerFaction;
+        Blueprint = Game.Instance.CurrentPlayer?.blueprint ?? setup.testBlueprint;
         
-        CoreMax = stats.core;
-        HullMax = stats.hull;
+        AddComponents(ComponentSet.Player);
+        InitComponents();
 
         Body = GetComponentOrThrow<CraftBodyComponent>();
         Body.SetBlueprint(Blueprint);
     }
+    
 
     private void AddComponents(ComponentSet set)
     {

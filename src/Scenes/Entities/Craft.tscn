@@ -1,10 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://b1xci2ckb2rvw"]
+[gd_scene load_steps=2 format=3 uid="uid://b1xci2ckb2rvw"]
 
 [ext_resource type="Script" path="res://Nort/Entities/Craft.cs" id="1_do56o"]
-[ext_resource type="PackedScene" uid="uid://djqq8s6miovq7" path="res://common/floating_animation.tscn" id="2_kvdfh"]
 
 [node name="Craft" type="Node2D"]
 script = ExtResource("1_do56o")
-
-[node name="FloatingAnimation" parent="." instance=ExtResource("2_kvdfh")]
-position = Vector2(0, 5)

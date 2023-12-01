@@ -56,12 +56,8 @@ public partial class Stage : Node2D
 
 	public void SpawnPlayerCraft()
 	{
-		player = Spawn(new CraftSetup
-		{
-			Blueprint = Game.Instance.CurrentPlayer?.CurrentBlueprint ?? Assets.Instance.InitialBlueprint,
-			Faction = Assets.Instance.PlayerFaction,
-			componentSet = Craft.ComponentSet.Player
-		});
+		PlayerCraftSetup setup = new() { testBlueprint = Assets.Instance.InitialBlueprint };
+		player = Spawn(setup);
 		flightComponent = player.GetComponent<FlightComponent>();
 		PlayerSpawned?.Invoke(player);
 	}
@@ -75,6 +71,14 @@ public partial class Stage : Node2D
 	}
 
 	public Craft Spawn(CraftSetup setup)
+	{
+		Craft entity = new();
+		entitiesContainer.AddChild(entity);
+		entity.SetSetup(setup);
+		return entity;
+	}
+
+	public Craft Spawn(PlayerCraftSetup setup)
 	{
 		Craft entity = new();
 		entitiesContainer.AddChild(entity);

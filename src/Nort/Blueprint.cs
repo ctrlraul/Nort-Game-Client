@@ -22,6 +22,15 @@ public class Blueprint : ISavable
     [JsonProperty] public BlueprintPart core;
     [JsonProperty] public List<BlueprintPart> hulls = new();
 
+    public static Blueprint From(Blueprint blueprint)
+    {
+        Blueprint newBlueprint = new();
+        newBlueprint.id = Assets.GenerateUuid();
+        newBlueprint.core = blueprint.core;
+        newBlueprint.hulls.AddRange(blueprint.hulls);
+        return newBlueprint;
+    }
+
     public static int GetCoreStat(Blueprint blueprint)
     {
         int result = 0;

@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://yu4ujxccdpgt"]
 
-[ext_resource type="Texture2D" uid="uid://hlcyw0kime5w" path="res://assets/images/skills/bullet.png" id="1_e2qrl"]
+[ext_resource type="Texture2D" uid="uid://hlcyw0kime5w" path="res://Images/skills/bullet.png" id="1_e2qrl"]
 [ext_resource type="Script" path="res://Nort/UI/SkillOptions.cs" id="2_0fxit"]
 
 [node name="GimmickOptions" type="OptionButton"]

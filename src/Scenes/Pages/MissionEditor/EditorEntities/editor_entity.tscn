@@ -1,0 +1,51 @@
+[gd_scene load_steps=3 format=3 uid="uid://c4ie2q1d8qerb"]
+
+[ext_resource type="Script" path="res://Scenes/Pages/MissionEditor/EditorEntities/editor_entity.gd" id="1_ycfje"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5srfx"]
+bg_color = Color(0, 1, 1, 0)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0, 1, 1, 1)
+border_blend = true
+
+[node name="EditorEntity" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+mouse_filter = 1
+script = ExtResource("1_ycfje")
+
+[node name="Hitbox" type="Button" parent="."]
+unique_name_in_owner = true
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -50.0
+offset_top = -50.0
+offset_right = 50.0
+offset_bottom = 50.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+flat = true
+
+[node name="SelectionIndicator" type="Panel" parent="Hitbox"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_5srfx")
+
+[connection signal="button_down" from="Hitbox" to="." method="_on_hitbox_button_down"]
+[connection signal="button_up" from="Hitbox" to="." method="_on_hitbox_button_up"]
+[connection signal="pressed" from="Hitbox" to="." method="_on_hitbox_pressed"]

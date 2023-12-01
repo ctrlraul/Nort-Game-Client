@@ -53,6 +53,7 @@ _data = {
 }
 
 [node name="FloatingAnimation" type="RemoteTransform2D"]
+position = Vector2(0, 5)
 update_rotation = false
 update_scale = false
 script = ExtResource("1_rci4q")

@@ -17,13 +17,12 @@ public partial class LobbyPage : Page
 
     private void OnCraftBuilderButtonPressed()
     {
-        _ = PagesNavigator.Instance.GoTo(GameConfig.Pages.CraftBuilder);
+        _ = PagesNavigator.Instance.GoTo(Config.Pages.CraftBuilder);
     }
 
     private void OnTestButtonPressed()
     {
-        // TODO
-        // MissionPageData data = new(){ mission = Assets.Instance.GetMission("basics") };
-        // PagesNavigator.Instance.GoTo(GameConfig.Pages.Mission, data);
+        MissionPage.NavigationData data = new(fromEditor:false, Assets.Instance.GetMission("basics"));
+        _ = PagesNavigator.Instance.GoTo(Config.Pages.Mission, data);
     }
 }

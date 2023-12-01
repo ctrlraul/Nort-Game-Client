@@ -17,7 +17,7 @@ public partial class StatsDisplayComponent : EntityComponent
         hull = GetNode<Node2D>("%Hull");
         core = GetNode<Node2D>("%Core");
 
-        Vector2 halfSize = Assets.Instance.GetBlueprintSize(Craft.Blueprint) * 0.5f;
+        Vector2 halfSize = Assets.Instance.GetBlueprintVisualSize(Craft.Blueprint) * 0.5f;
 
         Scale = Scale with { X = halfSize.X };
         Position = Position with { Y = halfSize.Y + 10 };

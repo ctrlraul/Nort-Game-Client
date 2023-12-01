@@ -1,0 +1,237 @@
+[gd_scene load_steps=7 format=3 uid="uid://chd8jfxbo0vp"]
+
+[ext_resource type="PackedScene" uid="uid://crxxyndc18yre" path="res://Scenes/Pages/MissionEditor/Explorer/explorer.tscn" id="3_q5kjq"]
+[ext_resource type="PackedScene" uid="uid://bh8tfanbcbflj" path="res://Scenes/Pages/MissionEditor/EditorEntities/editor_player_craft.tscn" id="4_n5f8v"]
+[ext_resource type="LabelSettings" uid="uid://c17ibv5bt7jtw" path="res://OtherResources/small_transparent_label_settings.tres" id="5_84hrd"]
+[ext_resource type="PackedScene" uid="uid://cdwor48b8w6ca" path="res://common/interface/return_button.tscn" id="5_p6525"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_1t3wh"]
+font_size = 40
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i0cpm"]
+bg_color = Color(0, 1, 1, 0.0627451)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0, 1, 1, 1)
+border_blend = true
+
+[node name="MissionEditor" type="CanvasLayer"]
+
+[node name="Theme" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Sandbox" type="Control" parent="Theme"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Canvas" type="Control" parent="Theme/Sandbox"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.5, 0.5)
+
+[node name="Grid" type="Control" parent="Theme/Sandbox/Canvas"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="Theme/Sandbox/Canvas/Grid"]
+self_modulate = Color(1, 1, 1, 0.25098)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -50.0
+offset_top = -10.0
+offset_right = 50.0
+offset_bottom = 10.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "0x0"
+label_settings = SubResource("LabelSettings_1t3wh")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="EntitiesContainer" type="Control" parent="Theme/Sandbox/Canvas"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="EditorPlayerCraft" parent="Theme/Sandbox/Canvas/EntitiesContainer" instance=ExtResource("4_n5f8v")]
+mouse_filter = 0
+
+[node name="SelectionRect" type="Panel" parent="Theme/Sandbox/Canvas"]
+unique_name_in_owner = true
+layout_mode = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_i0cpm")
+
+[node name="MarginContainer" type="MarginContainer" parent="Theme"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_type_variation = &"WindowMarginContainer"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Theme/MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Theme/MarginContainer/VBoxContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="ReturnButton" parent="Theme/MarginContainer/VBoxContainer/MarginContainer" instance=ExtResource("5_p6525")]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Theme/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="PanelContainer" type="PanelContainer" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(360, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/PanelContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer3"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer3/VBoxContainer"]
+layout_mode = 2
+text = "Mission"
+horizontal_alignment = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer3/VBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"PanelContainerDarken"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer3/VBoxContainer/PanelContainer"]
+layout_mode = 2
+
+[node name="MissionNameLineEdit" type="LineEdit" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer3/VBoxContainer/PanelContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+placeholder_text = "Mission Name"
+
+[node name="MissionIDLabel" type="Label" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer3/VBoxContainer/PanelContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "mission-id"
+label_settings = ExtResource("5_84hrd")
+
+[node name="VBoxContainer2" type="HBoxContainer" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer3"]
+layout_mode = 2
+
+[node name="ExportButton" type="Button" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer3/VBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Export"
+
+[node name="ImportButton" type="Button" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer3/VBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Import"
+
+[node name="Center" type="MarginContainer" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="TopButtons" type="HBoxContainer" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/Center"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+
+[node name="TestButton" type="Button" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/Center/TopButtons"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "Test"
+
+[node name="CraftBuilder" type="Button" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/Center/TopButtons"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "Craft Builder"
+
+[node name="BottomButtons" type="HBoxContainer" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/Center"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+
+[node name="AddCraftButton" type="Button" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/Center/BottomButtons"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "Add Craft"
+
+[node name="MarginContainer" type="MarginContainer" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(360, 0)
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="Explorer" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer" instance=ExtResource("3_q5kjq")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(360, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+
+[node name="AddCraftButton" type="Button" parent="Theme/MarginContainer/VBoxContainer/HBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+text = "+ Craft"
+
+[connection signal="gui_input" from="Theme/Sandbox" to="." method="_on_sandbox_gui_input"]
+[connection signal="pressed" from="Theme/MarginContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer3/VBoxContainer2/ExportButton" to="." method="_on_export_button_pressed"]
+[connection signal="pressed" from="Theme/MarginContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer3/VBoxContainer2/ImportButton" to="." method="_on_import_button_pressed"]
+[connection signal="pressed" from="Theme/MarginContainer/VBoxContainer/HBoxContainer/Center/TopButtons/TestButton" to="." method="_on_test_button_pressed"]
+[connection signal="pressed" from="Theme/MarginContainer/VBoxContainer/HBoxContainer/Center/TopButtons/CraftBuilder" to="." method="_on_craft_builder_pressed"]
+[connection signal="pressed" from="Theme/MarginContainer/VBoxContainer/HBoxContainer/Center/BottomButtons/AddCraftButton" to="." method="_on_add_craft_button_pressed"]
+[connection signal="pressed" from="Theme/MarginContainer/VBoxContainer/HBoxContainer/AddCraftButton" to="." method="_on_add_craft_button_pressed"]
