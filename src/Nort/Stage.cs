@@ -43,8 +43,28 @@ public partial class Stage : Node2D
 	public void LoadMission(Mission mission)
 	{
 		logger.Log($"Loading mission '{mission.displayName}'");
-		
-		
+
+		foreach (EntitySetup entitySetup in mission.entities)
+		{
+			switch (entitySetup)
+			{
+				case PlayerCraftSetup playerCraftSetup:
+					Spawn(playerCraftSetup);
+					break;
+				
+				case CraftSetup craftSetup:
+					Spawn(craftSetup);
+					break;
+				
+				case OrphanPartSetup orphanPartSetup:
+					Spawn(orphanPartSetup);
+					break;
+				
+				default:
+					logger.Error($"unhandled entity setup type: {entitySetup.GetType().Name}");
+					break;
+			}
+		}
 	}
 
 	public void Clear()
@@ -56,10 +76,7 @@ public partial class Stage : Node2D
 
 	public void SpawnPlayerCraft()
 	{
-		PlayerCraftSetup setup = new() { testBlueprint = Assets.Instance.InitialBlueprint };
-		player = Spawn(setup);
-		flightComponent = player.GetComponent<FlightComponent>();
-		PlayerSpawned?.Invoke(player);
+		Spawn(new PlayerCraftSetup { testBlueprint = Assets.Instance.InitialBlueprint });
 	}
 
 	public OrphanPart Spawn(OrphanPartSetup setup)
@@ -80,10 +97,26 @@ public partial class Stage : Node2D
 
 	public Craft Spawn(PlayerCraftSetup setup)
 	{
-		Craft entity = new();
-		entitiesContainer.AddChild(entity);
-		entity.SetSetup(setup);
-		return entity;
+		if (IsInstanceValid(player))
+		{
+			player.Destroy();
+			logger.Error("Spawning a player while another instance is already present");
+		}
+		
+		player = new Craft();
+		
+		entitiesContainer.AddChild(player);
+		
+		player.SetSetup(setup);
+		
+		camera.Position = player.Position;
+		flightComponent = player.GetComponent<FlightComponent>();
+		
+		PlayerSpawned?.Invoke(player);
+		
+		SetProcess(true);
+		
+		return player;
 	}
 
 	private void OnPlayerDestroyed()

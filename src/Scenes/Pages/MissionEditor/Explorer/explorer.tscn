@@ -1,13 +1,15 @@
-[gd_scene load_steps=4 format=3 uid="uid://crxxyndc18yre"]
+[gd_scene load_steps=5 format=3 uid="uid://crxxyndc18yre"]
 
 [ext_resource type="PackedScene" uid="uid://cemloumkjywva" path="res://Scenes/Pages/MissionEditor/Explorer/field_scenes/explorer_string_field.tscn" id="1_0mtau"]
-[ext_resource type="Script" path="res://Scenes/Pages/MissionEditor/Explorer/explorer.gd" id="1_23pir"]
+[ext_resource type="Script" path="res://Nort/Pages/MissionEditor/Explorer.cs" id="1_e0po3"]
+[ext_resource type="PackedScene" uid="uid://bwjdntaysvdqi" path="res://Scenes/Pages/MissionEditor/Explorer/ExplorerOptionsFieldItem.tscn" id="2_i4mle"]
 [ext_resource type="LabelSettings" uid="uid://dtfxwulwc71hw" path="res://OtherResources/big_label_settings.tres" id="2_lqu43"]
 
 [node name="Explorer" type="PanelContainer"]
 offset_right = 360.0
 offset_bottom = 647.0
-script = ExtResource("1_23pir")
+script = ExtResource("1_e0po3")
+explorerOptionsFieldItemScene = ExtResource("2_i4mle")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 2

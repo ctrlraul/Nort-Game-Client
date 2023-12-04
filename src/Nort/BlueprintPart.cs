@@ -36,7 +36,6 @@ public partial class BlueprintPart : RefCounted
     }
 
     [JsonIgnore] public int Mass => Part.mass + (string.IsNullOrEmpty(skillId) ? 0 : Skill.mass);
-
     
     public static BlueprintPart From(Part part)
     {

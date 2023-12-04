@@ -1,17 +1,16 @@
 {
+	"id": "brisk",
 	"core": {
-		"definition": "center_1",
+		"partId": "center_1",
 		"skillId": "bullet",
-		"level": 0,
 		"x": 0,
 		"y": 0
 	},
-	"id": "brisk",
-	"parts": [
+	"hulls": [
 		{
 			"angle": -315,
 			"partId": "wing_2",
-			"flip": true,
+			"flipped": true,
 			"x": -32,
 			"y": 16
 		},

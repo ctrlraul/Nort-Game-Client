@@ -29,11 +29,11 @@ public class Assets : Singleton<Assets>
         }
     }
     
-    public static readonly Texture2D MISSING_PART_TEXTURE = GD.Load<Texture2D>("res://images/part_example.png");
-    public static readonly Texture2D MISSING_SKILL_TEXTURE = GD.Load<Texture2D>("res://images/skill_placeholder.png");
-    public static readonly Texture2D CORE_LIGHT_TEXTURE = GD.Load<Texture2D>("res://images/core_light.png");
-    public static readonly ShaderMaterial SHINY_MATERIAL = GD.Load<ShaderMaterial>("res://Materials/shiny_part_shader_material.tres");
-    public static readonly ShaderMaterial PART_OUTLINE_MATERIAL = GD.Load<ShaderMaterial>("res://Materials/part_outline_shader_material.tres");
+    public static readonly Texture2D MissingPartTexture = GD.Load<Texture2D>("res://images/part_example.png");
+    public static readonly Texture2D MissingSkillTexture = GD.Load<Texture2D>("res://images/skill_placeholder.png");
+    public static readonly Texture2D CoreLightTexture = GD.Load<Texture2D>("res://images/core_light.png");
+    public static readonly ShaderMaterial ShinyMaterial = GD.Load<ShaderMaterial>("res://Materials/shiny_part_shader_material.tres");
+    public static readonly ShaderMaterial PartOutlineMaterial = GD.Load<ShaderMaterial>("res://Materials/part_outline_shader_material.tres");
 
     public const string SkillTexturesDirectory = "res://images/skills";
     public const string SkillsDirectoryName = "skills";
@@ -322,7 +322,7 @@ public class Assets : Singleton<Assets>
 
     public Texture2D GetPartTexture(string partId)
     {
-        return partTextures.TryGetValue(partId, out Texture2D texture) ? texture : MISSING_PART_TEXTURE;
+        return partTextures.TryGetValue(partId, out Texture2D texture) ? texture : MissingPartTexture;
     }
 
     public Texture2D GetPartTexture(Part part)
@@ -338,7 +338,7 @@ public class Assets : Singleton<Assets>
     
     public Texture2D GetSkillTexture(string id)
     {
-        return skillTextures.TryGetValue(id, out Texture2D texture) ? texture : MISSING_SKILL_TEXTURE;
+        return skillTextures.TryGetValue(id, out Texture2D texture) ? texture : MissingSkillTexture;
     }
     
 

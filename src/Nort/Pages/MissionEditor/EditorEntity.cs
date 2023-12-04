@@ -15,7 +15,7 @@ public partial class EditorEntity : Control
     [Ready] public Button hitBox;
     [Ready] public Panel selectionIndicator;
 
-    private List<ExplorerField> explorerFields;
+    public List<ExplorerField> explorerFields;
 
     private bool selected;
     public bool Selected
@@ -31,23 +31,14 @@ public partial class EditorEntity : Control
     public override void _Ready()
     {
         base._Ready();
+        this.InitializeReady();
         Selected = false;
         explorerFields = InitExplorerFields();
     }
 
-    private List<ExplorerField> InitExplorerFields()
+    protected virtual List<ExplorerField> InitExplorerFields()
     {
         return new List<ExplorerField>();
-    }
-
-    public void SetSetup(EntitySetup setup)
-    {
-        throw new NotImplementedException();
-    }
-
-    public EntitySetup GetSetup()
-    {
-        throw new NotImplementedException();
     }
 
     private void OnHitBoxPressed()

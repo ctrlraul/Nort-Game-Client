@@ -9,7 +9,7 @@
 		"y": 0
 	},
 	"id": "bullet_turret",
-	"parts": [
+	"hulls": [
 		{
 			"data": {
 				"definition": "center_1",

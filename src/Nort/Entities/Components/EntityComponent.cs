@@ -8,7 +8,6 @@ public partial class EntityComponent : Node2D
 {
     //public static readonly PackedScene CRAFT_BODY = GD.Load<PackedScene>("res://Scenes/Entities/Components/CraftBodyComponent.tscn");
     //public static readonly PackedScene FLIGHT = GD.Load<PackedScene>("res://Scenes/Entities/Components/FlightComponent.tscn");
-    // public static readonly PackedScene STATS_DISPLAY = GD.Load<PackedScene>("res://Scenes/Entities/Components/StatsDisplayComponent.tscn");
 
     private static readonly Dictionary<Type, PackedScene> Scenes = new()
     {
@@ -16,6 +15,7 @@ public partial class EntityComponent : Node2D
         { typeof(TractorComponent), GD.Load<PackedScene>("res://Scenes/Entities/Components/TractorComponent.tscn")},
         { typeof(TractorTargetComponent), GD.Load<PackedScene>("res://Scenes/Entities/Components/TractorTargetComponent.tscn")},
         { typeof(PlayerControlsComponent), GD.Load<PackedScene>("res://Scenes/Entities/Components/PlayerControlsComponent.tscn")},
+        { typeof(StatsDisplayComponent), GD.Load<PackedScene>("res://Scenes/Entities/Components/StatsDisplayComponent.tscn")},
     };
 
     public Entity Entity { get; private set; }

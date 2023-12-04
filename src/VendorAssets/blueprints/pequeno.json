@@ -8,7 +8,7 @@
 		"y": 0
 	},
 	"id": "pequeno",
-	"parts": [
+	"hulls": [
 		{
 			"angle": -180,
 			"data": {

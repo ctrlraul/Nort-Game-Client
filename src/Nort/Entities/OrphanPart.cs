@@ -26,7 +26,7 @@ public partial class OrphanPart : Entity
 		
         _sprite.Texture = Assets.Instance.GetPartTexture(setup.Part);
         _sprite.FlipH = setup.flipped;
-        _sprite.Material = setup.shiny ? Assets.SHINY_MATERIAL : null;
+        _sprite.Material = setup.shiny ? Assets.ShinyMaterial : null;
 
         if (!string.IsNullOrEmpty(setup.skillId))
             _skillSprite.Texture = Assets.Instance.GetSkillTexture(setup.skillId);

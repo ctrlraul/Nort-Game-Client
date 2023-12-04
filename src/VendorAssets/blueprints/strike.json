@@ -1,19 +1,15 @@
 {
 	"core": {
-		"angle": -180,
-		"data": {
-			"definition": "tiny_center_1",
-			"gimmick": "bullet"
-		},
+		"angle": 180,
+		"partId": "tiny_center_1",
+		"skillId": "bullet",
 		"x": 0,
 		"y": 0
 	},
 	"id": "strike",
-	"parts": [
+	"hulls": [
 		{
-			"data": {
-				"definition": "tiny_tail_1"
-			},
+			"partId": "tiny_tail_1",
 			"x": 0,
 			"y": 0
 		}

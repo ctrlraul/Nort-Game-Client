@@ -20,42 +20,39 @@ public partial class DisplayCraftPart : Control
 	
     public float Angle
     {
-        get => displayPart.Rotation;
-        set => displayPart.Rotation = value;
+        get => displayPart.Angle;
+        set => displayPart.Angle = value;
     }
 	
     public PartData partData;
 
     public BlueprintPart Blueprint
     {
-        get => ToBlueprintPart();
-        set => FromBlueprintPart(value);
+        get
+        {
+            return new BlueprintPart
+            {
+                partId = partData.partId,
+                skillId = partData.skillId,
+                shiny = partData.shiny,
+                Place = Position,
+                flipped = Flipped,
+                angle = Angle % 360
+            };
+        }
+        set
+        {
+            partData = PartData.From(value);
+            Position = value.Place;
+            displayPart.Flipped = value.flipped;
+            displayPart.Angle = value.angle;
+            displayPart.PartData = partData;
+        }
     }
 
     public override void _Ready()
     {
+        base._Ready();
         displayPart = GetNode<DisplayPart>("%DisplayPart");
-    }
-
-    private BlueprintPart ToBlueprintPart()
-    {
-        return new BlueprintPart
-        {
-            partId = partData.partId,
-            skillId = partData.skillId,
-            shiny = partData.shiny,
-            Place = Position,
-            flipped = displayPart.Flipped,
-            angle = displayPart.Angle
-        };
-    }
-
-    private void FromBlueprintPart(BlueprintPart blueprintPart)
-    {
-        partData = PartData.From(blueprintPart);
-        Position = blueprintPart.Place;
-        Flipped = blueprintPart.flipped;
-        Angle = blueprintPart.angle;
-        displayPart.PartData = partData;
     }
 }

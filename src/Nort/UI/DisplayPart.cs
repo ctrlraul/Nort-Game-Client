@@ -8,15 +8,15 @@ public partial class DisplayPart : Control
 	private TextureRect textureRect;
 	
 	private TextureRect coreLightTextureRect;
-	private TextureRect gimmickTextureRect;
+	private TextureRect skillTextureRect;
 	private TextureRect outlineTextureRect;
 	
-	private bool _coreLight;
+	private bool coreLight;
 	
 	public bool Shiny
 	{
-		get => textureRect.Material == Assets.SHINY_MATERIAL;
-		set => textureRect.Material = value ? Assets.SHINY_MATERIAL : null;
+		get => textureRect.Material == Assets.ShinyMaterial;
+		set => textureRect.Material = value ? Assets.ShinyMaterial : null;
 	}
 
 	public Color Color
@@ -33,12 +33,12 @@ public partial class DisplayPart : Control
 	
 	public float Angle
 	{
-		get => Rotation;
+		get => RotationDegrees;
 		set
 		{
-			Rotation = value;
-			if (gimmickTextureRect != null)
-				gimmickTextureRect.Rotation = -value;
+			RotationDegrees = value;
+			if (skillTextureRect != null)
+				skillTextureRect.RotationDegrees = -value;
 		}
 	}
 
@@ -53,20 +53,34 @@ public partial class DisplayPart : Control
 		}
 	}
 
-	private Part _part;
+	private Part part;
 	public Part Part
 	{
-		get => _part;
-		set => SetPart(value);
-	}
-	
-	private bool _outline;
-	public bool Outline
-	{
-		get => _outline;
+		get => part;
 		set
 		{
-			_outline = value;
+			part = value;
+			coreLight = Assets.IsCore(part);
+		
+			textureRect.Texture = Assets.Instance.GetPartTexture(part);
+
+			Vector2 textureSize = textureRect.Texture.GetSize();
+
+			textureRect.Size = textureSize;
+			textureRect.Position = textureSize * -0.5f;
+
+			UpdateCoreLight();
+			UpdateOutline();
+		}
+	}
+	
+	private bool outline;
+	public bool Outline
+	{
+		get => outline;
+		set
+		{
+			outline = value;
 			UpdateOutline();
 		}
 	}
@@ -87,8 +101,6 @@ public partial class DisplayPart : Control
 			Shiny = value.shiny;
 			Skill = value.Skill;
 			Part = value.Part;
-			Flipped = false;
-			Angle = 0;
 		}
 	}
 
@@ -97,32 +109,16 @@ public partial class DisplayPart : Control
 		textureRect = GetNode<TextureRect>("%TextureRect");
 	}
 
-	private void SetPart(Part part)
-	{
-		_part = part;
-		_coreLight = Assets.IsCore(part);
-		
-		textureRect.Texture = Assets.Instance.GetPartTexture(part);
-
-		Vector2 textureSize = textureRect.Texture.GetSize();
-
-		textureRect.Size = textureSize;
-		textureRect.Position = textureSize * -0.5f;
-
-		UpdateCoreLight();
-		UpdateOutline();
-	}
-
 	private void UpdateCoreLight()
 	{
-		if (_coreLight)
+		if (coreLight)
 		{
 			if (coreLightTextureRect != null)
 				return;
 			
 			coreLightTextureRect = new TextureRect();
-			coreLightTextureRect.Texture = Assets.CORE_LIGHT_TEXTURE;
-			coreLightTextureRect.Position = Assets.CORE_LIGHT_TEXTURE.GetSize() * -0.5f;
+			coreLightTextureRect.Texture = Assets.CoreLightTexture;
+			coreLightTextureRect.Position = Assets.CoreLightTexture.GetSize() * -0.5f;
 			coreLightTextureRect.MouseFilter = MouseFilterEnum.Ignore;
 			
 			AddChild(coreLightTextureRect);
@@ -136,14 +132,14 @@ public partial class DisplayPart : Control
 
 	private void UpdateOutline()
 	{
-		if (_outline)
+		if (outline)
 		{
 			if (outlineTextureRect == null)
 			{
 				outlineTextureRect = new TextureRect();
-				outlineTextureRect.Rotation = Angle;
+				outlineTextureRect.RotationDegrees = Angle;
 				outlineTextureRect.MouseFilter = MouseFilterEnum.Ignore;
-				outlineTextureRect.Material = Assets.PART_OUTLINE_MATERIAL;
+				outlineTextureRect.Material = Assets.PartOutlineMaterial;
 				AddChild(outlineTextureRect);
 			}
 
@@ -162,26 +158,27 @@ public partial class DisplayPart : Control
 	{
 		if (skill != null)
 		{
-			if (gimmickTextureRect == null)
+			if (skillTextureRect == null)
 			{
-				gimmickTextureRect = new TextureRect();
-				gimmickTextureRect.Rotation = -Angle;
-				gimmickTextureRect.MouseFilter = MouseFilterEnum.Ignore;
-				gimmickTextureRect.ZIndex = 1;
-				AddChild(gimmickTextureRect);
+				skillTextureRect = new TextureRect();
+				skillTextureRect.RotationDegrees = -Angle;
+				skillTextureRect.MouseFilter = MouseFilterEnum.Ignore;
+				skillTextureRect.ZIndex = 1;
+				AddChild(skillTextureRect);
 			}
 
 			Texture2D texture = Assets.Instance.GetSkillTexture(skill.id);
-			Vector2 textureSize = texture.GetSize();
+			Vector2 halfSize = texture.GetSize() * 0.5f;
 
-			gimmickTextureRect.Texture = texture;
-			gimmickTextureRect.Position = textureSize * -0.5f;
-			gimmickTextureRect.Size = textureSize * 0.5f;
+			skillTextureRect.Texture = texture;
+			skillTextureRect.Position = -halfSize;
+			skillTextureRect.Size = halfSize;
+			skillTextureRect.PivotOffset = halfSize;
 		}
-		else if (gimmickTextureRect != null)
+		else if (skillTextureRect != null)
 		{
-			gimmickTextureRect.QueueFree();
-			gimmickTextureRect = null;
+			skillTextureRect.QueueFree();
+			skillTextureRect = null;
 		}
 	}
 }

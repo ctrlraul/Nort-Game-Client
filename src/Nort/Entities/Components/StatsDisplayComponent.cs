@@ -1,21 +1,20 @@
-﻿using Godot;
+﻿using CtrlRaul.Godot;
+using Godot;
 using Shouldly;
 
 namespace Nort.Entities.Components;
 
 public partial class StatsDisplayComponent : EntityComponent
 {
-    private Node2D hull;
-    private Node2D core;
+    [Ready] public Node2D hull;
+    [Ready] public Node2D core;
 
     public override void _Ready()
     {
         base._Ready();
+        this.InitializeReady();
         
         Craft.ShouldNotBeNull($"Expected {nameof(Craft)} as parent");
-
-        hull = GetNode<Node2D>("%Hull");
-        core = GetNode<Node2D>("%Core");
 
         Vector2 halfSize = Assets.Instance.GetBlueprintVisualSize(Craft.Blueprint) * 0.5f;
 

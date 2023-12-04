@@ -7,7 +7,7 @@
 		"y": 0
 	},
 	"id": "carrier_small",
-	"parts": [
+	"hulls": [
 		{
 			"angle": -68,
 			"data": {

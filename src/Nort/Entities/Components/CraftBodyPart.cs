@@ -32,14 +32,14 @@ public partial class CraftBodyPart : Node2D
         _blueprint = blueprint;
 
         Position = blueprint.Place;
-        Rotation = blueprint.angle;
+        RotationDegrees = blueprint.angle;
 
         hullMax = blueprint.Part.hull;
         hull = hullMax;
 
         sprite.Texture = Assets.Instance.GetPartTexture(blueprint);
         sprite.FlipH = blueprint.flipped;
-        sprite.Material = blueprint.shiny ? Assets.SHINY_MATERIAL : null;
+        sprite.Material = blueprint.shiny ? Assets.ShinyMaterial : null;
 
         RectangleShape2D rectangleShape2D = new();
         rectangleShape2D.Size = sprite.Texture.GetSize();
@@ -51,7 +51,7 @@ public partial class CraftBodyPart : Node2D
         {
             // skillzz.Add(Assets.Instance.DefaultCoreSkill);
             Sprite2D coreLight = new();
-            coreLight.Texture = Assets.CORE_LIGHT_TEXTURE;
+            coreLight.Texture = Assets.CoreLightTexture;
             AddChild(coreLight);
         }
 

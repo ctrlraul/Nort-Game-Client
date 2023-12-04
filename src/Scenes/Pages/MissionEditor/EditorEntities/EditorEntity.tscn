@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://c4ie2q1d8qerb"]
 
-[ext_resource type="Script" path="res://Scenes/Pages/MissionEditor/EditorEntities/editor_entity.gd" id="1_ycfje"]
+[ext_resource type="Script" path="res://Nort/Pages/MissionEditor/EditorEntity.cs" id="1_oosaa"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5srfx"]
 bg_color = Color(0, 1, 1, 0)
@@ -15,9 +15,9 @@ border_blend = true
 layout_mode = 3
 anchors_preset = 0
 mouse_filter = 1
-script = ExtResource("1_ycfje")
+script = ExtResource("1_oosaa")
 
-[node name="Hitbox" type="Button" parent="."]
+[node name="HitBox" type="Button" parent="."]
 unique_name_in_owner = true
 self_modulate = Color(1, 1, 1, 0)
 layout_mode = 1
@@ -35,7 +35,7 @@ grow_vertical = 2
 mouse_filter = 1
 flat = true
 
-[node name="SelectionIndicator" type="Panel" parent="Hitbox"]
+[node name="SelectionIndicator" type="Panel" parent="HitBox"]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
@@ -46,6 +46,6 @@ grow_vertical = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_5srfx")
 
-[connection signal="button_down" from="Hitbox" to="." method="_on_hitbox_button_down"]
-[connection signal="button_up" from="Hitbox" to="." method="_on_hitbox_button_up"]
-[connection signal="pressed" from="Hitbox" to="." method="_on_hitbox_pressed"]
+[connection signal="button_down" from="HitBox" to="." method="OnHitBoxButtonDown"]
+[connection signal="button_up" from="HitBox" to="." method="OnHitBoxButtonUp"]
+[connection signal="pressed" from="HitBox" to="." method="OnHitBoxPressed"]

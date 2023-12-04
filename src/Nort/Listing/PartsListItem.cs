@@ -16,7 +16,7 @@ public partial class PartsListItem : Button, IListItem<PartData>
 	{
 		Value = partData;
 		Count = int.MaxValue;
-		frame.Material = partData.shiny ? Assets.SHINY_MATERIAL : null;
+		frame.Material = partData.shiny ? Assets.ShinyMaterial : null;
 		displayPart.PartData = partData;
 	}
 

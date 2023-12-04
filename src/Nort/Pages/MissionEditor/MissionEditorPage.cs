@@ -11,6 +11,11 @@ using Nort.Popups;
 
 namespace Nort.Pages.MissionEditor;
 
+public interface IEditorEntity<T> where T : EntitySetup
+{
+    public T Setup { get; set; }
+}
+
 public partial class MissionEditorPage : Page
 {
     public class NavigationData
@@ -77,7 +82,7 @@ public partial class MissionEditorPage : Page
         else
         {
             missionIdLabel.Text = Assets.GenerateUuid();
-            AddEntity(new PlayerCraftSetup());
+            AddEntity(new PlayerCraftSetup { testBlueprint = Assets.Instance.InitialBlueprint });
         }
 
         Stage.Instance.Clear();
@@ -179,14 +184,26 @@ public partial class MissionEditorPage : Page
 
         foreach (EditorEntity copiedEntity in copied)
         {
-            EntitySetup setup = copiedEntity.GetSetup();
-
-            if (setup is PlayerCraftSetup)
+            EditorEntity pastedEntity;
+            
+            switch (copiedEntity)
             {
-                continue;
+                // This case should come before EditorCraft, otherwise both will run.
+                case EditorPlayerCraft:
+                    continue;
+                
+                case EditorCraft copiedCraft:
+                    pastedEntity = AddEntity(copiedCraft.Setup);
+                    break;
+                
+                case EditorOrphanPart copiedOrphanPart:
+                    pastedEntity = AddEntity(copiedOrphanPart.Setup);
+                    break;
+                
+                default:
+                    throw new NotImplementedException();
             }
-
-            EditorEntity pastedEntity = AddEntity(setup);
+            
             pastedEntity.Position = (canvasCenter + copyOffsets[copiedEntity]).Snapped(gridSnap);
             pastedEntities.Add(pastedEntity);
 
@@ -196,7 +213,7 @@ public partial class MissionEditorPage : Page
 
     public void ShortcutSelectAll()
     {
-        foreach (EditorEntity entity in entitiesContainer.GetChildren().Cast<EditorEntity>())
+        foreach (EditorEntity entity in GetEntities())
         {
             if (!selection.Contains(entity))
             {
@@ -209,7 +226,7 @@ public partial class MissionEditorPage : Page
     {
         foreach (EditorEntity entity in selection)
         {
-            if (entity.GetSetup() is PlayerCraftSetup)
+            if (entity is EditorPlayerCraft)
                 continue;
 
             entity.QueueFree();
@@ -250,7 +267,7 @@ public partial class MissionEditorPage : Page
             {
                 case Action.MultiSelect:
                     Rect2 selectionArea = selectionRect.GetGlobalRect();
-                    foreach (EditorEntity entity in entitiesContainer.GetChildren().Cast<EditorEntity>())
+                    foreach (EditorEntity entity in GetEntities())
                     {
                         if (!selection.Contains(entity) && selectionArea.Intersects(entity.hitBox.GetGlobalRect()))
                         {
@@ -281,8 +298,27 @@ public partial class MissionEditorPage : Page
                 displayName = missionNameLineEdit.Text,
             };
 
-            foreach (EditorEntity entity in entitiesContainer.GetChildren().Cast<EditorEntity>())
-                mission.entities.Add(entity.GetSetup());
+            foreach (EditorEntity entity in GetEntities())
+            {
+                switch (entity)
+                {
+                    // This case should come before EditorCraft, otherwise both will run.
+                    case EditorPlayerCraft editorPlayerCraft:
+                        mission.entities.Add(editorPlayerCraft.Setup);
+                        break;
+                
+                    case EditorCraft editorCraft:
+                        mission.entities.Add(editorCraft.Setup);
+                        break;
+                
+                    case EditorOrphanPart editorOrphanPart:
+                        mission.entities.Add(editorOrphanPart.Setup);
+                        break;
+                
+                    default:
+                        throw new NotImplementedException();
+                }
+            }
 
             return mission;
         }
@@ -310,25 +346,35 @@ public partial class MissionEditorPage : Page
         entitiesContainer.QueueFreeChildren();
     }
 
-    public EditorEntity AddEntity(EntitySetup setup)
+    private IEnumerable<EditorEntity> GetEntities()
     {
-        PackedScene scene = setup.Type switch
-        {
-            EntitySetup.EntityType.Craft => editorCraftScene,
-            EntitySetup.EntityType.PlayerCraft => editorPlayerCraftScene,
-            EntitySetup.EntityType.OrphanPart => editorOrphanPartScene,
-            _ => throw new NotImplementedException($"Add case for type '{setup.Type}'")
-        };
-
-        return AddEntityWithScene(setup, scene);
+        return entitiesContainer.GetChildren().Cast<EditorEntity>();
     }
 
-    public EditorEntity AddEntityWithScene(EntitySetup setup, PackedScene scene)
+    public EditorEntity AddEntity(EntitySetup setup)
     {
-        EditorEntity entity = scene.Instantiate<EditorEntity>();
+        switch (setup)
+        {
+            case CraftSetup craftSetup:
+                return AddEntityWithScene<EditorCraft, CraftSetup>(craftSetup, editorCraftScene);
+            
+            case PlayerCraftSetup playerCraftSetup:
+                return AddEntityWithScene<EditorPlayerCraft, PlayerCraftSetup>(playerCraftSetup, editorPlayerCraftScene);
+            
+            case OrphanPartSetup orphanPartSetup:
+                return AddEntityWithScene<EditorOrphanPart, OrphanPartSetup>(orphanPartSetup, editorOrphanPartScene);
+            
+            default:
+                throw new NotImplementedException($"Add case for type '{setup.Type}'");
+        }
+    }
+
+    public T AddEntityWithScene<T, S>(S setup, PackedScene scene) where T : EditorEntity, IEditorEntity<S> where S : EntitySetup
+    {
+        T entity = scene.Instantiate<T>();
         entitiesContainer.AddChild(entity);
 
-        entity.SetSetup(setup);
+        entity.Setup = setup;
         entity.Pressed += () => OnEntityPressed(entity);
         entity.DragStart += () => OnEntityDragStart(entity);
         entity.DragStop += OnEntityDragStop;
@@ -409,7 +455,13 @@ public partial class MissionEditorPage : Page
 
     private void OnAddCraftButtonPressed()
     {
-        EditorEntity entity = AddEntity(new CraftSetup());
+        CraftSetup craftSetup = new()
+        {
+            Blueprint = Assets.Instance.InitialBlueprint,
+            Faction = Assets.Instance.DefaultEnemyFaction,
+            componentSet = Craft.ComponentSet.Fighter
+        };
+        EditorEntity entity = AddEntity(craftSetup);
 
         entity.Position = GetVisualCanvasCenter().Snapped(gridSnap);
 

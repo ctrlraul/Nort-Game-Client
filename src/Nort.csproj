@@ -15,6 +15,7 @@
     <Folder Include="lib\" />
     <Folder Include="Scenes\Entities\Components\" />
     <Folder Include="Scenes\Pages\CraftBuilder\" />
+    <Folder Include="Scenes\Pages\MissionEditor\EditorEntities\" />
     <Folder Include="stage\" />
   </ItemGroup>
   <ItemGroup>

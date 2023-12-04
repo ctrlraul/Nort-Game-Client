@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using CtrlRaul.Godot;
 using CtrlRaul.Godot.Linq;
 using Godot;
 
@@ -12,8 +13,8 @@ public partial class CraftBodyComponent : EntityComponent
 
     [Export] private PackedScene craftBodyPartScene;
 
-    private Node2D partsContainer;
-    private Node2D skillsContainer;
+    [Ready] public Node2D partsContainer;
+    [Ready] public Node2D skillsContainer;
 
     public Color Color => Craft.Faction.Color;
     public CraftBodyPart Core { get; private set; }
@@ -21,8 +22,7 @@ public partial class CraftBodyComponent : EntityComponent
     public override void _Ready()
     {
         base._Ready();
-        partsContainer = GetNode<Node2D>("%PartsContainer");
-        skillsContainer = GetNode<Node2D>("%SkillsContainer");
+        this.InitializeReady();
         partsContainer.QueueFreeChildren();
     }
 

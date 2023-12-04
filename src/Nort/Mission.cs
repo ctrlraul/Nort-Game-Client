@@ -9,5 +9,5 @@ public class Mission : ISavable
 {
     [JsonProperty] public string id;
     [JsonProperty] public string displayName;
-    [JsonProperty] public List<EntitySetup> entities;
+    [JsonProperty] public List<EntitySetup> entities = new();
 }

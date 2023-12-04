@@ -137,7 +137,7 @@ public partial class Craft : Entity, IFactionMember
     }
 
 
-    private void Destroy()
+    public void Destroy()
     {
         Hull = 0;
         Core = 0;

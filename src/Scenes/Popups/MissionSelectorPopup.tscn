@@ -6,6 +6,7 @@
 
 [node name="MissionSelectorPopup" instance=ExtResource("1_w20sy")]
 script = ExtResource("2_0ydy4")
+missionsListItemScene = null
 
 [node name="Window" parent="Theme/Scaler" index="0"]
 custom_minimum_size = Vector2(400, 600)

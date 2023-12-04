@@ -16,13 +16,13 @@ public partial class DisplayCraft : Control
 	[Ready] public Control partsContainer;
 	[Ready] public DisplayCraftPart Core { get; private set; }
 
-	private Color _color;
+	private Color color;
 	public Color Color
 	{
-		get => _color;
+		get => color;
 		set
 		{
-			_color = value;
+			color = value;
 			if (IsInsideTree())
 				UpdateColor();
 		}
@@ -87,10 +87,10 @@ public partial class DisplayCraft : Control
 
 	private void UpdateColor()
 	{
-		Core.Color = _color;
+		Core.Color = color;
 		foreach (DisplayCraftPart displayPart in Parts)
 		{
-			displayPart.Color = _color;
+			displayPart.Color = color;
 		}
 	}
 

@@ -6,7 +6,6 @@
 [ext_resource type="Texture2D" uid="uid://dgqwtel1q4ppk" path="res://Images/branding/logo_themed.png" id="3_wxxib"]
 [ext_resource type="PackedScene" uid="uid://cxdrb6lxh18qh" path="res://Scenes/UI/DisplayCraft.tscn" id="4_lvv8a"]
 
-
 [node name="MainMenuPage" type="CanvasLayer"]
 script = ExtResource("1_cr51s")
 
@@ -106,4 +105,4 @@ offset_right = 40.0
 offset_bottom = 40.0
 
 [connection signal="pressed" from="Theme/MarginContainer/VBoxContainer/MarginContainer/ButtonsContainer/StartButton" to="." method="OnStartButtonPressed"]
-[connection signal="pressed" from="Theme/MarginContainer/VBoxContainer/MarginContainer/ButtonsContainer/MissionEditorButton" to="." method="_on_mission_editor_button_pressed"]
+[connection signal="pressed" from="Theme/MarginContainer/VBoxContainer/MarginContainer/ButtonsContainer/MissionEditorButton" to="." method="OnMissionEditorButtonPressed"]

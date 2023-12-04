@@ -64,10 +64,10 @@ public partial class CraftBuilderPage : Page
     private bool panning;
     private bool mouseDownOnCanvasManipulationHitBox;
 
-    private Color _color = Config.FactionlessColor;
+    private Color color = Config.FactionlessColor;
     private Color Color
     {
-        get => _color;
+        get => color;
         set
         {
             displayCraft.Color = value;
@@ -80,7 +80,7 @@ public partial class CraftBuilderPage : Page
                 item.Color = value;
             }
 
-            _color = value;
+            color = value;
         }
     }
 
@@ -138,7 +138,7 @@ public partial class CraftBuilderPage : Page
     {
         await Game.Instance.Initialize();
 
-        editorMode = Game.Instance.Dev;
+        editorMode = Game.Instance.Dev || PagesNavigator.Instance.NavigationData is NavigationData { FromEditor: true };
 
         if (editorMode)
         {
@@ -248,7 +248,7 @@ public partial class CraftBuilderPage : Page
         List<PartData> hulls;
         List<PartData> cores;
 
-        if (Game.Instance.Dev)
+        if (editorMode)
         {
             hulls = Assets.Instance.GetHullParts().Select(PartData.From).ToList();
             cores = Assets.Instance.GetCoreParts().Select(PartData.From).ToList();
