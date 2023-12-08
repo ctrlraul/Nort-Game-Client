@@ -26,8 +26,8 @@ DragManager="*res://Nort/DragManager.cs"
 PagesNavigator="*res://Nort/PagesNavigator.cs"
 Game="*res://Nort/Game.cs"
 Console="*res://Scenes/Console.tscn"
-Background="*res://stage/background.tscn"
-Stage="*res://stage/stage.tscn"
+Background="*res://Scenes/Background.tscn"
+Stage="*res://Scenes/Stage.tscn"
 PopupsManager="*res://Nort/PopupsManager.cs"
 
 [display]
@@ -113,7 +113,7 @@ delete={
 }
 toggle_console={
 "deadzone": 0.5,
-"events": [null, Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":67,"key_label":0,"unicode":99,"echo":false,"script":null)
+"events": [null, Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":4194333,"key_label":0,"unicode":0,"echo":false,"script":null)
 ]
 }
 toggle_fullscreen={

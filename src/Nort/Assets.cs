@@ -206,24 +206,29 @@ public class Assets : Singleton<Assets>
             : customAssets.blueprints[id];
     }
     
-    public Vector2 GetBlueprintVisualSize(Blueprint blueprint)
+    public Rect2 GetBlueprintVisualRect(Blueprint blueprint)
     {
+        IEnumerable<BlueprintPart> parts = blueprint.hulls.Concat(new[] { blueprint.core });
+
+        if (!parts.Any())
+            return new Rect2();
+        
         Vector2 topLeft = new(float.PositiveInfinity, float.PositiveInfinity);
         Vector2 bottomRight = new(float.NegativeInfinity, float.NegativeInfinity);
 
-        foreach (BlueprintPart blueprintPart in blueprint.hulls.Concat(new[] { blueprint.core }))
+        foreach (BlueprintPart blueprintPart in parts)
         {
             Vector2 textureSize = GetPartTexture(blueprintPart.partId).GetSize();
             Vector2 blueprintPartPlace = blueprintPart.Place;
 
-            topLeft.X = Mathf.Min(topLeft.X, blueprintPartPlace.X);
-            topLeft.Y = Mathf.Min(topLeft.Y, blueprintPartPlace.Y);
+            topLeft.X = Mathf.Min(topLeft.X, blueprintPartPlace.X - textureSize.X * 0.5f);
+            topLeft.Y = Mathf.Min(topLeft.Y, blueprintPartPlace.Y - textureSize.Y * 0.5f);
 
-            bottomRight.X = Mathf.Max(bottomRight.X, blueprintPartPlace.X + textureSize.X);
-            bottomRight.Y = Mathf.Max(bottomRight.Y, blueprintPartPlace.Y + textureSize.Y);
+            bottomRight.X = Mathf.Max(bottomRight.X, blueprintPartPlace.X + textureSize.X * 0.5f);
+            bottomRight.Y = Mathf.Max(bottomRight.Y, blueprintPartPlace.Y + textureSize.Y * 0.5f);
         }
-
-        return (bottomRight - topLeft).Abs();
+        
+        return new Rect2(topLeft, (bottomRight - topLeft).Abs());
     }
     
     public void StoreBlueprint(Blueprint blueprint)

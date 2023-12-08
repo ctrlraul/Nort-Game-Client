@@ -12,6 +12,8 @@ public partial class EditorCraft : EditorEntity, IEditorEntity<CraftSetup>
 {
     [Ready] public DisplayCraft displayCraft;
 
+    private string blueprintId;
+
     public CraftSetup Setup
     {
         get => new()
@@ -32,12 +34,19 @@ public partial class EditorCraft : EditorEntity, IEditorEntity<CraftSetup>
 
     public Blueprint Blueprint
     {
-        get => displayCraft.Blueprint;
+        get
+        {
+            Blueprint blueprint = Blueprint.From(displayCraft.Blueprint);
+            blueprint.id = blueprintId;
+            return blueprint;
+        }
         protected set
         {
+            blueprintId = value.id;
             displayCraft.Blueprint = value;
-            hitBox.Size = Assets.Instance.GetBlueprintVisualSize(value);
-            hitBox.Position = -hitBox.Size * 0.5f;
+            Rect2 rect = Assets.Instance.GetBlueprintVisualRect(value);
+            hitBox.Size = rect.Size;
+            hitBox.Position = rect.Position;
         }
     }
 
@@ -66,12 +75,7 @@ public partial class EditorCraft : EditorEntity, IEditorEntity<CraftSetup>
         {
             new ExplorerOptionsField(this, nameof(Blueprint), blueprints, blueprintNames),
             new ExplorerOptionsField(this, nameof(Faction), factions, factionNames),
-            //new ExplorerEnumField(this, nameof(Behavior), Enum.GetValues<>(), ""),
+            new ExplorerEnumField(this, nameof(Behavior), typeof(Craft.ComponentSet)),
         };
-    }
-
-    private static IEnumerable<string> GetComponentSetNames()
-    {
-        return Enum.GetNames<Craft.ComponentSet>();
     }
 }

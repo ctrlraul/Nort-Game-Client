@@ -156,7 +156,7 @@ _data = {
 "uncover_instantly": SubResource("Animation_bvleh")
 }
 
-[node name="GenericTransition" type="CanvasLayer"]
+[node name="ShaderTransition" type="CanvasLayer"]
 process_mode = 3
 layer = 2
 script = ExtResource("1_bkv28")
@@ -176,5 +176,6 @@ unique_name_in_owner = true
 libraries = {
 "": SubResource("AnimationLibrary_67kr2")
 }
+speed_scale = 0.5
 
 [connection signal="animation_changed" from="AnimationPlayer" to="." method="_on_animation_changed"]

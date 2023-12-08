@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using CtrlRaul.Godot;
 using Godot;
-using Nort.Entities;
 
 namespace Nort.Pages.MissionEditor;
 

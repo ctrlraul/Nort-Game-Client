@@ -300,6 +300,7 @@ public partial class MissionEditorPage : Page
 
             foreach (EditorEntity entity in GetEntities())
             {
+                logger.Log(entity.GetType().Name);
                 switch (entity)
                 {
                     // This case should come before EditorCraft, otherwise both will run.
@@ -428,7 +429,7 @@ public partial class MissionEditorPage : Page
             return;
         }
 
-        GD.Print("Exported mission!");
+        logger.Log("Exported mission!");
         PopupsManager.Instance.Info("Exported mission!");
     }
 
@@ -474,8 +475,9 @@ public partial class MissionEditorPage : Page
 
     private Vector2 GetVisualCanvasCenter()
     {
-        return -(canvas.Position - sandbox.GetRect().Size * 0.5f) / canvas.GetRect().Size;
+        return -(canvas.Position - sandbox.GetRect().Size * 0.5f) / canvas.Scale;
     }
+    
 
     private void OnEntityPressed(EditorEntity entity)
     {
@@ -488,9 +490,7 @@ public partial class MissionEditorPage : Page
         explorer.Clear();
 
         foreach (EditorEntity selectedEntity in selection)
-        {
             dragOffsets[selectedEntity] = canvas.GetLocalMousePosition() - selectedEntity.Position;
-        }
 
         action = Action.DragSelection;
     }
@@ -519,23 +519,25 @@ public partial class MissionEditorPage : Page
 
     private void OnExportButtonPressed()
     {
-        if (string.IsNullOrEmpty(missionNameLineEdit.Text))
-        {
-            void RandomizeName()
-            {
-                missionNameLineEdit.Text = GD.Randi().ToString();
-                OnExportButtonPressed();
-            }
-
-            DialogPopup popup = PopupsManager.Instance.Info("Your mission needs a name!");
-
-            popup.AddButton("Ok", missionNameLineEdit.GrabFocus);
-            popup.AddButton("Randomize", RandomizeName);
-        }
-        else
+        logger.Log($"missionNameLineEdit.Text: {missionNameLineEdit.Text}");
+        
+        if (!string.IsNullOrEmpty(missionNameLineEdit.Text))
         {
             StoreMission();
+            return;
         }
+        
+        DialogPopup popup = PopupsManager.Instance.Info("Your mission needs a name!");
+
+        popup.AddButton("Ok", missionNameLineEdit.GrabFocus);
+        popup.AddButton("Randomize", () => missionNameLineEdit.Text = $"Mission - {GD.Randi().ToString()}");
+        
+        popup.Removed += () =>
+        {
+            logger.Log($"missionNameLineEdit.Text 2: {missionNameLineEdit.Text}");
+            if (!string.IsNullOrEmpty(missionNameLineEdit.Text))
+                StoreMission();
+        };
     }
 
     private void OnImportButtonPressed()

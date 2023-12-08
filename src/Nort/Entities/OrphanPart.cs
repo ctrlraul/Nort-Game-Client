@@ -1,36 +1,31 @@
-﻿using Godot;
+﻿using CtrlRaul.Godot;
+using Godot;
 
 namespace Nort.Entities;
 
 public partial class OrphanPart : Entity
 {
-    private Sprite2D _sprite;
-    private Sprite2D _skillSprite;
-    private AnimationPlayer _animationPlayer;
+    [Ready] public Sprite2D sprite2d;
+    [Ready] public Sprite2D skillSprite;
+    [Ready] public AnimationPlayer animationPlayer;
 
     public override void _Ready()
     {
-        _sprite = GetNode<Sprite2D>("%Sprite2D");
-        _skillSprite = GetNode<Sprite2D>("%SkillSprite");
-        _animationPlayer = GetNode<AnimationPlayer>("%AnimationPlayer");
-
-        _sprite.SelfModulate = Config.FactionlessColor;
-        _skillSprite.GlobalRotation = 0;
-        _animationPlayer.Play("float");
+        base._Ready();
+        this.InitializeReady();
+        
+        sprite2d.SelfModulate = Config.FactionlessColor;
+        skillSprite.GlobalRotation = 0;
+        animationPlayer.Play("float");
     }
 
     public void SetSetup(OrphanPartSetup setup)
     {
         Position = setup.Place;
         Rotation = setup.angle;
-		
-        _sprite.Texture = Assets.Instance.GetPartTexture(setup.Part);
-        _sprite.FlipH = setup.flipped;
-        _sprite.Material = setup.shiny ? Assets.ShinyMaterial : null;
-
-        if (!string.IsNullOrEmpty(setup.skillId))
-            _skillSprite.Texture = Assets.Instance.GetSkillTexture(setup.skillId);
-        else
-            _skillSprite.QueueFree();
+        sprite2d.Texture = Assets.Instance.GetPartTexture(setup.Part);
+        sprite2d.FlipH = setup.flipped;
+        sprite2d.Material = setup.shiny ? Assets.ShinyMaterial : null;
+        skillSprite.Texture = string.IsNullOrEmpty(setup.skillId) ? null : Assets.Instance.GetSkillTexture(setup.skillId);
     }
 }

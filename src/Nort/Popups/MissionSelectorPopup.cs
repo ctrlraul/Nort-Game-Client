@@ -17,11 +17,9 @@ public partial class MissionSelectorPopup : GenericPopup
     public override void _Ready()
     {
         base._Ready();
-        
-        Cancelable = false;
-        
+        this.InitializeReady();
         missionsList.QueueFreeChildren();
-
+        Cancelable = true;
         Initialize();
     }
 

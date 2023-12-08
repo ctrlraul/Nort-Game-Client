@@ -15,11 +15,11 @@ public partial class StatsDisplayComponent : EntityComponent
         this.InitializeReady();
         
         Craft.ShouldNotBeNull($"Expected {nameof(Craft)} as parent");
+        
+        Rect2 rect = Assets.Instance.GetBlueprintVisualRect(Craft.Blueprint);
 
-        Vector2 halfSize = Assets.Instance.GetBlueprintVisualSize(Craft.Blueprint) * 0.5f;
-
-        Scale = Scale with { X = halfSize.X };
-        Position = Position with { Y = halfSize.Y + 10 };
+        Scale = Scale with { X = rect.Size.X };
+        Position = Position with { Y = rect.Position.Y + rect.Size.Y + 10 };
 
         hull.Modulate = Craft.Faction.Color;
     }

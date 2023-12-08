@@ -60,4 +60,4 @@ self_modulate = Color(1, 1, 1, 0)
 layout_mode = 2
 flat = true
 
-[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="Button" to="." method="OnButtonPressed"]

@@ -67,19 +67,8 @@ public partial class DialogPopup : GenericPopup
         buttonsContainer.QueueFreeChildren();
     }
 
-    public void AddButton(string text, Action onPressed = null)
+    public void AddButton(string text, Action OnPressed = null)
     {
-        onPressed ??= Remove;
-
-        if (onPressed != Remove)
-        {
-            onPressed = () =>
-            {
-                onPressed.Invoke();
-                Remove();
-            };
-        }
-
         Button button = new();
 
         if (buttonsContainer.GetChildCount() > 0)
@@ -91,7 +80,19 @@ public partial class DialogPopup : GenericPopup
         buttonsContainer.AddChild(button);
 
         button.Text = text;
-        button.Pressed += onPressed;
         button.CustomMinimumSize = button.CustomMinimumSize with { X = ButtonWidth };
+        
+        if (OnPressed == null)
+        {
+            button.Pressed += Remove;
+        }
+        else
+        {
+            button.Pressed += () =>
+            {
+                OnPressed.Invoke();
+                Remove();
+            };
+        }
     }
 }

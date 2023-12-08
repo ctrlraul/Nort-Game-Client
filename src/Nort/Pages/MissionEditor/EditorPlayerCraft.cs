@@ -12,8 +12,16 @@ public partial class EditorPlayerCraft : EditorCraft, IEditorEntity<PlayerCraftS
     
     public new PlayerCraftSetup Setup
     {
-        get => new() { testBlueprint = Blueprint };
-        set => Blueprint = value.testBlueprint;
+        get => new()
+        {
+            Place = Position,
+            testBlueprint = Blueprint,
+        };
+        set
+        {
+            Position = value.Place;
+            Blueprint = value.testBlueprint;
+        }
     }
     
     public new Blueprint Blueprint
@@ -21,7 +29,8 @@ public partial class EditorPlayerCraft : EditorCraft, IEditorEntity<PlayerCraftS
         get => base.Blueprint;
         protected set
         {
-            label.Position = label.Position with { Y = Assets.Instance.GetBlueprintVisualSize(value).Y * 0.5f + 20 };
+            Rect2 rect = Assets.Instance.GetBlueprintVisualRect(value);
+            label.Position = label.Position with { Y = rect.Position.Y + rect.Size.Y + 20 };
             base.Blueprint = value;
         }
     }
