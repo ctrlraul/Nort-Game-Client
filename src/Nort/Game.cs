@@ -32,12 +32,16 @@ public partial class Game : Node
 
     public bool Dev => CurrentPlayer == null;
 
+    public bool InMissionEditor { get; private set; }
+    
+    
     public Game()
     {
         Instance = this;
         logger = new(GetType().Name);
     }
 
+    
     public override void _Ready()
     {
         base._Ready();
@@ -55,6 +59,7 @@ public partial class Game : Node
         }
     }
 
+    
     public Task Initialize()
     {
         return initializationTask ??= InitializeSub();
@@ -70,12 +75,15 @@ public partial class Game : Node
     {
         if (node is not Page page)
         {
+            InMissionEditor = false;
+            
             if (!PagesNavigator.Instance.IsFirstScene(node)) // Likely not testing something
-            {
                 logger.Warn($"'{node.GetType().Name}' does not extend {nameof(Page)}");
-            }
+            
             return;
         }
+        
+        InMissionEditor = page is Editor;
 
         Task coveringTask = TransitionsManager.Instance.Cover();
 

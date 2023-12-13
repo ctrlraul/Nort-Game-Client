@@ -1,15 +1,34 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using CtrlRaul.Godot;
 using Godot;
 using Nort.Entities.Components;
-using Nort.Interface;
+using Nort.Hud;
+using Nort.Skills;
 
 namespace Nort.Entities;
 
-public partial class Craft : Entity, IFactionMember
+public partial class Craft : Entity
 {
-    public event Action Destroyed;
+    #region EntityInspector compatibility
+
+    public IEnumerable<string> FactionIdOptions => Assets.Instance.GetFactions().Select(f => f.id);
     
-    public enum ComponentSet {
+    [Inspect(nameof(FactionIdOptions))]
+    public string FactionId
+    {
+        get => Faction.id;
+        set => Faction = Assets.Instance.GetFaction(value);
+    }
+
+    #endregion
+
+
+    public event Action Destroyed;
+
+    public enum ComponentSet
+    {
         None,
         Player,
         Fighter,
@@ -19,21 +38,29 @@ public partial class Craft : Entity, IFactionMember
         Outpost
     }
 
-    public Faction Faction { get; private set; }
-    public CraftBodyComponent Body { get; private set; }
+    [Ready] public CraftBody body;
+    [Ready] public CollisionShape2D editorHitBoxShape;
+    [Ready] public Node2D editorStuff;
 
-    private Blueprint blueprint;
+
+    protected Faction faction = Assets.Instance.DefaultEnemyFaction;
+
+    public Faction Faction
+    {
+        get => faction;
+        set => SetFaction(value);
+    }
+
+    protected Blueprint blueprint = Assets.Instance.InitialBlueprint;
+
     public Blueprint Blueprint
     {
         get => blueprint;
-        private set
-        {
-            BlueprintStats stats = Blueprint.GetStats(value);
-            CoreMax = stats.core;
-            HullMax = stats.hull;
-            blueprint = value;
-        }
+        set => SetBlueprint(value);
     }
+
+    protected Rect2 blueprintVisualRect;
+
 
     public float CoreMax { get; private set; }
     public float Core { get; private set; }
@@ -41,86 +68,83 @@ public partial class Craft : Entity, IFactionMember
     public float Hull { get; private set; }
 
 
-    public void SetSetup(CraftSetup setup)
+    public override void _Ready()
     {
-        Position = setup.Place;
-        Faction = setup.Faction;
-        Blueprint = setup.Blueprint;
+        base._Ready();
+        this.InitializeReady();
 
-        AddComponents(setup.componentSet);
-        InitComponents();
+        SetBlueprint(Blueprint);
+        SetFaction(Faction);
 
-        Body = GetComponentOrThrow<CraftBodyComponent>();
-        Body.SetBlueprint(Blueprint);
-    }
-
-    public void SetSetup(PlayerCraftSetup setup)
-    {
-        Position = setup.Place;
-        Faction = Assets.Instance.PlayerFaction;
-        Blueprint = Game.Instance.CurrentPlayer?.blueprint ?? setup.testBlueprint;
-        
-        AddComponents(ComponentSet.Player);
-        InitComponents();
-
-        Body = GetComponentOrThrow<CraftBodyComponent>();
-        Body.SetBlueprint(Blueprint);
-    }
-    
-
-    private void AddComponents(ComponentSet set)
-    {
-        AddComponent(EntityComponent.Create<CraftBodyComponent>());
-        
-        switch (set)
+        if (Game.Instance.InMissionEditor)
         {
-            case ComponentSet.None:
-                return;
-            
-            case ComponentSet.Player:
-                AddComponent(EntityComponent.Create<PlayerControlsComponent>());
-                AddComponent(EntityComponent.Create<FlightComponent>());
-                AddComponent(EntityComponent.Create<TractorComponent>());
-                break;
-            
-            case ComponentSet.Fighter:
-                AddComponent(EntityComponent.Create<FlightComponent>());
-                AddComponent(EntityComponent.Create<TractorComponent>());
-                AddComponent(EntityComponent.Create<StatsDisplayComponent>());
-                break;
-            
-            case ComponentSet.Drone:
-                AddComponent(EntityComponent.Create<FlightComponent>());
-                AddComponent(EntityComponent.Create<TractorTargetComponent>());
-                break;
-            
-            case ComponentSet.Turret:
-                AddComponent(EntityComponent.Create<TractorTargetComponent>());
-                break;
-            
-            case ComponentSet.Carrier:
-                AddComponent(EntityComponent.Create<StatsDisplayComponent>());
-                break;
-            
-            case ComponentSet.Outpost:
-                AddComponent(EntityComponent.Create<StatsDisplayComponent>());
-                break;
-            
-            default:
-                throw new NotImplementedException($"Component set not implemented for set '{set}'");
+            editorHitBoxShape.Disabled = false;
+        }
+        else
+        {
+            editorStuff.QueueFree();
+            body.PartTookHit += OnPartTookHit;
         }
     }
 
-    public void TakeHit(CraftBodyPartSkill sourceSkill, CraftBodyPart part)
+
+    protected virtual void UpdateEditorStuff()
     {
-        if (sourceSkill is CraftBodyPartBulletSkill bulletSkill)
+        if (!IsInsideTree())
+            return;
+        
+        editorHitBoxShape.Position = blueprintVisualRect.Position + blueprintVisualRect.Size * 0.5f;
+        editorHitBoxShape.Shape = new RectangleShape2D { Size = blueprintVisualRect.Size };
+    }
+
+
+    private void SetBlueprint(Blueprint value)
+    {
+        blueprint = value;
+        blueprintVisualRect = Assets.Instance.GetBlueprintVisualRect(Blueprint);
+
+        if (IsInsideTree())
+            body.SetBlueprint(blueprint);
+
+        BlueprintStats stats = Blueprint.GetStats(blueprint);
+        CoreMax = stats.core;
+        HullMax = stats.hull;
+
+        UpdateEditorStuff();
+    }
+    
+    private void SetFaction(Faction value)
+    {
+        faction = value;
+
+        if (IsInsideTree())
+            body.Faction = Faction;
+    }
+
+
+    public void Destroy()
+    {
+        Hull = 0;
+        Core = 0;
+
+        foreach (CraftBodyPart part in body.GetParts())
+            part.Destroy();
+
+        QueueFree();
+        Destroyed?.Invoke();
+    }
+
+
+    private void OnPartTookHit(CraftBodyPart part, SkillNode from, float damage)
+    {
+        if (from is BulletSkillNode)
         {
-            Hull -= bulletSkill.damage;
+            Hull -= damage;
 
             if (Hull >= 0)
                 return;
-            
-            if (part == Body.Core)
+
+            if (part == body.Core)
             {
                 Core += Hull;
 
@@ -134,18 +158,5 @@ public partial class Craft : Entity, IFactionMember
 
             Hull = 0;
         }
-    }
-
-
-    public void Destroy()
-    {
-        Hull = 0;
-        Core = 0;
-
-        foreach (CraftBodyPart part in Body.GetParts())
-            part.Destroy();
-        
-        QueueFree();
-        Destroyed?.Invoke();
     }
 }

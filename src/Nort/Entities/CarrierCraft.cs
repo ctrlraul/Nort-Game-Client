@@ -1,43 +1,29 @@
-using Godot;
-using System;
-using CtrlRaul.Godot;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Nort.Hud;
+using Nort.Pages;
 
 namespace Nort.Entities;
 
-public enum InspectHint
+public partial class CarrierCraft : Craft
 {
-	Options,
-}
+    #region EntityInspector compatibility
 
-[AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
-public class InspectAttribute : Attribute
-{
-	public InspectAttribute() { }
-}
+    [Savable]
+    [Inspect(nameof(BlueprintIdOptions))]
+    public string BlueprintId
+    {
+        get => Blueprint.id;
+        set => Blueprint = Assets.Instance.GetBlueprint(value);
+    }
 
-[AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
-public class InspectOptionsAttribute : Attribute
-{
-	public string OptionsMethodName { get; }
+    public IEnumerable<string> BlueprintIdOptions => Config.CarrierBlueprints;
 
-	public InspectOptionsAttribute(string optionsMethodName)
-	{
-		OptionsMethodName = optionsMethodName;
-	}
-}
+    #endregion
+    
 
-public partial class EditorCarrierCraft : Craft
-{
-	[InspectOptions(nameof(GetBlueprints))] public string blueprint;
-	[InspectOptions(nameof(GetFactions))] public string faction;
-
-	public void GetBlueprints()
-	{
-		// ...
-	}
-
-	public void GetFactions()
-	{
-		// ...
-	}
+    public CarrierCraft() : base()
+    {
+        blueprint = Assets.Instance.GetBlueprint(Config.CarrierBlueprints.First());
+    }
 }

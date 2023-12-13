@@ -41,16 +41,27 @@ public static partial class Extensions
                 if (file == null)
                     throw new Exception($"Failed to read file '{path}': {FileAccess.GetOpenError()}");
 
+                string text = file.GetAsText();
+
+                if (string.IsNullOrEmpty(text))
+                {
+                    file.Close();
+                    throw new Exception($"Failed to parse json file '{path}': File is empty");
+                }
+                
                 T result;
         
                 try
                 {
-                    result = JsonConvert.DeserializeObject<T>(file.GetAsText());
+                    result = JsonConvert.DeserializeObject<T>(text);
                 }
                 catch (Exception exception)
                 {
+                    file.Close();
                     throw new Exception($"Failed to parse json file '{path}' into class '${typeof(T).Name}': {exception.Message}");
                 }
+                
+                file.Close();
         
                 yield return result;
             }

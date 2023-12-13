@@ -6,8 +6,10 @@ public static class Config
 {
     public const string VendorAssetsDirectory = "res://VendorAssets";
     public const string CustomAssetsDirectory = "user://CustomAssets";
+
+    public static readonly string[] CarrierBlueprints = { "small_carrier" };
     
-    public const string SkillsPath = "res://gimmicks";
+    public const string SkillsPath = "res://Scenes/Skills";
     public const string PlayerFaction = "emerald";
     public const string DefaultEnemyFaction = "ruby";
     public const string DefaultCoreSkill = "core_bullet";
@@ -25,7 +27,7 @@ public static class Config
         public const string Lobby = "res://Scenes/Pages/LobbyPage.tscn";
         public const string CraftBuilder = "res://Scenes/Pages/CraftBuilder/CraftBuilder.tscn";
         public const string Mission = "res://Scenes/Pages/MissionPage.tscn";
-        public const string MissionEditor = "res://Scenes/Pages/MissionEditor/MissionEditor.tscn";
+        public const string MissionEditor = "res://Scenes/Pages/Editor/Editor.tscn";
     }
 
     public static class Storage

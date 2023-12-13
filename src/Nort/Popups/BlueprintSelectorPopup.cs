@@ -17,7 +17,7 @@ public partial class BlueprintSelectorPopup : GenericPopup
 		base._Ready();
 
 		blueprintsList = GetNode<VBoxContainer>("BlueprintsList");
-		Cancelable = true;
+		Cancellable = true;
 
 		blueprintsList.QueueFreeChildren();
 

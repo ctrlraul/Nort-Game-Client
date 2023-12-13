@@ -1,35 +1,65 @@
 ﻿using System;
 using System.Collections.Generic;
+using CtrlRaul.Godot;
 using Godot;
 using CtrlRaul.Godot.Linq;
 
 namespace Nort.Entities.Components;
 
-public partial class CraftBodyPart : Node2D
+public partial class CraftBodyPart : CollisionShape2D
 {
+    public event Action<SkillNode, float> HitTaken;
+    
     private static readonly Color SemiTransparent = new(1, 1, 1, 0.2f);
     public event Action Destroyed;
 
-    private CollisionShape2D hitboxCollisionShape;
-    private Sprite2D sprite;
-
-    public bool IsDestroyed { get; private set; }
+    [Ready] public Sprite2D sprite2D;
     
-    private BlueprintPart _blueprint;
-    public CraftBodyComponent body;
-    public readonly List<CraftBodyPartSkill> skills = new();
+    public List<SkillNode> skillNodes = new();
     public float hullMax;
     public float hull;
+
+    public bool IsDestroyed { get; private set; }
+
+    
+    private Faction faction = Assets.Instance.DefaultEnemyFaction;
+    public Faction Faction
+    {
+        get => faction;
+        set => SetFaction(value);
+    }
+
+    private BlueprintPart blueprint = Assets.Instance.InitialBlueprint.core;
+    public BlueprintPart Blueprint
+    {
+        get => blueprint;
+        set => SetBlueprint(value);
+    }
+    
     
     public override void _Ready()
     {
-        hitboxCollisionShape = GetNode<CollisionShape2D>("%CollisionShape2D");
-        sprite = GetNode<Sprite2D>("%Sprite2D");
+        this.InitializeReady();
+        
+        //SetFaction(Faction);
+        SetBlueprint(Blueprint);
     }
 
-    public void SetBlueprint(BlueprintPart blueprint)
+
+    private void SetFaction(Faction value)
     {
-        _blueprint = blueprint;
+        faction = value;
+        
+        if (IsInsideTree())
+            UpdateColor();
+    }
+
+    private void SetBlueprint(BlueprintPart value)
+    {
+        blueprint = value;
+
+        if (!IsInsideTree())
+            return;
 
         Position = blueprint.Place;
         RotationDegrees = blueprint.angle;
@@ -37,38 +67,43 @@ public partial class CraftBodyPart : Node2D
         hullMax = blueprint.Part.hull;
         hull = hullMax;
 
-        sprite.Texture = Assets.Instance.GetPartTexture(blueprint);
-        sprite.FlipH = blueprint.flipped;
-        sprite.Material = blueprint.shiny ? Assets.ShinyMaterial : null;
+        sprite2D.Texture = Assets.Instance.GetPartTexture(blueprint);
+        sprite2D.FlipH = blueprint.flipped;
+        sprite2D.Material = blueprint.shiny ? Assets.ShinyMaterial : null;
+        
+        Shape = new RectangleShape2D { Size = sprite2D.Texture.GetSize() };
 
-        RectangleShape2D rectangleShape2D = new();
-        rectangleShape2D.Size = sprite.Texture.GetSize();
-        hitboxCollisionShape.Shape = rectangleShape2D;
-
-        // List<Skill> skillzz = new();
+        List<Skill> skills = new();
         
         if (Assets.IsCore(blueprint.Part))
         {
-            // skillzz.Add(Assets.Instance.DefaultCoreSkill);
+            skills.Add(Assets.Instance.DefaultCoreSkill);
             Sprite2D coreLight = new();
             coreLight.Texture = Assets.CoreLightTexture;
             AddChild(coreLight);
         }
 
-        // if (!string.IsNullOrEmpty(blueprint.skillId))
-        //     skillzz.Add(blueprint.Skill);
-        //
-        // foreach (Skill skill in skillzz)
-        // {
-        //     CraftBodyPartSkill cbpSkill = skill.Scene.Instantiate<CraftBodyPartSkill>();
-        //     cbpSkill.Position = Position;
-        //     cbpSkill.part = this;
-        //     skills.Add(cbpSkill);
-        // }
+        if (!string.IsNullOrEmpty(blueprint.skillId))
+            skills.Add(blueprint.Skill);
         
-        UpdateColor();
+        foreach (Skill skill in skills)
+        {
+            SkillNode cbpSkill = skill.Scene.Instantiate<SkillNode>();
+            cbpSkill.Position = Position;
+            cbpSkill.part = this;
+            skillNodes.Add(cbpSkill);
+        }
+
+        if (faction != null) // Actually not sure why this check is needed
+            UpdateColor();
     }
 
+
+    public void TakeHit(SkillNode from, float damage)
+    {
+        HitTaken?.Invoke(from, damage);
+    }
+    
     public void TakeDamage(float damage)
     {
         hull -= damage;
@@ -85,23 +120,19 @@ public partial class CraftBodyPart : Node2D
             
         this.Remove();
 
-        foreach (CraftBodyPartSkill skill in skills)
+        foreach (SkillNode skill in skillNodes)
             skill.Remove();
     }
 
     private void Drop()
     {
-        OrphanPartSetup setup = new()
-        {
-            Place = GlobalPosition,
-            angle = GlobalRotation,
-            partId = _blueprint.partId,
-            flipped = _blueprint.flipped,
-            skillId = _blueprint.skillId,
-            shiny = _blueprint.shiny || ShinyDropRoll()
-        };
+        OrphanPart orphanPart = Stage.Instance.SpawnOrphanPart();
 
-        Stage.Instance.Spawn(setup);
+        orphanPart.Position = GlobalPosition;
+        orphanPart.Rotation = GlobalRotation;
+        // orphanPart.PartId = blueprint.partId;
+        // orphanPart.Flipped = blueprint.flipped;
+        // orphanPart.Shiny = blueprint.shiny || ShinyDropRoll();
     }
 
     public void Destroy()
@@ -117,16 +148,16 @@ public partial class CraftBodyPart : Node2D
         if (hullMax > 0)
         {
             float weight = Mathf.Max(0, hull) / hullMax;
-            color = color.Lerp(body.Color, weight);
+            color = color.Lerp(Faction.Color, weight);
         }
         
-        sprite.SelfModulate = color;
-        hitboxCollisionShape.DebugColor = color * SemiTransparent;
+        sprite2D.SelfModulate = color;
+        DebugColor = color * SemiTransparent;
     }
     
     private float GetDropRate()
     {
-        return Part.IsCore(_blueprint.Part) ? Config.DropRateCore : Config.DropRateHull;
+        return Part.IsCore(blueprint.Part) ? Config.DropRateCore : Config.DropRateHull;
     }
 
     private bool ShinyDropRoll()

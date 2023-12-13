@@ -16,14 +16,8 @@ public static class ISavableExtensions
 
         if (createDirError != Error.Ok)
             throw new Exception($"Failed to create directory: {createDirError}");
-
-#if DEBUG
-        const Formatting formatting = Formatting.Indented;
-#else
-        const Formatting formatting = Formatting.None;
-#endif
         
-        string json = JsonConvert.SerializeObject(savable, formatting);
+        string json = JsonConvert.SerializeObject(savable, Formatting.Indented);
 
         FileAccess file = FileAccess.Open(path, FileAccess.ModeFlags.Write);
 
@@ -31,5 +25,6 @@ public static class ISavableExtensions
             throw new Exception($"Failed to write file: {FileAccess.GetOpenError()}");
 
         file.StoreString(json);
+        file.Close();
     }
 }

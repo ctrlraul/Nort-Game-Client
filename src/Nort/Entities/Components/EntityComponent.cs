@@ -6,12 +6,12 @@ namespace Nort.Entities.Components;
 
 public partial class EntityComponent : Node2D
 {
-    //public static readonly PackedScene CRAFT_BODY = GD.Load<PackedScene>("res://Scenes/Entities/Components/CraftBodyComponent.tscn");
+    //public static readonly PackedScene CRAFT_BODY = GD.Load<PackedScene>("res://Scenes/Entities/Components/CraftBody.tscn");
     //public static readonly PackedScene FLIGHT = GD.Load<PackedScene>("res://Scenes/Entities/Components/FlightComponent.tscn");
 
     private static readonly Dictionary<Type, PackedScene> Scenes = new()
     {
-        { typeof(CraftBodyComponent), GD.Load<PackedScene>("res://Scenes/Entities/Components/CraftBodyComponent.tscn")},
+        { typeof(CraftBody), GD.Load<PackedScene>("res://Scenes/Entities/Components/CraftBody.tscn")},
         { typeof(TractorComponent), GD.Load<PackedScene>("res://Scenes/Entities/Components/TractorComponent.tscn")},
         { typeof(TractorTargetComponent), GD.Load<PackedScene>("res://Scenes/Entities/Components/TractorTargetComponent.tscn")},
         { typeof(PlayerControlsComponent), GD.Load<PackedScene>("res://Scenes/Entities/Components/PlayerControlsComponent.tscn")},

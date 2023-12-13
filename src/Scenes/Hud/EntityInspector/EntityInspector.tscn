@@ -1,0 +1,39 @@
+[gd_scene load_steps=3 format=3 uid="uid://crxxyndc18yre"]
+
+[ext_resource type="Script" path="res://Nort/Hud/EntityInspector/EntityInspector.cs" id="1_mbvbo"]
+[ext_resource type="PackedScene" uid="uid://bwjdntaysvdqi" path="res://Scenes/Hud/EntityInspector/EntityInspectorOptionsField.tscn" id="2_i4mle"]
+
+[node name="EntityInspector" type="PanelContainer"]
+offset_right = 360.0
+offset_bottom = 647.0
+script = ExtResource("1_mbvbo")
+optionsFieldScene = ExtResource("2_i4mle")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Inspector"
+horizontal_alignment = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_type_variation = &"PanelContainerDarken"
+
+[node name="EntityLabel" type="Label" parent="VBoxContainer/PanelContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Selected Object Name"
+vertical_alignment = 1
+
+[node name="FieldsListContainer" type="PanelContainer" parent="VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 0
+theme_type_variation = &"PanelContainerDarken"
+
+[node name="FieldsList" type="VBoxContainer" parent="VBoxContainer/FieldsListContainer"]
+unique_name_in_owner = true
+layout_mode = 2

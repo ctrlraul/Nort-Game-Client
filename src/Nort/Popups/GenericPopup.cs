@@ -1,4 +1,5 @@
 using System;
+using CtrlRaul.Godot;
 using Godot;
 
 namespace Nort.Popups;
@@ -9,22 +10,21 @@ public partial class GenericPopup : CanvasLayer
 	public delegate void RemovedEventHandler();
 
 
-	protected PanelContainer window;
-	protected AnimationPlayer animationPlayer;
+	[Ready] public PanelContainer window;
+	[Ready] public AnimationPlayer animationPlayer;
 
 	public bool Canceled { get; private set; }
 
 
-	private bool cancelable = false;
-	public bool Cancelable
+	private bool cancellable;
+	public bool Cancellable
 	{
+		get => cancellable;
 		set
 		{
 			SetProcessUnhandledInput(value);
-			cancelable = value;
+			cancellable = value;
 		}
-
-		get => cancelable;
 	}
 
 	public float Width
@@ -36,14 +36,16 @@ public partial class GenericPopup : CanvasLayer
 
 	public override void _Ready()
 	{
-		window = GetNode<PanelContainer>("%Window");
-		animationPlayer = GetNode<AnimationPlayer>("%AnimationPlayer");
+		base._Ready();
+		this.InitializeReady();
 
 		Visible = false;
 		animationPlayer.Play("appear");
+		
+		SetProcessUnhandledInput(cancellable);
 	}
 
-	public override void _UnhandledInput(InputEvent _event)
+	public override void _UnhandledInput(InputEvent @event)
 	{
 		if (Input.IsActionJustPressed("escape"))
 		{
@@ -70,7 +72,7 @@ public partial class GenericPopup : CanvasLayer
 
 	public void Cancel()
 	{
-		if (cancelable)
+		if (cancellable)
 		{
 			Canceled = true;
 			Remove();

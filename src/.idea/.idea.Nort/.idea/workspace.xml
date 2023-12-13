@@ -4,37 +4,131 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="177eb88b-292c-4853-820a-5a9fe0daac9a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Nort/Entities/CarrierCraft.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Nort/Pages/MissionEditor/ExplorerEnumField.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Scenes/Background.tscn" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Scenes/Entities/OrphanPart.tscn" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Scenes/Stage.tscn" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/VendorAssets/missions/76dc7907-09b7-4f0b-a5eb-cf28016f282f.json" afterDir="false" />
+    <list default="true" id="177eb88b-292c-4853-820a-5a9fe0daac9a" name="Changes" comment="new, much better editor">
+      <change afterPath="$PROJECT_DIR$/Fonts/SpaceGroteskFontFamily/OFL.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Fonts/SpaceGroteskFontFamily/README.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Fonts/SpaceGroteskFontFamily/SpaceGrotesk-Bold.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Fonts/SpaceGroteskFontFamily/SpaceGrotesk-Bold.ttf.import" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Fonts/SpaceGroteskFontFamily/SpaceGrotesk-Light.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Fonts/SpaceGroteskFontFamily/SpaceGrotesk-Light.ttf.import" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Fonts/SpaceGroteskFontFamily/SpaceGrotesk-Medium.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Fonts/SpaceGroteskFontFamily/SpaceGrotesk-Medium.ttf.import" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Fonts/SpaceGroteskFontFamily/SpaceGrotesk-Regular.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Fonts/SpaceGroteskFontFamily/SpaceGrotesk-Regular.ttf.import" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Fonts/SpaceGroteskFontFamily/SpaceGrotesk-SemiBold.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Fonts/SpaceGroteskFontFamily/SpaceGrotesk-SemiBold.ttf.import" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Fonts/SpaceGroteskFontFamily/SpaceGrotesk-VariableFont_wght.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Fonts/SpaceGroteskFontFamily/SpaceGrotesk-VariableFont_wght.ttf.import" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nort.csproj.DotSettings" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nort/Entities/PlayerCraft.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nort/Hud/EntityInspector/EntityInspector.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nort/Hud/EntityInspector/EntityInspectorOptionsField.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nort/Pages/Editor.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nort/Popups/TextInputPopup.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nort/Skills/BulletSkillNode.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nort/Skills/CoreBulletSkillNode.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nort/Skills/DroneSkillNode.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Scenes/Entities/CarrierCraft.tscn" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Scenes/Entities/Components/CraftBody.tscn" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Scenes/Entities/Components/CraftBodyPart.tscn" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Scenes/Entities/PlayerCraft.tscn" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Scenes/Hud/EntityInspector/EntityInspector.tscn" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Scenes/Hud/EntityInspector/EntityInspectorOptionsField.tscn" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Scenes/Pages/Editor/Editor.tscn" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Scenes/Popups/TextInputPopup.tscn" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Scenes/Skills/BulletSkillNode.tscn" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Scenes/Skills/CoreBulletSkillNode.tscn" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Scenes/Skills/DroneSkillNode.tscn" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Nort/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Nort/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CtrlRaul/Godot/Linq/DirAccess.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CtrlRaul/Godot/Linq/DirAccess.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CtrlRaul/Godot/Linq/Node.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CtrlRaul/Godot/Linq/Node.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CtrlRaul/Godot/Linq/Node2D.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CtrlRaul/Godot/Linq/Node2D.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CtrlRaul/Logger.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CtrlRaul/Logger.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Fonts/Abel-Regular-License.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Fonts/Abel-Regular.tres" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Fonts/Abel-Regular.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Fonts/Abel-Regular.ttf.import" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Fonts/Jack Input.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Fonts/Jack Input.ttf.import" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Fonts/Quenda-Medium.otf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Fonts/Quenda-Medium.otf.import" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Fonts/monofonto_rg.tres" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Nort.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Nort.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Nort.sln.DotSettings" beforeDir="false" afterPath="$PROJECT_DIR$/Nort.sln.DotSettings" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Nort/Assets.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Nort/Assets.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Nort/Entities/Components/StatsDisplayComponent.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Nort/Entities/Components/StatsDisplayComponent.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Nort/Config.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Nort/Config.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Nort/Entities/CarrierCraft.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Nort/Entities/CarrierCraft.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Nort/Entities/Components/CraftBodyComponent.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Nort/Entities/Components/CraftBody.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Nort/Entities/Components/CraftBodyComponentPartCoreBulletSkill.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Nort/Entities/Components/CraftBodyPart.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Nort/Entities/Components/CraftBodyPart.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Nort/Entities/Components/CraftBodyPartBulletSkill.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Nort/Entities/Components/CraftBodyPartSkill.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Nort/SkillNode.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Nort/Entities/Components/DroneAIComponent.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Nort/Entities/Components/DroneAIComponent.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Nort/Entities/Components/EntityComponent.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Nort/Entities/Components/EntityComponent.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Nort/Entities/Components/FlightComponent.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Nort/Entities/Components/FlightComponent.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Nort/Entities/Components/PlayerControlsComponent.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Nort/Entities/Components/PlayerControlsComponent.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Nort/Entities/Craft.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Nort/Entities/Craft.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Nort/Entities/CraftSetup.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Nort/Entities/Entity.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Nort/Entities/Entity.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Nort/Entities/EntitySetup.cs" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Nort/Entities/OrphanPart.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Nort/Entities/OrphanPart.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Nort/Entities/OrphanPartSetup.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Nort/Entities/PlayerCraftSetup.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Nort/Game.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Nort/Game.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Nort/Interface/ISavable.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Nort/Interface/ISavable.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Nort/Listing/MissionsListItem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Nort/Listing/MissionsListItem.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Nort/Pages/MissionEditor/EditorCraft.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Nort/Pages/MissionEditor/EditorCraft.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Nort/Pages/MissionEditor/EditorEntity.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Nort/Pages/MissionEditor/EditorEntity.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Nort/Pages/MissionEditor/EditorPlayerCraft.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Nort/Pages/MissionEditor/EditorPlayerCraft.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Nort/Pages/MissionEditor/MissionEditorPage.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Nort/Pages/MissionEditor/MissionEditorPage.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Nort/Popups/DialogPopup.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Nort/Popups/DialogPopup.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Nort/Mission.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Nort/Mission.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Nort/Pages/MissionEditor/EditorCraft.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Nort/Pages/MissionEditor/EditorEntity.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Nort/Pages/MissionEditor/EditorOrphanPart.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Nort/Pages/MissionEditor/EditorPlayerCraft.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Nort/Pages/MissionEditor/Explorer.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Nort/Pages/MissionEditor/ExplorerEnumField.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Nort/Pages/MissionEditor/ExplorerField.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Nort/Pages/MissionEditor/ExplorerOptionsField.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Nort/Pages/MissionEditor/ExplorerOptionsFieldItem.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Nort/Pages/MissionEditor/MissionEditorPage.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Nort/Pages/MissionPage.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Nort/Pages/MissionPage.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Nort/PagesNavigator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Nort/PagesNavigator.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Nort/Popups/BlueprintSelectorPopup.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Nort/Popups/BlueprintSelectorPopup.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Nort/Popups/GenericPopup.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Nort/Popups/GenericPopup.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Nort/Popups/MissionSelectorPopup.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Nort/Popups/MissionSelectorPopup.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Scenes/Lists/MissionsListItem.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/Scenes/Lists/MissionsListItem.tscn" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Scenes/Pages/MissionEditor/EditorEntities/EditorEntity.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/Scenes/Pages/MissionEditor/EditorEntities/EditorEntity.tscn" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Scenes/Popups/GenericPopup.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/Scenes/Popups/GenericPopup.tscn" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Scenes/Popups/MissionSelectorPopup.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/Scenes/Popups/MissionSelectorPopup.tscn" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/page.gd" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/workshop/workshop.gd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Nort/Popups/PartBuilderPopup.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Nort/Popups/PartBuilderPopup.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Nort/PopupsManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Nort/PopupsManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Nort/Stage.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Nort/Stage.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scenes/Entities/Components/CraftBodyComponent.tscn" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scenes/Entities/Components/CraftBodyComponentPart.tscn" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scenes/Entities/Craft.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/Scenes/Entities/Craft.tscn" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scenes/Pages/MainMenuPage.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/Scenes/Pages/MainMenuPage.tscn" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scenes/Pages/MissionEditor/EditorEntities/EditorCraft.tscn" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scenes/Pages/MissionEditor/EditorEntities/EditorEntity.tscn" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scenes/Pages/MissionEditor/EditorEntities/EditorPlayerCraft.tscn" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scenes/Pages/MissionEditor/EditorEntities/editor_craft.gd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scenes/Pages/MissionEditor/EditorEntities/editor_player_craft.gd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scenes/Pages/MissionEditor/Explorer/ExplorerOptionsFieldItem.tscn" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scenes/Pages/MissionEditor/Explorer/explorer.tscn" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scenes/Pages/MissionEditor/Explorer/field_classes/explorer_field.gd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scenes/Pages/MissionEditor/Explorer/field_classes/explorer_options_field.gd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scenes/Pages/MissionEditor/Explorer/field_scenes/explorer_string_field.gd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scenes/Pages/MissionEditor/Explorer/field_scenes/explorer_string_field.tscn" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scenes/Pages/MissionEditor/MissionEditor.tscn" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scenes/Pages/MissionEditor/mission_editor.gd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scenes/Stage.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/Scenes/Stage.tscn" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/VendorAssets/blueprints/bullet_turret.json" beforeDir="false" afterPath="$PROJECT_DIR$/VendorAssets/blueprints/bullet_turret.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/VendorAssets/blueprints/carrier_small.json" beforeDir="false" afterPath="$PROJECT_DIR$/VendorAssets/blueprints/small_carrier.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/VendorAssets/blueprints/pequeno.json" beforeDir="false" afterPath="$PROJECT_DIR$/VendorAssets/blueprints/pequeno.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/VendorAssets/missions/76dc7907-09b7-4f0b-a5eb-cf28016f282f.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/VendorAssets/skills/bullet.json" beforeDir="false" afterPath="$PROJECT_DIR$/VendorAssets/skills/bullet.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/VendorAssets/skills/core_bullet.json" beforeDir="false" afterPath="$PROJECT_DIR$/VendorAssets/skills/core_bullet.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/VendorAssets/skills/drone.json" beforeDir="false" afterPath="$PROJECT_DIR$/VendorAssets/skills/drone.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gimmicks/bullet/bullet.gd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gimmicks/bullet/bullet.tscn" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gimmicks/core_bullet/core_bullet.gd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gimmicks/core_bullet/core_bullet.tscn" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gimmicks/drone/drone.gd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gimmicks/drone/drone.tscn" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/project.godot" beforeDir="false" afterPath="$PROJECT_DIR$/project.godot" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/stage/background.tscn" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/stage/dropped_part/dropped_part.gd" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/stage/dropped_part/dropped_part.tscn" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/stage/stage.gd" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/stage/stage.tscn" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/transition/transition.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/transition/transition.tscn" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/theme/theme.tres" beforeDir="false" afterPath="$PROJECT_DIR$/theme/theme.tres" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -96,7 +190,7 @@
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;editor.preferences.smartKeys_rider&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
   &quot;keyToStringList&quot;: {
@@ -189,7 +283,13 @@
       <workItem from="1701868352042" duration="975000" />
       <workItem from="1701875566443" duration="2831000" />
       <workItem from="1701966092173" duration="2987000" />
-      <workItem from="1702042326251" duration="1419000" />
+      <workItem from="1702042326251" duration="20324000" />
+      <workItem from="1702137479252" duration="25220000" />
+      <workItem from="1702213460889" duration="10593000" />
+      <workItem from="1702233271546" duration="20529000" />
+      <workItem from="1702295146420" duration="8905000" />
+      <workItem from="1702385592964" duration="23048000" />
+      <workItem from="1702470587316" duration="3849000" />
     </task>
     <task id="LOCAL-00001" summary="Added gitignore">
       <option name="closed" value="true" />
@@ -223,7 +323,23 @@
       <option name="project" value="LOCAL" />
       <updated>1700990838716</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="fhujkgtvkjgvhbugvujkbh">
+      <option name="closed" value="true" />
+      <created>1702043775286</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1702043775286</updated>
+    </task>
+    <task id="LOCAL-00006" summary="fhujkgtvkjgvhbugvujkbh">
+      <option name="closed" value="true" />
+      <created>1702043789549</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1702043789549</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -237,7 +353,9 @@
     <MESSAGE value="Fixed error on first screen" />
     <MESSAGE value="idk generated shit?" />
     <MESSAGE value="fgseddhjcghj" />
-    <option name="LAST_COMMIT_MESSAGE" value="fgseddhjcghj" />
+    <MESSAGE value="fhujkgtvkjgvhbugvujkbh" />
+    <MESSAGE value="new, much better editor" />
+    <option name="LAST_COMMIT_MESSAGE" value="new, much better editor" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

@@ -1,10 +1,9 @@
 ﻿using Godot;
 using System.Threading.Tasks;
 using CtrlRaul.Godot;
-using Nort.Entities;
-using Nort.Pages.MissionEditor;
 using Nort.UI;
 using Nort.UI.Overlays;
+using Craft = Nort.Entities.Craft;
 
 namespace Nort.Pages;
 
@@ -86,7 +85,7 @@ public partial class MissionPage : Page
     {
         if (fromEditor)
         {
-            await PagesNavigator.Instance.GoBack(new MissionEditorPage.NavigationData(mission));
+            await PagesNavigator.Instance.GoBack(new Editor.NavigationData(mission));
         }
         else
         {

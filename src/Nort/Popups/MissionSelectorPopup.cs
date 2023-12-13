@@ -19,7 +19,7 @@ public partial class MissionSelectorPopup : GenericPopup
         base._Ready();
         this.InitializeReady();
         missionsList.QueueFreeChildren();
-        Cancelable = true;
+        Cancellable = true;
         Initialize();
     }
 
@@ -32,7 +32,11 @@ public partial class MissionSelectorPopup : GenericPopup
             MissionsListItem listItem = missionsListItemScene.Instantiate<MissionsListItem>();
             missionsList.AddChild(listItem);
             listItem.Mission = mission;
-            listItem.Selected += () => MissionSelected?.Invoke(mission);
+            listItem.Selected += () =>
+            {
+                MissionSelected?.Invoke(mission);
+                Remove();
+            };
         }
     }
 }

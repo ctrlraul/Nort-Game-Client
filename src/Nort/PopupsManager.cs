@@ -8,6 +8,7 @@ public partial class PopupsManager : Node
     public static PopupsManager Instance { get; private set; }
 
     private PackedScene dialogPopupScene = GD.Load<PackedScene>("res://Scenes/Popups/DialogPopup.tscn");
+    private PackedScene textInputPopupScene = GD.Load<PackedScene>("res://Scenes/Popups/TextInputPopup.tscn");
 
     // private PackedScene settingsPopupScene =
     //     GD.Load<PackedScene>("res://common/interface/SettingsPopup/SettingsPopup.tscn");
@@ -23,7 +24,7 @@ public partial class PopupsManager : Node
         AddChild(popup);
         popup.Title = title;
         popup.Message = message;
-        popup.Cancelable = true;
+        popup.Cancellable = true;
         return popup;
     }
 
@@ -33,7 +34,7 @@ public partial class PopupsManager : Node
         AddChild(popup);
         popup.Title = title;
         popup.Message = message;
-        popup.Cancelable = true;
+        popup.Cancellable = true;
         popup.SetError();
         popup.AddButton("Ok");
         return popup;
@@ -45,7 +46,7 @@ public partial class PopupsManager : Node
         AddChild(popup);
         popup.Title = title;
         popup.Message = message;
-        popup.Cancelable = true;
+        popup.Cancellable = true;
         popup.SetWarn();
         return popup;
     }
@@ -56,6 +57,17 @@ public partial class PopupsManager : Node
     //     AddChild(popup);
     //     return popup;
     // }
+
+    public TextInputPopup TextInput(string title, string text = default, string placeholderText = default)
+    {
+        TextInputPopup popup = textInputPopupScene.Instantiate<TextInputPopup>();
+        AddChild(popup);
+        popup.Title = title;
+        popup.Text = text;
+        popup.PlaceholderText = placeholderText;
+        popup.Cancellable = true;
+        return popup;
+    }
 
     public T Custom<T>(PackedScene customPopupScene) where T : Node
     {

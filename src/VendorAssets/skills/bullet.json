@@ -1,6 +1,6 @@
 ﻿{
   "id": "bullet",
   "displayName": "Bullet",
-  "scenePath": "bullet/bullet.tscn",
+  "scenePath": "BulletSkillNode.tscn",
   "mass": 5
 }

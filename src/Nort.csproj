@@ -13,6 +13,7 @@
   <ItemGroup>
     <Folder Include="common\classes\" />
     <Folder Include="lib\" />
+    <Folder Include="Nort\Pages\MissionEditor\Inspector\" />
     <Folder Include="Scenes\Entities\Components\" />
     <Folder Include="Scenes\Pages\CraftBuilder\" />
     <Folder Include="Scenes\Pages\MissionEditor\EditorEntities\" />
@@ -21,5 +22,11 @@
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Shouldly" Version="4.2.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove=".godot\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Remove=".godot\**" />
   </ItemGroup>
 </Project>

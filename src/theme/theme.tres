@@ -8,7 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://mn1cp574cid" path="res://theme/panel.png" id="7_rk5sj"]
 [ext_resource type="Texture2D" uid="uid://bl7k7k2gfxspq" path="res://theme/panel_amber.png" id="8_7fjh7"]
 [ext_resource type="Texture2D" uid="uid://cuj52n66v1mxb" path="res://theme/panel_ruby.png" id="8_a20hy"]
-[ext_resource type="FontVariation" uid="uid://d3mpjilq7jk34" path="res://theme/fonts/AireExterior.tres" id="8_pl8tx"]
+[ext_resource type="FontFile" uid="uid://dnonnp5pqiuj2" path="res://Fonts/SpaceGroteskFontFamily/SpaceGrotesk-SemiBold.ttf" id="10_mggmo"]
 [ext_resource type="Texture2D" uid="uid://djtodkfypkd3d" path="res://theme/panel_simple.png" id="12_vhlm2"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ea0kh"]
@@ -279,8 +279,8 @@ corner_radius_bottom_left = 5
 corner_detail = 1
 
 [resource]
-default_font = ExtResource("8_pl8tx")
-default_font_size = 22
+default_font = ExtResource("10_mggmo")
+default_font_size = 16
 BoxContainer/constants/separation = 10
 Button/styles/hover = SubResource("StyleBoxTexture_ea0kh")
 Button/styles/normal = SubResource("StyleBoxTexture_y4ojj")

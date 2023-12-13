@@ -1,6 +1,6 @@
 ﻿{
   "id": "drone",
   "displayName": "Drone Spawn",
-  "scenePath": "drone/drone.tscn",
+  "scenePath": "DroneSkillNode.tscn",
   "mass": 15
 }

@@ -125,6 +125,12 @@ public partial class PagesNavigator : Node
         
         Node current = tree.CurrentScene;
         Node node = scene.Instantiate();
+
+        if (node == null)
+        {
+            logger.Error($"Failed to open scene: '{scene.ResourcePath}'");
+            return;
+        }
         
         tree.Root.AddChild(node);
 

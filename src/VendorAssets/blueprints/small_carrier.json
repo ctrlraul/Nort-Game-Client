@@ -1,0 +1,82 @@
+{
+	"core": {
+		"partId": "core_2",
+		"x": 0,
+		"y": 0
+	},
+	"id": "small_carrier",
+	"hulls": [
+		{
+			"angle": -68,
+			"partId": "small_tail_3",
+			"x": 128,
+			"y": -64
+		},
+		{
+			"angle": -112,
+				"partId": "small_tail_3",
+			"x": 128,
+			"y": 64
+		},
+		{
+			"angle": -247,
+				"partId": "small_tail_3",
+			"x": -128,
+			"y": 64
+		},
+		{
+			"angle": -293,
+			"partId": "small_tail_3",
+			"x": -128,
+			"y": -64
+		},
+		{
+			"partId": "tail_1",
+			"x": -48,
+			"y": -32
+		},
+		{
+			"angle": -180,
+			"partId": "tail_1",
+			"x": -48,
+			"y": 32
+		},
+		{
+			"angle": -180,
+			"partId": "tail_1",
+			"x": 48,
+			"y": 32
+		},
+		{
+			"partId": "tail_1",
+			"x": 48,
+			"y": -32
+		},
+		{
+			"angle": -90,
+			"partId": "center_1",
+			"skillId": "bullet",
+			"x": -128,
+			"y": 0
+		},
+		{
+			"angle": -90,
+			"partId": "center_1",
+			"skillId": "bullet",
+			"x": 128,
+			"y": 0
+		},
+		{
+			"partId": "center_small_2",
+			"skillId": "drone",
+			"x": 0,
+			"y": 80
+		},
+		{
+			"angle": -180,
+			"partId": "center_small_2",
+			"x": 0,
+			"y": -80
+		}
+	]
+}

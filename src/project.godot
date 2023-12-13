@@ -124,8 +124,9 @@ toggle_fullscreen={
 
 [layer_names]
 
-2d_physics/layer_1="Craft Part"
-2d_physics/layer_9="Mouse Interactable"
+2d_physics/layer_1="craft"
+2d_physics/layer_2="entity hitbox in editor"
+2d_physics/layer_9="mouse interactable"
 
 [rendering]
 

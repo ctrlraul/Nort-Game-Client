@@ -1,9 +1,6 @@
 {
 	"core": {
-		"data": {
-			"definition": "core_1",
-			"level": 1
-		},
+		"partId": "core_1",
 		"x": 0,
 		"y": 0
 	},
@@ -11,27 +8,18 @@
 	"hulls": [
 		{
 			"angle": -180,
-			"data": {
-				"definition": "tail_1",
-				"level": 1
-			},
+			"partId": "tail_1",
 			"x": 0,
 			"y": -16
 		},
 		{
-			"data": {
-				"definition": "wing_1",
-				"level": 1
-			},
-			"flip": true,
+			"partId": "wing_1",
+			"flipped": true,
 			"x": 64,
 			"y": 32
 		},
 		{
-			"data": {
-				"definition": "wing_1",
-				"level": 1
-			},
+			"partId": "wing_1",
 			"x": -64,
 			"y": 32
 		}

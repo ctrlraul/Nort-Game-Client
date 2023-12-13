@@ -1,0 +1,7 @@
+[gd_scene load_steps=3 format=3 uid="uid://bq5ax7cccxg6l"]
+
+[ext_resource type="PackedScene" uid="uid://b1xci2ckb2rvw" path="res://Scenes/Entities/Craft.tscn" id="1_g3c7k"]
+[ext_resource type="Script" path="res://Nort/Entities/CarrierCraft.cs" id="2_s6fxg"]
+
+[node name="CarrierCraft" instance=ExtResource("1_g3c7k")]
+script = ExtResource("2_s6fxg")

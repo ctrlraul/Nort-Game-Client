@@ -1,128 +1,191 @@
 using System;
+using System.Collections.Generic;
+using System.Reflection;
 using CtrlRaul;
+using CtrlRaul.Godot;
 using CtrlRaul.Godot.Linq;
 using Godot;
 using Nort.Entities;
-using Nort.Entities.Components;
+using Nort.Pages;
 
 namespace Nort;
 
 public partial class Stage : Node2D
 {
-	public static Stage Instance { get; private set; }
+    public static Stage Instance { get; private set; }
 
-	public event Action<Craft> PlayerSpawned; 
-	public event Action PlayerDestroyed;
-	
-	[Export] private PackedScene craftScene;
-	[Export] private PackedScene playerCraftScene;
-	[Export] private PackedScene orphanPartScene;
+    public event Action<Craft> PlayerSpawned;
+    public event Action PlayerDestroyed;
 
-	private readonly Logger logger = new("Stage");
-	private Node2D entitiesContainer;
-	public Camera2D camera;
-	
-	private Craft player;
-	private FlightComponent flightComponent;
-	
-	public override void _Ready()
-	{
-		Instance = this;
-		entitiesContainer = GetNode<Node2D>("%EntitiesContainer");
-		camera = GetNode<Camera2D>("Camera2D");
-		Clear();
-	}
-	
-	public override void _Process(double delta)
-	{
-		float velocity = Mathf.Max(flightComponent.Velocity.Length(), 0.001f);
-		camera.Zoom = camera.Zoom.Lerp(Vector2.One * Mathf.Clamp(1 / velocity * 0.005f, 0.4f, 0.5f), 0.01f);
-		camera.Position = camera.Position.Lerp(player.Position + flightComponent.Velocity * 120, 0.01f);
-	}
+    [Export] private PackedScene carrierCraftScene;
+    [Export] private PackedScene playerCraftScene;
+    [Export] private PackedScene orphanPartScene;
 
-	public void LoadMission(Mission mission)
-	{
-		logger.Log($"Loading mission '{mission.displayName}'");
+    [Ready] public Node2D entitiesContainer;
+    [Ready] public Camera2D camera;
+    [Ready] public Area2D editorMouseArea;
 
-		foreach (EntitySetup entitySetup in mission.entities)
-		{
-			switch (entitySetup)
-			{
-				case PlayerCraftSetup playerCraftSetup:
-					Spawn(playerCraftSetup);
-					break;
-				
-				case CraftSetup craftSetup:
-					Spawn(craftSetup);
-					break;
-				
-				case OrphanPartSetup orphanPartSetup:
-					Spawn(orphanPartSetup);
-					break;
-				
-				default:
-					logger.Error($"unhandled entity setup type: {entitySetup.GetType().Name}");
-					break;
-			}
-		}
-	}
+    private readonly Logger logger = new("Stage");
 
-	public void Clear()
-	{
-		SetProcess(false);
-		entitiesContainer.QueueFreeChildren();
-		camera.Zoom = Vector2.One * 0.5f;
-	}
+    private PlayerCraft player;
 
-	public void SpawnPlayerCraft()
-	{
-		Spawn(new PlayerCraftSetup { testBlueprint = Assets.Instance.InitialBlueprint });
-	}
 
-	public OrphanPart Spawn(OrphanPartSetup setup)
-	{
-		OrphanPart entity = orphanPartScene.Instantiate<OrphanPart>();
-		entitiesContainer.AddChild(entity);
-		entity.SetSetup(setup);
-		return entity;
-	}
+    public override void _Ready()
+    {
+        Instance = this;
+        this.InitializeReady();
+        Clear();
+    }
 
-	public Craft Spawn(CraftSetup setup)
-	{
-		Craft entity = new();
-		entitiesContainer.AddChild(entity);
-		entity.SetSetup(setup);
-		return entity;
-	}
+    public override void _Process(double delta)
+    {
+        editorMouseArea.Position = GetGlobalMousePosition();
 
-	public Craft Spawn(PlayerCraftSetup setup)
-	{
-		if (IsInstanceValid(player))
-		{
-			player.Destroy();
-			logger.Error("Spawning a player while another instance is already present");
-		}
-		
-		player = new Craft();
-		
-		entitiesContainer.AddChild(player);
-		
-		player.SetSetup(setup);
-		
-		camera.Position = player.Position;
-		flightComponent = player.GetComponent<FlightComponent>();
-		
-		PlayerSpawned?.Invoke(player);
-		
-		SetProcess(true);
-		
-		return player;
-	}
+        if (Game.Instance.InMissionEditor)
+            return;
 
-	private void OnPlayerDestroyed()
-	{
-		player = null;
-		PlayerDestroyed?.Invoke();
-		SetProcess(false);
-	}
+        if (player != null)
+            CameraFollowPlayer();
+    }
+
+
+    private void CameraFollowPlayer()
+    {
+        float velocity = Mathf.Max(player.flightComponent.Velocity.Length(), 0.001f);
+        camera.Zoom = camera.Zoom.Lerp(Vector2.One * Mathf.Clamp(1 / velocity * 0.005f, 0.4f, 0.5f), 0.01f);
+        camera.Position = camera.Position.Lerp(player.Position + player.flightComponent.Velocity * 120, 0.01f);
+    }
+
+    public void LoadMission(Mission mission)
+    {
+        Clear();
+
+        logger.Log($"Loading mission '{mission.displayName}'");
+
+        foreach (Dictionary<string, object> entitySetup in mission.entitySetups)
+        {
+            try
+            {
+                Spawn(entitySetup);
+            }
+            catch (Exception exception)
+            {
+                logger.Error($"Failed to spawn entity:\n{exception}");
+            }
+        }
+    }
+
+    public void Clear()
+    {
+        entitiesContainer.QueueFreeChildren();
+        camera.Zoom = Vector2.One * 0.5f;
+    }
+
+    private Entity InstantiateEntityScene(string typeName)
+    {
+        PackedScene scene = typeName switch
+        {
+            nameof(PlayerCraft) => playerCraftScene,
+            nameof(CarrierCraft) => carrierCraftScene,
+            nameof(OrphanPart) => orphanPartScene,
+            
+            _ => throw new Exception($"No entity scene configured for type '{typeName}'")
+        };
+
+        return scene.Instantiate<Entity>();
+    }
+
+    
+    public OrphanPart SpawnOrphanPart()
+    {
+        OrphanPart entity = orphanPartScene.Instantiate<OrphanPart>();
+        entitiesContainer.AddChild(entity);
+        return entity;
+    }
+
+    public CarrierCraft SpawnCarrierCraft()
+    {
+        CarrierCraft entity = carrierCraftScene.Instantiate<CarrierCraft>();
+        entitiesContainer.AddChild(entity);
+        return entity;
+    }
+
+    public PlayerCraft SpawnPlayerCraft()
+    {
+        if (IsInstanceValid(player))
+        {
+            player.Destroy();
+            logger.Error("Spawning a player while another player instance is already present");
+        }
+
+        player = playerCraftScene.Instantiate<PlayerCraft>();
+
+        entitiesContainer.AddChild(player);
+
+        player.Destroyed += OnPlayerDestroyed;
+
+        if (!Game.Instance.InMissionEditor)
+            camera.Position = player.Position;
+
+        PlayerSpawned?.Invoke(player);
+
+        return player;
+    }
+
+    public Entity Spawn(Dictionary<string, object> setup)
+    {
+        if (!setup.TryGetValue("Type", out object value) || value is not string typeName)
+            throw new Exception("Invalid or missing 'Type' property in entity setup");
+        
+        Entity entity = InstantiateEntityScene(typeName);
+
+        foreach (PropertyInfo property in Editor.GetSavableProperties(entity.GetType()))
+        {
+            if (property.Name == "Type")
+                continue;
+
+            if (!setup.TryGetValue(property.Name, out object savedValue))
+                continue;
+            
+            if (savedValue is double savedValueDouble)
+                property.SetValue(entity, (float)savedValueDouble);
+            else
+                property.SetValue(entity, savedValue);
+        }
+        
+        Spawn(entity);
+        
+        return entity;
+    }
+
+    public void Spawn(Entity entity)
+    {
+        entitiesContainer.AddChild(entity);
+
+        if (entity is not PlayerCraft newPlayer)
+            return;
+        
+        if (IsInstanceValid(player))
+        {
+            logger.Error("Spawning a player while another instance already exists, destroying old instance");
+
+            player.Destroyed -= OnPlayerDestroyed;
+            player.Destroy();
+        }
+
+        player = newPlayer;
+        player.Destroyed += OnPlayerDestroyed;
+
+        if (!Game.Instance.InMissionEditor)
+            camera.Position = player.Position;
+
+        PlayerSpawned?.Invoke(player);
+    }
+    
+
+    private void OnPlayerDestroyed()
+    {
+        player = null;
+        PlayerDestroyed?.Invoke();
+    }
 }

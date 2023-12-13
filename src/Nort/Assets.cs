@@ -6,6 +6,7 @@ using CtrlRaul;
 using CtrlRaul.Godot.Linq;
 using Godot;
 using Nort.Interface;
+using Nort.Popups;
 
 namespace Nort;
 
@@ -71,8 +72,28 @@ public class Assets : Singleton<Assets>
         await HydrateAssetsLibrary(vendorAssets, Config.VendorAssetsDirectory);
         await HydrateAssetsLibrary(customAssets, Config.CustomAssetsDirectory);
 
-        RunSanityChecks();
+        List<string> problems = FindProblems();
 
+        if (problems.Any())
+        {
+            string message = problems.Aggregate(
+                $"{problems.Count} problem found, the game may break.",
+                (current, problem) => current + $"\n - {problem}"
+            );
+            
+            logger.Error(message);
+            
+            if (OS.HasFeature("editor"))
+            {
+                PopupsManager.Instance.Info(message);
+            }
+            else
+            {
+                DialogPopup popup = PopupsManager.Instance.Info("Error while loading assets!");
+                popup.AddButton("Ok", () => (Engine.GetMainLoop() as SceneTree)!.Quit());
+            }
+        }
+        
         logger.Log($"Skills: {vendorAssets.skills.Count + customAssets.skills.Count}");
         logger.Log($"Parts: {vendorAssets.parts.Count + customAssets.parts.Count}");
         logger.Log($"Blueprints: {vendorAssets.blueprints.Count + customAssets.blueprints.Count}");
@@ -154,10 +175,20 @@ public class Assets : Singleton<Assets>
         return Task.CompletedTask;
     }
 
-    private void RunSanityChecks()
+    private List<string> FindProblems()
     {
+        List<string> problems = new();
+        
         if (!vendorAssets.blueprints.ContainsKey(Config.InitialBlueprint))
-            throw new Exception($"No matching blueprint for initial blueprint with id '{Config.InitialBlueprint}'");
+            problems.Add($"Config: No matching blueprint for initial blueprint with id '{Config.InitialBlueprint}'");
+
+        foreach (string blueprintId in Config.CarrierBlueprints)
+        {
+            if (!vendorAssets.blueprints.ContainsKey(blueprintId))
+                problems.Add($"Config: No blueprint for carrier found with id '{blueprintId}'");
+        }
+
+        return problems;
     }
     
     private static DirAccess OpenDirOrThrow(string directoryPath)
@@ -208,7 +239,7 @@ public class Assets : Singleton<Assets>
     
     public Rect2 GetBlueprintVisualRect(Blueprint blueprint)
     {
-        IEnumerable<BlueprintPart> parts = blueprint.hulls.Concat(new[] { blueprint.core });
+        List<BlueprintPart> parts = blueprint.hulls.Concat(new[] { blueprint.core }).ToList();
 
         if (!parts.Any())
             return new Rect2();
@@ -260,6 +291,9 @@ public class Assets : Singleton<Assets>
     
     public void StoreMission(Mission mission)
     {
+        logger.Log($"mission.displayName: {mission.displayName}");
+        logger.Log($"mission.id: {mission.id}");
+        
         string assetsDirectory;
         AssetsLibrary assetsLibrary;
 

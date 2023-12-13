@@ -15,7 +15,7 @@ public partial class DroneAiComponent : EntityComponent
 
     public override void Init()
     {
-        flightComponent = Craft.GetComponent<FlightComponent>();
+        //flightComponent = Craft.GetComponent<FlightComponent>();
     }
 
     public override void _PhysicsProcess(double delta)
@@ -34,17 +34,17 @@ public partial class DroneAiComponent : EntityComponent
 
     private void OnArea2DAreaEntered(Area2D area)
     {
-        if (area.Owner is CraftBodyPart part && part.body.Craft.Faction != Craft.Faction)
+        if (area.Owner is CraftBodyPart part && part.Faction != Craft.Faction)
         {
-            path.Insert(0, Craft.Position.Lerp(part.body.Craft.Position, 0.5f));
+            path.Insert(0, Craft.Position.Lerp(part.Position, 0.5f));
         }
     }
 
     private void OnArea2DAreaExited(Area2D area)
     {
-        if (area.Owner is CraftBodyPart part && part.body.Craft.Faction != Craft.Faction)
+        if (area.Owner is CraftBodyPart part && part.Faction != Craft.Faction)
         {
-            path.Insert(0, part.body.Craft.Position);
+            path.Insert(0, part.Position);
         }
     }
 }

@@ -3,7 +3,7 @@ using Godot;
 
 namespace CtrlRaul.Godot.Linq;
 
-public static partial class Extensions
+public static class NodeExtensions
 {
 	public static void FreeChildren(this Node node)
 	{

@@ -1,37 +1,31 @@
 ﻿using System;
-using System.Collections.Generic;
 using Godot;
-using Nort.Entities.Components;
+using Nort.Pages;
 
 namespace Nort.Entities;
 
 public partial class Entity : Node2D
 {
-    private readonly Dictionary<Type, EntityComponent> components = new();
-
-    protected void InitComponents()
+    [Savable] public string Type => GetType().FullName;
+    
+    [Savable]
+    public float X
     {
-        foreach (EntityComponent component in components.Values)
-            component.Init();
+        get => Position.X;
+        set => Position = Position with { X = value };
     }
-
-    protected void AddComponent<T>(T component) where T : EntityComponent
+    
+    [Savable]
+    public float Y
     {
-        components.Add(typeof(T), component);
-        AddChild(component);
+        get => Position.Y;
+        set => Position = Position with { Y = value };
     }
-
-    public T GetComponent<T>() where T : EntityComponent
+    
+    [Savable]
+    public float Angle
     {
-        return components.TryGetValue(typeof(T), out EntityComponent component)
-            ? component as T
-            : null;
-    }
-
-    public T GetComponentOrThrow<T>() where T : EntityComponent
-    {
-        return components.TryGetValue(typeof(T), out EntityComponent component)
-            ? component as T
-            : throw new Exception($"{GetType().Name} was expected to have a {typeof(T).Name} component");
+        get => RotationDegrees;
+        set => RotationDegrees = value;
     }
 }

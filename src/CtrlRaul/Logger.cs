@@ -73,4 +73,13 @@ public class Logger
         externalLogger?.Log(text);
 #endif
     }
+
+    public static void Error(string label, object message)
+    {
+        string text = string.Format(Format, Time.GetTicksMsec() / 1000f, "E", label, message);
+        GD.PrintErr(text);
+#if DEBUG
+        externalLogger?.Error(text);
+#endif
+    }
 }

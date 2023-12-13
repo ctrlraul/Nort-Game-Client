@@ -26,7 +26,7 @@ public partial class PartBuilderPopup : GenericPopup
 		partOptions = GetNode<OptionButton>("%PartOptions");
 		skillOptions = GetNode<SkillOptions>("%SkillOptions");
 
-		Cancelable = true;
+		Cancellable = true;
 
 		partOptions.Clear();
 

@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace CtrlRaul.Godot.Linq;
 
-public static partial class Extensions
+public static class Node2DExtensions
 {
     public static T FindNearest<T>(this IEnumerable<T> nodes, Vector2 position, bool useGlobalPosition = false) where T : Node2D
     {
