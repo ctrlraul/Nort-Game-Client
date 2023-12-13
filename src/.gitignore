@@ -1,0 +1,5 @@
+﻿.godot/
+.idea/
+
+*.csproj.old
+*.csproj.old.*
