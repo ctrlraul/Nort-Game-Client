@@ -1,0 +1,26 @@
+[gd_scene load_steps=3 format=3 uid="uid://7c7xnvypc5s7"]
+
+[sub_resource type="Animation" id="Animation_ulxi2"]
+resource_name = "test"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("..:process_mode")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(),
+"transitions": PackedFloat32Array(),
+"update": 1,
+"values": []
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_prmpr"]
+_data = {
+"test": SubResource("Animation_ulxi2")
+}
+
+[node name="AnimationPlayer" type="AnimationPlayer"]
+libraries = {
+"": SubResource("AnimationLibrary_prmpr")
+}

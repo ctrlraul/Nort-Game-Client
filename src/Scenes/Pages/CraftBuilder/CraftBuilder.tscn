@@ -8,7 +8,7 @@
 [ext_resource type="Material" uid="uid://igpcbk30hpxf" path="res://Materials/part_outline_shader_material.tres" id="6_f8ml6"]
 [ext_resource type="Texture2D" uid="uid://b3bm4djf5tas8" path="res://Images/part_example.png" id="7_uxgl3"]
 [ext_resource type="PackedScene" uid="uid://c5f0wfx25glsh" path="res://Scenes/Pages/CraftBuilder/PartTransformControls.tscn" id="8_8xprg"]
-[ext_resource type="PackedScene" uid="uid://cdwor48b8w6ca" path="res://common/interface/return_button.tscn" id="9_s3hta"]
+[ext_resource type="PackedScene" uid="uid://cdwor48b8w6ca" path="res://Scenes/UI/ReturnButton.tscn" id="9_s3hta"]
 [ext_resource type="PackedScene" uid="uid://cwl7mn40ut30d" path="res://Scenes/Pages/CraftBuilder/PartsInventory.tscn" id="10_2bx82"]
 [ext_resource type="PackedScene" uid="uid://f58y3xr2ti0s" path="res://Scenes/Lists/CoresListItem.tscn" id="11_8is45"]
 [ext_resource type="PackedScene" uid="uid://ctqu4tyxogk4d" path="res://Scenes/Pages/CraftBuilder/CraftSummary.tscn" id="12_ckjrn"]

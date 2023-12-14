@@ -1,4 +1,8 @@
-﻿.godot/
+﻿# Godot
+.godot/
+./**/*.tmp
+
+# Rider
 .idea/
 
 *.csproj.old

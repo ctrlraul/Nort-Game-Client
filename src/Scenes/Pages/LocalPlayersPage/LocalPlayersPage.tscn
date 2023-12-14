@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://Nort/Pages/LocalPlayersPage.cs" id="1_pdxb6"]
 [ext_resource type="PackedScene" uid="uid://cigqt0kjqfuw2" path="res://Scenes/Pages/LocalPlayersPage/PlayerListItem.tscn" id="2_qr5y4"]
 [ext_resource type="Theme" uid="uid://85byrm5eq3ab" path="res://theme/theme.tres" id="3_2nafg"]
-[ext_resource type="PackedScene" uid="uid://cdwor48b8w6ca" path="res://common/interface/return_button.tscn" id="4_eppjc"]
+[ext_resource type="PackedScene" uid="uid://cdwor48b8w6ca" path="res://Scenes/UI/ReturnButton.tscn" id="4_eppjc"]
 
 [node name="LocalPlayersPage" type="CanvasLayer"]
 script = ExtResource("1_pdxb6")

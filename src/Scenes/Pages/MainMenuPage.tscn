@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://di6wg5igk5hpe"]
+[gd_scene load_steps=7 format=3 uid="uid://di6wg5igk5hpe"]
 
 [ext_resource type="Script" path="res://Nort/Pages/MainMenuPage.cs" id="1_cr51s"]
 [ext_resource type="Theme" uid="uid://85byrm5eq3ab" path="res://theme/theme.tres" id="2_byrfk"]
 [ext_resource type="Material" uid="uid://bscgpp7x5c27j" path="res://Materials/shiny_part_shader_material.tres" id="3_kerjt"]
 [ext_resource type="Texture2D" uid="uid://dgqwtel1q4ppk" path="res://Images/branding/logo_themed.png" id="3_wxxib"]
 [ext_resource type="PackedScene" uid="uid://cxdrb6lxh18qh" path="res://Scenes/UI/DisplayCraft.tscn" id="4_lvv8a"]
+[ext_resource type="PackedScene" uid="uid://djqq8s6miovq7" path="res://Scenes/FloatingAnimation.tscn" id="5_0fyqw"]
 
 [node name="MainMenuPage" type="CanvasLayer"]
 script = ExtResource("1_cr51s")
@@ -37,9 +38,14 @@ size_flags_vertical = 3
 [node name="Control" type="Control" parent="Theme/MarginContainer/VBoxContainer/LogoContainer"]
 layout_mode = 2
 
-[node name="TextureRect" type="TextureRect" parent="Theme/MarginContainer/VBoxContainer/LogoContainer/Control"]
+[node name="FloatingAnimation" parent="Theme/MarginContainer/VBoxContainer/LogoContainer/Control" instance=ExtResource("5_0fyqw")]
+remote_path = NodePath("../Logo2DWrapper")
+
+[node name="Logo2DWrapper" type="Node2D" parent="Theme/MarginContainer/VBoxContainer/LogoContainer/Control"]
+position = Vector2(-250, -87.5)
+
+[node name="TextureRect" type="TextureRect" parent="Theme/MarginContainer/VBoxContainer/LogoContainer/Control/Logo2DWrapper"]
 material = ExtResource("3_kerjt")
-layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5

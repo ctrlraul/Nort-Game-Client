@@ -1,6 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://jtupfgef1314"]
-
-[ext_resource type="Script" path="res://Nort/Autoload/Transitions.cs" id="1_bv60u"]
-
-[node name="Transitions" type="CanvasLayer"]
-script = ExtResource("1_bv60u")

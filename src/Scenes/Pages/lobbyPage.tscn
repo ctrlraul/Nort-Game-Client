@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Nort/Pages/LobbyPage.cs" id="1_bjtg4"]
 [ext_resource type="Theme" uid="uid://85byrm5eq3ab" path="res://theme/theme.tres" id="2_nbsui"]
-[ext_resource type="PackedScene" uid="uid://cdwor48b8w6ca" path="res://common/interface/return_button.tscn" id="3_mefwj"]
+[ext_resource type="PackedScene" uid="uid://cdwor48b8w6ca" path="res://Scenes/UI/ReturnButton.tscn" id="3_mefwj"]
 
 [node name="LobbyPage" type="CanvasLayer"]
 script = ExtResource("1_bjtg4")
