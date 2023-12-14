@@ -37,3 +37,9 @@ theme_type_variation = &"PanelContainerDarken"
 [node name="FieldsList" type="VBoxContainer" parent="VBoxContainer/FieldsListContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+
+[node name="OptionsInspectorField" parent="VBoxContainer/FieldsListContainer/FieldsList" instance=ExtResource("2_i4mle")]
+layout_mode = 2
+
+[node name="OptionsInspectorField2" parent="VBoxContainer/FieldsListContainer/FieldsList" instance=ExtResource("2_i4mle")]
+layout_mode = 2

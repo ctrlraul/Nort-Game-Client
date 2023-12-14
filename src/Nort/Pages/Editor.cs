@@ -362,7 +362,7 @@ public partial class Editor : Page
         entityInspector.SetEntity(entity);
     }
     
-    private void OnExportButtonPressed(bool skipNameIfPopupPossible = false)
+    private void OnExportButtonPressed()
     {
         Dictionary<Type, List<PropertyInfo>> propertiesCache = new();
         
@@ -390,7 +390,7 @@ public partial class Editor : Page
             mission.entitySetups.Add(entityDict);
         }
 
-        if (!skipNameIfPopupPossible || string.IsNullOrEmpty(mission.displayName))
+        if (string.IsNullOrEmpty(mission.displayName))
         {
             TextInputPopup popup = PopupsManager.Instance.TextInput("Mission Name", mission.displayName);
             popup.Submitted += OnMissionNamePopupSubmitted;
@@ -409,7 +409,7 @@ public partial class Editor : Page
             if (hasUnsavedChange)
             {
                 DialogPopup unsavedChangesPopup = PopupsManager.Instance.Info(null, "Discard unsaved changes?");
-                unsavedChangesPopup.AddButton("Save", () => OnExportButtonPressed(true));
+                unsavedChangesPopup.AddButton("Save", OnExportButtonPressed);
                 unsavedChangesPopup.AddButton("Discard", () => ImportMission(missionSelected));
                 unsavedChangesPopup.AddButton("Cancel");
                 return;

@@ -6,7 +6,7 @@ namespace Nort.Entities;
 
 public partial class Entity : Node2D
 {
-    [Savable] public string Type => GetType().FullName;
+    [Savable] public string Type => GetType().Name;
     
     [Savable]
     public float X
