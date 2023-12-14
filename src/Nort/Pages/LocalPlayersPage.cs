@@ -21,7 +21,6 @@ public partial class LocalPlayersPage : Page
     public override void _Ready()
     {
         playersList = GetNode<Control>("%PlayersList");
-        Stage.Instance.Clear();
         LocalPlayersManager.Instance.LocalPlayerDeleted += OnLocalPlayerDeleted;
     }
 

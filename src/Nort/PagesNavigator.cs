@@ -14,6 +14,8 @@ public partial class PagesNavigator : Node
     public static PagesNavigator Instance { get; private set; }
     public delegate Task Middleware(Node node);
 
+    public event Action<Node> PageChanged;
+    
     public bool Canceled { get; private set; }
     
     private readonly Logger logger = new(nameof(PagesNavigator));
@@ -145,6 +147,8 @@ public partial class PagesNavigator : Node
         tree.CurrentScene = node;
 
         current.QueueFree();
+        
+        PageChanged?.Invoke(node);
     }
 
     private async Task RunMiddlewares(Node node)

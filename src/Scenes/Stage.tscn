@@ -14,8 +14,25 @@ carrierCraftScene = ExtResource("2_vgo7s")
 playerCraftScene = ExtResource("3_a35qp")
 orphanPartScene = ExtResource("4_lu1fc")
 
-[node name="Camera" type="Camera2D" parent="."]
+[node name="CenterIndicator" type="Node2D" parent="."]
 unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.392157)
+
+[node name="Line2D" type="Line2D" parent="CenterIndicator"]
+points = PackedVector2Array(-40, 0, 40, 0)
+width = 4.0
+
+[node name="Line2D2" type="Line2D" parent="CenterIndicator"]
+rotation = 1.5708
+points = PackedVector2Array(-40, 0, 40, 0)
+width = 4.0
+
+[node name="Label" type="Label" parent="CenterIndicator"]
+offset_left = 2.0
+offset_top = 2.0
+offset_right = 48.0
+offset_bottom = 23.0
+text = " origin"
 
 [node name="EntitiesContainer" type="Node2D" parent="."]
 unique_name_in_owner = true
@@ -28,3 +45,6 @@ collision_mask = 2
 [node name="CollisionShape2D" type="CollisionShape2D" parent="EditorMouseArea"]
 shape = SubResource("RectangleShape2D_2nl80")
 debug_color = Color(1, 1, 1, 0.419608)
+
+[node name="Camera" type="Camera2D" parent="."]
+unique_name_in_owner = true

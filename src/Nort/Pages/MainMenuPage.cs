@@ -71,7 +71,6 @@ public partial class MainMenuPage : Page
 
     private static void DoCoolZoom()
     {
-        Stage.Instance.Clear();
         Stage.Instance.camera.Zoom = new Vector2(0.25f, 0.25f);
 
         Tween tween = Stage.Instance.CreateTween();

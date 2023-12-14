@@ -22,12 +22,9 @@ public partial class Editor : Page
     public class NavigationData
     {
         public Mission Mission { get; }
-        
-        public NavigationData(Mission mission)
-        {
-            Mission = mission;
-        }
+        public NavigationData(Mission mission) => Mission = mission;
     }
+    
     
     private enum MouseState
     {
@@ -38,10 +35,8 @@ public partial class Editor : Page
     }
 
     
-    private static Camera2D Camera => Stage.Instance.camera;
-    private static Area2D EditorMouseArea => Stage.Instance.editorMouseArea;
-    private static Node2D EntitiesContainer => Stage.Instance.entitiesContainer;
-    private static IEnumerable<Entity> Entities => EntitiesContainer.GetChildren().Cast<Entity>();
+    private static Stage Stage => Stage.Instance;
+    private static IEnumerable<Entity> Entities => Stage.entitiesContainer.GetChildren().Cast<Entity>();
 
     
     [Export] private PackedScene missionSelectorPopupScene;
@@ -56,6 +51,7 @@ public partial class Editor : Page
     
     private readonly Vector2 gridSnap = Vector2.One * 64f;
     private readonly Mission mission = new() { id = Assets.GenerateUuid() };
+    private readonly Dictionary<Entity, Vector2> dragOffsets = new();
     private readonly Dictionary<Entity, Vector2> copyOffsets = new();
     private readonly List<Entity> selection = new();
     private readonly List<Entity> copied = new ();
@@ -70,12 +66,11 @@ public partial class Editor : Page
     {
         base._Ready();
         this.InitializeReady();
-        //Stage.Instance.camera.Zoom = Vector2.One;
     }
 
     public override void _Process(double delta)
     {
-        Vector2 mouse = Stage.Instance.camera.GetLocalMousePosition();
+        Vector2 mouse = Stage.camera.GetLocalMousePosition();
         mousePositionLabel.Text = $"x{(int)mouse.X} y{(int)mouse.Y}";
     }
 
@@ -139,6 +134,17 @@ public partial class Editor : Page
     public override async Task Initialize()
     {
         await Game.Instance.Initialize();
+
+        if (PagesNavigator.Instance.NavigationData is NavigationData data)
+        {
+            Stage.LoadMission(data.Mission);
+            if (Stage.Player != null)
+                Stage.camera.Position = Stage.Player.Position;
+        }
+        else
+        {
+            Stage.SpawnPlayerCraft();
+        }
     }
 
     private void ImportMission(Mission missionToImport)
@@ -146,13 +152,13 @@ public partial class Editor : Page
         hasUnsavedChange = false;
         mission.id = missionToImport.id;
         mission.displayName = missionToImport.displayName;
-        Stage.Instance.LoadMission(missionToImport);
+        Stage.LoadMission(missionToImport);
     }
     
     private Entity GetHoveredEntity()
     {
         // skull emoji
-        return EditorMouseArea.GetOverlappingAreas().FindNearest(EditorMouseArea.Position)?.Owner as Entity;
+        return Stage.editorMouseArea.GetOverlappingAreas().FindNearest(Stage.editorMouseArea.Position)?.Owner as Entity;
     }
     
     
@@ -164,7 +170,7 @@ public partial class Editor : Page
         copied.Clear();
         copied.AddRange(selection);
 
-        Vector2 canvasCenter = Camera.Position;
+        Vector2 canvasCenter = Stage.camera.Position;
 
         foreach (Entity copiedEntity in copied)
             copyOffsets[copiedEntity] = copiedEntity.Position - canvasCenter;
@@ -174,12 +180,12 @@ public partial class Editor : Page
     {
         selection.Clear();
 
-        Vector2 canvasCenter = Camera.Position;
+        Vector2 canvasCenter = Stage.camera.Position;
 
         foreach (Entity copiedEntity in copied)
         {
             Entity pastedEntity = (copiedEntity.Duplicate() as Entity)!;
-            Stage.Instance.Spawn(pastedEntity);
+            Stage.Spawn(pastedEntity);
             pastedEntity.Position = (canvasCenter + copyOffsets[copiedEntity]).Snapped(gridSnap);
             selection.Add(pastedEntity);
         }
@@ -224,13 +230,13 @@ public partial class Editor : Page
         
         // Actual zooming code
         
-        Vector2 mouse = Stage.Instance.camera.GetLocalMousePosition();
-        Vector2 oldZoom = Stage.Instance.camera.Zoom;
+        Vector2 mouse = Stage.camera.GetLocalMousePosition();
+        Vector2 oldZoom = Stage.camera.Zoom;
         Vector2 zoomAmount = oldZoom * ZoomStep * delta;
         Vector2 motion = mouse * zoomAmount / (oldZoom + zoomAmount);
         
-        Camera.Zoom += zoomAmount;
-        Camera.Position += motion;
+        Stage.camera.Zoom += zoomAmount;
+        Stage.camera.Position += motion;
     }
 
     private void OnMouseDown()
@@ -278,6 +284,10 @@ public partial class Editor : Page
                 entityInspector.SetEntities(selection);
                 
                 break;
+            
+            case MouseState.Dragging:
+                dragOffsets.Clear();
+                break;
         }
         
         mouseState = MouseState.Up;
@@ -285,12 +295,12 @@ public partial class Editor : Page
 
     private void OnMouseMove(InputEventMouseMotion mouseMotionEvent)
     {
-        Vector2 motion = mouseMotionEvent.Relative / Camera.Zoom;
+        Vector2 motion = mouseMotionEvent.Relative / Stage.camera.Zoom;
         
         switch (mouseState)
         {
             case MouseState.Down:
-
+            {
                 Entity hoveredEntity = GetHoveredEntity();
 
                 if (hoveredEntity == null)
@@ -306,36 +316,49 @@ public partial class Editor : Page
                         
                         selection.Add(hoveredEntity);
                     }
+
+                    Vector2 mouse = Stage.GetGlobalMousePosition();
+
+                    foreach (Entity entity in selection)
+                        dragOffsets.Add(entity, mouse - entity.Position);
                     
                     entityInspector.SetEntities(selection);
                     
                     mouseState = MouseState.Dragging;
                 }
                 break;
-            
+            }
+
             case MouseState.Panning:
-                Camera.Position -= motion;
+            {
+                Stage.camera.Position -= motion;
                 break;
-            
+            }
+
             case MouseState.Dragging:
+            {
+                Vector2 mouse = Stage.GetGlobalMousePosition();
+                
                 foreach (Entity entity in selection)
-                    entity.Position += motion;
+                    entity.Position = (mouse - dragOffsets[entity]).Snapped(gridSnap);
+                
                 break;
+            }
         }
     }
     
     
     private void OnPlayerButtonPressed()
     {
-        PlayerCraft entity = Stage.Instance.SpawnPlayerCraft();
-        entity.Position = Camera.Position;
+        PlayerCraft entity = Stage.SpawnPlayerCraft();
+        entity.Position = Stage.camera.Position;
         entityInspector.SetEntity(entity);
     }
     
     private void OnCarrierButtonPressed()
     {
-        CarrierCraft entity = Stage.Instance.SpawnCarrierCraft();
-        entity.Position = Camera.Position;
+        CarrierCraft entity = Stage.SpawnCarrierCraft();
+        entity.Position = Stage.camera.Position;
         entityInspector.SetEntity(entity);
     }
     

@@ -21,13 +21,19 @@ public partial class Stage : Node2D
     [Export] private PackedScene playerCraftScene;
     [Export] private PackedScene orphanPartScene;
 
+    [Ready] public Node2D centerIndicator;
     [Ready] public Node2D entitiesContainer;
-    [Ready] public Camera2D camera;
     [Ready] public Area2D editorMouseArea;
+    [Ready] public Camera2D camera;
 
     private readonly Logger logger = new("Stage");
 
     private PlayerCraft player;
+    public PlayerCraft Player
+    {
+        get => IsInstanceValid(player) ? player : null;
+        private set => player = value;
+    }
 
 
     public override void _Ready()
@@ -44,16 +50,16 @@ public partial class Stage : Node2D
         if (Game.Instance.InMissionEditor)
             return;
 
-        if (player != null)
+        if (Player != null)
             CameraFollowPlayer();
     }
 
 
     private void CameraFollowPlayer()
     {
-        float velocity = Mathf.Max(player.flightComponent.Velocity.Length(), 0.001f);
+        float velocity = Mathf.Max(Player.flightComponent.Velocity.Length(), 0.001f);
         camera.Zoom = camera.Zoom.Lerp(Vector2.One * Mathf.Clamp(1 / velocity * 0.005f, 0.4f, 0.5f), 0.01f);
-        camera.Position = camera.Position.Lerp(player.Position + player.flightComponent.Velocity * 120, 0.01f);
+        camera.Position = camera.Position.Lerp(Player.Position + Player.flightComponent.Velocity * 120, 0.01f);
     }
 
     public void LoadMission(Mission mission)
@@ -79,6 +85,7 @@ public partial class Stage : Node2D
     {
         entitiesContainer.QueueFreeChildren();
         camera.Zoom = Vector2.One * 0.5f;
+        camera.Position = Vector2.Zero;
     }
 
     private Entity InstantiateEntityScene(string typeName)
@@ -112,24 +119,24 @@ public partial class Stage : Node2D
 
     public PlayerCraft SpawnPlayerCraft()
     {
-        if (IsInstanceValid(player))
+        if (Player != null)
         {
-            player.Destroy();
+            Player.Destroy();
             logger.Error("Spawning a player while another player instance is already present");
         }
 
-        player = playerCraftScene.Instantiate<PlayerCraft>();
+        Player = playerCraftScene.Instantiate<PlayerCraft>();
 
-        entitiesContainer.AddChild(player);
+        entitiesContainer.AddChild(Player);
 
-        player.Destroyed += OnPlayerDestroyed;
+        Player.Destroyed += OnPlayerDestroyed;
 
         if (!Game.Instance.InMissionEditor)
-            camera.Position = player.Position;
+            camera.Position = Player.Position;
 
-        PlayerSpawned?.Invoke(player);
+        PlayerSpawned?.Invoke(Player);
 
-        return player;
+        return Player;
     }
 
     public Entity Spawn(Dictionary<string, object> setup)
@@ -165,27 +172,27 @@ public partial class Stage : Node2D
         if (entity is not PlayerCraft newPlayer)
             return;
         
-        if (IsInstanceValid(player))
+        if (Player != null)
         {
             logger.Error("Spawning a player while another instance already exists, destroying old instance");
 
-            player.Destroyed -= OnPlayerDestroyed;
-            player.Destroy();
+            Player.Destroyed -= OnPlayerDestroyed;
+            Player.Destroy();
         }
 
-        player = newPlayer;
-        player.Destroyed += OnPlayerDestroyed;
+        Player = newPlayer;
+        Player.Destroyed += OnPlayerDestroyed;
 
         if (!Game.Instance.InMissionEditor)
-            camera.Position = player.Position;
+            camera.Position = Player.Position;
 
-        PlayerSpawned?.Invoke(player);
+        PlayerSpawned?.Invoke(Player);
     }
     
 
     private void OnPlayerDestroyed()
     {
-        player = null;
+        Player = null;
         PlayerDestroyed?.Invoke();
     }
 }

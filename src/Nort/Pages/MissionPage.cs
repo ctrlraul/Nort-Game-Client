@@ -57,8 +57,6 @@ public partial class MissionPage : Page
         await Game.Instance.Initialize();
         
         hullProgressBar.Color = Assets.Instance.PlayerFaction.Color;
-        
-        Stage.Instance.Clear();
 
         if (PagesNavigator.Instance.NavigationData is NavigationData navigationData)
         {

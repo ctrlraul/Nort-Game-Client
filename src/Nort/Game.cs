@@ -46,7 +46,8 @@ public partial class Game : Node
     {
         base._Ready();
         PagesNavigator.Instance.SetDefaultScene(Config.Pages.MainMenu);
-        PagesNavigator.Instance.AddMiddleware(PageChangeMiddleware);
+        PagesNavigator.Instance.AddMiddleware(ClearStageMiddleware);
+        PagesNavigator.Instance.AddMiddleware(InitializePageMiddleware);
     }
 
     public override void _UnhandledInput(InputEvent @event)
@@ -70,8 +71,16 @@ public partial class Game : Node
         await Assets.Instance.ImportAssets();
         Initialized?.Invoke();
     }
+    
+    
+    private static Task ClearStageMiddleware(Node node)
+    {
+        Stage.Instance.Clear();
+        Stage.Instance.centerIndicator.Visible = node is Editor;
+        return Task.CompletedTask;
+    }
 
-    private async Task PageChangeMiddleware(Node node)
+    private async Task InitializePageMiddleware(Node node)
     {
         if (node is not Page page)
         {
@@ -112,6 +121,7 @@ public partial class Game : Node
         _ = TransitionsManager.Instance.Uncover();
     }
 
+    
     private static void ToggleFullscreen()
     {
         DisplayServer.WindowSetMode(

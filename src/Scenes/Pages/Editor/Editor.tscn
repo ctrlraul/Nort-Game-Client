@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://gnsam7j75k7f"]
+[gd_scene load_steps=5 format=3 uid="uid://gnsam7j75k7f"]
 
 [ext_resource type="Script" path="res://Nort/Pages/Editor.cs" id="1_w6yix"]
 [ext_resource type="PackedScene" uid="uid://dg8ygdrhal03f" path="res://Scenes/Popups/MissionSelectorPopup.tscn" id="2_g5r8g"]
 [ext_resource type="PackedScene" uid="uid://crxxyndc18yre" path="res://Scenes/Hud/EntityInspector/EntityInspector.tscn" id="2_owwe5"]
+[ext_resource type="PackedScene" uid="uid://cdwor48b8w6ca" path="res://Scenes/UI/ReturnButton.tscn" id="3_c0oqk"]
 
 [node name="Editor" type="CanvasLayer"]
 script = ExtResource("1_w6yix")
@@ -17,11 +18,58 @@ grow_vertical = 2
 mouse_filter = 2
 theme_type_variation = &"WindowMarginContainer"
 
-[node name="Control" type="Control" parent="MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
 layout_mode = 2
 mouse_filter = 2
 
-[node name="EntityInspector" parent="MarginContainer/Control" instance=ExtResource("2_owwe5")]
+[node name="LeftSide" type="Control" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="ReturnButton" parent="MarginContainer/HBoxContainer/LeftSide" instance=ExtResource("3_c0oqk")]
+layout_mode = 0
+
+[node name="VBoxContainer2" type="HBoxContainer" parent="MarginContainer/HBoxContainer/LeftSide"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -20.0
+offset_right = 20.0
+grow_vertical = 0
+
+[node name="ImportButton" type="Button" parent="MarginContainer/HBoxContainer/LeftSide/VBoxContainer2"]
+layout_mode = 2
+text = "Import
+"
+
+[node name="ExportButton" type="Button" parent="MarginContainer/HBoxContainer/LeftSide/VBoxContainer2"]
+layout_mode = 2
+text = "Export"
+
+[node name="Center" type="HBoxContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+alignment = 1
+
+[node name="PlayerButton" type="Button" parent="MarginContainer/HBoxContainer/Center"]
+layout_mode = 2
+size_flags_vertical = 8
+text = "Player"
+
+[node name="CarrierButton" type="Button" parent="MarginContainer/HBoxContainer/Center"]
+layout_mode = 2
+size_flags_vertical = 8
+text = "Carrier"
+
+[node name="RightSide" type="Control" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="EntityInspector" parent="MarginContainer/HBoxContainer/RightSide" instance=ExtResource("2_owwe5")]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 1
@@ -32,48 +80,21 @@ offset_right = 0.0
 offset_bottom = 172.0
 grow_horizontal = 0
 
-[node name="MousePositionLabel" type="Label" parent="MarginContainer/Control"]
+[node name="MousePositionLabel" type="Label" parent="MarginContainer/HBoxContainer/RightSide"]
 unique_name_in_owner = true
+self_modulate = Color(1, 1, 1, 0.392157)
 layout_mode = 1
-anchors_preset = 2
+anchors_preset = 3
+anchor_left = 1.0
 anchor_top = 1.0
+anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = -40.0
 offset_top = -21.0
-offset_right = 40.0
+grow_horizontal = 0
 grow_vertical = 0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/Control"]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="PlayerButton" type="Button" parent="MarginContainer/Control/VBoxContainer"]
-layout_mode = 2
-text = "Player"
-
-[node name="CarrierButton" type="Button" parent="MarginContainer/Control/VBoxContainer"]
-layout_mode = 2
-text = "Carrier"
-
-[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/Control"]
-layout_mode = 1
-anchors_preset = 2
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_top = -20.0
-offset_right = 20.0
-grow_vertical = 0
-
-[node name="ExportButton" type="Button" parent="MarginContainer/Control/VBoxContainer2"]
-layout_mode = 2
-text = "Export"
-
-[node name="ImportButton" type="Button" parent="MarginContainer/Control/VBoxContainer2"]
-layout_mode = 2
-text = "Import
-"
-
-[connection signal="pressed" from="MarginContainer/Control/VBoxContainer/PlayerButton" to="." method="OnPlayerButtonPressed"]
-[connection signal="pressed" from="MarginContainer/Control/VBoxContainer/CarrierButton" to="." method="OnCarrierButtonPressed"]
-[connection signal="pressed" from="MarginContainer/Control/VBoxContainer2/ExportButton" to="." method="OnExportButtonPressed"]
-[connection signal="pressed" from="MarginContainer/Control/VBoxContainer2/ImportButton" to="." method="OnImportButtonPressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/LeftSide/VBoxContainer2/ImportButton" to="." method="OnImportButtonPressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/LeftSide/VBoxContainer2/ExportButton" to="." method="OnExportButtonPressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/Center/PlayerButton" to="." method="OnPlayerButtonPressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/Center/CarrierButton" to="." method="OnCarrierButtonPressed"]
