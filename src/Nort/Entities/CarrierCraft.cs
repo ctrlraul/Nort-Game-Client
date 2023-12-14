@@ -8,6 +8,16 @@ namespace Nort.Entities;
 public partial class CarrierCraft : Craft
 {
     #region EntityInspector compatibility
+    
+    public IEnumerable<string> FactionIdOptions => Assets.Instance.GetFactions().Select(f => f.id);
+    
+    [Savable]
+    [Inspect(nameof(FactionIdOptions))]
+    public string FactionId
+    {
+        get => Faction.id;
+        set => Faction = Assets.Instance.GetFaction(value);
+    }
 
     [Savable]
     [Inspect(nameof(BlueprintIdOptions))]

@@ -1,30 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using CtrlRaul.Godot;
 using Godot;
 using Nort.Entities.Components;
-using Nort.Hud;
 using Nort.Skills;
 
 namespace Nort.Entities;
 
 public partial class Craft : Entity
 {
-    #region EntityInspector compatibility
-
-    public IEnumerable<string> FactionIdOptions => Assets.Instance.GetFactions().Select(f => f.id);
-    
-    [Inspect(nameof(FactionIdOptions))]
-    public string FactionId
-    {
-        get => Faction.id;
-        set => Faction = Assets.Instance.GetFaction(value);
-    }
-
-    #endregion
-
-
     public event Action Destroyed;
 
     public enum ComponentSet
