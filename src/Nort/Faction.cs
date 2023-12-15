@@ -11,4 +11,15 @@ public class Faction
 
     [JsonIgnore] private Color? _color;
     [JsonIgnore] public Color Color => _color ??= new Color(colorHex);
+
+    
+    public static bool Allied(Faction a, Faction b)
+    {
+        return a.id == b.id; // Simple for now
+    }
+    
+    public static bool Hostile(Faction a, Faction b)
+    {
+        return !Allied(a, b);
+    }
 }

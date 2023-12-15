@@ -4,6 +4,8 @@ namespace Nort;
 
 public static class Config
 {
+    public const bool DebugAi = true;
+    
     public const string VendorAssetsDirectory = "res://VendorAssets";
     public const string CustomAssetsDirectory = "user://CustomAssets";
 

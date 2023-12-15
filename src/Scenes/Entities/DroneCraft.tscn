@@ -1,7 +1,37 @@
-[gd_scene load_steps=3 format=3 uid="uid://cchjaw6os6aaa"]
+[gd_scene load_steps=6 format=3 uid="uid://cchjaw6os6aaa"]
 
 [ext_resource type="PackedScene" uid="uid://b1xci2ckb2rvw" path="res://Scenes/Entities/Craft.tscn" id="1_q876r"]
 [ext_resource type="Script" path="res://Nort/Entities/DroneCraft.cs" id="2_ecuyt"]
+[ext_resource type="PackedScene" uid="uid://djqq8s6miovq7" path="res://Scenes/FloatingAnimation.tscn" id="3_8pbr3"]
+[ext_resource type="PackedScene" uid="uid://p46oi0to68au" path="res://Scenes/Entities/Components/FlightComponent.tscn" id="4_nlall"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_xdbrn"]
+radius = 700.0
 
 [node name="DroneCraft" instance=ExtResource("1_q876r")]
 script = ExtResource("2_ecuyt")
+
+[node name="FlightComponent" parent="." index="1" instance=ExtResource("4_nlall")]
+unique_name_in_owner = true
+
+[node name="FloatingAnimation" parent="." index="2" instance=ExtResource("3_8pbr3")]
+remote_path = NodePath("../Body")
+
+[node name="Range" type="Area2D" parent="." index="3"]
+unique_name_in_owner = true
+collision_layer = 0
+input_pickable = false
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Range" index="0"]
+shape = SubResource("CircleShape2D_xdbrn")
+
+[node name="PathLineDebug" type="Node" parent="." index="4"]
+
+[node name="PathLine2D" type="Line2D" parent="PathLineDebug" index="0"]
+unique_name_in_owner = true
+width = 2.0
+default_color = Color(0, 1, 0, 1)
+
+[connection signal="area_entered" from="Range" to="." method="OnRangeAreaEntered"]
+[connection signal="area_exited" from="Range" to="." method="OnRangeAreaExited"]

@@ -46,6 +46,8 @@ public partial class Craft : Entity
 
     protected Rect2 blueprintVisualRect;
 
+    public float ArtificialRadius => blueprintVisualRect.Size.Length();
+
 
     public float CoreMax { get; private set; }
     public float Core { get; private set; }
