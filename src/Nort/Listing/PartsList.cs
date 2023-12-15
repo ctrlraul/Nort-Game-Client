@@ -10,22 +10,21 @@ public partial class PartsList : MarginContainer, IItemsList<PartsListItem, Part
 {
 	[Export] public PackedScene ListItemScene { get; private set; }
 
-	[Ready("%ListItemsContainer")] public Control ListItemsContainer { get; private set; }
-	[Ready("%EmptyTextLabel")] public Control EmptyTextLabel { get; private set; }
+	[Ready] public Control ListItemsContainer { get; set; }
+	[Ready] public Control EmptyTextLabel { get; set; }
 
 	private readonly Dictionary<PartData, PartsListItem> valueToListItem = new();
 
 	
-	private Color _color;
-
+	private Color color;
 	public Color Color
 	{
-		get => _color;
+		get => color;
 		set
 		{
-			_color = value;
+			color = value;
 			foreach (PartsListItem listItem in GetItems())
-				listItem.Color = _color;
+				listItem.Color = color;
 		}
 	}
 	
