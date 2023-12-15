@@ -26,7 +26,6 @@ DragManager="*res://Nort/DragManager.cs"
 PagesNavigator="*res://Nort/PagesNavigator.cs"
 Game="*res://Nort/Game.cs"
 Console="*res://Scenes/Hud/Console.tscn"
-Background="*res://Scenes/Background.tscn"
 Stage="*res://Scenes/Stage.tscn"
 PopupsManager="*res://Nort/PopupsManager.cs"
 
@@ -132,4 +131,3 @@ toggle_fullscreen={
 
 renderer/rendering_method.mobile="gl_compatibility"
 anti_aliasing/screen_space_roughness_limiter/enabled=false
-environment/defaults/default_clear_color=Color(0.00784314, 0.0509804, 0.0980392, 1)
