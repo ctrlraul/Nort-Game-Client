@@ -244,7 +244,12 @@ public partial class Editor : Page
         Vector2 canvasCenter = Stage.camera.Position;
 
         foreach (Entity copiedEntity in copied)
+        {
+            if (copiedEntity is PlayerCraft)
+                continue;
+            
             copyOffsets[copiedEntity] = copiedEntity.Position - canvasCenter;
+        }
     }
 
     public void ShortcutPaste()
@@ -260,6 +265,8 @@ public partial class Editor : Page
             pastedEntity.Position = (canvasCenter + copyOffsets[copiedEntity]).Snapped(gridSnap);
             selection.Add(pastedEntity);
         }
+        
+        entityInspector.SetEntities(selection);
     }
 
     public void ShortcutSelectAll()
@@ -271,10 +278,14 @@ public partial class Editor : Page
                 selection.Add(entity);
             }
         }
+        
+        entityInspector.SetEntities(selection);
     }
 
     public void ShortcutDelete()
     {
+        selection.Clear();
+        
         foreach (Entity entity in selection)
         {
             if (entity is PlayerCraft)
