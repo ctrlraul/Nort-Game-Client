@@ -32,6 +32,7 @@ mouse_filter = 2
 
 [node name="Header" type="MarginContainer" parent="Theme/MarginContainer/VBoxContainer"]
 layout_mode = 2
+size_flags_vertical = 0
 mouse_filter = 2
 theme_override_constants/margin_left = 0
 theme_override_constants/margin_top = 0
@@ -40,6 +41,7 @@ theme_override_constants/margin_bottom = 0
 
 [node name="ReturnButton" parent="Theme/MarginContainer/VBoxContainer/Header" instance=ExtResource("3_mefwj")]
 layout_mode = 2
+size_flags_vertical = 0
 
 [node name="TestButton" type="Button" parent="Theme/MarginContainer/VBoxContainer/Header"]
 custom_minimum_size = Vector2(120, 0)
