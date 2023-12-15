@@ -14,7 +14,6 @@ public partial class EntityComponent : Node2D
         { typeof(CraftBody), GD.Load<PackedScene>("res://Scenes/Entities/Components/CraftBody.tscn")},
         { typeof(TractorComponent), GD.Load<PackedScene>("res://Scenes/Entities/Components/TractorComponent.tscn")},
         { typeof(TractorTargetComponent), GD.Load<PackedScene>("res://Scenes/Entities/Components/TractorTargetComponent.tscn")},
-        { typeof(PlayerControlsComponent), GD.Load<PackedScene>("res://Scenes/Entities/Components/PlayerControlsComponent.tscn")},
         { typeof(StatsDisplayComponent), GD.Load<PackedScene>("res://Scenes/Entities/Components/StatsDisplayComponent.tscn")},
     };
 

@@ -39,6 +39,15 @@ public partial class PlayerCraft : Craft
     {
         base._Ready();
         this.InitializeReady();
+        
+        if (Game.Instance.InMissionEditor)
+            SetPhysicsProcess(false);
+    }
+    
+    public override void _PhysicsProcess(double delta)
+    {
+        base._PhysicsProcess(delta);
+        flightComponent.Direction = GetKeyboardMotionDirection();
     }
 
 
@@ -50,5 +59,22 @@ public partial class PlayerCraft : Craft
             return;
 
         label.Position = label.Position with { Y = blueprintVisualRect.Position.Y + blueprintVisualRect.Size.Y + 20 };
+    }
+    
+    
+    private static Vector2 GetKeyboardMotionDirection()
+    {
+        Vector2 direction = Vector2.Zero;
+    
+        if (Input.IsActionPressed("move_left"))
+            direction.X -= 1;
+        if (Input.IsActionPressed("move_right"))
+            direction.X += 1;
+        if (Input.IsActionPressed("move_up"))
+            direction.Y -= 1;
+        if (Input.IsActionPressed("move_down"))
+            direction.Y += 1;
+    
+        return direction;
     }
 }
