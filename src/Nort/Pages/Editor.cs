@@ -222,8 +222,15 @@ public partial class Editor : Page
 
         return mission;
     }
-
-
+    
+    private void AddEntity<T>() where T : Entity
+    {
+        T entity = Stage.Spawn<T>();
+        entity.Position = Stage.camera.Position.Snapped(gridSnap);
+        entityInspector.SetEntity(entity);
+    }
+    
+    
     #region Shortcut methods
 
     public void ShortcutCopy()
@@ -388,32 +395,13 @@ public partial class Editor : Page
     }
 
 
-    private void OnInterfaceRootGuiInput()
-    {
-        
-    }
-
-    private void OnPlayerButtonPressed()
-    {
-        PlayerCraft entity = Stage.Spawn<PlayerCraft>();
-        entity.Position = Stage.camera.Position;
-        entityInspector.SetEntity(entity);
-    }
-
-    private void OnCarrierButtonPressed()
-    {
-        CarrierCraft entity = Stage.Spawn<CarrierCraft>();
-        entity.Position = Stage.camera.Position;
-        entityInspector.SetEntity(entity);
-    }
-
-    private void OnDroneButtonPressed()
-    {
-        DroneCraft entity = Stage.Spawn<DroneCraft>();
-        entity.Position = Stage.camera.Position;
-        entityInspector.SetEntity(entity);
-    }
-
+    private void OnPlayerButtonPressed() => AddEntity<PlayerCraft>();
+    
+    private void OnCarrierButtonPressed() => AddEntity<CarrierCraft>();
+    
+    private void OnDroneButtonPressed() => AddEntity<DroneCraft>();
+    
+    
     private void OnExportButtonPressed()
     {
         try
