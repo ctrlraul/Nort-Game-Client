@@ -76,7 +76,7 @@ public partial class Game : Node
     private static Task ClearStageMiddleware(Node node)
     {
         Stage.Instance.Clear();
-        Stage.Instance.centerIndicator.Visible = node is Editor;
+        Stage.Instance.SetGrid(0);
         return Task.CompletedTask;
     }
 

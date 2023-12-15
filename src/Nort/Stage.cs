@@ -22,7 +22,7 @@ public partial class Stage : Node2D
     [Export] private PackedScene droneCraftScene;
     [Export] private PackedScene orphanPartScene;
 
-    [Ready] public Node2D centerIndicator;
+    [Ready] public Grid grid;
     [Ready] public Node2D entitiesContainer;
     [Ready] public Area2D editorMouseArea;
     [Ready] public Camera2D camera;
@@ -55,6 +55,12 @@ public partial class Stage : Node2D
             CameraFollowPlayer();
     }
 
+
+    public void SetGrid(int size)
+    {
+        grid.size = size;
+        grid.disabled = size == 0;
+    }
 
     private void CameraFollowPlayer()
     {

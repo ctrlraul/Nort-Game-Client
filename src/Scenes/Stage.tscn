@@ -1,10 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://6wfise1ybf04"]
+[gd_scene load_steps=8 format=3 uid="uid://6wfise1ybf04"]
 
 [ext_resource type="Script" path="res://Nort/Stage.cs" id="1_8dh8q"]
 [ext_resource type="PackedScene" uid="uid://bq5ax7cccxg6l" path="res://Scenes/Entities/CarrierCraft.tscn" id="2_vgo7s"]
 [ext_resource type="PackedScene" uid="uid://dnfpufrxifb44" path="res://Scenes/Entities/PlayerCraft.tscn" id="3_a35qp"]
 [ext_resource type="PackedScene" uid="uid://cchjaw6os6aaa" path="res://Scenes/Entities/DroneCraft.tscn" id="4_f7v6k"]
 [ext_resource type="PackedScene" uid="uid://cv32wh2kql0cr" path="res://Scenes/Entities/OrphanPart.tscn" id="4_lu1fc"]
+[ext_resource type="Script" path="res://Nort/Grid.cs" id="6_1ktcq"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2nl80"]
 size = Vector2(10, 10)
@@ -16,25 +17,11 @@ playerCraftScene = ExtResource("3_a35qp")
 droneCraftScene = ExtResource("4_f7v6k")
 orphanPartScene = ExtResource("4_lu1fc")
 
-[node name="CenterIndicator" type="Node2D" parent="."]
+[node name="Grid" type="Node2D" parent="." node_paths=PackedStringArray("camera")]
 unique_name_in_owner = true
-modulate = Color(1, 1, 1, 0.392157)
-
-[node name="Line2D" type="Line2D" parent="CenterIndicator"]
-points = PackedVector2Array(-20, 0, 20, 0)
-width = 4.0
-
-[node name="Line2D2" type="Line2D" parent="CenterIndicator"]
-rotation = 1.5708
-points = PackedVector2Array(-20, 0, 20, 0)
-width = 4.0
-
-[node name="Label" type="Label" parent="CenterIndicator"]
-offset_left = 2.0
-offset_top = 2.0
-offset_right = 48.0
-offset_bottom = 23.0
-text = " origin"
+script = ExtResource("6_1ktcq")
+camera = NodePath("../Camera")
+color = Color(1, 1, 1, 0.129412)
 
 [node name="EntitiesContainer" type="Node2D" parent="."]
 unique_name_in_owner = true
