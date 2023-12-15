@@ -1,13 +1,11 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
-using CtrlRaul.Godot;
-using Nort.Entities.Components;
 using Nort.Hud;
 using Nort.Pages;
 
 namespace Nort.Entities;
 
-public partial class CarrierCraft : Craft
+public partial class DroneCraft : Craft
 {
     #region EntityInspector compatibility
     
@@ -29,16 +27,13 @@ public partial class CarrierCraft : Craft
         set => Blueprint = Assets.Instance.GetBlueprint(value);
     }
 
-    public IEnumerable<string> BlueprintIdOptions => Config.CarrierBlueprints;
+    public IEnumerable<string> BlueprintIdOptions => Config.DroneBlueprints;
 
     #endregion
-
-
-    [Ready] public StatsDisplayComponent statsDisplayComponent;
     
 
-    public CarrierCraft() : base()
+    public DroneCraft() : base()
     {
-        blueprint = Assets.Instance.GetBlueprint(Config.CarrierBlueprints.First());
+        blueprint = Assets.Instance.GetBlueprint(Config.DroneBlueprints.First());
     }
 }

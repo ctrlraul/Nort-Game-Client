@@ -15,7 +15,7 @@ using Nort.Popups;
 namespace Nort.Pages;
 
 [AttributeUsage(AttributeTargets.Property)]
-public class SavableAttribute : Attribute {}
+public class SavableAttribute : Attribute { }
 
 public partial class Editor : Page
 {
@@ -24,8 +24,8 @@ public partial class Editor : Page
         public Mission Mission { get; }
         public NavigationData(Mission mission) => Mission = mission;
     }
-    
-    
+
+
     private enum MouseState
     {
         Up,
@@ -34,38 +34,42 @@ public partial class Editor : Page
         Panning,
     }
 
-    
+
     private static Stage Stage => Stage.Instance;
     private static IEnumerable<Entity> Entities => Stage.entitiesContainer.GetChildren().Cast<Entity>();
 
-    
+
     [Export] private PackedScene missionSelectorPopupScene;
 
+    [Ready] public Control interfaceRoot;
     [Ready] public Label mousePositionLabel;
     [Ready] public EntityInspector entityInspector;
+    [Ready] public Label missionIdLabel;
+    [Ready] public LineEdit missionNameLabel;
 
-    
+
     private const float ZoomStep = 0.1f;
     private const float ZoomMin = 0.1f;
     private const float ZoomMax = 1f;
-    
+
     private readonly Vector2 gridSnap = Vector2.One * 64f;
-    private readonly Mission mission = new() { id = Assets.GenerateUuid() };
     private readonly Dictionary<Entity, Vector2> dragOffsets = new();
     private readonly Dictionary<Entity, Vector2> copyOffsets = new();
     private readonly List<Entity> selection = new();
-    private readonly List<Entity> copied = new ();
+    private readonly List<Entity> copied = new();
     private ulong lastZoom;
     private bool panning;
     private bool hasUnsavedChange;
     private Vector2 selectionStart = Vector2.Zero;
     private MouseState mouseState = MouseState.Up;
-    
-    
+
+
     public override void _Ready()
     {
         base._Ready();
         this.InitializeReady();
+        missionIdLabel.Text = Assets.GenerateUuid();
+        missionNameLabel.Text = GenerateMissionName();
     }
 
     public override void _Process(double delta)
@@ -88,23 +92,24 @@ public partial class Editor : Page
                         else
                             OnMouseUp(mouseButtonEvent);
                         break;
-                    
+
                     case MouseButton.WheelUp:
                         ApplyZoom(1);
                         break;
-                    
+
                     case MouseButton.WheelDown:
                         ApplyZoom(-1);
                         break;
                 }
+
                 break;
-            
-            
+
+
             case InputEventMouseMotion mouseMotionEvent:
                 OnMouseMove(mouseMotionEvent);
                 break;
-            
-            
+
+
             case InputEventKey:
                 if (Input.IsActionJustPressed("copy"))
                 {
@@ -126,10 +131,11 @@ public partial class Editor : Page
                     ShortcutDelete();
                     GetViewport().SetInputAsHandled();
                 }
+
                 break;
         }
     }
-    
+
 
     public override async Task Initialize()
     {
@@ -143,25 +149,81 @@ public partial class Editor : Page
         }
         else
         {
-            Stage.SpawnPlayerCraft();
+            Stage.Spawn<PlayerCraft>();
         }
     }
 
-    private void ImportMission(Mission missionToImport)
+    private void ImportMission(Mission mission)
     {
         hasUnsavedChange = false;
-        mission.id = missionToImport.id;
-        mission.displayName = missionToImport.displayName;
-        Stage.LoadMission(missionToImport);
+        missionIdLabel.Text = mission.id;
+        missionNameLabel.Text = mission.displayName;
+        Stage.LoadMission(mission);
     }
-    
-    private Entity GetHoveredEntity()
+
+    private void ApplyZoom(int delta)
     {
-        // skull emoji
-        return Stage.editorMouseArea.GetOverlappingAreas().FindNearest(Stage.editorMouseArea.Position)?.Owner as Entity;
+        // Prevent double input
+
+        ulong now = Time.GetTicksMsec();
+
+        if (now - lastZoom < 3) // 3 is arbitrary, just seemed to work well for me
+            return;
+
+        lastZoom = now;
+
+
+        // Actual zooming code
+
+        Vector2 mouse = Stage.camera.GetLocalMousePosition();
+        Vector2 oldZoom = Stage.camera.Zoom;
+        Vector2 zoomAmount = oldZoom * ZoomStep * delta;
+        Vector2 motion = mouse * zoomAmount / (oldZoom + zoomAmount);
+
+        Stage.camera.Zoom += zoomAmount;
+        Stage.camera.Position += motion;
     }
-    
-    
+
+    private Mission CreateMission()
+    {
+        Dictionary<Type, List<PropertyInfo>> propertiesCache = new();
+        List<Dictionary<string, object>> entitySetups = new();
+
+        foreach (Entity entity in Entities)
+        {
+            Type type = entity.GetType();
+
+            List<PropertyInfo> properties;
+
+            if (propertiesCache.TryGetValue(type, out List<PropertyInfo> cachedProperties))
+            {
+                properties = cachedProperties;
+            }
+            else
+            {
+                properties = GetSavableProperties(type);
+                propertiesCache.Add(type, properties);
+            }
+
+            Dictionary<string, object> entityDict = properties.ToDictionary(
+                property => property.Name,
+                property => property.GetValue(entity)
+            );
+
+            entitySetups.Add(entityDict);
+        }
+
+        Mission mission = new()
+        {
+            id = missionIdLabel.Text,
+            displayName = missionNameLabel.Text,
+            entitySetups = entitySetups
+        };
+
+        return mission;
+    }
+
+
     #region Shortcut methods
 
     public void ShortcutCopy()
@@ -214,30 +276,7 @@ public partial class Editor : Page
     }
 
     #endregion
-    
 
-    private void ApplyZoom(int delta)
-    {
-        // Prevent double input
-        
-        ulong now = Time.GetTicksMsec();
-
-        if (now - lastZoom < 3) // 3 is arbitrary, just seemed to work well for me
-            return;
-        
-        lastZoom = now;
-        
-        
-        // Actual zooming code
-        
-        Vector2 mouse = Stage.camera.GetLocalMousePosition();
-        Vector2 oldZoom = Stage.camera.Zoom;
-        Vector2 zoomAmount = oldZoom * ZoomStep * delta;
-        Vector2 motion = mouse * zoomAmount / (oldZoom + zoomAmount);
-        
-        Stage.camera.Zoom += zoomAmount;
-        Stage.camera.Position += motion;
-    }
 
     private void OnMouseDown()
     {
@@ -249,7 +288,7 @@ public partial class Editor : Page
         switch (mouseState)
         {
             case MouseState.Down:
-                
+
                 Entity hoveredEntity = GetHoveredEntity();
 
                 if (mouseButtonEvent.ShiftPressed)
@@ -276,27 +315,27 @@ public partial class Editor : Page
                     {
                         if (!selection.Contains(hoveredEntity))
                             selection.Clear();
-                        
+
                         selection.Add(hoveredEntity);
                     }
                 }
-                
+
                 entityInspector.SetEntities(selection);
-                
+
                 break;
-            
+
             case MouseState.Dragging:
                 dragOffsets.Clear();
                 break;
         }
-        
+
         mouseState = MouseState.Up;
     }
 
     private void OnMouseMove(InputEventMouseMotion mouseMotionEvent)
     {
         Vector2 motion = mouseMotionEvent.Relative / Stage.camera.Zoom;
-        
+
         switch (mouseState)
         {
             case MouseState.Down:
@@ -313,7 +352,7 @@ public partial class Editor : Page
                     {
                         if (!mouseMotionEvent.ShiftPressed)
                             selection.Clear();
-                        
+
                         selection.Add(hoveredEntity);
                     }
 
@@ -321,11 +360,12 @@ public partial class Editor : Page
 
                     foreach (Entity entity in selection)
                         dragOffsets.Add(entity, mouse - entity.Position);
-                    
+
                     entityInspector.SetEntities(selection);
-                    
+
                     mouseState = MouseState.Dragging;
                 }
+
                 break;
             }
 
@@ -338,72 +378,59 @@ public partial class Editor : Page
             case MouseState.Dragging:
             {
                 Vector2 mouse = Stage.GetGlobalMousePosition();
-                
+
                 foreach (Entity entity in selection)
                     entity.Position = (mouse - dragOffsets[entity]).Snapped(gridSnap);
-                
+
                 break;
             }
         }
     }
-    
-    
+
+
+    private void OnInterfaceRootGuiInput()
+    {
+        
+    }
+
     private void OnPlayerButtonPressed()
     {
-        PlayerCraft entity = Stage.SpawnPlayerCraft();
+        PlayerCraft entity = Stage.Spawn<PlayerCraft>();
         entity.Position = Stage.camera.Position;
         entityInspector.SetEntity(entity);
     }
-    
+
     private void OnCarrierButtonPressed()
     {
-        CarrierCraft entity = Stage.SpawnCarrierCraft();
+        CarrierCraft entity = Stage.Spawn<CarrierCraft>();
         entity.Position = Stage.camera.Position;
         entityInspector.SetEntity(entity);
     }
-    
-    private void OnExportButtonPressed()
+
+    private void OnDroneButtonPressed()
     {
-        Dictionary<Type, List<PropertyInfo>> propertiesCache = new();
-        
-        foreach (Entity entity in Entities)
-        {
-            Type type = entity.GetType();
-            
-            List<PropertyInfo> properties;
-
-            if (propertiesCache.TryGetValue(type, out List<PropertyInfo> cachedProperties))
-            {
-                properties = cachedProperties;
-            }
-            else
-            {
-                properties = GetSavableProperties(type);
-                propertiesCache.Add(type, properties);
-            }
-            
-            Dictionary<string, object> entityDict = properties.ToDictionary(
-                property => property.Name,
-                property => property.GetValue(entity)
-            );
-
-            mission.entitySetups.Add(entityDict);
-        }
-
-        if (string.IsNullOrEmpty(mission.displayName))
-        {
-            TextInputPopup popup = PopupsManager.Instance.TextInput("Mission Name", mission.displayName);
-            popup.Submitted += OnMissionNamePopupSubmitted;
-        }
-
-        OnMissionNamePopupSubmitted(mission.displayName);
+        DroneCraft entity = Stage.Spawn<DroneCraft>();
+        entity.Position = Stage.camera.Position;
+        entityInspector.SetEntity(entity);
     }
 
-    
+    private void OnExportButtonPressed()
+    {
+        try
+        {
+            Assets.Instance.StoreMission(CreateMission());
+        }
+        catch (Exception exception)
+        {
+            logger.Error($"Failed to store mission!\n{exception}");
+            PopupsManager.Instance.Error(exception.Message, "Failed to store mission!");
+        }
+    }
+
     private void OnImportButtonPressed()
     {
         MissionSelectorPopup popup = PopupsManager.Instance.Custom<MissionSelectorPopup>(missionSelectorPopupScene);
-        
+
         popup.MissionSelected += missionSelected =>
         {
             if (hasUnsavedChange)
@@ -419,27 +446,12 @@ public partial class Editor : Page
         };
     }
 
-    private void OnMissionNamePopupSubmitted(string name)
-    {
-        mission.displayName = name;
-            
-        try
-        {
-            Assets.Instance.StoreMission(mission);
-        }
-        catch (Exception exception)
-        {
-            logger.Error($"Failed to store mission!\n{exception}");
-            PopupsManager.Instance.Error(exception.Message, "Failed to store mission!");
-        }
-    }
-    
     private void OnTestButtonPressed()
     {
-        // _ = PagesNavigator.Instance.GoTo(
-        //     Config.Pages.Mission,
-        //     new MissionPage.NavigationData(true, )
-        // );
+        _ = PagesNavigator.Instance.GoTo(
+            Config.Pages.Mission,
+            new MissionPage.NavigationData(true, CreateMission())
+        );
     }
 
     private void OnCraftBuilderPressed()
@@ -449,7 +461,24 @@ public partial class Editor : Page
             new CraftBuilderPage.NavigationData(true)
         );
     }
-    
+
+    private void OnMissionNameLabelFocusExited()
+    {
+        if (string.IsNullOrEmpty(missionNameLabel.Text))
+            missionNameLabel.Text = GenerateMissionName();
+    }
+
+
+    private static string GenerateMissionName()
+    {
+        return $"New Mission {((int)(Time.GetUnixTimeFromSystem() * 1000)).ToString("X")}";
+    }
+
+    private static Entity GetHoveredEntity()
+    {
+        // skull emoji
+        return Stage.editorMouseArea.GetOverlappingAreas().FindNearest(Stage.editorMouseArea.Position)?.Owner as Entity;
+    }
 
     public static List<PropertyInfo> GetSavableProperties(Type type)
     {

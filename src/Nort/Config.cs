@@ -8,6 +8,7 @@ public static class Config
     public const string CustomAssetsDirectory = "user://CustomAssets";
 
     public static readonly string[] CarrierBlueprints = { "small_carrier" };
+    public static readonly string[] DroneBlueprints = { "strike", "brisk" };
     
     public const string SkillsPath = "res://Scenes/Skills";
     public const string PlayerFaction = "emerald";

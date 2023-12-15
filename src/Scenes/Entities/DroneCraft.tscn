@@ -1,0 +1,7 @@
+[gd_scene load_steps=3 format=3 uid="uid://cchjaw6os6aaa"]
+
+[ext_resource type="PackedScene" uid="uid://b1xci2ckb2rvw" path="res://Scenes/Entities/Craft.tscn" id="1_q876r"]
+[ext_resource type="Script" path="res://Nort/Entities/DroneCraft.cs" id="2_ecuyt"]
+
+[node name="DroneCraft" instance=ExtResource("1_q876r")]
+script = ExtResource("2_ecuyt")

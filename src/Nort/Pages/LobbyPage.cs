@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Nort.Entities;
 
 namespace Nort.Pages;
 
@@ -12,7 +13,7 @@ public partial class LobbyPage : Page
     public override void _Ready()
     {
         base._Ready();
-        Stage.Instance.SpawnPlayerCraft();
+        Stage.Instance.Spawn<PlayerCraft>();
     }
 
     private void OnCraftBuilderButtonPressed()

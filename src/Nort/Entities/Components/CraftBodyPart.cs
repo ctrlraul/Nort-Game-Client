@@ -126,7 +126,7 @@ public partial class CraftBodyPart : CollisionShape2D
 
     private void Drop()
     {
-        OrphanPart orphanPart = Stage.Instance.SpawnOrphanPart();
+        OrphanPart orphanPart = Stage.Instance.Spawn<OrphanPart>();
 
         orphanPart.Position = GlobalPosition;
         orphanPart.Rotation = GlobalRotation;

@@ -8,6 +8,8 @@ namespace Nort.Entities;
 
 public partial class Craft : Entity
 {
+    public event Action StatsChanged;
+    public event Action FactionChanged;
     public event Action Destroyed;
 
     public enum ComponentSet
@@ -92,6 +94,10 @@ public partial class Craft : Entity
         BlueprintStats stats = Blueprint.GetStats(blueprint);
         CoreMax = stats.core;
         HullMax = stats.hull;
+        Core = CoreMax;
+        Hull = HullMax;
+        
+        StatsChanged?.Invoke();
 
         UpdateEditorStuff();
     }
@@ -102,6 +108,8 @@ public partial class Craft : Entity
 
         if (IsInsideTree())
             body.Faction = Faction;
+        
+        FactionChanged?.Invoke();
     }
 
 
@@ -140,6 +148,8 @@ public partial class Craft : Entity
             }
 
             Hull = 0;
+            
+            StatsChanged?.Invoke();
         }
     }
 }

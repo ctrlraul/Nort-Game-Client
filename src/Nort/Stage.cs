@@ -19,6 +19,7 @@ public partial class Stage : Node2D
 
     [Export] private PackedScene carrierCraftScene;
     [Export] private PackedScene playerCraftScene;
+    [Export] private PackedScene droneCraftScene;
     [Export] private PackedScene orphanPartScene;
 
     [Ready] public Node2D centerIndicator;
@@ -94,6 +95,7 @@ public partial class Stage : Node2D
         {
             nameof(PlayerCraft) => playerCraftScene,
             nameof(CarrierCraft) => carrierCraftScene,
+            nameof(DroneCraft) => droneCraftScene,
             nameof(OrphanPart) => orphanPartScene,
             
             _ => throw new Exception($"No entity scene configured for type '{typeName}'")
@@ -101,44 +103,14 @@ public partial class Stage : Node2D
 
         return scene.Instantiate<Entity>();
     }
-
     
-    public OrphanPart SpawnOrphanPart()
+    public T Spawn<T>() where T : Entity
     {
-        OrphanPart entity = orphanPartScene.Instantiate<OrphanPart>();
+        T entity = InstantiateEntityScene(typeof(T).Name) as T;
         entitiesContainer.AddChild(entity);
         return entity;
     }
-
-    public CarrierCraft SpawnCarrierCraft()
-    {
-        CarrierCraft entity = carrierCraftScene.Instantiate<CarrierCraft>();
-        entitiesContainer.AddChild(entity);
-        return entity;
-    }
-
-    public PlayerCraft SpawnPlayerCraft()
-    {
-        if (Player != null)
-        {
-            Player.Destroy();
-            logger.Error("Spawning a player while another player instance is already present");
-        }
-
-        Player = playerCraftScene.Instantiate<PlayerCraft>();
-
-        entitiesContainer.AddChild(Player);
-
-        Player.Destroyed += OnPlayerDestroyed;
-
-        if (!Game.Instance.InMissionEditor)
-            camera.Position = Player.Position;
-
-        PlayerSpawned?.Invoke(Player);
-
-        return Player;
-    }
-
+    
     public Entity Spawn(Dictionary<string, object> setup)
     {
         if (!setup.TryGetValue("Type", out object value) || value is not string typeName)
