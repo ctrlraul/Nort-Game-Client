@@ -284,8 +284,6 @@ public partial class Editor : Page
 
     public void ShortcutDelete()
     {
-        selection.Clear();
-        
         foreach (Entity entity in selection)
         {
             if (entity is PlayerCraft)
@@ -293,6 +291,8 @@ public partial class Editor : Page
 
             entity.QueueFree();
         }
+        
+        selection.Clear();
     }
 
     #endregion
