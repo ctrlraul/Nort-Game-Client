@@ -101,8 +101,6 @@ public partial class OrphanPart : Entity
 
     private void SetPartId(string value)
     {
-        GD.Print($"SetPartId: {value}");
-        
         Part = Assets.Instance.GetPart(value);
 
         if (IsInsideTree())
