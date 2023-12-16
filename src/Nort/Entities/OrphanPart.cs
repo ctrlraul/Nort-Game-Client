@@ -1,4 +1,5 @@
-﻿using CtrlRaul.Godot;
+﻿using System.Linq;
+using CtrlRaul.Godot;
 using Godot;
 using Nort.Hud;
 using Nort.Pages;
@@ -18,7 +19,7 @@ public partial class OrphanPart : Entity
     public string SkillId
     {
         get => Skill?.id;
-        set => SetPartId(value);
+        set => SetSkillId(value);
     }
     
     [Savable, Inspect]
@@ -35,8 +36,10 @@ public partial class OrphanPart : Entity
         set => SetShiny(value);
     }
     
-    [Ready] public Sprite2D sprite2d;
+    [Ready] public Sprite2D sprite2D;
     [Ready] public Sprite2D skillSprite;
+    [Ready] public CollisionShape2D editorHitBoxShape;
+    [Ready] public Node2D editorStuff;
     [Ready] public AnimationPlayer animationPlayer;
 
     private bool flipped;
@@ -50,33 +53,49 @@ public partial class OrphanPart : Entity
         base._Ready();
         this.InitializeReady();
 
+        Initialize();
+
+        if (Game.Instance.InMissionEditor)
+        {
+            editorHitBoxShape.Disabled = false;
+        }
+        else
+        {
+            editorStuff.QueueFree();
+        }
+    }
+
+
+    private async void Initialize()
+    {
+        await Game.Instance.Initialize();
+
+        Part = Assets.Instance.GetParts().First();
+        
         SetPartId(PartId);
         SetSkillId(SkillId);
         SetFlipped(flipped);
         SetShiny(shiny);
         
-        sprite2d.SelfModulate = Config.FactionlessColor;
+        sprite2D.SelfModulate = Config.FactionlessColor;
         skillSprite.GlobalRotation = 0;
-        animationPlayer.Play("float");
-    }
 
+        animationPlayer.SpeedScale = (0.05f + 0.1f * GD.Randf()) * (GD.Randf() > 0.5f ? 1 : -1);
+        animationPlayer.Play("rotate");
+        animationPlayer.Seek(GD.Randf());
+    }
 
     private void SetPartId(string value)
     {
         Part = Assets.Instance.GetPart(value);
 
         if (IsInsideTree())
-            sprite2d.Texture = Assets.Instance.GetPartTexture(Part);
+            sprite2D.Texture = Assets.Instance.GetPartTexture(Part);
     }
 
     private void SetSkillId(string value)
     {
-        if (value == null)
-        {
-            Skill = null;
-        }
-        
-        Skill = Assets.Instance.GetSkill(value);
+        Skill = string.IsNullOrEmpty(value) ? null : Assets.Instance.GetSkill(value);
 
         if (IsInsideTree())
             skillSprite.Texture = Skill == null ? null : Assets.Instance.GetSkillTexture(Skill.id);
@@ -87,7 +106,7 @@ public partial class OrphanPart : Entity
         flipped = value;
 
         if (IsInsideTree())
-            sprite2d.FlipH = value;
+            sprite2D.FlipH = value;
     }
 
     private void SetShiny(bool value)
@@ -95,6 +114,6 @@ public partial class OrphanPart : Entity
         shiny = value;
 
         if (IsInsideTree())
-            sprite2d.Material = value ? Assets.ShinyMaterial : null;
+            sprite2D.Material = value ? Assets.ShinyMaterial : null;
     }
 }

@@ -45,6 +45,7 @@ public partial class EntityInspector : PanelContainer
         public void Disable();
     }
     
+    [Export] private PackedScene booleanFieldScene;
     [Export] private PackedScene optionsFieldScene;
 
     [Ready] public Label entityLabel;
@@ -150,15 +151,13 @@ public partial class EntityInspector : PanelContainer
             switch (propAndAttr.Item2.Type)
             {
                 case InspectAttribute.InspectionType.None:
-                    if (propAndAttr.Item1.PropertyType == typeof(string))
+                    if (propAndAttr.Item1.PropertyType == typeof(bool))
                     {
-                        throw new NotImplementedException();
-                        //AddStringField(propAndAttr.Item1);
+                        AddBooleanField(propAndAttr.Item1);
                     }
-                    else if (propAndAttr.Item1.PropertyType == typeof(int))
+                    else
                     {
-                        throw new NotImplementedException();
-                        //AddIntField(propAndAttr.Item1);
+                        throw new Exception($"Unhandled InspectAttribute property type: '{propAndAttr.Item1.PropertyType}'");
                     }
                     break;
                 
@@ -167,42 +166,51 @@ public partial class EntityInspector : PanelContainer
                     break;
                 
                 default:
-                    throw new NotImplementedException($"Unhandled InspectAttribute type: '{propAndAttr.Item2.Type}'");
+                    throw new Exception($"Unhandled InspectAttribute type: '{propAndAttr.Item2.Type}'");
             }
         }
     }
-
-    private static PropAttrDict GetInspectableProperties(Type type)
-    {
-        PropAttrDict inspectableProperties = new();
-
-        foreach (PropertyInfo property in type.GetProperties())
-        {
-            InspectAttribute attribute = property.GetCustomAttribute<InspectAttribute>();
-
-            if (attribute != null)
-                inspectableProperties.Add(property.Name, (property, attribute));
-        }
-        
-        return inspectableProperties;
-    }
-
-    private static string CapitalizeFirstLetter(string input)
-    {
-        return char.ToUpper(input[0]) + input.Substring(1);
-    }
     
+    
+    private T InstantiateFieldScene<T>(MemberInfo propertyInfo) where T : Control, IField
+    {
+        string typeName = typeof(T).Name;
+        
+        PackedScene scene = typeName switch
+        {
+            nameof(EntityInspectorBooleanField) => booleanFieldScene,
+            nameof(EntityInspectorOptionsField) => optionsFieldScene,
+            
+            _ => throw new Exception($"No inspector field scene configured for type '{typeName}'")
+        };
+        
+        T field = scene.Instantiate<T>();
+        fieldsListContainer.Show();
+        fieldsList.AddChild(field);
+        field.SetLabel(propertyInfo.Name.Capitalize());
+        
+        return field;
+    }
+
+    
+    private void AddBooleanField(PropertyInfo propertyInfo)
+    {
+        EntityInspectorBooleanField field = InstantiateFieldScene<EntityInspectorBooleanField>(propertyInfo);
+        
+        field.SetValue(HasCommonValue(propertyInfo, out object commonValue) ? commonValue : false);
+        
+        field.ValueChanged += newValue =>
+        {
+            foreach (Entity entity in selectedEntities)
+            {
+                propertyInfo.SetValue(entity, newValue);
+            }
+        };
+    }
 
     private void AddOptionsField(PropertyInfo propertyInfo)
     {
-        fieldsListContainer.Show();
-        
-        EntityInspectorOptionsField field = optionsFieldScene.Instantiate<EntityInspectorOptionsField>();
-        
-        fieldsList.AddChild(field);
-        
-        field.SetLabel(propertyInfo.Name.Capitalize());
-
+        EntityInspectorOptionsField field = InstantiateFieldScene<EntityInspectorOptionsField>(propertyInfo);
         
         if (!HasCommonValueOptions(propertyInfo, out List<string> commonValueOptions) || !commonValueOptions.Any())
         {
@@ -214,7 +222,6 @@ public partial class EntityInspector : PanelContainer
         
         field.SetOptions(commonValueOptions);
         
-        
         if (HasCommonValue(propertyInfo, out object commonValue))
         {
             int index = commonValueOptions.FindIndex(option => option == (string)commonValue);
@@ -224,7 +231,6 @@ public partial class EntityInspector : PanelContainer
         {
             field.SetValue(-1);
         }
-        
 
         field.ValueChanged += newValue =>
         {
@@ -235,6 +241,7 @@ public partial class EntityInspector : PanelContainer
         };
     }
 
+    
     private bool HasCommonValue(PropertyInfo propertyInfo, out object commonValue)
     {
         commonValue = propertyInfo.GetValue(selectedEntities.First());
@@ -297,5 +304,26 @@ public partial class EntityInspector : PanelContainer
         }
 
         return true;
+    }
+    
+    
+    private static string CapitalizeFirstLetter(string input)
+    {
+        return char.ToUpper(input[0]) + input.Substring(1);
+    }
+    
+    private static PropAttrDict GetInspectableProperties(Type type)
+    {
+        PropAttrDict inspectableProperties = new();
+
+        foreach (PropertyInfo property in type.GetProperties())
+        {
+            InspectAttribute attribute = property.GetCustomAttribute<InspectAttribute>();
+
+            if (attribute != null)
+                inspectableProperties.Add(property.Name, (property, attribute));
+        }
+        
+        return inspectableProperties;
     }
 }

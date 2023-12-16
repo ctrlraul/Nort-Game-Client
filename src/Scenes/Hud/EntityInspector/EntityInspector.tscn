@@ -1,12 +1,14 @@
-[gd_scene load_steps=3 format=3 uid="uid://crxxyndc18yre"]
+[gd_scene load_steps=4 format=3 uid="uid://crxxyndc18yre"]
 
 [ext_resource type="Script" path="res://Nort/Hud/EntityInspector/EntityInspector.cs" id="1_mbvbo"]
 [ext_resource type="PackedScene" uid="uid://bwjdntaysvdqi" path="res://Scenes/Hud/EntityInspector/EntityInspectorOptionsField.tscn" id="2_i4mle"]
+[ext_resource type="PackedScene" uid="uid://d2v5an4otxpcy" path="res://Scenes/Hud/EntityInspector/EntityInspectorBooleanField.tscn" id="3_7afne"]
 
 [node name="EntityInspector" type="PanelContainer"]
 offset_right = 360.0
 offset_bottom = 647.0
 script = ExtResource("1_mbvbo")
+booleanFieldScene = ExtResource("3_7afne")
 optionsFieldScene = ExtResource("2_i4mle")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
@@ -38,8 +40,8 @@ theme_type_variation = &"PanelContainerDarken"
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="OptionsInspectorField" parent="VBoxContainer/FieldsListContainer/FieldsList" instance=ExtResource("2_i4mle")]
+[node name="EntityInspectorBooleanField" parent="VBoxContainer/FieldsListContainer/FieldsList" instance=ExtResource("3_7afne")]
 layout_mode = 2
 
-[node name="OptionsInspectorField2" parent="VBoxContainer/FieldsListContainer/FieldsList" instance=ExtResource("2_i4mle")]
+[node name="OptionsInspectorField" parent="VBoxContainer/FieldsListContainer/FieldsList" instance=ExtResource("2_i4mle")]
 layout_mode = 2

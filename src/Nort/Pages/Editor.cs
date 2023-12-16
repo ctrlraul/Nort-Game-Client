@@ -413,6 +413,8 @@ public partial class Editor : Page
     private void OnCarrierButtonPressed() => AddEntity<CarrierCraft>();
     
     private void OnDroneButtonPressed() => AddEntity<DroneCraft>();
+
+    private void OnOrphanPartButtonPressed() => AddEntity<OrphanPart>();
     
     
     private void OnExportButtonPressed()
