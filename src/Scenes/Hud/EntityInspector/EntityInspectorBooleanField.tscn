@@ -3,6 +3,7 @@
 [ext_resource type="Script" path="res://Nort/Hud/EntityInspector/EntityInspectorBooleanField.cs" id="1_cggw7"]
 
 [node name="EntityInspectorBooleanField" type="HBoxContainer"]
+custom_minimum_size = Vector2(0, 30)
 offset_right = 360.0
 offset_bottom = 28.0
 script = ExtResource("1_cggw7")
