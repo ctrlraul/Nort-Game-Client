@@ -27,6 +27,7 @@ public partial class PagesNavigator : Node
     private PackedScene defaultScene;
     
     public object NavigationData { get; private set; }
+    public Node CurrentPage { get; private set; }
 
     public PagesNavigator()
     {
@@ -39,14 +40,16 @@ public partial class PagesNavigator : Node
         
         tree = GetTree();
         firstSceneInstanceId = tree.CurrentScene.GetInstanceId();
+
+        CurrentPage = tree.CurrentScene;
         
-        if (tree.CurrentScene.IsNodeReady())
+        if (CurrentPage.IsNodeReady())
         {
-            _ = RunMiddlewares(tree.CurrentScene);
+            _ = RunMiddlewares(CurrentPage);
         }
         else
         {
-            tree.CurrentScene.Ready += async () => await RunMiddlewares(tree.CurrentScene);
+            CurrentPage.Ready += async () => await RunMiddlewares(CurrentPage);
         }
     }
 
@@ -145,6 +148,7 @@ public partial class PagesNavigator : Node
         }
         
         tree.CurrentScene = node;
+        CurrentPage = node;
 
         current.QueueFree();
         
