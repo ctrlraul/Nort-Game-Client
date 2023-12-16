@@ -53,8 +53,6 @@ _data = {
 script = ExtResource("1_vxt4t")
 
 [node name="GFX" type="Node2D" parent="."]
-position = Vector2(0, 5)
-scale = Vector2(1, 1)
 
 [node name="Sprite2D" type="Sprite2D" parent="GFX"]
 unique_name_in_owner = true

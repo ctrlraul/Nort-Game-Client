@@ -14,9 +14,6 @@ font_size = 32
 [node name="PlayerCraft" instance=ExtResource("1_exjew")]
 script = ExtResource("2_kv5h0")
 
-[node name="Body" parent="." index="0"]
-position = Vector2(0, 5)
-
 [node name="FlightComponent" parent="." index="1" instance=ExtResource("3_v2nrv")]
 unique_name_in_owner = true
 
