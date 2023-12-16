@@ -157,6 +157,7 @@ public partial class Editor : Page
 
     private void ImportMission(Mission mission)
     {
+        entityInspector.Clear();
         hasUnsavedChange = false;
         missionIdLabel.Text = mission.id;
         missionNameLabel.Text = mission.displayName;
