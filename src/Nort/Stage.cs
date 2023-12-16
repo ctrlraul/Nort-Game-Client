@@ -132,10 +132,7 @@ public partial class Stage : Node2D
             if (!setup.TryGetValue(property.Name, out object savedValue))
                 continue;
             
-            if (savedValue is double savedValueDouble)
-                property.SetValue(entity, (float)savedValueDouble);
-            else
-                property.SetValue(entity, savedValue);
+            property.SetValue(entity, savedValue is double dbl ? (float)dbl : savedValue);
         }
         
         Spawn(entity);
