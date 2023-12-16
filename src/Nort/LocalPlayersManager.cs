@@ -120,6 +120,11 @@ public class LocalPlayersManager : Singleton<LocalPlayersManager>
     //     return DirAccess.MakeDirRecursiveAbsolute(Config.Storage.LocalPlayers);
     // }
 
+    public void AddPart(Player player, PartData partData)
+    {
+        player?.parts.Add(partData);
+    }
+
     private static string GetPathForPlayerFile(string playerId)
     {
         return Config.Storage.LocalPlayers.PathJoin(playerId + ".json");

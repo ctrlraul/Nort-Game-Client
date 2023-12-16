@@ -60,6 +60,18 @@ public partial class PlayerCraft : Craft
 
         label.Position = label.Position with { Y = blueprintVisualRect.Position.Y + blueprintVisualRect.Size.Y + 20 };
     }
+
+
+    private void OnCollectionRangeAreaEntered(Area2D area)
+    {
+        if (Game.Instance.InMissionEditor)
+            return;
+        
+        if (area.Owner is OrphanPart orphanPart)
+        {
+            orphanPart.Collect();
+        }
+    }
     
     
     private static Vector2 GetKeyboardMotionDirection()

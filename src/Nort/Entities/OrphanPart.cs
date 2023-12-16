@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using CtrlRaul.Godot;
 using Godot;
@@ -9,6 +10,9 @@ namespace Nort.Entities;
 
 public partial class OrphanPart : Entity
 {
+    public event Action<PartData> Collected; 
+    
+    
     [Savable]
     [Inspect(nameof(PartIdOptions))]
     public string PartId
@@ -127,5 +131,22 @@ public partial class OrphanPart : Entity
 
         if (IsInsideTree())
             sprite2D.Material = value ? Assets.ShinyMaterial : null;
+    }
+
+
+    public void Collect()
+    {
+        Collected?.Invoke(GetPartData());
+        QueueFree();
+    }
+
+    private PartData GetPartData()
+    {
+        return new()
+        {
+            partId = PartId,
+            skillId = SkillId,
+            shiny = Shiny
+        };
     }
 }

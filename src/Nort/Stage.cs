@@ -29,6 +29,8 @@ public partial class Stage : Node2D
 
     private readonly Logger logger = new("Stage");
 
+    public readonly List<PartData> partsCollected = new();
+
     private PlayerCraft player;
     public PlayerCraft Player
     {
@@ -88,12 +90,38 @@ public partial class Stage : Node2D
         }
     }
 
+    private bool ShouldSaveProgress()
+    {
+        if (Game.Instance.CurrentPlayer == null)
+            return false;
+
+        if (PagesNavigator.Instance.CurrentPage is MissionPage { FromEditor: true })
+            return false;
+
+        return true;
+    }
+
+    public void CompleteMission()
+    {
+        if (ShouldSaveProgress())
+        {
+            foreach (PartData partData in partsCollected)
+            {
+                LocalPlayersManager.Instance.AddPart(Game.Instance.CurrentPlayer, partData);
+            }
+            
+            LocalPlayersManager.Instance.StoreLocalPlayer(Game.Instance.CurrentPlayer);
+        }
+    }
+
     public void Clear()
     {
-        entitiesContainer.QueueFreeChildren();
         camera.Zoom = Vector2.One * 0.5f;
         camera.Position = Vector2.Zero;
+        entitiesContainer.QueueFreeChildren();
+        partsCollected.Clear();
     }
+    
 
     private Entity InstantiateEntityScene(string typeName)
     {
@@ -144,24 +172,31 @@ public partial class Stage : Node2D
     {
         entitiesContainer.AddChild(entity);
 
-        if (entity is not PlayerCraft newPlayer)
-            return;
-        
-        if (Player != null)
+        switch (entity)
         {
-            logger.Error("Spawning a player while another instance already exists, destroying old instance");
+            case PlayerCraft newPlayer:
+                
+                if (Player != null)
+                {
+                    logger.Warn("Spawning a player while another instance already exists, destroying old instance");
+                    Player.Destroyed -= OnPlayerDestroyed;
+                    Player.Destroy();
+                }
 
-            Player.Destroyed -= OnPlayerDestroyed;
-            Player.Destroy();
+                Player = newPlayer;
+                Player.Destroyed += OnPlayerDestroyed;
+
+                if (!Game.Instance.InMissionEditor)
+                    camera.Position = Player.Position;
+
+                PlayerSpawned?.Invoke(Player);
+                
+                break;
+            
+            case OrphanPart orphanPart:
+                orphanPart.Collected += OnOrphanPartCollected;
+                break;
         }
-
-        Player = newPlayer;
-        Player.Destroyed += OnPlayerDestroyed;
-
-        if (!Game.Instance.InMissionEditor)
-            camera.Position = Player.Position;
-
-        PlayerSpawned?.Invoke(Player);
     }
     
 
@@ -169,5 +204,10 @@ public partial class Stage : Node2D
     {
         Player = null;
         PlayerDestroyed?.Invoke();
+    }
+
+    private void OnOrphanPartCollected(PartData partData)
+    {
+        partsCollected.Add(partData);
     }
 }
