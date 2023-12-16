@@ -42,7 +42,7 @@ monitorable = false
 [node name="RangeAreaCollisionShape2D" type="CollisionShape2D" parent="RangeArea"]
 unique_name_in_owner = true
 shape = SubResource("CircleShape2D_v2vhg")
-debug_color = Color(0.701961, 0, 0, 0.219608)
+debug_color = Color(1, 0, 0, 0)
 
 [node name="Ray" type="Area2D" parent="."]
 unique_name_in_owner = true
@@ -52,7 +52,7 @@ monitorable = false
 [node name="RayCollisionShape2D" type="CollisionShape2D" parent="Ray"]
 unique_name_in_owner = true
 shape = SubResource("SegmentShape2D_mh3gf")
-debug_color = Color(0.701961, 0, 0, 1)
+debug_color = Color(1, 0, 0, 1)
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 material = ExtResource("2_0820g")

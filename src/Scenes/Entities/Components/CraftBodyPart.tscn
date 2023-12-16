@@ -8,7 +8,7 @@ size = Vector2(128, 108)
 
 [node name="CraftBodyPart" type="CollisionShape2D"]
 shape = SubResource("RectangleShape2D_5hmw0")
-debug_color = Color(1, 0, 1, 0.2)
+debug_color = Color(0, 1, 0, 0.15)
 script = ExtResource("1_wjoa6")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

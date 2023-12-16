@@ -76,7 +76,7 @@ monitoring = false
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
 unique_name_in_owner = true
 shape = SubResource("CircleShape2D_ib0p8")
-debug_color = Color(0, 1, 0, 0.15)
+debug_color = Color(0, 1, 1, 0.15)
 
 [node name="EditorStuff" type="Node2D" parent="."]
 unique_name_in_owner = true

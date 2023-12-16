@@ -16,7 +16,7 @@ monitorable = false
 [node name="RangeAreaCollisionShape2D" type="CollisionShape2D" parent="RangeArea"]
 unique_name_in_owner = true
 shape = SubResource("CircleShape2D_v2vhg")
-debug_color = Color(0.7, 0, 0, 0.109804)
+debug_color = Color(1, 0, 0, 0)
 
 [node name="CooldownTimer" type="Timer" parent="."]
 unique_name_in_owner = true

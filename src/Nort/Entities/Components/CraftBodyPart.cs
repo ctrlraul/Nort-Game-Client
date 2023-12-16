@@ -9,8 +9,6 @@ namespace Nort.Entities.Components;
 public partial class CraftBodyPart : CollisionShape2D
 {
     public event Action<SkillNode, float> HitTaken;
-    
-    private static readonly Color SemiTransparent = new(1, 1, 1, 0.2f);
     public event Action Destroyed;
 
     [Ready] public Sprite2D sprite2D;
@@ -143,16 +141,15 @@ public partial class CraftBodyPart : CollisionShape2D
 
     private void UpdateColor()
     {
-        Color color = Config.FactionlessColor;
-        
         if (hullMax > 0)
         {
             float weight = Mathf.Max(0, hull) / hullMax;
-            color = color.Lerp(Faction.Color, weight);
+            sprite2D.SelfModulate = Config.FactionlessColor.Lerp(Faction.Color, weight);
         }
-        
-        sprite2D.SelfModulate = color;
-        DebugColor = color * SemiTransparent;
+        else
+        {
+            sprite2D.SelfModulate = Config.FactionlessColor;
+        }
     }
     
     private float GetDropRate()
