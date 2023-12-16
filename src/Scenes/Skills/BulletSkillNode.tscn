@@ -31,7 +31,6 @@ scale_max = 16.0
 scale_curve = SubResource("CurveTexture_xx0f8")
 
 [node name="BulletSkillNode" type="Node2D"]
-rotation = 0.785398
 script = ExtResource("1_70pev")
 
 [node name="RangeArea" type="Area2D" parent="."]
