@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using CtrlRaul.Godot;
 using Godot;
 using Nort.Hud;
@@ -9,6 +10,7 @@ namespace Nort.Entities;
 public partial class OrphanPart : Entity
 {
     [Savable]
+    [Inspect(nameof(PartIdOptions))]
     public string PartId
     {
         get => Part.id;
@@ -16,6 +18,7 @@ public partial class OrphanPart : Entity
     }
     
     [Savable]
+    [Inspect(nameof(SkillIdOptions))]
     public string SkillId
     {
         get => Skill?.id;
@@ -35,6 +38,9 @@ public partial class OrphanPart : Entity
         get => shiny;
         set => SetShiny(value);
     }
+
+    public IEnumerable<string> PartIdOptions => Assets.Instance.GetParts().Select(p => p.id);
+    public IEnumerable<string> SkillIdOptions => Assets.Instance.GetSkills().Select(s => s.id);
     
     [Ready] public Sprite2D sprite2D;
     [Ready] public Sprite2D skillSprite;
