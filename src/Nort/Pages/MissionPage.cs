@@ -26,10 +26,12 @@ public partial class MissionPage : Page
     [Ready] public SimpleProgressBar hullProgressBar;
     [Ready] public SimpleProgressBar coreProgressBar;
 
-    private bool fromEditor;
     private Mission mission;
     private Craft player;
 
+    public bool FromEditor { get; private set; }
+    
+    
     public override void _Ready()
     {
         base._Ready();
@@ -60,7 +62,7 @@ public partial class MissionPage : Page
 
         if (PagesNavigator.Instance.NavigationData is NavigationData navigationData)
         {
-            fromEditor = navigationData.FromEditor;
+            FromEditor = navigationData.FromEditor;
             mission = navigationData.Mission;
             Stage.Instance.LoadMission(mission);
         }
@@ -81,7 +83,7 @@ public partial class MissionPage : Page
 
     public async void Forfeit()
     {
-        if (fromEditor)
+        if (FromEditor)
         {
             await PagesNavigator.Instance.GoBack(new Editor.NavigationData(mission));
         }
