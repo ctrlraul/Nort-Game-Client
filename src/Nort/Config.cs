@@ -18,6 +18,7 @@ public static class Config
     public const string DefaultCoreSkill = "core_bullet";
     public static readonly Color FactionlessColor = new(0.5f, 0.5f, 0.5f);
 
+    public const string InitialPart = "core_1";
     public const string InitialBlueprint = "newborn";
     public const float DropRateCore = 1.0f / 1000f;
     public const float DropRateHull = 1.0f / 10f;

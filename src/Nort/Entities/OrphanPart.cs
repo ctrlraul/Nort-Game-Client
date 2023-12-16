@@ -52,6 +52,12 @@ public partial class OrphanPart : Entity
     private bool shiny;
     public Part Part { get; private set; }
     public Skill Skill { get; private set; }
+
+
+    public OrphanPart()
+    {
+        PartId = Config.InitialPart;
+    }
     
     
     public override void _Ready()
@@ -75,8 +81,6 @@ public partial class OrphanPart : Entity
     private async void Initialize()
     {
         await Game.Instance.Initialize();
-
-        Part = Assets.Instance.GetParts().First();
         
         SetPartId(PartId);
         SetSkillId(SkillId);
@@ -93,6 +97,8 @@ public partial class OrphanPart : Entity
 
     private void SetPartId(string value)
     {
+        GD.Print($"SetPartId: {value}");
+        
         Part = Assets.Instance.GetPart(value);
 
         if (IsInsideTree())
