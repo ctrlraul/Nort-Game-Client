@@ -128,9 +128,10 @@ public partial class CraftBodyPart : CollisionShape2D
 
         orphanPart.Position = GlobalPosition;
         orphanPart.Rotation = GlobalRotation;
-        // orphanPart.PartId = blueprint.partId;
-        // orphanPart.Flipped = blueprint.flipped;
-        // orphanPart.Shiny = blueprint.shiny || ShinyDropRoll();
+        orphanPart.PartId = blueprint.partId;
+        orphanPart.SkillId = blueprint.skillId;
+        orphanPart.Flipped = blueprint.flipped;
+        orphanPart.Shiny = blueprint.shiny || ShinyDropRoll();
     }
 
     public void Destroy()
