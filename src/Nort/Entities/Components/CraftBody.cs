@@ -71,11 +71,7 @@ public partial class CraftBody : EntityComponent
         part.Faction = Faction;
         part.Blueprint = blueprint;
 
-        if (Game.Instance.InMissionEditor)
-        {
-            part.Disabled = true;
-        }
-        else
+        if (!Game.Instance.InMissionEditor)
         {
             part.Destroyed += () => PartDestroyed?.Invoke(part);
             part.HitTaken += (from, damage) => PartTookHit?.Invoke(part, from, damage);

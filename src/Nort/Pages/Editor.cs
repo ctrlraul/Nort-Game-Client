@@ -310,7 +310,7 @@ public partial class Editor : Page
         {
             case MouseState.Down:
 
-                Entity hoveredEntity = GetHoveredEntity();
+                Entity hoveredEntity = Stage.GetEntityOnMouse();
 
                 if (mouseButtonEvent.ShiftPressed)
                 {
@@ -361,7 +361,7 @@ public partial class Editor : Page
         {
             case MouseState.Down:
             {
-                Entity hoveredEntity = GetHoveredEntity();
+                Entity hoveredEntity = Stage.GetEntityOnMouse();
 
                 if (hoveredEntity == null)
                 {
@@ -476,12 +476,6 @@ public partial class Editor : Page
     private static string GenerateMissionName()
     {
         return $"New Mission {((int)(Time.GetUnixTimeFromSystem() * 1000)).ToString("X")}";
-    }
-
-    private static Entity GetHoveredEntity()
-    {
-        // skull emoji
-        return Stage.editorMouseArea.GetOverlappingAreas().FindNearest(Stage.editorMouseArea.Position)?.Owner as Entity;
     }
 
     public static List<PropertyInfo> GetSavableProperties(Type type)

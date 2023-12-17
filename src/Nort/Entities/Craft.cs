@@ -67,16 +67,6 @@ public partial class Craft : Entity
 
         SetBlueprint(Blueprint);
         SetFaction(Faction);
-
-        if (Game.Instance.InMissionEditor)
-        {
-            editorHitBoxShape.Disabled = false;
-        }
-        else
-        {
-            editorStuff.QueueFree();
-            body.PartTookHit += OnPartTookHit;
-        }
     }
 
 

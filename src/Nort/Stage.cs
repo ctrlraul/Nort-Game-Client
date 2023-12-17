@@ -24,7 +24,7 @@ public partial class Stage : Node2D
 
     [Ready] public Grid grid;
     [Ready] public Node2D entitiesContainer;
-    [Ready] public Area2D editorMouseArea;
+    [Ready] public Area2D mouseArea;
     [Ready] public Camera2D camera;
 
     private readonly Logger logger = new("Stage");
@@ -48,7 +48,7 @@ public partial class Stage : Node2D
 
     public override void _Process(double delta)
     {
-        editorMouseArea.Position = GetGlobalMousePosition();
+        mouseArea.Position = GetGlobalMousePosition();
 
         if (Game.Instance.InMissionEditor)
             return;
@@ -62,6 +62,11 @@ public partial class Stage : Node2D
     {
         grid.size = size;
         grid.disabled = size == 0;
+    }
+
+    public Entity GetEntityOnMouse()
+    {
+        return mouseArea.GetOverlappingAreas().FindNearest(mouseArea.Position)?.Owner as Entity;
     }
 
     private void CameraFollowPlayer()

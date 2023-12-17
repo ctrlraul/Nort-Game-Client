@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://cv32wh2kql0cr"]
+[gd_scene load_steps=10 format=3 uid="uid://cv32wh2kql0cr"]
 
 [ext_resource type="Script" path="res://Nort/Entities/OrphanPart.cs" id="1_vxt4t"]
 [ext_resource type="Material" uid="uid://bscgpp7x5c27j" path="res://Materials/shiny_part_shader_material.tres" id="2_h38mt"]
@@ -8,9 +8,6 @@
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ib0p8"]
 radius = 60.0
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_hypu6"]
-radius = 70.0
 
 [sub_resource type="Animation" id="Animation_0k08t"]
 length = 0.001
@@ -77,21 +74,6 @@ monitoring = false
 unique_name_in_owner = true
 shape = SubResource("CircleShape2D_ib0p8")
 debug_color = Color(0, 1, 1, 0.15)
-
-[node name="EditorStuff" type="Node2D" parent="."]
-unique_name_in_owner = true
-
-[node name="HitBox" type="Area2D" parent="EditorStuff"]
-collision_layer = 2
-collision_mask = 0
-input_pickable = false
-monitoring = false
-
-[node name="EditorHitBoxShape" type="CollisionShape2D" parent="EditorStuff/HitBox"]
-unique_name_in_owner = true
-shape = SubResource("CircleShape2D_hypu6")
-disabled = true
-debug_color = Color(0, 0.6, 0.701961, 0.419608)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 unique_name_in_owner = true

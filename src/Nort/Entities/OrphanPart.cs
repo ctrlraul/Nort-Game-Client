@@ -48,8 +48,6 @@ public partial class OrphanPart : Entity
     
     [Ready] public Sprite2D sprite2D;
     [Ready] public Sprite2D skillSprite;
-    [Ready] public CollisionShape2D editorHitBoxShape;
-    [Ready] public Node2D editorStuff;
     [Ready] public AnimationPlayer animationPlayer;
 
     private bool flipped;
@@ -68,17 +66,7 @@ public partial class OrphanPart : Entity
     {
         base._Ready();
         this.InitializeReady();
-
         Initialize();
-
-        if (Game.Instance.InMissionEditor)
-        {
-            editorHitBoxShape.Disabled = false;
-        }
-        else
-        {
-            editorStuff.QueueFree();
-        }
     }
 
 

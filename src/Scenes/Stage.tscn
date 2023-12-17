@@ -8,7 +8,7 @@
 [ext_resource type="Script" path="res://Nort/Grid.cs" id="6_1ktcq"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2nl80"]
-size = Vector2(10, 10)
+size = Vector2(1, 1)
 
 [node name="Stage" type="Node2D"]
 script = ExtResource("1_8dh8q")
@@ -26,12 +26,13 @@ color = Color(1, 1, 1, 0.129412)
 [node name="EntitiesContainer" type="Node2D" parent="."]
 unique_name_in_owner = true
 
-[node name="EditorMouseArea" type="Area2D" parent="."]
+[node name="MouseArea" type="Area2D" parent="."]
 unique_name_in_owner = true
 collision_layer = 0
-collision_mask = 2
+collision_mask = 5
+monitorable = false
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="EditorMouseArea"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MouseArea"]
 shape = SubResource("RectangleShape2D_2nl80")
 debug_color = Color(1, 1, 1, 0.419608)
 
