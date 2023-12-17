@@ -71,6 +71,8 @@ public partial class DroneCraft : Craft
 
     public override void _PhysicsProcess(double delta)
     {
+        base._PhysicsProcess(delta);
+        
         if (path.Any())
         {
             flightComponent.Direction = Position.DirectionTo(path[0]);

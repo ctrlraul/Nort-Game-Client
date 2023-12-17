@@ -71,9 +71,9 @@ public partial class Stage : Node2D
 
     private void CameraFollowPlayer()
     {
-        float velocity = Mathf.Max(Player.flightComponent.Velocity.Length(), 0.001f);
+        float velocity = Mathf.Max(Player.Velocity.Length(), 0.001f);
         camera.Zoom = camera.Zoom.Lerp(Vector2.One * Mathf.Clamp(1 / velocity * 0.005f, 0.4f, 0.5f), 0.01f);
-        camera.Position = camera.Position.Lerp(Player.Position + Player.flightComponent.Velocity * 120, 0.01f);
+        camera.Position = camera.Position.Lerp(Player.Position + Player.Velocity * 120, 0.01f);
     }
 
     public void LoadMission(Mission mission)
