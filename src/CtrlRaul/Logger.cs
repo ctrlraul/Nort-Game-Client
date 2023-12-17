@@ -74,6 +74,15 @@ public class Logger
 #endif
     }
 
+    public static void Warn(string label, object message)
+    {
+        string text = string.Format(Format, Time.GetTicksMsec() / 1000f, "W", label, message);
+        GD.PushWarning(text);
+#if DEBUG
+        externalLogger?.Warn(text);
+#endif
+    }
+
     public static void Error(string label, object message)
     {
         string text = string.Format(Format, Time.GetTicksMsec() / 1000f, "E", label, message);
