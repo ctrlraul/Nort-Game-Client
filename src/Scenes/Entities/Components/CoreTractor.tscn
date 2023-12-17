@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://1sggqnuj0evg"]
+
+[ext_resource type="Script" path="res://Nort/Entities/Components/CoreTractor.cs" id="1_ovr6u"]
+[ext_resource type="Material" uid="uid://cljg1ytg5x80f" path="res://Materials/add.tres" id="2_il157"]
+[ext_resource type="Texture2D" uid="uid://brmuuj0u5nclb" path="res://Images/tractor_beam.png" id="3_gh5x6"]
+
+[node name="CoreTractor" type="Node2D"]
+script = ExtResource("1_ovr6u")
+
+[node name="Node" type="Node" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="Node"]
+unique_name_in_owner = true
+material = ExtResource("2_il157")
+texture = ExtResource("3_gh5x6")
+offset = Vector2(16, 0)
+
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="."]
+remote_path = NodePath("../Node/Sprite2D")
+update_rotation = false
+update_scale = false

@@ -26,6 +26,7 @@ public partial class PlayerCraft : Craft
 
 
     [Ready] public FlightComponent flightComponent;
+    [Ready] public CoreTractor coreTractor;
     [Ready] public Label label;
 
 

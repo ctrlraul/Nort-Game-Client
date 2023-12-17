@@ -1,0 +1,24 @@
+[gd_scene load_steps=5 format=3 uid="uid://bxbwb0kduqpd8"]
+
+[ext_resource type="Script" path="res://Nort/Skills/TractorSkill.cs" id="1_qu7hw"]
+[ext_resource type="Texture2D" uid="uid://dr4emtj85xknr" path="res://Images/skills/tractor.png" id="2_mi2ap"]
+[ext_resource type="Material" uid="uid://cljg1ytg5x80f" path="res://Materials/add.tres" id="3_45l3c"]
+[ext_resource type="Texture2D" uid="uid://brmuuj0u5nclb" path="res://Images/tractor_beam.png" id="4_v1tbh"]
+
+[node name="TractorSkill" type="Node2D"]
+script = ExtResource("1_qu7hw")
+
+[node name="Tractor" type="Sprite2D" parent="."]
+position = Vector2(0, 10)
+texture = ExtResource("2_mi2ap")
+
+[node name="Line2D" type="Line2D" parent="."]
+unique_name_in_owner = true
+material = ExtResource("3_45l3c")
+points = PackedVector2Array(0, 0, 0, -256)
+width = 16.0
+texture = ExtResource("4_v1tbh")
+texture_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+antialiased = true
