@@ -10,6 +10,10 @@ public partial class CoreTractor : Node2D
 
 	private float textureSizeX;
 	private Entity target;
+
+	private float breakDistance = 700;
+	private float pullDistance = 450;
+	private float pullForce = 30;
 	
 	
 	public override void _Ready()
@@ -24,12 +28,25 @@ public partial class CoreTractor : Node2D
 		sprite2D.Visible = false;
         
 		SetProcess(false);
+		SetPhysicsProcess(false);
 	}
 	
 	public override void _Process(double delta)
 	{
 		sprite2D.Scale = sprite2D.Scale with { X = GlobalPosition.DistanceTo(target.Position) / textureSizeX };
 		sprite2D.LookAt(target.Position);
+	}
+
+	public override void _PhysicsProcess(double delta)
+	{
+		base._PhysicsProcess(delta);
+		
+		float distance = GlobalPosition.DistanceTo(target.GlobalPosition);
+
+		if (distance > pullDistance)
+		{
+			target.Velocity += target.GlobalPosition.DirectionTo(GlobalPosition) * pullForce * Mathf.Pow(distance / pullDistance, 2) * (float)delta;
+		}
 	}
 
 
@@ -42,15 +59,17 @@ public partial class CoreTractor : Node2D
 		
 		target = value;
 
-		if (target == null)
+		if (target == null || GlobalPosition.DistanceTo(target.GlobalPosition) > breakDistance)
 		{
 			sprite2D.Visible = false;
 			SetProcess(false);
+			SetPhysicsProcess(false);
 		}
 		else
 		{
 			sprite2D.Visible = true;
 			SetProcess(true);
+			SetPhysicsProcess(true);
 			ConnectEntityEvents(target);
 		}
 	}
