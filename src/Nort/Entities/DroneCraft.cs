@@ -90,18 +90,16 @@ public partial class DroneCraft : Craft
 
     private void OnRangeAreaEntered(Area2D area)
     {
-        if (area.Owner is CraftBody craftBody && Faction.Hostile(craftBody.Faction, Faction))
+        if (area.Owner is Craft craft && Faction.Hostile(craft.Faction, Faction))
         {
-            foesInRange.Add(craftBody.Craft);
+            foesInRange.Add(craft);
         }
     }
 
     private void OnRangeAreaExited(Area2D area)
     {
-        if (area.Owner is CraftBody craftBody && Faction.Hostile(craftBody.Faction, Faction))
+        if (area.Owner is Craft craft && Faction.Hostile(craft.Faction, Faction))
         {
-            Craft craft = craftBody.Craft;
-            
             foesInRange.Remove(craft);
 
             if (!foesInRange.Any())

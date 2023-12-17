@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using CtrlRaul.Godot;
+using CtrlRaul.Godot.Linq;
 using Godot;
 using Nort.Entities.Components;
 using Nort.Skills;
@@ -23,10 +26,12 @@ public partial class Craft : Entity
         Outpost
     }
 
-    [Ready] public CraftBody body;
-    [Ready] public CollisionShape2D editorHitBoxShape;
-    [Ready] public Node2D editorStuff;
+    [Export] private PackedScene craftBodyPartScene;
 
+    [Ready] public Area2D partsContainer;
+    [Ready] public Node2D skillsContainer;
+
+    private CraftBodyPart corePart;
 
     protected Faction faction = Assets.Instance.DefaultEnemyFaction;
 
@@ -75,23 +80,24 @@ public partial class Craft : Entity
     }
 
 
-    protected virtual void UpdateEditorStuff()
+    protected virtual void SetBlueprint(Blueprint value)
     {
+        blueprint = value;
+
         if (!IsInsideTree())
             return;
         
-        editorHitBoxShape.Position = blueprintVisualRect.Position + blueprintVisualRect.Size * 0.5f;
-        editorHitBoxShape.Shape = new RectangleShape2D { Size = blueprintVisualRect.Size };
-    }
-
-
-    private void SetBlueprint(Blueprint value)
-    {
-        blueprint = value;
         blueprintVisualRect = Assets.Instance.GetBlueprintVisualRect(Blueprint);
 
-        if (IsInsideTree())
-            body.SetBlueprint(blueprint);
+        
+        
+        skillsContainer.QueueFreeChildren();
+        partsContainer.QueueFreeChildren();
+        
+        foreach (BlueprintPart blueprintPart in blueprint.hulls)
+            AddPart(blueprintPart);
+
+        corePart = AddPart(blueprint.core);
 
         BlueprintStats stats = Blueprint.GetStats(blueprint);
         CoreMax = stats.core;
@@ -100,16 +106,17 @@ public partial class Craft : Entity
         Hull = HullMax;
         
         StatsChanged?.Invoke();
-
-        UpdateEditorStuff();
     }
     
     private void SetFaction(Faction value)
     {
         faction = value;
 
-        if (IsInsideTree())
-            body.Faction = Faction;
+        if (!IsInsideTree())
+            return;
+        
+        foreach (CraftBodyPart part in GetParts())
+            part.Faction = Faction;
         
         FactionChanged?.Invoke();
     }
@@ -120,13 +127,40 @@ public partial class Craft : Entity
         Hull = 0;
         Core = 0;
 
-        foreach (CraftBodyPart part in body.GetParts())
+        foreach (CraftBodyPart part in GetParts())
             part.Destroy();
 
         QueueFree();
         Destroyed?.Invoke();
     }
 
+    
+    private CraftBodyPart AddPart(BlueprintPart blueprintPart)
+    {
+        CraftBodyPart part = craftBodyPartScene.Instantiate<CraftBodyPart>();
+
+        part.Faction = Faction;
+        part.Blueprint = blueprintPart;
+
+        if (!Game.Instance.InMissionEditor)
+        {
+            part.Destroyed += () => OnPartDestroyed(part);
+            part.HitTaken += (from, damage) => OnPartTookHit(part, from, damage);
+        }
+        
+        partsContainer.AddChild(part);
+
+        foreach (SkillNode skill in part.skillNodes)
+            skillsContainer.AddChild(skill);
+
+        return part;
+    }
+    
+    private IEnumerable<CraftBodyPart> GetParts()
+    {
+        return partsContainer.GetChildren().Cast<CraftBodyPart>();
+    }
+    
 
     private void OnPartTookHit(CraftBodyPart part, SkillNode from, float damage)
     {
@@ -137,7 +171,7 @@ public partial class Craft : Entity
             if (Hull >= 0)
                 return;
 
-            if (part == body.Core)
+            if (part == corePart)
             {
                 Core += Hull;
 
@@ -153,5 +187,10 @@ public partial class Craft : Entity
             
             StatsChanged?.Invoke();
         }
+    }
+
+    private void OnPartDestroyed(CraftBodyPart part)
+    {
+        GD.Print("Move part drop code in here!");
     }
 }

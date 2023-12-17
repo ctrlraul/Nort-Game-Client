@@ -38,11 +38,46 @@ public partial class PlayerCraft : Craft
     public override void _Ready()
     {
         base._Ready();
-        this.InitializeReady();
-        
-        if (Game.Instance.InMissionEditor)
-            SetPhysicsProcess(false);
+        label.Visible = Game.Instance.InMissionEditor;
+        SetProcessUnhandledInput(!Game.Instance.InMissionEditor);
+        SetPhysicsProcess(!Game.Instance.InMissionEditor);
     }
+
+    public override void _UnhandledInput(InputEvent @event)
+    {
+        if (@event is InputEventMouseButton inputEventMouseButton)
+        {
+            switch (inputEventMouseButton.ButtonIndex)
+            {
+                case MouseButton.Left:
+                    if (!inputEventMouseButton.Pressed)
+                    {
+                        Entity entity = Stage.Instance.GetEntityOnMouse();
+
+                        switch (entity)
+                        {
+                            case OrphanPart:
+                                coreTractor.SetTarget(entity);
+                                break;
+                            
+                            case DroneCraft:
+                                coreTractor.SetTarget(entity);
+                                break;
+                        }
+                    }
+
+                    break;
+            }
+        }
+    }
+    
+    // public override void _Process(double delta)
+    // {
+    //     if (Engine.GetFramesDrawn() % 4 == 0)
+    //     {
+    //         
+    //     }
+    // }
     
     public override void _PhysicsProcess(double delta)
     {
@@ -51,16 +86,15 @@ public partial class PlayerCraft : Craft
     }
 
 
-    protected override void UpdateEditorStuff()
+    protected override void SetBlueprint(Blueprint value)
     {
-        base.UpdateEditorStuff();
+        base.SetBlueprint(value);
 
         if (!IsInsideTree())
             return;
 
         label.Position = label.Position with { Y = blueprintVisualRect.Position.Y + blueprintVisualRect.Size.Y + 20 };
     }
-
 
     private void OnCollectionRangeAreaEntered(Area2D area)
     {

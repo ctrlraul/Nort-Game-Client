@@ -37,11 +37,11 @@ public partial class FlightComponent : EntityComponent
 
     private void RotateTowardsAngle(float angle, float amount)
     {
-        float distance = Mathf.Abs(DeltaAngle(Craft.body.Rotation, angle));
-        Craft.body.Rotation = (
+        float distance = Mathf.Abs(DeltaAngle(Craft.Rotation, angle));
+        Craft.Rotation = (
             amount > distance
             ? angle
-            : Mathf.LerpAngle(Craft.body.Rotation, angle, amount / distance)
+            : Mathf.LerpAngle(Craft.Rotation, angle, amount / distance)
         );
     }
 }

@@ -1,12 +1,15 @@
 [gd_scene load_steps=3 format=3 uid="uid://b1xci2ckb2rvw"]
 
 [ext_resource type="Script" path="res://Nort/Entities/Craft.cs" id="1_do56o"]
-[ext_resource type="PackedScene" uid="uid://b8kgq1nanwsyw" path="res://Scenes/Entities/Components/CraftBody.tscn" id="2_a273r"]
+[ext_resource type="PackedScene" uid="uid://c8vjpl3s8tb65" path="res://Scenes/Entities/Components/CraftBodyPart.tscn" id="2_skxli"]
 
 [node name="Craft" type="Node2D"]
 script = ExtResource("1_do56o")
+craftBodyPartScene = ExtResource("2_skxli")
 
-[node name="Body" parent="." instance=ExtResource("2_a273r")]
+[node name="Body" type="Node2D" parent="."]
+
+[node name="PartsContainer" type="Area2D" parent="Body"]
 unique_name_in_owner = true
 
 [node name="EditorStuff" type="Node2D" parent="."]
@@ -15,8 +18,9 @@ unique_name_in_owner = true
 [node name="HitBox" type="Area2D" parent="EditorStuff"]
 collision_layer = 2
 collision_mask = 0
+input_pickable = false
 monitoring = false
 
-[node name="EditorHitBoxShape" type="CollisionShape2D" parent="EditorStuff/HitBox"]
+[node name="SkillsContainer" type="Node2D" parent="Body"]
 unique_name_in_owner = true
 disabled = true
