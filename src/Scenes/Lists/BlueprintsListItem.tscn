@@ -36,7 +36,7 @@ scale = Vector2(0.37, 0.37)
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="IDLabel" type="Label" parent="HBoxContainer/VBoxContainer"]
+[node name="IdLabel" type="Label" parent="HBoxContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "identifier
@@ -62,4 +62,4 @@ self_modulate = Color(1, 1, 1, 0)
 layout_mode = 2
 flat = true
 
-[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="Button" to="." method="OnButtonPressed"]

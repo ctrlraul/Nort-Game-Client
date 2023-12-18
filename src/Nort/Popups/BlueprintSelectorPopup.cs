@@ -1,22 +1,23 @@
 using System;
 using Godot;
 using CtrlRaul.Godot.Linq;
+using Nort.Listing;
 
 namespace Nort.Popups;
 
 public partial class BlueprintSelectorPopup : GenericPopup
 {
-	public Action<Blueprint> BlueprintSelected;
+	public event Action<Blueprint> BlueprintSelected;
 
-	[Export] private PackedScene BlueprintsListItemScene;
+	[Export] private PackedScene blueprintsListItemScene;
 
 	private VBoxContainer blueprintsList;
 
-	public async override void _Ready()
+	public override async void _Ready()
 	{
 		base._Ready();
 
-		blueprintsList = GetNode<VBoxContainer>("BlueprintsList");
+		blueprintsList = GetNode<VBoxContainer>("%BlueprintsList");
 		Cancellable = true;
 
 		blueprintsList.QueueFreeChildren();
@@ -25,14 +26,16 @@ public partial class BlueprintSelectorPopup : GenericPopup
 		
 		foreach (Blueprint blueprint in Assets.Instance.GetBlueprints())
 		{
-			BlueprintsListItem item = BlueprintsListItemScene.Instantiate<BlueprintsListItem>();
+			BlueprintsListItem item = blueprintsListItemScene.Instantiate<BlueprintsListItem>();
 			blueprintsList.AddChild(item);
 			item.Blueprint = blueprint;
-			item.Selected += blueprint =>
-			{
-				BlueprintSelected?.Invoke(blueprint);
-				QueueFree();
-			};
+			item.Selected += OnBlueprintsListItemSelected;
 		}
+	}
+	
+	private void OnBlueprintsListItemSelected(Blueprint blueprint)
+	{
+		BlueprintSelected?.Invoke(blueprint);
+		Remove();
 	}
 }

@@ -1,17 +1,18 @@
 using Godot;
 using System;
+using CtrlRaul.Godot;
 using Nort.UI;
 
-namespace Nort;
+namespace Nort.Listing;
 
 public partial class BlueprintsListItem : MarginContainer
 {
 	public event Action<Blueprint> Selected;
 
-	private DisplayCraft displayCraft;
-	private Label idLabel;
-	private Label coreLabel;
-	private Label partsCountLabel;
+	[Ready] public DisplayCraft displayCraft;
+	[Ready] public Label idLabel;
+	[Ready] public Label coreLabel;
+	[Ready] public Label partsCountLabel;
 
 	private Blueprint _blueprint;
 	public Blueprint Blueprint
@@ -30,11 +31,7 @@ public partial class BlueprintsListItem : MarginContainer
 	public override void _Ready()
 	{
 		base._Ready();
-
-		displayCraft = GetNode<DisplayCraft>("DisplayCraft");
-		idLabel = GetNode<Label>("IDLabel");
-		coreLabel = GetNode<Label>("CoreLabel");
-		partsCountLabel = GetNode<Label>("PartsCountLabel");
+		this.InitializeReady();
 
 		displayCraft.Color = Config.FactionlessColor;
 	}

@@ -6,6 +6,7 @@
 
 [node name="BlueprintSelectorPopup" instance=ExtResource("1_wfgjh")]
 script = ExtResource("2_opak5")
+blueprintsListItemScene = ExtResource("3_lqhn7")
 
 [node name="Window" parent="Theme/Scaler" index="0"]
 custom_minimum_size = Vector2(400, 600)
