@@ -1,0 +1,6 @@
+﻿{
+  "id": "radar",
+  "displayName": "Radar",
+  "scenePath": "RadarSkill.tscn",
+  "mass": 10
+}

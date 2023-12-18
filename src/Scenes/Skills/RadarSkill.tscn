@@ -1,0 +1,61 @@
+[gd_scene load_steps=6 format=3 uid="uid://b7m51uiy36mdb"]
+
+[ext_resource type="Texture2D" uid="uid://b1nxw2jf45x8d" path="res://Images/skills/radar.png" id="1_a8rbl"]
+[ext_resource type="Script" path="res://Nort/Skills/RadarSkill.cs" id="1_koj60"]
+
+[sub_resource type="Animation" id="Animation_7kp7b"]
+resource_name = "rotate"
+length = 2.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Node/Sprite2D:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 6.28319]
+}
+
+[sub_resource type="Animation" id="Animation_6vfbq"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Node/Sprite2D:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_6f1mq"]
+_data = {
+"RESET": SubResource("Animation_6vfbq"),
+"rotate": SubResource("Animation_7kp7b")
+}
+
+[node name="RadarSkill" type="Node2D"]
+script = ExtResource("1_koj60")
+
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="."]
+remote_path = NodePath("../Node/Sprite2D")
+update_rotation = false
+
+[node name="Node" type="Node" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="Node"]
+texture = ExtResource("1_a8rbl")
+offset = Vector2(0.2, 0.2)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_6f1mq")
+}
+autoplay = "rotate"

@@ -35,7 +35,7 @@
     },
     {
       "PartId": "tail_1",
-      "SkillId": "bullet",
+      "SkillId": "radar",
       "Flipped": false,
       "Shiny": false,
       "Type": "OrphanPart",
