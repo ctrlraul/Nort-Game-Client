@@ -43,7 +43,8 @@ public class Assets : Singleton<Assets>
     public const string FactionsDirectoryName = "factions";
     public const string MissionsDirectoryName = "missions";
     public const string BlueprintsDirectoryName = "blueprints";
-
+    
+    private readonly Dictionary<Faction, (uint, uint)> factionCollisionLayersAndMasks = new();
     private readonly Dictionary<string, Texture2D> skillTextures = new();
     private readonly Dictionary<string, Texture2D> partTextures = new();
     private readonly AssetsLibrary vendorAssets = new();
@@ -99,6 +100,8 @@ public class Assets : Singleton<Assets>
         logger.Log($"Blueprints: {vendorAssets.blueprints.Count + customAssets.blueprints.Count}");
         logger.Log($"Missions: {vendorAssets.missions.Count + customAssets.missions.Count}");
         logger.Log($"Factions: {vendorAssets.factions.Count + customAssets.factions.Count}");
+        
+        GenerateFactionCollisionLayersAndMasks();
     }
     
     private Task HydrateAssetsLibrary(AssetsLibrary assetsLibrary, string assetsDirectory)
@@ -199,6 +202,36 @@ public class Assets : Singleton<Assets>
             throw new Exception($"Failed to open '{directoryPath}': {DirAccess.GetOpenError()}");
 
         return dir;
+    }
+
+    private void GenerateFactionCollisionLayersAndMasks()
+    {
+        List<Faction> factions = GetFactions().ToList();
+        
+        uint everyLayer = 0;
+        
+        foreach (Faction faction in factions)
+        {
+            everyLayer |= (uint)(1 << faction.collisionLayer);
+        }
+        
+        foreach (Faction faction in factions)
+        {
+            uint layer = (uint)(1 << faction.collisionLayer);
+            uint mask = everyLayer ^ layer;
+            
+            factionCollisionLayersAndMasks.Add(faction, (layer, mask));
+        }
+    }
+
+    public uint GetFactionCollisionLayer(Faction faction)
+    {
+        return factionCollisionLayersAndMasks[faction].Item1;
+    }
+
+    public uint GetFactionCollisionMask(Faction faction)
+    {
+        return factionCollisionLayersAndMasks[faction].Item2;
     }
 
     

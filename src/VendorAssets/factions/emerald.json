@@ -1,5 +1,6 @@
 {
 	"id": "emerald",
 	"displayName": "Emerald",
-	"colorHex": "#00ff80"
+	"colorHex": "#00ff80",
+	"collisionLayer": 31
 }

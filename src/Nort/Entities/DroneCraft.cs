@@ -88,11 +88,20 @@ public partial class DroneCraft : Craft
         
         UpdateDebugVisuals();
     }
+
+
+    protected override void SetFaction(Faction value)
+    {
+        base.SetFaction(value);
+        
+        if (IsInsideTree())
+            range.CollisionMask = Assets.Instance.GetFactionCollisionMask(faction);
+    }
     
 
     private void OnRangeAreaEntered(Area2D area)
     {
-        if (area.Owner is Craft craft && Faction.Hostile(craft.Faction, Faction))
+        if (area.Owner is Craft craft)
         {
             foesInRange.Add(craft);
         }
@@ -100,7 +109,7 @@ public partial class DroneCraft : Craft
 
     private void OnRangeAreaExited(Area2D area)
     {
-        if (area.Owner is Craft craft && Faction.Hostile(craft.Faction, Faction))
+        if (area.Owner is Craft craft)
         {
             foesInRange.Remove(craft);
 

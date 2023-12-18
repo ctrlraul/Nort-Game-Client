@@ -98,7 +98,7 @@ public partial class Craft : Entity
         StatsChanged?.Invoke();
     }
     
-    private void SetFaction(Faction value)
+    protected virtual void SetFaction(Faction value)
     {
         faction = value;
 
@@ -107,6 +107,9 @@ public partial class Craft : Entity
         
         foreach (CraftBodyPart part in GetParts())
             part.Faction = Faction;
+        
+        partsContainer.CollisionLayer = Assets.Instance.GetFactionCollisionLayer(faction);
+        partsContainer.CollisionLayer |= PhysicsLayer.Get("craft");
         
         FactionChanged?.Invoke();
     }

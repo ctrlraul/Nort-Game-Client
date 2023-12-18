@@ -1,5 +1,6 @@
 {
 	"id": "ruby",
 	"displayName": "Ruby",
-	"colorHex": "#ff0040"
+	"colorHex": "#ff0040",
+	"collisionLayer": 30
 }
