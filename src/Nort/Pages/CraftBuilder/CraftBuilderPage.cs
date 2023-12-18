@@ -108,6 +108,7 @@ public partial class CraftBuilderPage : Page
     {
         base._ExitTree();
         GetTree().Root.SizeChanged -= UpdateSupViewportSize;
+        DragManager.Instance.DragStop -= OnDragManagerDragStop;
     }
 
     public override void _Input(InputEvent @event)
