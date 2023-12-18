@@ -306,7 +306,7 @@ public partial class CraftBuilderPage : Page
 
         area.Position = blueprint.Place;
         area.CollisionLayer = 256; // ??? TODO
-        area.Rotation = blueprint.angle;
+        area.RotationDegrees = blueprint.angle;
         shape.Shape = new RectangleShape2D
         {
             Size = Assets.Instance.GetPartTexture(blueprint.partId).GetSize()
@@ -404,7 +404,7 @@ public partial class CraftBuilderPage : Page
     private void OnPartTransformControlsRotate(float angle)
     {
         hoveredPartOutline.Visible = false;
-        GetAreaForPart(partTransformControls.Part).Rotation = angle;
+        GetAreaForPart(partTransformControls.Part).RotationDegrees = angle;
     }
 
     private void OnPartTransformControlsFlip(bool flipped)
