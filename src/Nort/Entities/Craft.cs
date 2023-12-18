@@ -151,6 +151,11 @@ public partial class Craft : Entity
         return partsContainer.GetChildren().Cast<CraftBodyPart>();
     }
 
+    protected IEnumerable<SkillNode> GetSkillNodes()
+    {
+        return skillsContainer.GetChildren().Cast<SkillNode>();
+    }
+
     public void TakeHit(CraftBodyPart part, SkillNode from, float damage)
     {
         if (from is BulletSkillNode)

@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using CtrlRaul.Godot;
+using Godot;
 using Nort.Entities.Components;
 using Nort.Hud;
 using Nort.Pages;
+using Nort.Skills;
 
 namespace Nort.Entities;
 
@@ -40,5 +42,23 @@ public partial class CarrierCraft : Craft
     public CarrierCraft() : base()
     {
         blueprint = Assets.Instance.GetBlueprint(Config.CarrierBlueprints.First());
+    }
+
+
+    public override void _PhysicsProcess(double delta)
+    {
+        base._PhysicsProcess(delta);
+
+        if (Game.Instance.InMissionEditor)
+            return;
+
+        if (Engine.GetFramesDrawn() % 60 != 0)
+            return;
+
+        foreach (SkillNode skillNode in GetSkillNodes())
+        {
+            if (skillNode is DroneSkillNode droneSkill)
+                droneSkill.Fire();
+        }
     }
 }
