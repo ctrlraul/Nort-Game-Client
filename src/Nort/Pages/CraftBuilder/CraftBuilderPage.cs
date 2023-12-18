@@ -305,8 +305,8 @@ public partial class CraftBuilderPage : Page
         CollisionShape2D shape = new();
 
         area.Position = blueprint.Place;
-        area.CollisionLayer = 256; // ??? TODO
         area.RotationDegrees = blueprint.angle;
+        area.CollisionLayer = PhysicsLayer.Get("mouse_interactable");
         shape.Shape = new RectangleShape2D
         {
             Size = Assets.Instance.GetPartTexture(blueprint.partId).GetSize()
