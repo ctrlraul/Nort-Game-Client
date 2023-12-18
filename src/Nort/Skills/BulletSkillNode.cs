@@ -50,6 +50,9 @@ public partial class BulletSkillNode : SkillNode
 
     public override void Fire()
     {
+        if (Game.Instance.InMissionEditor)
+            return;
+        
         if (Target == null || target.IsDestroyed)
             return;
         
