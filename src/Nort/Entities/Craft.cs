@@ -20,6 +20,7 @@ public partial class Craft : Entity
     [Ready] public Area2D partsContainer;
     [Ready] public Node2D skillsContainer;
 
+    public bool IsDestroyed { get; private set; }
     private CraftBodyPart corePart;
 
     protected Faction faction = Assets.Instance.DefaultEnemyFaction;
@@ -113,6 +114,7 @@ public partial class Craft : Entity
             part.Destroy();
 
         QueueFree();
+        IsDestroyed = true;
         Destroyed?.Invoke();
     }
 
@@ -121,13 +123,14 @@ public partial class Craft : Entity
     {
         CraftBodyPart part = craftBodyPartScene.Instantiate<CraftBodyPart>();
 
+        part.Craft = this; // I don't like this
         part.Faction = Faction;
         part.Blueprint = blueprintPart;
 
         if (!Game.Instance.InMissionEditor)
         {
             part.Destroyed += () => OnPartDestroyed(part);
-            part.HitTaken += (from, damage) => OnPartTookHit(part, from, damage);
+            //part.HitTaken += (from, damage) => TakeHit(part, from, damage);
         }
         
         partsContainer.AddChild(part);
@@ -137,15 +140,48 @@ public partial class Craft : Entity
 
         return part;
     }
+
+    public CraftBodyPart GetPart(uint id)
+    {
+        return partsContainer.ShapeOwnerGetOwner(id) as CraftBodyPart;
+    }
     
     private IEnumerable<CraftBodyPart> GetParts()
     {
         return partsContainer.GetChildren().Cast<CraftBodyPart>();
     }
-    
 
-    private void OnPartTookHit(CraftBodyPart part, SkillNode from, float damage)
+    public void TakeHit(CraftBodyPart part, SkillNode from, float damage)
     {
+        if (from is BulletSkillNode)
+        {
+            Hull -= damage;
+
+            if (Hull >= 0)
+                return;
+
+            if (part == corePart)
+            {
+                Core += Hull;
+
+                if (Core <= 0)
+                    Destroy();
+            }
+            else
+            {
+                part.TakeDamage(Hull * -1);
+            }
+
+            Hull = 0;
+            
+            StatsChanged?.Invoke();
+        }
+    }
+
+    public void TakeHit(uint shapeId, SkillNode from, float damage)
+    {
+        CraftBodyPart part = GetPart(shapeId);
+        
         if (from is BulletSkillNode)
         {
             Hull -= damage;

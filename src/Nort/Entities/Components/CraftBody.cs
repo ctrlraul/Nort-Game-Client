@@ -74,7 +74,7 @@ public partial class CraftBody : EntityComponent
         if (!Game.Instance.InMissionEditor)
         {
             part.Destroyed += () => PartDestroyed?.Invoke(part);
-            part.HitTaken += (from, damage) => PartTookHit?.Invoke(part, from, damage);
+            //part.HitTaken += (from, damage) => PartTookHit?.Invoke(part, from, damage);
         }
         
         parts.AddChild(part);

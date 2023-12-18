@@ -8,7 +8,7 @@ namespace Nort.Entities.Components;
 
 public partial class CraftBodyPart : CollisionShape2D
 {
-    public event Action<SkillNode, float> HitTaken;
+    //public event Action<SkillNode, float> HitTaken;
     public event Action Destroyed;
 
     [Ready] public Sprite2D sprite2D;
@@ -18,7 +18,8 @@ public partial class CraftBodyPart : CollisionShape2D
     public float hull;
 
     public bool IsDestroyed { get; private set; }
-
+    public Craft Craft { get; set; }
+    
     
     private Faction faction = Assets.Instance.DefaultEnemyFaction;
     public Faction Faction
@@ -43,6 +44,11 @@ public partial class CraftBodyPart : CollisionShape2D
         SetBlueprint(Blueprint);
     }
 
+
+    private void SetCraft(Craft craft)
+    {
+        Craft = craft;
+    }
 
     private void SetFaction(Faction value)
     {
@@ -97,10 +103,10 @@ public partial class CraftBodyPart : CollisionShape2D
     }
 
 
-    public void TakeHit(SkillNode from, float damage)
-    {
-        HitTaken?.Invoke(from, damage);
-    }
+    // public void TakeHit(SkillNode from, float damage)
+    // {
+    //     HitTaken?.Invoke(from, damage);
+    // }
     
     public void TakeDamage(float damage)
     {

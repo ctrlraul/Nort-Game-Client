@@ -1,27 +1,28 @@
 ﻿using Godot;
-using System;
 using System.Collections.Generic;
 using System.Linq;
+using CtrlRaul;
 using CtrlRaul.Godot;
-using CtrlRaul.Godot.Linq;
-using Nort;
+using Nort.Entities;
 using Nort.Entities.Components;
 
 namespace Nort.Skills;
 
 public partial class BulletSkillNode : SkillNode
 {
-    private const float Damage = 5;
+    private const float Damage = 3;
 
     [Ready] public Area2D rangeArea;
     [Ready] public CollisionShape2D rangeAreaCollisionShape2D;
-    [Ready] public Area2D ray;
-    [Ready] public CollisionShape2D rayCollisionShape2D;
+    [Ready] public RayCast2D rayCast2D;
     [Ready] public GpuParticles2D particles;
     [Ready] public Timer cooldownTimer;
-
+    
+    
+    private readonly Dictionary<Craft, List<CraftBodyPart>> foePartsInRange = new();
+    
     private CraftBodyPart target;
-    private CraftBodyPart Target
+    public CraftBodyPart Target
     {
         get => target;
         set => SetTarget(value);
@@ -29,62 +30,41 @@ public partial class BulletSkillNode : SkillNode
 
     public override void _Ready()
     {
+        base._Ready();
         this.InitializeReady();
         
         if (cooldownTimer.WaitTime < particles.Lifetime)
-            throw new Exception("Firing cooldown should be greater than the particles' lifespan");
+            Logger.Warn(GetType().Name, "Firing cooldown should be greater than the particles' lifespan");
         
-        // rangeAreaCollisionShape2D.Shape = new CircleShape2D { Radius = RangeRadius };
-        // rayCollisionShape2D.Shape = new SegmentShape2D
-        // {
-        //     A = rayCollisionShape2D.Shape.A,
-        //     B = new Vector2(0, -RangeRadius),
-        // };
-
+        rangeArea.CollisionMask = Assets.Instance.GetFactionCollisionMask(part.Faction);
+        rayCast2D.CollisionMask = rangeArea.CollisionMask;
+        
         SetPhysicsProcess(false);
     }
 
     public override void _PhysicsProcess(double delta)
     {
-        GlobalRotation = GlobalPosition.AngleToPoint(Target.GlobalPosition) + Mathf.Pi * 0.5f;
+        base._PhysicsProcess(delta);
+        LookAt(Target.GlobalPosition);
     }
 
     public override void Fire()
     {
-        if (Target == null || cooldownTimer.TimeLeft > 0)
-            return; 
-
-        if (Target.IsDestroyed)
-            TryToFindNewTarget();
-
-        if (Target == null)
+        if (Target == null || target.IsDestroyed)
+            return;
+        
+        if (cooldownTimer.TimeLeft > 0)
             return;
 
         cooldownTimer.Start();
         particles.Emitting = true;
-
-        IEnumerable<CraftBodyPart> foePartsInRay = GetFoePartsInArea(ray);
-        CraftBodyPart partHit = foePartsInRay.FindNearest(part.GlobalPosition, true);
-
-        partHit?.TakeHit(this, Damage);
-    }
-
-    private void TryToFindNewTarget()
-    {
-        List<CraftBodyPart> foePartsInRange = GetFoePartsInArea(rangeArea).ToList();
-        Target = foePartsInRange.Any() ? foePartsInRange[(int)GD.Randi() % foePartsInRange.Count] : null;
-    }
-
-    private bool IsFoePartArea(Area2D area)
-    {
-        return (area.Owner as CraftBodyPart)!.Faction != part.Faction;
-    }
-
-    private IEnumerable<CraftBodyPart> GetFoePartsInArea(Area2D area)
-    {
-        return area.GetOverlappingAreas()
-            .Where(area2 => IsFoePartArea(area2) && !(area2.Owner as CraftBodyPart)!.IsDestroyed)
-            .Select(partArea => partArea.Owner as CraftBodyPart);
+        
+        if (rayCast2D.GetCollider() is Area2D collider)
+        {
+            uint shapeId = (uint)rayCast2D.GetColliderShape();
+            CraftBodyPart partHit = collider.ShapeOwnerGetOwner(shapeId) as CraftBodyPart;
+            target.Craft.TakeHit(partHit, this, Damage);
+        }
     }
 
     private void SetTarget(CraftBodyPart value)
@@ -93,15 +73,20 @@ public partial class BulletSkillNode : SkillNode
             return;
 
         if (target is { IsDestroyed: false })
-            target.Destroyed -= TryToFindNewTarget;
+        {
+            target.Destroyed -= OnTargetDestroyed;
+        }
 
         target = value;
 
         if (target != null)
         {
-            target.Destroyed += TryToFindNewTarget;
-            Fire();
+            target.Destroyed += OnTargetDestroyed;
             SetPhysicsProcess(true);
+            
+            LookAt(Target.GlobalPosition);
+            rayCast2D.ForceRaycastUpdate();
+            Fire();
         }
         else
         {
@@ -110,15 +95,86 @@ public partial class BulletSkillNode : SkillNode
         }
     }
 
-    private void OnRangeAreaAreaEntered(Area2D area)
+
+    private void OnRangeAreaAreaShapeEntered(Rid areaRid, Area2D area, ulong areaShapeIndex, ulong localShapeIndex)
     {
-        if (Target == null && IsFoePartArea(area))
-            Target = (CraftBodyPart)area.Owner;
+        if (area.Owner is Craft craft)
+        {
+            CraftBodyPart foePart = craft.GetPart((uint)areaShapeIndex);
+            
+            if (foePartsInRange.TryGetValue(craft, out List<CraftBodyPart> foeParts))
+            {
+                foeParts.Add(foePart);
+            }
+            else
+            {
+                foePartsInRange.Add(craft, new(){ foePart });
+            }
+            
+            Target ??= foePart;
+        }
     }
 
-    private void OnRangeAreaAreaExited(Area2D area)
+
+    private void OnRangeAreaAreaShapeExited(Rid areaRid, Area2D area, ulong areaShapeIndex, ulong localShapeIndex)
     {
-        if (Target != null && area.Owner == Target)
-            TryToFindNewTarget();
+        if (!IsInstanceValid(area)) // Exited because ded
+            return;
+        
+        if (area.Owner is Craft craft)
+        {
+            List<CraftBodyPart> foeParts = foePartsInRange[craft];
+            
+            if (foeParts.Count == 1)
+            {
+                foeParts.Clear(); // Is this needed or does C# handle it properly?
+                foePartsInRange.Remove(craft);
+                
+                Target = null;
+            }
+            else
+            {
+                CraftBodyPart foePart = craft.GetPart((uint)areaShapeIndex);
+                foeParts.Remove(foePart);
+                
+                if (Target == foePart)
+                {
+                    Target = foeParts[0];
+                }
+            }
+        }
     }
-}
+
+    private void OnCooldownTimerTimeout()
+    {
+        Fire();
+    }
+    
+    private void OnTargetDestroyed()
+    {
+        Target = foePartsInRange.Any() ? foePartsInRange.First().Value[0] : null;
+    }
+    
+    
+    // private void OnRangeAreaAreaEntered(Area2D area)
+    // {
+    //     if (area.Owner is Craft craft && Faction.Hostile(craft.Faction, part.Faction))
+    //     {
+    //         foesInRange.Add(craft);
+    //         Target ??= craft;
+    //     }
+    // }
+    //
+    // private void OnRangeAreaAreaExited(Area2D area)
+    // {
+    //     if (area.Owner is Craft craft && Faction.Hostile(craft.Faction, part.Faction))
+    //     {
+    //         foesInRange.Remove(craft);
+    //
+    //         if (Target == craft)
+    //         {
+    //             Target = foesInRange.Any() ? foesInRange[0] : null;
+    //         }
+    //     }
+    // }
+} 
