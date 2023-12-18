@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace Nort;
 
-public partial class BlueprintPart : RefCounted
+public class BlueprintPart
 {
     [JsonProperty] public bool flipped;
     [JsonProperty] public float x;
