@@ -365,7 +365,7 @@ public partial class CraftBuilderPage : Page
         {
             hoveredPartOutline.Visible = true;
             hoveredPartOutline.Position = hoveredPart.Position;
-            hoveredPartOutline.Rotation = hoveredPart.Angle;
+            hoveredPartOutline.RotationDegrees = hoveredPart.Angle;
             SetHoveredPartOutline(hoveredPart.Blueprint);
             partInspector.SetPart(hoveredPart);
         }

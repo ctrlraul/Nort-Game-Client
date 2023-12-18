@@ -37,11 +37,12 @@ public partial class PartTransformControls : Control
 
 	public float Angle
 	{
+		get => currentAngle;
 		set
 		{
 			currentAngle = value;
-			rotateIconContainer.Rotation = value;
-			outlineSpriteContainer.Rotation = value;
+			rotateIconContainer.RotationDegrees = value;
+			outlineSpriteContainer.RotationDegrees = value;
 		}
 	}
 
@@ -103,17 +104,17 @@ public partial class PartTransformControls : Control
 			float newRotation = Mathf.RadToDeg(mouseAngle - rotationStartAngle);
 			const float snap = 360.0f / Angles;
 
-			Angle = Mathf.DegToRad(Mathf.Floor(newRotation / snap) * snap);
+			Angle = Mathf.Floor(newRotation / snap) * snap;
 
 			if (Part != null)
 			{
-				Part.Angle = currentAngle;
+				Part.Angle = Angle;
 			}
 
 			line.Rotation = mouseAngle;
 			line.Scale = line.Scale with { X = mouse.Length() };
 
-			Rotate?.Invoke(currentAngle);
+			Rotate?.Invoke(Angle);
 		}
 	}
 
