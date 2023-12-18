@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using CtrlRaul.Godot;
+using CtrlRaul.Godot.Linq;
 using CtrlRaul.Interfaces;
 using Godot;
 
@@ -81,9 +82,7 @@ public partial class PartsList : MarginContainer, IItemsList<PartsListItem, Part
 	public void Clear()
 	{
 		EmptyTextLabel.Visible = true;
-		foreach (Node child in ListItemsContainer.GetChildren())
-		{
-			child.QueueFree();
-		}
+		valueToListItem.Clear();
+		ListItemsContainer.QueueFreeChildren();
 	}
 }
