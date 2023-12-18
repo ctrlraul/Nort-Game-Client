@@ -66,7 +66,8 @@ anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = -41.0
+offset_top = -113.0
+offset_bottom = -72.0
 grow_horizontal = 2
 grow_vertical = 0
 size_flags_horizontal = 3
@@ -117,6 +118,20 @@ layout_mode = 2
 text = "mission-id"
 label_settings = SubResource("LabelSettings_rbl7d")
 horizontal_alignment = 1
+
+[node name="CraftBuilderButton" type="Button" parent="InterfaceRoot/HBoxContainer/Center"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -59.0
+offset_top = -41.0
+offset_right = 59.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "Craft Builder"
 
 [node name="RightSide" type="Control" parent="InterfaceRoot/HBoxContainer"]
 layout_mode = 2
@@ -174,4 +189,5 @@ layout_mode = 2
 [connection signal="pressed" from="InterfaceRoot/HBoxContainer/Center/HBoxContainer/DroneButton" to="." method="OnDroneButtonPressed"]
 [connection signal="pressed" from="InterfaceRoot/HBoxContainer/Center/HBoxContainer/OrphanPartButton" to="." method="OnOrphanPartButtonPressed"]
 [connection signal="focus_exited" from="InterfaceRoot/HBoxContainer/Center/VBoxContainer/MissionNameLabel" to="." method="OnMissionNameLabelFocusExited"]
+[connection signal="pressed" from="InterfaceRoot/HBoxContainer/Center/CraftBuilderButton" to="." method="OnCraftBuilderButtonPressed"]
 [connection signal="pressed" from="InterfaceRoot/HBoxContainer/RightSide/TestButton" to="." method="OnTestButtonPressed"]

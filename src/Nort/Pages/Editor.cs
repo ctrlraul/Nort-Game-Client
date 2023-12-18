@@ -4,7 +4,6 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using CtrlRaul.Godot;
-using CtrlRaul.Godot.Linq;
 using Godot;
 using Nort.Entities;
 using CarrierCraft = Nort.Entities.CarrierCraft;
@@ -458,7 +457,7 @@ public partial class Editor : Page
         );
     }
 
-    private void OnCraftBuilderPressed()
+    private void OnCraftBuilderButtonPressed()
     {
         _ = PagesNavigator.Instance.GoTo(
             Config.Pages.CraftBuilder,
