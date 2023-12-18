@@ -124,12 +124,12 @@ toggle_fullscreen={
 [layer_names]
 
 2d_physics/layer_1="craft"
-2d_physics/layer_3="orphan part"
-2d_physics/layer_9="mouse interactable"
-2d_physics/layer_29="Faction 4"
-2d_physics/layer_30="Faction 3"
-2d_physics/layer_31="Faction 2"
-2d_physics/layer_32="Faction 1"
+2d_physics/layer_3="orphan_part"
+2d_physics/layer_9="mouse_interactable"
+2d_physics/layer_29="faction_4"
+2d_physics/layer_30="faction_3"
+2d_physics/layer_31="faction_2"
+2d_physics/layer_32="faction_1"
 
 [rendering]
 
