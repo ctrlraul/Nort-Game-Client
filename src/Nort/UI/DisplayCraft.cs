@@ -96,6 +96,7 @@ public partial class DisplayCraft : Control
 
 	public void MovePartToTop(DisplayCraftPart part)
 	{
-		partsContainer.MoveChild(part, -1);
+		if (partsContainer.GetChildCount() > 1)
+			partsContainer.MoveChild(part, -1);
 	}
 }
