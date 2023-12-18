@@ -15,17 +15,6 @@ public partial class Craft : Entity
     public event Action FactionChanged;
     public event Action Destroyed;
 
-    public enum ComponentSet
-    {
-        None,
-        Player,
-        Fighter,
-        Drone,
-        Turret,
-        Carrier,
-        Outpost
-    }
-
     [Export] private PackedScene craftBodyPartScene;
 
     [Ready] public Area2D partsContainer;
