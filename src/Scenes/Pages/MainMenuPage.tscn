@@ -42,7 +42,6 @@ layout_mode = 2
 remote_path = NodePath("../Logo2DWrapper")
 
 [node name="Logo2DWrapper" type="Node2D" parent="Theme/MarginContainer/VBoxContainer/LogoContainer/Control"]
-position = Vector2(0, 5)
 
 [node name="TextureRect" type="TextureRect" parent="Theme/MarginContainer/VBoxContainer/LogoContainer/Control/Logo2DWrapper"]
 material = ExtResource("3_kerjt")
