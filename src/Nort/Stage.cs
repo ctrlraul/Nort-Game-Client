@@ -125,6 +125,7 @@ public partial class Stage : Node2D
         camera.Position = Vector2.Zero;
         entitiesContainer.QueueFreeChildren();
         partsCollected.Clear();
+        Player = null;
     }
     
 
