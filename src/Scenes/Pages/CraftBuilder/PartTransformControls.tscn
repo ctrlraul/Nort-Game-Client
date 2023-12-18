@@ -26,12 +26,7 @@ default_color = Color(0, 1, 1, 1)
 texture = ExtResource("4_3epxp")
 texture_mode = 2
 
-[node name="OutlineSpriteContainer" type="Control" parent="."]
-unique_name_in_owner = true
-anchors_preset = 0
-mouse_filter = 2
-
-[node name="OutlineSprite" type="TextureRect" parent="OutlineSpriteContainer"]
+[node name="PartOutline" type="TextureRect" parent="."]
 unique_name_in_owner = true
 material = ExtResource("3_ed3f3")
 layout_mode = 1
@@ -46,6 +41,7 @@ offset_right = 64.0
 offset_bottom = 54.0
 grow_horizontal = 2
 grow_vertical = 2
+pivot_offset = Vector2(64, 54)
 mouse_filter = 2
 texture = ExtResource("3_t7umq")
 

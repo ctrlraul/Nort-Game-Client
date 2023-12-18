@@ -1,6 +1,7 @@
 using Godot;
 using Nort.UI;
 using System;
+using CtrlRaul.Godot;
 
 namespace Nort.Pages.CraftBuilder;
 
@@ -11,13 +12,12 @@ public partial class PartTransformControls : Control
 
 	private const int Angles = 16;
 
-	private Control outlineSpriteContainer;
-	private TextureRect outlineSprite;
-	private Control buttonsMargin;
-	private Control rotateIconCenterer;
-	private Control rotateIconContainer;
-	private Line2D line;
-	private TextureRect flipIcon;
+	[Ready] public TextureRect partOutline;
+	[Ready] public Control buttonsMargin;
+	[Ready] public Control rotateIconCenterer;
+	[Ready] public Control rotateIconContainer;
+	[Ready] public Line2D line2D;
+	[Ready] public TextureRect flipIcon;
 
 	private float rotationStartAngle;
 	private float lastMouseWheelSpin;
@@ -26,10 +26,10 @@ public partial class PartTransformControls : Control
 
 	public bool Flipped
 	{
-		get => outlineSprite.FlipH;
+		get => partOutline.FlipH;
 		set
 		{
-			outlineSprite.FlipH = value;
+			partOutline.FlipH = value;
 			flipIcon.FlipH = value;
 		}
 	}
@@ -41,7 +41,7 @@ public partial class PartTransformControls : Control
 		{
 			currentAngle = value;
 			rotateIconContainer.RotationDegrees = value;
-			outlineSpriteContainer.RotationDegrees = value;
+			partOutline.RotationDegrees = value;
 		}
 	}
 
@@ -57,10 +57,10 @@ public partial class PartTransformControls : Control
 				Texture2D texture = Assets.Instance.GetPartTexture(value.partData.partId);
 				Vector2 textureSize = texture.GetSize();
 
-				outlineSprite.Texture = texture;
-				outlineSprite.Size = textureSize;
-				outlineSprite.PivotOffset = textureSize * 0.5f;
-				outlineSprite.Position = -textureSize * 0.5f;
+				partOutline.Texture = texture;
+				partOutline.Size = textureSize;
+				partOutline.PivotOffset = textureSize * 0.5f;
+				partOutline.Position = -textureSize * 0.5f;
 
 				Angle = value.Angle;
 				Flipped = value.Flipped;
@@ -69,7 +69,7 @@ public partial class PartTransformControls : Control
 			}
 			else
 			{
-				outlineSprite.Texture = null;
+				partOutline.Texture = null;
 				Visible = false;
 			}
 
@@ -81,17 +81,9 @@ public partial class PartTransformControls : Control
 	public override void _Ready()
 	{
 		base._Ready();
-
-		outlineSpriteContainer = GetNode<Control>("%OutlineSpriteContainer");
-		outlineSprite = GetNode<TextureRect>("%OutlineSprite");
-		buttonsMargin = GetNode<Control>("%ButtonsMargin");
-		rotateIconCenterer = GetNode<Control>("%RotateIconCenterer");
-		rotateIconContainer = GetNode<Control>("%RotateIconContainer");
-		line = GetNode<Line2D>("%Line2D");
-		flipIcon = GetNode<TextureRect>("%FlipIcon");
-
+		this.InitializeReady();
 		SetProcessInput(false);
-		line.Visible = false;
+		line2D.Visible = false;
 	}
 
 	public override void _Input(InputEvent @event)
@@ -110,8 +102,8 @@ public partial class PartTransformControls : Control
 				Part.Angle = Angle;
 			}
 
-			line.Rotation = mouseAngle;
-			line.Scale = line.Scale with { X = mouse.Length() };
+			line2D.Rotation = mouseAngle;
+			line2D.Scale = line2D.Scale with { X = mouse.Length() };
 
 			Rotate?.Invoke(Angle);
 		}
@@ -131,10 +123,10 @@ public partial class PartTransformControls : Control
 		}
 
 		Position = control.Position + Part.Position * control.Scale;
-		outlineSpriteContainer.Scale = control.Scale;
+		partOutline.Scale = control.Scale;
 		buttonsMargin.Position = buttonsMargin.Position with
 		{
-			Y = outlineSprite.Texture.GetHeight() * 0.5f * control.Scale.Y + 20
+			Y = partOutline.Texture.GetHeight() * 0.5f * control.Scale.Y + 20
 		};
 	}
 
@@ -145,9 +137,9 @@ public partial class PartTransformControls : Control
 
 		rotationStartAngle = mouseAngle - currentAngle;
 
-		line.Visible = true;
-		line.Rotation = mouseAngle;
-		line.Scale = line.Scale with { X = mouse.Length() };
+		line2D.Visible = true;
+		line2D.Rotation = mouseAngle;
+		line2D.Scale = line2D.Scale with { X = mouse.Length() };
 
 		SetProcessInput(true);
 	}
@@ -155,7 +147,7 @@ public partial class PartTransformControls : Control
 	private void OnRotateButtonButtonUp()
 	{
 		SetProcessInput(false);
-		line.Visible = false;
+		line2D.Visible = false;
 	}
 
 	private void OnFlipButtonPressed()
