@@ -343,7 +343,7 @@ size_flags_horizontal = 8
 unique_name_in_owner = true
 
 [connection signal="gui_input" from="Control/CanvasManipulationHitBox" to="." method="OnCanvasManipulationHitBoxGuiInput"]
-[connection signal="pressed" from="Control/MarginContainer/VBoxContainer/HBoxContainer/Right/BlueprintButtons/ImportButton" to="." method="_on_import_button_pressed"]
-[connection signal="pressed" from="Control/MarginContainer/VBoxContainer/HBoxContainer/Right/BlueprintButtons/ExportButton" to="." method="_on_export_button_pressed"]
+[connection signal="pressed" from="Control/MarginContainer/VBoxContainer/HBoxContainer/Right/BlueprintButtons/ImportButton" to="." method="OnImportButtonPressed"]
+[connection signal="pressed" from="Control/MarginContainer/VBoxContainer/HBoxContainer/Right/BlueprintButtons/ExportButton" to="." method="OnExportButtonPressed"]
 [connection signal="pressed" from="Control/MarginContainer/VBoxContainer/HBoxContainer/Center/HBoxContainer/BuildButton" to="." method="OnBuildButtonPressed"]
 [connection signal="pressed" from="Control/MarginContainer/VBoxContainer/HBoxContainer/Center/HBoxContainer/ClearButton" to="." method="OnClearButtonPressed"]

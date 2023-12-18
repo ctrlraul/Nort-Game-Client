@@ -414,10 +414,21 @@ public partial class CraftBuilderPage : Page
 
     private void OnExportButtonPressed()
     {
-        Blueprint blueprint = displayCraft.Blueprint;
+        if (string.IsNullOrEmpty(blueprintIdInput.Text))
+        {
+            TextInputPopup popup = PopupsManager.Instance.TextInput("An ID is required!");
 
-        if (!string.IsNullOrEmpty(blueprintIdInput.Text))
-            blueprint.id = blueprintIdInput.Text;
+            popup.Submitted += text =>
+            {
+                blueprintIdInput.Text = text;
+                OnExportButtonPressed();
+            };
+
+            return;
+        }
+            
+        Blueprint blueprint = displayCraft.Blueprint;
+        blueprint.id = blueprintIdInput.Text;
 
         try
         {
