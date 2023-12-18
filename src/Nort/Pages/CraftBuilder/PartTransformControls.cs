@@ -177,10 +177,12 @@ public partial class PartTransformControls : Control
 
 			int delta = mouseButtonEvent.ButtonIndex == MouseButton.WheelUp ? 1 : -1;
 
-			currentAngle += Mathf.DegToRad(360.0f / Angles * delta);
+			Angle += 360.0f / Angles * delta;
 
-			Part.Angle = currentAngle;
+			Part.Angle = Angle;
 			lastMouseWheelSpin = now;
+			
+			Rotate?.Invoke(Angle);
 		}
 	}
 }
