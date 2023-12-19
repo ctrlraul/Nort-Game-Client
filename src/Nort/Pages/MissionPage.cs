@@ -1,6 +1,8 @@
 ﻿using Godot;
 using System.Threading.Tasks;
 using CtrlRaul.Godot;
+using CtrlRaul.Godot.Linq;
+using Nort.Pages.MissionHud;
 using Nort.UI;
 using Nort.UI.Overlays;
 using Craft = Nort.Entities.Craft;
@@ -22,9 +24,11 @@ public partial class MissionPage : Page
     }
 
     [Export] public PackedScene pauseOverlayScene;
+    [Export] public PackedScene skillButtonScene;
 
     [Ready] public SimpleProgressBar hullProgressBar;
     [Ready] public SimpleProgressBar coreProgressBar;
+    [Ready] public Control skillButtons;
 
     private Mission mission;
     private Craft player;
@@ -38,6 +42,7 @@ public partial class MissionPage : Page
         this.InitializeReady();
         Stage.Instance.PlayerSpawned += OnPlayerSpawned;
         Stage.Instance.PlayerDestroyed += OnPlayerDestroyed;
+        skillButtons.QueueFreeChildren();
         SetProcess(false);
     }
 
@@ -96,9 +101,18 @@ public partial class MissionPage : Page
     private void OnPlayerSpawned(Craft craft)
     {
         player = craft;
+        
         hullProgressBar.Modulate = player.Faction.Color;
         hullProgressBar.Progress = 1;
         coreProgressBar.Progress = 1;
+
+        foreach (ISkillNode skillNode in player.GetSkillNodes())
+        {
+            SkillButton button = skillButtonScene.Instantiate<SkillButton>();
+            skillButtons.AddChild(button);
+            button.SetSkillNode(skillNode);
+        }
+        
         SetProcess(true);
     }
 

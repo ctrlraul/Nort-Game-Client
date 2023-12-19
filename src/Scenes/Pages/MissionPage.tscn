@@ -1,12 +1,28 @@
-[gd_scene load_steps=4 format=3 uid="uid://m3i0qedakhoo"]
+[gd_scene load_steps=9 format=3 uid="uid://m3i0qedakhoo"]
 
 [ext_resource type="Script" path="res://Nort/Pages/MissionPage.cs" id="1_qmqk6"]
 [ext_resource type="PackedScene" uid="uid://whj2kaikbqfx" path="res://Scenes/UI/Overlays/PauseOverlay.tscn" id="2_5pulk"]
 [ext_resource type="PackedScene" uid="uid://dogjqbi647gty" path="res://Scenes/UI/SimpleProgressBar.tscn" id="2_dm4nt"]
+[ext_resource type="Texture2D" uid="uid://b5qg2cai66rhe" path="res://Images/theme/mission_hud/skills_bar.png" id="4_natrv"]
+[ext_resource type="PackedScene" uid="uid://d4mu3n1tu5q86" path="res://Scenes/Pages/MissionHud/SkillButton.tscn" id="5_hkoxc"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s8wqn"]
+atlas = ExtResource("4_natrv")
+region = Rect2(0, 0, 27, 129)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g4rmj"]
+atlas = ExtResource("4_natrv")
+region = Rect2(27, 0, 77, 129)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kgi2c"]
+atlas = ExtResource("4_natrv")
+region = Rect2(105, 0, 118, 129)
 
 [node name="Mission" type="CanvasLayer"]
 script = ExtResource("1_qmqk6")
 pauseOverlayScene = ExtResource("2_5pulk")
+skillButtonScene = ExtResource("5_hkoxc")
 
 [node name="Theme" type="Control" parent="."]
 layout_mode = 3
@@ -25,10 +41,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-theme_override_constants/margin_left = 20
-theme_override_constants/margin_top = 20
-theme_override_constants/margin_right = 20
-theme_override_constants/margin_bottom = 20
+theme_type_variation = &"WindowMarginContainer"
 
 [node name="Control" type="Control" parent="Theme/MarginContainer"]
 layout_mode = 2
@@ -48,7 +61,7 @@ theme_override_constants/separation = 0
 
 [node name="HullProgressBar" parent="Theme/MarginContainer/Control/VBoxContainer" instance=ExtResource("2_dm4nt")]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(200, 5)
+custom_minimum_size = Vector2(200, 10)
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
@@ -57,7 +70,7 @@ Progress = 0.75
 
 [node name="CoreProgressBar" parent="Theme/MarginContainer/Control/VBoxContainer" instance=ExtResource("2_dm4nt")]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(200, 5)
+custom_minimum_size = Vector2(200, 10)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 0
@@ -83,3 +96,79 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_type_variation = &"PanelContainerDarken"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Theme/MarginContainer/Control"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -40.0
+offset_right = 40.0
+grow_vertical = 0
+
+[node name="SkillButton" type="Button" parent="Theme/MarginContainer/Control/HBoxContainer"]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+flat = true
+
+[node name="MarginContainer2" type="MarginContainer" parent="Theme"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -87.0
+offset_right = 182.0
+grow_vertical = 0
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Theme/MarginContainer2"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="TextureRect" type="TextureRect" parent="Theme/MarginContainer2/HBoxContainer2"]
+layout_mode = 2
+texture = SubResource("AtlasTexture_s8wqn")
+
+[node name="MarginContainer" type="MarginContainer" parent="Theme/MarginContainer2/HBoxContainer2"]
+layout_mode = 2
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="TextureRect2" type="TextureRect" parent="Theme/MarginContainer2/HBoxContainer2/MarginContainer"]
+layout_mode = 2
+texture = SubResource("AtlasTexture_g4rmj")
+
+[node name="MarginContainer" type="MarginContainer" parent="Theme/MarginContainer2/HBoxContainer2/MarginContainer"]
+layout_mode = 2
+theme_override_constants/margin_bottom = 0
+
+[node name="SkillButtons" type="HBoxContainer" parent="Theme/MarginContainer2/HBoxContainer2/MarginContainer/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="SkillButton" parent="Theme/MarginContainer2/HBoxContainer2/MarginContainer/MarginContainer/SkillButtons" instance=ExtResource("5_hkoxc")]
+layout_mode = 2
+
+[node name="SkillButton2" parent="Theme/MarginContainer2/HBoxContainer2/MarginContainer/MarginContainer/SkillButtons" instance=ExtResource("5_hkoxc")]
+layout_mode = 2
+
+[node name="SkillButton3" parent="Theme/MarginContainer2/HBoxContainer2/MarginContainer/MarginContainer/SkillButtons" instance=ExtResource("5_hkoxc")]
+layout_mode = 2
+
+[node name="Control" type="Control" parent="Theme/MarginContainer2/HBoxContainer2"]
+show_behind_parent = true
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="Theme/MarginContainer2/HBoxContainer2/Control"]
+layout_mode = 0
+offset_left = -48.0
+offset_right = 72.0
+offset_bottom = 129.0
+mouse_filter = 2
+texture = SubResource("AtlasTexture_kgi2c")

@@ -1,0 +1,120 @@
+[gd_scene load_steps=13 format=3 uid="uid://d4mu3n1tu5q86"]
+
+[ext_resource type="Texture2D" uid="uid://byfrf7xyw43a2" path="res://Images/skills/drone.png" id="1_j2b34"]
+[ext_resource type="Texture2D" uid="uid://d3vturuwlqnjf" path="res://Images/theme/mission_hud/skill_button_normal.png" id="1_l6o8h"]
+[ext_resource type="Texture2D" uid="uid://dedwit1uji764" path="res://Images/theme/mission_hud/skill_button_press.png" id="2_kmecp"]
+[ext_resource type="Texture2D" uid="uid://v4fqr4d3c5pm" path="res://Images/theme/mission_hud/skill_button_hover.png" id="3_0telk"]
+[ext_resource type="Script" path="res://Nort/Pages/MissionHud/SkillButton.cs" id="4_0sh67"]
+[ext_resource type="Shader" path="res://Scenes/Pages/MissionHud/progress_bar.gdshader" id="5_0gnqk"]
+[ext_resource type="Texture2D" uid="uid://d1778lf6rx0ny" path="res://Images/theme/mission_hud/skill_button_progress.png" id="5_qw7ox"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6e6ia"]
+resource_local_to_scene = true
+shader = ExtResource("5_0gnqk")
+shader_parameter/progress = 0.5
+
+[sub_resource type="LabelSettings" id="LabelSettings_hrjkk"]
+font_size = 14
+font_color = Color(0, 1, 0.498039, 1)
+
+[sub_resource type="Animation" id="Animation_rfrdg"]
+resource_name = "progress"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CooldownBar:material:shader_parameter/progress")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 1.0]
+}
+
+[sub_resource type="Animation" id="Animation_fmava"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CooldownBar:material:shader_parameter/progress")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.5]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_7ku80"]
+_data = {
+"RESET": SubResource("Animation_fmava"),
+"progress": SubResource("Animation_rfrdg")
+}
+
+[node name="SkillButton" type="TextureButton"]
+offset_right = 69.0
+offset_bottom = 80.0
+size_flags_vertical = 4
+theme_type_variation = &"SkillButton"
+texture_normal = ExtResource("1_l6o8h")
+texture_pressed = ExtResource("2_kmecp")
+texture_hover = ExtResource("3_0telk")
+script = ExtResource("4_0sh67")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("1_j2b34")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="CooldownBar" type="TextureRect" parent="."]
+unique_name_in_owner = true
+self_modulate = Color(0.286275, 1, 0.568627, 1)
+material = SubResource("ShaderMaterial_6e6ia")
+layout_mode = 0
+offset_top = 57.0
+offset_right = 35.0
+offset_bottom = 80.0
+texture = ExtResource("5_qw7ox")
+stretch_mode = 5
+
+[node name="ShortcutLabel" type="Label" parent="."]
+unique_name_in_owner = true
+self_modulate = Color(1, 1, 1, 0.160784)
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -4.5
+offset_top = 6.0
+offset_right = 4.5
+offset_bottom = 27.0
+grow_horizontal = 2
+text = "2"
+label_settings = SubResource("LabelSettings_hrjkk")
+horizontal_alignment = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+unique_name_in_owner = true
+libraries = {
+"": SubResource("AnimationLibrary_7ku80")
+}
+
+[connection signal="button_down" from="." to="." method="OnButtonDown"]
+[connection signal="button_up" from="." to="." method="OnButtonUp"]
