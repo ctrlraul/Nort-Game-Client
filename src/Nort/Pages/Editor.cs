@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using CtrlRaul.Godot;
 using Godot;
 using Nort.Entities;
-using CarrierCraft = Nort.Entities.CarrierCraft;
 using Nort.Hud;
 using Nort.Pages.CraftBuilder;
 using Nort.Popups;

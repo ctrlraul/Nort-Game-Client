@@ -4,7 +4,6 @@ using CtrlRaul.Godot;
 using Godot;
 using Nort.Entities.Components;
 using Nort.Hud;
-using Nort.Pages;
 using Nort.Skills;
 
 namespace Nort.Entities;
