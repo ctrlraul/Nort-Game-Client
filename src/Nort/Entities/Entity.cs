@@ -1,11 +1,62 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using Godot;
-using Nort.Pages;
 
 namespace Nort.Entities;
 
+[AttributeUsage(AttributeTargets.Property)]
+public class SavableAttribute : Attribute { }
+
 public partial class Entity : Node2D
 {
+    #region Static
+
+    private static readonly Dictionary<Type, List<PropertyInfo>> PropertiesCache = new();
+    
+    
+    public static Dictionary<string, object> GetSetup(Entity entity)
+    {
+        List<PropertyInfo> properties = GetSavableProperties(entity);
+        return properties.ToDictionary(property => property.Name, property => property.GetValue(entity));
+    }
+
+    public static void SetSetup(Entity entity, Dictionary<string, object> setup)
+    {
+        foreach (PropertyInfo property in GetSavableProperties(entity))
+        {
+            if (property.Name == "Type")
+                continue;
+
+            if (!setup.TryGetValue(property.Name, out object savedValue))
+                continue;
+            
+            property.SetValue(entity, savedValue is double dbl ? (float)dbl : savedValue);
+        }
+    }
+
+    private static List<PropertyInfo> GetSavableProperties(Entity entity)
+    {
+        Type type = entity.GetType();
+        
+        if (PropertiesCache.TryGetValue(type, out List<PropertyInfo> cachedProperties))
+        {
+            return cachedProperties;
+        }
+        
+        List<PropertyInfo> properties = type.GetProperties()
+            .Where(info => info.GetCustomAttribute<SavableAttribute>() != null)
+            .ToList();
+        
+        PropertiesCache.Add(type, properties);
+
+        return properties;
+    }
+
+    #endregion
+    
+    
     private const float Damp = 0.95f;
     
     [Savable] public string Type => GetType().Name;

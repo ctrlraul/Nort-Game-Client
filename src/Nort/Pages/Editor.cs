@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 using CtrlRaul.Godot;
 using Godot;
@@ -12,9 +11,6 @@ using Nort.Pages.CraftBuilder;
 using Nort.Popups;
 
 namespace Nort.Pages;
-
-[AttributeUsage(AttributeTargets.Property)]
-public class SavableAttribute : Attribute { }
 
 public partial class Editor : Page
 {
@@ -188,41 +184,12 @@ public partial class Editor : Page
 
     private Mission CreateMission()
     {
-        Dictionary<Type, List<PropertyInfo>> propertiesCache = new();
-        List<Dictionary<string, object>> entitySetups = new();
-
-        foreach (Entity entity in Entities)
-        {
-            Type type = entity.GetType();
-
-            List<PropertyInfo> properties;
-
-            if (propertiesCache.TryGetValue(type, out List<PropertyInfo> cachedProperties))
-            {
-                properties = cachedProperties;
-            }
-            else
-            {
-                properties = GetSavableProperties(type);
-                propertiesCache.Add(type, properties);
-            }
-
-            Dictionary<string, object> entityDict = properties.ToDictionary(
-                property => property.Name,
-                property => property.GetValue(entity)
-            );
-
-            entitySetups.Add(entityDict);
-        }
-
-        Mission mission = new()
+        return new()
         {
             id = missionIdLabel.Text,
             displayName = missionNameLabel.Text,
-            entitySetups = entitySetups
+            entitySetups = Entities.Select(Entity.GetSetup).ToList()
         };
-
-        return mission;
     }
     
     private void AddEntity<T>() where T : Entity
@@ -475,10 +442,5 @@ public partial class Editor : Page
     private static string GenerateMissionName()
     {
         return $"New Mission {((int)(Time.GetUnixTimeFromSystem() * 1000)).ToString("X")}";
-    }
-
-    public static List<PropertyInfo> GetSavableProperties(Type type)
-    {
-        return type.GetProperties().Where(info => info.GetCustomAttribute<SavableAttribute>() != null).ToList();
     }
 }

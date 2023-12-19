@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 using CtrlRaul;
 using CtrlRaul.Godot;
 using CtrlRaul.Godot.Linq;
@@ -157,18 +156,9 @@ public partial class Stage : Node2D
             throw new Exception("Invalid or missing 'Type' property in entity setup");
         
         Entity entity = InstantiateEntityScene(typeName);
-
-        foreach (PropertyInfo property in Editor.GetSavableProperties(entity.GetType()))
-        {
-            if (property.Name == "Type")
-                continue;
-
-            if (!setup.TryGetValue(property.Name, out object savedValue))
-                continue;
-            
-            property.SetValue(entity, savedValue is double dbl ? (float)dbl : savedValue);
-        }
         
+        Entity.SetSetup(entity, setup);
+
         Spawn(entity);
         
         return entity;
