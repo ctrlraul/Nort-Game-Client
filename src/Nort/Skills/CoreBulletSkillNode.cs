@@ -36,14 +36,6 @@ public partial class CoreBulletSkillNode : Node2D, ISkillNode
     public override void _Ready()
     {
         this.InitializeReady();
-        
-        // rangeAreaCollisionShape2D.Shape = new CircleShape2D { Radius = RangeRadius };
-        // rayCollisionShape2D.Shape = new SegmentShape2D
-        // {
-        //     A = rayCollisionShape2D.Shape.A,
-        //     B = new Vector2(0, -RangeRadius),
-        // };
-
         SetPhysicsProcess(false);
     }
 

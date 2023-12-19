@@ -1,6 +1,6 @@
 using Godot;
 using System;
-using Nort.Entities.Components;
+using Nort.Entities;
 
 namespace Nort.Skills;
 
@@ -10,7 +10,7 @@ public partial class RadarSkill : Node2D, ISkillNode
     
     public event Action Fired;
 
-    public CraftBodyPart Part { get; set; }
+    public CraftPart Part { get; set; }
     
     public float CooldownMax => 0;
     public float Cooldown => 0;
