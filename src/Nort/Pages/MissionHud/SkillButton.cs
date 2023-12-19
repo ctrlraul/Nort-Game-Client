@@ -1,7 +1,6 @@
 using Godot;
-using System;
 using CtrlRaul.Godot;
-using Nort.Entities.Components;
+using Nort.Entities;
 
 namespace Nort.Pages.MissionHud;
 
@@ -60,7 +59,7 @@ public partial class SkillButton : TextureButton
 		animationPlayer.Play("progress");
 	}
 
-	private void OnSkillNodePartDestroyed(CraftBodyPart part)
+	private void OnSkillNodePartDestroyed(CraftPart part)
 	{
 		skillNode = null;
 		Modulate = Colors.Red * 0.5f;
