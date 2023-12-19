@@ -9,6 +9,8 @@ namespace Nort.Entities;
 [AttributeUsage(AttributeTargets.Property)]
 public class SavableAttribute : Attribute { }
 
+public class EntitySetup : Dictionary<string, object> { }
+
 public partial class Entity : Node2D
 {
     #region Static
@@ -19,10 +21,16 @@ public partial class Entity : Node2D
     public static Dictionary<string, object> GetSetup(Entity entity)
     {
         List<PropertyInfo> properties = GetSavableProperties(entity);
-        return properties.ToDictionary(property => property.Name, property => property.GetValue(entity));
+        
+        EntitySetup entitySetup = new();
+
+        foreach (PropertyInfo property in properties)
+            entitySetup.Add(property.Name, property.GetValue(entity));
+        
+        return entitySetup;
     }
 
-    public static void SetSetup(Entity entity, Dictionary<string, object> setup)
+    public static void SetSetup(Entity entity, EntitySetup setup)
     {
         foreach (PropertyInfo property in GetSavableProperties(entity))
         {

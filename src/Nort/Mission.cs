@@ -27,7 +27,7 @@ public class Mission : ISavable
 {
     [JsonProperty] public string id;
     [JsonProperty] public string displayName;
-    [JsonProperty] public List<Dictionary<string, object>> entitySetups = new();
+    [JsonProperty] public List<EntitySetup> entitySetups = new();
 
     /*public IDictionary Serialize()
     {

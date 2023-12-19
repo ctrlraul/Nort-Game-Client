@@ -81,7 +81,7 @@ public partial class Stage : Node2D
 
         logger.Log($"Loading mission '{mission.displayName}'");
 
-        foreach (Dictionary<string, object> entitySetup in mission.entitySetups)
+        foreach (EntitySetup entitySetup in mission.entitySetups)
         {
             try
             {
@@ -150,7 +150,7 @@ public partial class Stage : Node2D
         return entity;
     }
     
-    public Entity Spawn(Dictionary<string, object> setup)
+    public Entity Spawn(EntitySetup setup)
     {
         if (!setup.TryGetValue("Type", out object value) || value is not string typeName)
             throw new Exception("Invalid or missing 'Type' property in entity setup");
