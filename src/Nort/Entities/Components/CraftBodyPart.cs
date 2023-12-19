@@ -13,7 +13,7 @@ public partial class CraftBodyPart : CollisionShape2D
 
     [Ready] public Sprite2D sprite2D;
     
-    public List<SkillNode> skillNodes = new();
+    public readonly List<ISkillNode> skillNodes = new();
     public float hullMax;
     public float hull;
 
@@ -92,10 +92,16 @@ public partial class CraftBodyPart : CollisionShape2D
         
         foreach (Skill skill in skills)
         {
-            SkillNode cbpSkill = skill.Scene.Instantiate<SkillNode>();
-            cbpSkill.Position = Position;
-            cbpSkill.part = this;
-            skillNodes.Add(cbpSkill);
+            Node2D node = skill.Scene.Instantiate<Node2D>();
+            
+            node.Position = Position;
+
+            if (node is ISkillNode skillNode)
+            {
+                skillNode.Part = this;
+                skillNodes.Add(skillNode);
+            }
+            
         }
 
         if (faction != null) // Actually not sure why this check is needed
@@ -124,7 +130,7 @@ public partial class CraftBodyPart : CollisionShape2D
             
         this.Remove();
 
-        foreach (SkillNode skill in skillNodes)
+        foreach (Node skill in skillNodes.Cast<Node>())
             skill.Remove();
     }
 

@@ -9,8 +9,21 @@ using Nort.Entities.Components;
 
 namespace Nort.Skills;
 
-public partial class CoreBulletSkillNode : SkillNode
+public partial class CoreBulletSkillNode : Node2D, ISkillNode
 {
+    #region ISkillNode Implementation
+    
+    public event Action Fired;
+
+    public CraftBodyPart Part { get; set; }
+    
+    public float CooldownMax => (float)cooldownTimer.WaitTime;
+    public float Cooldown => (float)cooldownTimer.TimeLeft;
+    public Texture2D Texture => GetNode<Sprite2D>("Sprite2D").Texture;
+
+    #endregion
+    
+    
     [Ready] public Area2D rangeArea;
     [Ready] public CollisionShape2D rangeAreaCollisionShape2D;
     [Ready] public Timer cooldownTimer;
@@ -41,7 +54,7 @@ public partial class CoreBulletSkillNode : SkillNode
         GlobalRotation = GlobalPosition.AngleToPoint(Target.GlobalPosition) + Mathf.Pi * 0.5f;
     }
 
-    public override void Fire()
+    public void Fire()
     {
         if (Target == null || cooldownTimer.TimeLeft > 0)
             return; 
@@ -65,7 +78,7 @@ public partial class CoreBulletSkillNode : SkillNode
 
     private bool IsFoePartArea(Area2D area)
     {
-        return (area.Owner as CraftBodyPart)!.Faction != part.Faction;
+        return (area.Owner as CraftBodyPart)!.Faction != Part.Faction;
     }
 
     private IEnumerable<CraftBodyPart> GetFoePartsInArea(Area2D area)

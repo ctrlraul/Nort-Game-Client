@@ -1,12 +1,17 @@
-[gd_scene load_steps=3 format=3 uid="uid://dae0e6emjb4q4"]
+[gd_scene load_steps=4 format=3 uid="uid://dae0e6emjb4q4"]
 
 [ext_resource type="Script" path="res://Nort/Skills/CoreBulletSkillNode.cs" id="1_a1m0x"]
+[ext_resource type="Texture2D" uid="uid://jbfsf8a7ncm5" path="res://Images/skills/core_bullet.png" id="2_31aju"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_v2vhg"]
 radius = 700.0
 
 [node name="CoreBulletSkillNode" type="Node2D"]
 script = ExtResource("1_a1m0x")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+visible = false
+texture = ExtResource("2_31aju")
 
 [node name="RangeArea" type="Area2D" parent="."]
 unique_name_in_owner = true

@@ -8,8 +8,21 @@ using Nort.Entities.Components;
 
 namespace Nort.Skills;
 
-public partial class BulletSkillNode : SkillNode
+public partial class BulletSkillNode : Node2D, ISkillNode
 {
+    #region ISkillNode Implementation
+    
+    public event Action Fired;
+
+    public CraftBodyPart Part { get; set; }
+    
+    public float CooldownMax => (float)cooldownTimer.WaitTime;
+    public float Cooldown => (float)cooldownTimer.TimeLeft;
+    public Texture2D Texture => GetNode<Sprite2D>("Sprite2D").Texture;
+
+    #endregion
+    
+    
     private const float Damage = 3;
 
     [Ready] public Area2D rangeArea;
@@ -48,7 +61,7 @@ public partial class BulletSkillNode : SkillNode
         LookAt(Target.GlobalPosition);
     }
 
-    public override void Fire()
+    public void Fire()
     {
         if (Game.Instance.InMissionEditor)
             return;
@@ -67,6 +80,7 @@ public partial class BulletSkillNode : SkillNode
             uint shapeId = (uint)rayCast2D.GetColliderShape();
             CraftBodyPart partHit = collider.ShapeOwnerGetOwner(shapeId) as CraftBodyPart;
             target.Craft.TakeHit(partHit, this, Damage);
+            Fired?.Invoke();
         }
     }
 

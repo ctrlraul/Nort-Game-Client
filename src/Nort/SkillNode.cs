@@ -1,11 +1,15 @@
-﻿using Godot;
+﻿using System;
+using Godot;
 using Nort.Entities.Components;
 
 namespace Nort;
 
-public abstract partial class SkillNode : Node2D
+public interface ISkillNode
 {
-    public CraftBodyPart part;
-
-    public abstract void Fire();
+    public event Action Fired;
+    
+    public CraftBodyPart Part { get; set; }
+    public float CooldownMax { get; }
+    public float Cooldown { get; }
+    public Texture2D Texture { get; }
 }

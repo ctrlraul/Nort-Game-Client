@@ -135,7 +135,7 @@ public partial class Craft : Entity
         
         partsContainer.AddChild(part);
 
-        foreach (SkillNode skill in part.skillNodes)
+        foreach (Node skill in part.skillNodes.Cast<Node>())
             skillsContainer.AddChild(skill);
 
         return part;
@@ -151,64 +151,37 @@ public partial class Craft : Entity
         return partsContainer.GetChildren().Cast<CraftBodyPart>();
     }
 
-    protected IEnumerable<SkillNode> GetSkillNodes()
+    public IEnumerable<ISkillNode> GetSkillNodes()
     {
-        return skillsContainer.GetChildren().Cast<SkillNode>();
+        return skillsContainer.GetChildren().Cast<ISkillNode>();
     }
 
-    public void TakeHit(CraftBodyPart part, SkillNode from, float damage)
+    public void TakeHit(CraftBodyPart part, ISkillNode from, float damage)
     {
-        if (from is BulletSkillNode)
+        switch (from)
         {
-            Hull -= damage;
+            case BulletSkillNode:
+                Hull -= damage;
 
-            if (Hull >= 0)
-                return;
+                if (Hull >= 0)
+                    return;
 
-            if (part == corePart)
-            {
-                Core += Hull;
+                if (part == corePart)
+                {
+                    Core += Hull;
 
-                if (Core <= 0)
-                    Destroy();
-            }
-            else
-            {
-                part.TakeDamage(Hull * -1);
-            }
+                    if (Core <= 0)
+                        Destroy();
+                }
+                else
+                {
+                    part.TakeDamage(Hull * -1);
+                }
 
-            Hull = 0;
+                Hull = 0;
             
-            StatsChanged?.Invoke();
-        }
-    }
-
-    public void TakeHit(uint shapeId, SkillNode from, float damage)
-    {
-        CraftBodyPart part = GetPart(shapeId);
-        
-        if (from is BulletSkillNode)
-        {
-            Hull -= damage;
-
-            if (Hull >= 0)
-                return;
-
-            if (part == corePart)
-            {
-                Core += Hull;
-
-                if (Core <= 0)
-                    Destroy();
-            }
-            else
-            {
-                part.TakeDamage(Hull * -1);
-            }
-
-            Hull = 0;
-            
-            StatsChanged?.Invoke();
+                StatsChanged?.Invoke();
+                break;
         }
     }
 
