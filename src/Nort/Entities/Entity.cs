@@ -18,7 +18,12 @@ public partial class Entity : Node2D
     private static readonly Dictionary<Type, List<PropertyInfo>> PropertiesCache = new();
     
     
-    public static Dictionary<string, object> GetSetup(Entity entity)
+    public static bool IsEntitySetupOfType<T>(EntitySetup setup) where T : Entity
+    {
+        return (string)setup["Type"] ==  typeof(T).Name;
+    }
+    
+    public static EntitySetup GetSetup(Entity entity)
     {
         List<PropertyInfo> properties = GetSavableProperties(entity);
         

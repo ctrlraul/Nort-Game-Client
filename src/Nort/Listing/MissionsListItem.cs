@@ -20,13 +20,13 @@ public partial class MissionsListItem : MarginContainer
 		{
 			mission = value;
 			
-			// Dictionary<string, object> entitySetup = mission.entitySetups.First(entityDictionary =>
-			// {
-			// 	return entityDictionary.TryGetValue("Type", out object type) && (string)type == nameof(PlayerCraft)
-			// });
-			//
-			// if (entitySetup is PlayerCraftSetup playerCraftSetup)
-			// 	displayCraft.Blueprint = playerCraftSetup.TestBlueprint;
+			EntitySetup displaySetup = mission.entitySetups.FirstOrDefault(Entity.IsEntitySetupOfType<PlayerCraft>);
+
+			displayCraft.Blueprint = (
+				displaySetup == default
+				? Assets.Instance.InitialBlueprint
+				: Assets.Instance.GetBlueprint((string)displaySetup["TestBlueprintId"])
+			);
 			
 			displayNameLabel.Text = mission.displayName;
 			idLabel.Text = mission.id;
@@ -49,7 +49,7 @@ public partial class MissionsListItem : MarginContainer
 	private async void Initialize()
 	{
 		await Game.Instance.Initialize();
-		displayCraft.Modulate = Assets.Instance.PlayerFaction.Color;
+		displayCraft.Color = Assets.Instance.PlayerFaction.Color;
 	}
 
 	private void OnButtonPressed()
