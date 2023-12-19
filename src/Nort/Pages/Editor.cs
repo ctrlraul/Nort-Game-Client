@@ -49,13 +49,13 @@ public partial class Editor : Page
 
     private readonly Vector2I gridSnap = Vector2I.One * 128;
     private readonly Dictionary<Entity, Vector2> dragOffsets = new();
-    private readonly Dictionary<Entity, Vector2> copyOffsets = new();
     private readonly List<Entity> selection = new();
-    private readonly List<Entity> copied = new();
+    private readonly List<EntitySetup> copied = new();
     private ulong lastZoom;
     private bool panning;
     private bool hasUnsavedChange;
     private Vector2 selectionStart = Vector2.Zero;
+    private Vector2 copyOffset = Vector2.Zero;
     private MouseState mouseState = MouseState.Up;
 
 
@@ -204,18 +204,16 @@ public partial class Editor : Page
 
     public void ShortcutCopy()
     {
-        copyOffsets.Clear();
         copied.Clear();
-        copied.AddRange(selection);
 
-        Vector2 canvasCenter = Stage.camera.Position;
+        copyOffset = Stage.camera.Position;
 
-        foreach (Entity copiedEntity in copied)
+        foreach (Entity entity in selection)
         {
-            if (copiedEntity is PlayerCraft)
+            if (entity is PlayerCraft)
                 continue;
             
-            copyOffsets[copiedEntity] = copiedEntity.Position - canvasCenter;
+            copied.Add(Entity.GetSetup(entity));
         }
     }
 
@@ -225,11 +223,10 @@ public partial class Editor : Page
 
         Vector2 canvasCenter = Stage.camera.Position;
 
-        foreach (Entity copiedEntity in copied)
+        foreach (EntitySetup copiedSetup in copied)
         {
-            Entity pastedEntity = (copiedEntity.Duplicate() as Entity)!;
-            Stage.Spawn(pastedEntity);
-            pastedEntity.Position = (canvasCenter + copyOffsets[copiedEntity]).Snapped(gridSnap);
+            Entity pastedEntity = Stage.Spawn(copiedSetup);
+            pastedEntity.Position = (canvasCenter + pastedEntity.Position - copyOffset).Snapped(gridSnap);
             selection.Add(pastedEntity);
         }
         
