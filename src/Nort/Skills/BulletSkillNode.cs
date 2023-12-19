@@ -1,4 +1,5 @@
-﻿using Godot;
+﻿using System;
+using Godot;
 using System.Collections.Generic;
 using System.Linq;
 using CtrlRaul;
@@ -166,7 +167,7 @@ public partial class BulletSkillNode : Node2D, ISkillNode
         Fire();
     }
     
-    private void OnTargetDestroyed()
+    private void OnTargetDestroyed(CraftPart foePart)
     {
         Target = foePartsInRange.Any() ? foePartsInRange.First().Value[0] : null;
     }

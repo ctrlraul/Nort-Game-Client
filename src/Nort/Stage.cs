@@ -196,7 +196,7 @@ public partial class Stage : Node2D
     }
     
 
-    private void OnPlayerDestroyed()
+    private void OnPlayerDestroyed(Craft craft)
     {
         Player = null;
         PlayerDestroyed?.Invoke();

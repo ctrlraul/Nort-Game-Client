@@ -58,7 +58,7 @@ public partial class CoreBulletSkillNode : Node2D, ISkillNode
             return; 
 
         if (Target.IsDestroyed)
-            TryToFindNewTarget();
+            TryToFindNewTarget(null);
 
         if (Target == null)
             return;
@@ -68,7 +68,7 @@ public partial class CoreBulletSkillNode : Node2D, ISkillNode
         GD.Print("Core bullet fire!");
     }
 
-    private void TryToFindNewTarget()
+    private void TryToFindNewTarget(CraftPart foePart)
     {
         List<CraftPart> foePartsInRange = GetFoePartsInArea(rangeArea).ToList();
         Target = foePartsInRange.Any() ? foePartsInRange[(int)GD.Randi() % foePartsInRange.Count] : null;
@@ -82,8 +82,8 @@ public partial class CoreBulletSkillNode : Node2D, ISkillNode
     private IEnumerable<CraftPart> GetFoePartsInArea(Area2D area)
     {
         return area.GetOverlappingAreas()
-            .Where(area2 => IsFoePartArea(area2) && !(area2.Owner as CraftBodyPart)!.IsDestroyed)
-            .Select(partArea => partArea.Owner as CraftBodyPart);
+            .Where(area2 => IsFoePartArea(area2) && !(area2.Owner as CraftPart)!.IsDestroyed)
+            .Select(partArea => partArea.Owner as CraftPart);
     }
 
     private void SetTarget(CraftPart value)
@@ -118,6 +118,6 @@ public partial class CoreBulletSkillNode : Node2D, ISkillNode
     private void OnRangeAreaAreaExited(Area2D area)
     {
         if (Target != null && area.Owner == Target)
-            TryToFindNewTarget();
+            TryToFindNewTarget(null);
     }
 }
