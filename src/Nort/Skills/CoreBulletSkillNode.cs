@@ -3,9 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using CtrlRaul.Godot;
-using CtrlRaul.Godot.Linq;
-using Nort;
-using Nort.Entities.Components;
+using Nort.Entities;
 
 namespace Nort.Skills;
 
@@ -15,7 +13,7 @@ public partial class CoreBulletSkillNode : Node2D, ISkillNode
     
     public event Action Fired;
 
-    public CraftBodyPart Part { get; set; }
+    public CraftPart Part { get; set; }
     
     public float CooldownMax => (float)cooldownTimer.WaitTime;
     public float Cooldown => (float)cooldownTimer.TimeLeft;
@@ -28,8 +26,8 @@ public partial class CoreBulletSkillNode : Node2D, ISkillNode
     [Ready] public CollisionShape2D rangeAreaCollisionShape2D;
     [Ready] public Timer cooldownTimer;
 
-    private CraftBodyPart target;
-    private CraftBodyPart Target
+    private CraftPart target;
+    private CraftPart Target
     {
         get => target;
         set => SetTarget(value);
@@ -72,23 +70,23 @@ public partial class CoreBulletSkillNode : Node2D, ISkillNode
 
     private void TryToFindNewTarget()
     {
-        List<CraftBodyPart> foePartsInRange = GetFoePartsInArea(rangeArea).ToList();
+        List<CraftPart> foePartsInRange = GetFoePartsInArea(rangeArea).ToList();
         Target = foePartsInRange.Any() ? foePartsInRange[(int)GD.Randi() % foePartsInRange.Count] : null;
     }
 
     private bool IsFoePartArea(Area2D area)
     {
-        return (area.Owner as CraftBodyPart)!.Faction != Part.Faction;
+        return (area.Owner as CraftPart)!.Faction != Part.Faction;
     }
 
-    private IEnumerable<CraftBodyPart> GetFoePartsInArea(Area2D area)
+    private IEnumerable<CraftPart> GetFoePartsInArea(Area2D area)
     {
         return area.GetOverlappingAreas()
             .Where(area2 => IsFoePartArea(area2) && !(area2.Owner as CraftBodyPart)!.IsDestroyed)
             .Select(partArea => partArea.Owner as CraftBodyPart);
     }
 
-    private void SetTarget(CraftBodyPart value)
+    private void SetTarget(CraftPart value)
     {
         if (value == target)
             return;
@@ -114,7 +112,7 @@ public partial class CoreBulletSkillNode : Node2D, ISkillNode
     private void OnRangeAreaAreaEntered(Area2D area)
     {
         if (Target == null && IsFoePartArea(area))
-            Target = (CraftBodyPart)area.Owner;
+            Target = (CraftPart)area.Owner;
     }
 
     private void OnRangeAreaAreaExited(Area2D area)

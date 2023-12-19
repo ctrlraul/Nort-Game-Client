@@ -3,7 +3,6 @@ using System.Linq;
 using CtrlRaul.Godot;
 using Godot;
 using Nort.Entities;
-using Nort.Entities.Components;
 
 namespace Nort.Skills;
 
@@ -13,7 +12,7 @@ public partial class DroneSkillNode : Node2D, ISkillNode
     
     public event Action Fired;
 
-    public CraftBodyPart Part { get; set; }
+    public CraftPart Part { get; set; }
     
     public float CooldownMax => (float)cooldownTimer.WaitTime;
     public float Cooldown => (float)cooldownTimer.TimeLeft;

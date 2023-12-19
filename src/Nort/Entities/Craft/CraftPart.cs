@@ -1,15 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using CtrlRaul.Godot;
 using Godot;
 using CtrlRaul.Godot.Linq;
 
-namespace Nort.Entities.Components;
+namespace Nort.Entities;
 
-public partial class CraftBodyPart : CollisionShape2D
+// Context:
+// A 2D spaceship fight game where you can build your own ship with multiple parts, parts can individually break off in battle. Ships have an Area2D node, and each part is a CollisionShape2D node.
+//
+//     Weapons keep track of all enemy parts within range using `CollisionObject`'s `area_shape_entered` and `area_shape_exited` signals, using the `area_shape_index` argument to keep track of which part is entering or leaving the range.
+//
+// The issue:
+// Because `area_shape_exited` also triggers when shapes are being removed from the tree (reasonably so), the `area_shape_index` argument turns out to be completely unreliable as when parts are destroyed (removed from the tree), the indexes shift.
+
+
+public partial class CraftPart : CollisionShape2D
 {
     //public event Action<SkillNode, float> HitTaken;
-    public event Action Destroyed;
+    public event Action<CraftPart> Destroyed;
 
     [Ready] public Sprite2D sprite2D;
     
@@ -127,8 +137,7 @@ public partial class CraftBodyPart : CollisionShape2D
             Drop();
 
         Destroy();
-            
-        this.Remove();
+
 
         foreach (Node skill in skillNodes.Cast<Node>())
             skill.Remove();
@@ -149,7 +158,9 @@ public partial class CraftBodyPart : CollisionShape2D
     public void Destroy()
     {
         IsDestroyed = true;
-        Destroyed?.Invoke();
+        Disabled = true;
+        Modulate *= new Color(1, 1, 1, 0.5f);
+        Destroyed?.Invoke(this);
     }
 
     private void UpdateColor()

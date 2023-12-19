@@ -13,7 +13,7 @@ public partial class Craft : Entity
 {
     public event Action StatsChanged;
     public event Action FactionChanged;
-    public event Action Destroyed;
+    public event Action<Craft> Destroyed;
 
     [Export] private PackedScene craftBodyPartScene;
 
@@ -21,7 +21,7 @@ public partial class Craft : Entity
     [Ready] public Node2D skillsContainer;
 
     public bool IsDestroyed { get; private set; }
-    private CraftBodyPart corePart;
+    private CraftPart corePart;
 
     protected Faction faction = Assets.Instance.DefaultEnemyFaction;
 
@@ -95,7 +95,7 @@ public partial class Craft : Entity
         if (!IsInsideTree())
             return;
         
-        foreach (CraftBodyPart part in GetParts())
+        foreach (CraftPart part in GetParts())
             part.Faction = Faction;
         
         partsContainer.CollisionLayer = Assets.Instance.GetFactionCollisionLayer(faction);
@@ -110,18 +110,21 @@ public partial class Craft : Entity
         Hull = 0;
         Core = 0;
 
-        foreach (CraftBodyPart part in GetParts())
+        foreach (CraftPart part in GetParts())
+        {
             part.Destroy();
+            part.QueueFree();
+        }
 
         QueueFree();
         IsDestroyed = true;
-        Destroyed?.Invoke();
+        Destroyed?.Invoke(this);
     }
 
     
-    private CraftBodyPart AddPart(BlueprintPart blueprintPart)
+    private CraftPart AddPart(BlueprintPart blueprintPart)
     {
-        CraftBodyPart part = craftBodyPartScene.Instantiate<CraftBodyPart>();
+        CraftPart part = craftBodyPartScene.Instantiate<CraftPart>();
 
         part.Craft = this; // I don't like this
         part.Faction = Faction;
@@ -129,7 +132,7 @@ public partial class Craft : Entity
 
         if (!Game.Instance.InMissionEditor)
         {
-            part.Destroyed += () => OnPartDestroyed(part);
+            part.Destroyed += OnPartDestroyed;
             //part.HitTaken += (from, damage) => TakeHit(part, from, damage);
         }
         
@@ -141,14 +144,14 @@ public partial class Craft : Entity
         return part;
     }
 
-    public CraftBodyPart GetPart(uint id)
+    public CraftPart GetPart(uint index)
     {
-        return partsContainer.ShapeOwnerGetOwner(id) as CraftBodyPart;
+        return partsContainer.ShapeOwnerGetOwner(index) as CraftPart;
     }
     
-    private IEnumerable<CraftBodyPart> GetParts()
+    private IEnumerable<CraftPart> GetParts()
     {
-        return partsContainer.GetChildren().Cast<CraftBodyPart>();
+        return partsContainer.GetChildren().Cast<CraftPart>();
     }
 
     public IEnumerable<ISkillNode> GetSkillNodes()
@@ -156,7 +159,7 @@ public partial class Craft : Entity
         return skillsContainer.GetChildren().Cast<ISkillNode>();
     }
 
-    public void TakeHit(CraftBodyPart part, ISkillNode from, float damage)
+    public void TakeHit(CraftPart part, ISkillNode from, float damage)
     {
         switch (from)
         {
@@ -185,7 +188,7 @@ public partial class Craft : Entity
         }
     }
 
-    private void OnPartDestroyed(CraftBodyPart part)
+    private void OnPartDestroyed(CraftPart part)
     {
         GD.Print("Move part drop code in here!");
     }

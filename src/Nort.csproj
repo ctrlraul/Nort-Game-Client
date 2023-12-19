@@ -25,6 +25,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Remove=".godot\**" />
+    <Compile Remove="Nort\Entities\Components\CraftBody.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Remove=".godot\**" />

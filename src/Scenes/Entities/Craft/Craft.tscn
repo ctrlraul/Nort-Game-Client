@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://b1xci2ckb2rvw"]
 
-[ext_resource type="Script" path="res://Nort/Entities/Craft.cs" id="1_do56o"]
-[ext_resource type="PackedScene" uid="uid://c8vjpl3s8tb65" path="res://Scenes/Entities/Components/CraftBodyPart.tscn" id="2_skxli"]
+[ext_resource type="Script" path="res://Nort/Entities/Craft/Craft.cs" id="1_do56o"]
+[ext_resource type="PackedScene" uid="uid://c8vjpl3s8tb65" path="res://Scenes/Entities/Craft/CraftPart.tscn" id="2_skxli"]
 
 [node name="Craft" type="Node2D"]
 script = ExtResource("1_do56o")

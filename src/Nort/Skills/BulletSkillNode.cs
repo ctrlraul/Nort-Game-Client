@@ -4,7 +4,6 @@ using System.Linq;
 using CtrlRaul;
 using CtrlRaul.Godot;
 using Nort.Entities;
-using Nort.Entities.Components;
 
 namespace Nort.Skills;
 
@@ -14,7 +13,7 @@ public partial class BulletSkillNode : Node2D, ISkillNode
     
     public event Action Fired;
 
-    public CraftBodyPart Part { get; set; }
+    public CraftPart Part { get; set; }
     
     public float CooldownMax => (float)cooldownTimer.WaitTime;
     public float Cooldown => (float)cooldownTimer.TimeLeft;
@@ -32,10 +31,10 @@ public partial class BulletSkillNode : Node2D, ISkillNode
     [Ready] public Timer cooldownTimer;
     
     
-    private readonly Dictionary<Craft, List<CraftBodyPart>> foePartsInRange = new();
+    private readonly Dictionary<Craft, List<CraftPart>> foePartsInRange = new();
     
-    private CraftBodyPart target;
-    public CraftBodyPart Target
+    private CraftPart target;
+    public CraftPart Target
     {
         get => target;
         set => SetTarget(value);
@@ -49,7 +48,7 @@ public partial class BulletSkillNode : Node2D, ISkillNode
         if (cooldownTimer.WaitTime < particles.Lifetime)
             Logger.Warn(GetType().Name, "Firing cooldown should be greater than the particles' lifespan");
         
-        rangeArea.CollisionMask = Assets.Instance.GetFactionCollisionMask(part.Faction);
+        rangeArea.CollisionMask = Assets.Instance.GetFactionCollisionMask(Part.Faction);
         rayCast2D.CollisionMask = rangeArea.CollisionMask;
         
         SetPhysicsProcess(false);
@@ -78,13 +77,13 @@ public partial class BulletSkillNode : Node2D, ISkillNode
         if (rayCast2D.GetCollider() is Area2D collider)
         {
             uint shapeId = (uint)rayCast2D.GetColliderShape();
-            CraftBodyPart partHit = collider.ShapeOwnerGetOwner(shapeId) as CraftBodyPart;
+            CraftPart partHit = collider.ShapeOwnerGetOwner(shapeId) as CraftPart;
             target.Craft.TakeHit(partHit, this, Damage);
             Fired?.Invoke();
         }
     }
 
-    private void SetTarget(CraftBodyPart value)
+    private void SetTarget(CraftPart value)
     {
         if (value == target)
             return;
@@ -117,9 +116,9 @@ public partial class BulletSkillNode : Node2D, ISkillNode
     {
         if (area.Owner is Craft craft)
         {
-            CraftBodyPart foePart = craft.GetPart((uint)areaShapeIndex);
+            CraftPart foePart = craft.GetPart((uint)areaShapeIndex);
             
-            if (foePartsInRange.TryGetValue(craft, out List<CraftBodyPart> foeParts))
+            if (foePartsInRange.TryGetValue(craft, out List<CraftPart> foeParts))
             {
                 foeParts.Add(foePart);
             }
@@ -140,7 +139,7 @@ public partial class BulletSkillNode : Node2D, ISkillNode
         
         if (area.Owner is Craft craft)
         {
-            List<CraftBodyPart> foeParts = foePartsInRange[craft];
+            List<CraftPart> foeParts = foePartsInRange[craft];
             
             if (foeParts.Count == 1)
             {
@@ -151,7 +150,7 @@ public partial class BulletSkillNode : Node2D, ISkillNode
             }
             else
             {
-                CraftBodyPart foePart = craft.GetPart((uint)areaShapeIndex);
+                CraftPart foePart = craft.GetPart((uint)areaShapeIndex);
                 foeParts.Remove(foePart);
                 
                 if (Target == foePart)

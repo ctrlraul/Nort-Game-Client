@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://dnfpufrxifb44"]
 
-[ext_resource type="PackedScene" uid="uid://b1xci2ckb2rvw" path="res://Scenes/Entities/Craft.tscn" id="1_exjew"]
+[ext_resource type="PackedScene" uid="uid://b1xci2ckb2rvw" path="res://Scenes/Entities/Craft/Craft.tscn" id="1_exjew"]
 [ext_resource type="Script" path="res://Nort/Entities/PlayerCraft.cs" id="2_kv5h0"]
 [ext_resource type="PackedScene" uid="uid://p46oi0to68au" path="res://Scenes/Entities/Components/FlightComponent.tscn" id="3_v2nrv"]
 [ext_resource type="PackedScene" uid="uid://djqq8s6miovq7" path="res://Scenes/FloatingAnimation.tscn" id="4_m5ck5"]
