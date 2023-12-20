@@ -43,17 +43,29 @@ public static class NodeExtensions
 
         foreach (FieldInfo field in fields)
         {
-            if (!field.IsPublic)
-                throw new Exception("Can only initialize public fields with Ready");
-            
             ReadyAttribute attribute = field.GetCustomAttribute<ReadyAttribute>();
 
             if (attribute == null)
                 continue;
             
-            string path = attribute.Path ?? "%" + char.ToUpper(field.Name[0]) + field.Name[1..];
+            if (!field.IsPublic)
+            {
+                Logger.Error($"CSharpReady in {type.Name}", $"Can only set nodes on public fields");
+                continue;
+            }
             
-            field.SetValue(node, node.GetNode(path));
+            string path = attribute.Path ?? "%" + char.ToUpper(field.Name[0]) + field.Name[1..];
+
+            Node child = node.GetNodeOrNull(path);
+
+            if (child == null)
+            {
+                Logger.Error($"CSharpReady in {type.Name}", $"Node '{path}' not found relative to '{node.GetPath()}'");
+            }
+            else
+            {
+                field.SetValue(node, child);
+            }
         }
         
         PropertyInfo[] properties;
@@ -74,9 +86,24 @@ public static class NodeExtensions
             if (attribute == null)
                 continue;
             
+            if (!property.CanWrite)
+            {
+                Logger.Error($"CSharpReady in {type.Name}", $"Can only set nodes on public properties");
+                continue;
+            }
+            
             string path = attribute.Path ?? "%" + char.ToUpper(property.Name[0]) + property.Name[1..];
 
-            property.SetValue(node, node.GetNode(path));
+            Node child = node.GetNodeOrNull(path);
+
+            if (child == null)
+            {
+                Logger.Error($"CSharpReady in {type.Name}", $"Node '{path}' not found relative to '{node.GetPath()}'");
+            }
+            else
+            {
+                property.SetValue(node, child);
+            }
         }
     }
 }
