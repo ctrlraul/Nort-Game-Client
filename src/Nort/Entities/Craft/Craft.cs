@@ -181,6 +181,6 @@ public partial class Craft : Entity
 
     private void OnPartDestroyed(CraftPart part)
     {
-        GD.Print("Move part drop code in here!");
+        
     }
 }
