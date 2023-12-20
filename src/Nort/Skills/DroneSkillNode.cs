@@ -44,5 +44,6 @@ public partial class DroneSkillNode : Node2D, ISkillNode
         Drone = Stage.Instance.Spawn<DroneCraft>();
         Drone.Position = GlobalPosition;
         Drone.Blueprint = Assets.Instance.GetBlueprint(Config.DroneBlueprints.First());
+        Drone.Faction = Part.Faction;
     }
 }
