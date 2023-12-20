@@ -123,7 +123,7 @@ toggle_fullscreen={
 
 [layer_names]
 
-2d_physics/layer_1="craft"
+2d_physics/layer_1="craft_part"
 2d_physics/layer_3="orphan_part"
 2d_physics/layer_9="mouse_interactable"
 2d_physics/layer_29="faction_4"

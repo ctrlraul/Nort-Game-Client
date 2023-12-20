@@ -3,25 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using CtrlRaul.Godot;
 using Godot;
-using CtrlRaul.Godot.Linq;
 
 namespace Nort.Entities;
 
-// Context:
-// A 2D spaceship fight game where you can build your own ship with multiple parts, parts can individually break off in battle. Ships have an Area2D node, and each part is a CollisionShape2D node.
-//
-//     Weapons keep track of all enemy parts within range using `CollisionObject`'s `area_shape_entered` and `area_shape_exited` signals, using the `area_shape_index` argument to keep track of which part is entering or leaving the range.
-//
-// The issue:
-// Because `area_shape_exited` also triggers when shapes are being removed from the tree (reasonably so), the `area_shape_index` argument turns out to be completely unreliable as when parts are destroyed (removed from the tree), the indexes shift.
-
-
-public partial class CraftPart : CollisionShape2D
+public partial class CraftPart : Area2D
 {
-    //public event Action<SkillNode, float> HitTaken;
     public event Action<CraftPart> Destroyed;
 
     [Ready] public Sprite2D sprite2D;
+    [Ready] public CollisionShape2D collisionShape2D;
     
     public readonly List<ISkillNode> skillNodes = new();
     public float hullMax;
@@ -63,9 +53,14 @@ public partial class CraftPart : CollisionShape2D
     private void SetFaction(Faction value)
     {
         faction = value;
+
+        if (!IsInsideTree())
+            return;
         
-        if (IsInsideTree())
-            UpdateColor();
+        CollisionLayer = Assets.Instance.GetFactionCollisionLayer(faction);
+        CollisionLayer |= PhysicsLayer.Get("craft_part");
+        
+        UpdateColor();
     }
 
     private void SetBlueprint(BlueprintPart value)
@@ -85,7 +80,7 @@ public partial class CraftPart : CollisionShape2D
         sprite2D.FlipH = blueprint.flipped;
         sprite2D.Material = blueprint.shiny ? Assets.ShinyMaterial : null;
         
-        Shape = new RectangleShape2D { Size = sprite2D.Texture.GetSize() };
+        collisionShape2D.Shape = new RectangleShape2D { Size = sprite2D.Texture.GetSize() };
 
         List<Skill> skills = new();
         
@@ -118,11 +113,6 @@ public partial class CraftPart : CollisionShape2D
             UpdateColor();
     }
 
-
-    // public void TakeHit(SkillNode from, float damage)
-    // {
-    //     HitTaken?.Invoke(from, damage);
-    // }
     
     public void TakeDamage(float damage)
     {
@@ -137,10 +127,6 @@ public partial class CraftPart : CollisionShape2D
             Drop();
 
         Destroy();
-
-
-        foreach (Node skill in skillNodes.Cast<Node>())
-            skill.Remove();
     }
 
     private void Drop()
@@ -157,8 +143,12 @@ public partial class CraftPart : CollisionShape2D
 
     public void Destroy()
     {
+        foreach (Node skillNode in skillNodes.Cast<Node>())
+            skillNode.QueueFree();
+        
+        QueueFree();
         IsDestroyed = true;
-        Disabled = true;
+        Monitorable = false; // meh?
         Modulate *= new Color(1, 1, 1, 0.5f);
         Destroyed?.Invoke(this);
     }

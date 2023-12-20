@@ -4,7 +4,6 @@ using System.Linq;
 using CtrlRaul.Godot;
 using CtrlRaul.Godot.Linq;
 using Godot;
-using Nort.Entities.Components;
 using Nort.Skills;
 
 namespace Nort.Entities;
@@ -17,7 +16,7 @@ public partial class Craft : Entity
 
     [Export] private PackedScene craftBodyPartScene;
 
-    [Ready] public Area2D partsContainer;
+    [Ready] public Node2D partsContainer;
     [Ready] public Node2D skillsContainer;
 
     public bool IsDestroyed { get; private set; }
@@ -98,9 +97,6 @@ public partial class Craft : Entity
         foreach (CraftPart part in GetParts())
             part.Faction = Faction;
         
-        partsContainer.CollisionLayer = Assets.Instance.GetFactionCollisionLayer(faction);
-        partsContainer.CollisionLayer |= PhysicsLayer.Get("craft");
-        
         FactionChanged?.Invoke();
     }
 
@@ -142,11 +138,6 @@ public partial class Craft : Entity
             skillsContainer.AddChild(skill);
 
         return part;
-    }
-
-    public CraftPart GetPart(uint index)
-    {
-        return partsContainer.ShapeOwnerGetOwner(index) as CraftPart;
     }
     
     private IEnumerable<CraftPart> GetParts()

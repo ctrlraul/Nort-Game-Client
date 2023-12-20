@@ -30,12 +30,13 @@ scale_curve = SubResource("CurveTexture_xx0f8")
 [node name="BulletSkillNode" type="Node2D"]
 script = ExtResource("1_70pev")
 
-[node name="RangeArea" type="Area2D" parent="."]
+[node name="Range" type="Area2D" parent="."]
 unique_name_in_owner = true
 collision_layer = 0
+collision_mask = 0
 monitorable = false
 
-[node name="RangeAreaCollisionShape2D" type="CollisionShape2D" parent="RangeArea"]
+[node name="RangeAreaCollisionShape2D" type="CollisionShape2D" parent="Range"]
 unique_name_in_owner = true
 shape = SubResource("CircleShape2D_v2vhg")
 debug_color = Color(1, 0, 0, 0)
@@ -57,7 +58,7 @@ unique_name_in_owner = true
 z_index = 1
 rotation = 1.5708
 emitting = false
-amount = 16
+amount = 4
 process_material = SubResource("ParticleProcessMaterial_wu7l6")
 lifetime = 0.2
 one_shot = true
@@ -69,6 +70,6 @@ process_callback = 0
 one_shot = true
 autostart = true
 
-[connection signal="area_shape_entered" from="RangeArea" to="." method="OnRangeAreaAreaShapeEntered"]
-[connection signal="area_shape_exited" from="RangeArea" to="." method="OnRangeAreaAreaShapeExited"]
+[connection signal="area_entered" from="Range" to="." method="OnRangeAreaEntered"]
+[connection signal="area_exited" from="Range" to="." method="OnRangeAreaExited"]
 [connection signal="timeout" from="CooldownTimer" to="." method="OnCooldownTimerTimeout"]

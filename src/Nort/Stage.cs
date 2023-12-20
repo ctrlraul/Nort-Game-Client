@@ -65,7 +65,22 @@ public partial class Stage : Node2D
 
     public Entity GetEntityOnMouse()
     {
-        return mouseArea.GetOverlappingAreas().FindNearest(mouseArea.Position)?.Owner as Entity;
+        Area2D nearestArea = mouseArea.GetOverlappingAreas().FindNearest(mouseArea.Position);
+
+        switch (nearestArea)
+        {
+            case null:
+                return null;
+            
+            case CraftPart craftPart:
+                return craftPart.Craft;
+            
+            case { Owner: OrphanPart }:
+                return nearestArea.Owner as OrphanPart;
+            
+            default:
+                throw new Exception($"Unhandled area type on mouse: {nearestArea.Owner.GetType().Name}");
+        }
     }
 
     private void CameraFollowPlayer()
