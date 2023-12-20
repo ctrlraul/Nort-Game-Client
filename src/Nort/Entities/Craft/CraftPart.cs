@@ -148,7 +148,6 @@ public partial class CraftPart : Area2D
         
         QueueFree();
         IsDestroyed = true;
-        Monitorable = false; // meh?
         Modulate *= new Color(1, 1, 1, 0.5f);
         Destroyed?.Invoke(this);
     }
