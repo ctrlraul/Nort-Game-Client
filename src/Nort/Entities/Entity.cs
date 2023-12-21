@@ -10,6 +10,13 @@ namespace Nort.Entities;
 public class SavableAttribute : Attribute { }
 
 public class EntitySetup : Dictionary<string, object> { }
+public class EntitySetup
+{
+    public string typeName;
+    public Vector2 position;
+    public float angle;
+    public Dictionary<string, object> subTypeData = new();
+}
 
 public partial class Entity : Node2D
 {
@@ -20,32 +27,29 @@ public partial class Entity : Node2D
     
     public static bool IsEntitySetupOfType<T>(EntitySetup setup) where T : Entity
     {
-        return (string)setup["Type"] ==  typeof(T).Name;
+        return setup.typeName ==  typeof(T).Name;
     }
     
     public static EntitySetup GetSetup(Entity entity)
     {
-        List<PropertyInfo> properties = GetSavableProperties(entity);
-        
-        EntitySetup entitySetup = new();
-
-        foreach (PropertyInfo property in properties)
-            entitySetup.Add(property.Name, property.GetValue(entity));
-        
-        return entitySetup;
+        return new()
+        {
+            typeName = entity.GetType().Name,
+            position = entity.Position,
+            angle = Mathf.Round(entity.RotationDegrees),
+            subTypeData = GetSavableProperties(entity).ToDictionary(info => info.Name, info => info.GetValue(entity))
+        };
     }
 
     public static void SetSetup(Entity entity, EntitySetup setup)
     {
+        entity.Position = setup.position;
+        entity.RotationDegrees = setup.angle;
+
         foreach (PropertyInfo property in GetSavableProperties(entity))
         {
-            if (property.Name == "Type")
-                continue;
-
-            if (!setup.TryGetValue(property.Name, out object savedValue))
-                continue;
-            
-            property.SetValue(entity, savedValue is double dbl ? (float)dbl : savedValue);
+            if (setup.subTypeData.TryGetValue(property.Name, out object value))
+                property.SetValue(entity, value);
         }
     }
 
@@ -71,29 +75,6 @@ public partial class Entity : Node2D
     
     
     private const float Damp = 0.95f;
-    
-    [Savable] public string Type => GetType().Name;
-    
-    [Savable]
-    public float X
-    {
-        get => Position.X;
-        set => Position = Position with { X = value };
-    }
-    
-    [Savable]
-    public float Y
-    {
-        get => Position.Y;
-        set => Position = Position with { Y = value };
-    }
-    
-    [Savable]
-    public float Angle
-    {
-        get => RotationDegrees;
-        set => RotationDegrees = value;
-    }
     
     
     public Vector2 Velocity { get; set; } = Vector2.Zero;

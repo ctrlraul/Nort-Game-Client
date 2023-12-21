@@ -24,7 +24,7 @@ public partial class MissionsListItem : MarginContainer
 			displayCraft.Blueprint = (
 				displaySetup == default
 				? Assets.Instance.InitialBlueprint
-				: Assets.Instance.GetBlueprint((string)displaySetup["TestBlueprintId"])
+				: Assets.Instance.GetBlueprint((string)displaySetup.subTypeData["TestBlueprintId"])
 			);
 			
 			displayNameLabel.Text = mission.displayName;
