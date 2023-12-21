@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using CtrlRaul;
 using CtrlRaul.Godot;
 using CtrlRaul.Godot.Linq;
 using Godot;
 using Nort.Entities;
 using Nort.Pages;
+using Nort.Popups;
 
 namespace Nort;
 
@@ -28,6 +30,7 @@ public partial class Stage : Node2D
 
     private readonly Logger logger = new("Stage");
 
+    private readonly List<string> problems = new();
     public readonly List<PartData> partsCollected = new();
 
     private PlayerCraft player;
@@ -107,6 +110,19 @@ public partial class Stage : Node2D
                 logger.Error($"Failed to spawn entity:\n{exception}");
             }
         }
+        
+        if (problems.Any())
+        {
+            string problemsList = problems.Aggregate(((current, next) => current + "\n" + next));
+            DialogPopup popup = PopupsManager.Instance.Error(problemsList, "There were a few problems when loading this mission!");
+            popup.Width = 800;
+        }
+    }
+
+    private void AddProblem(string problem)
+    {
+        problems.Add(problem);
+        logger.Error(problem);
     }
 
     private bool ShouldSaveProgress()
@@ -138,6 +154,7 @@ public partial class Stage : Node2D
         camera.Zoom = Vector2.One * 0.5f;
         camera.Position = Vector2.Zero;
         entitiesContainer.QueueFreeChildren();
+        problems.Clear();
         partsCollected.Clear();
         Player = null;
     }
