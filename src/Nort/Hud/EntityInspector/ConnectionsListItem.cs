@@ -36,7 +36,11 @@ public partial class ConnectionsListItem : Control
 		eventOptions.Clear();
 		methodOptions.Clear();
 		
-		Entity target = Stage.Instance.GetEntityByUuid(connection.targetUuid);
+		Node target = (
+			connection.targetUuid == null
+			? Stage.Instance
+			: Stage.Instance.GetEntityByUuid(connection.targetUuid)
+		);
 
 		connectableEvents = Entity.GetConnectableEvents(entity).Select(info => info.Name).ToList();
 		connectableMethods = Entity.GetConnectableMethods(target).Select(info => info.Name).ToList();
@@ -49,8 +53,15 @@ public partial class ConnectionsListItem : Control
 
 		eventOptions.Selected = connectableEvents.IndexOf(connection.eventName);
 		methodOptions.Selected = connectableMethods.IndexOf(connection.methodName);
-		
-		targetLabel.Text = target.Name;
+
+		if (target is Stage)
+		{
+			targetLabel.Visible = false;
+		}
+		else
+		{
+			targetLabel.Text = target.Name;
+		}
 	}
 
 

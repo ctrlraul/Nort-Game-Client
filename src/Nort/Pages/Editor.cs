@@ -33,13 +33,13 @@ public partial class Editor : Page
 
 
     [Export] private PackedScene missionSelectorPopupScene;
-
-    [Ready] public Control interfaceRoot;
+    
+    [Ready] public Control entityConnectionHint;
+    [Ready] public Control uiSectionsContainer;
     [Ready] public Label mousePositionLabel;
     [Ready] public EntityInspector entityInspector;
     [Ready] public Label missionIdLabel;
     [Ready] public LineEdit missionNameLabel;
-    [Ready] public Control selectTargetLabel;
 
 
     private const float ZoomStep = 0.1f;
@@ -65,7 +65,7 @@ public partial class Editor : Page
         this.InitializeReady();
         missionIdLabel.Text = Assets.GenerateUuid();
         missionNameLabel.Text = GenerateMissionName();
-        selectTargetLabel.Visible = false;
+        entityConnectionHint.Visible = false;
         entityInspector.NewConnectionRequested += OnEntityInspectorNewConnectionRequested;
     }
 
@@ -76,16 +76,16 @@ public partial class Editor : Page
 
     private void HideGuiToPickConnectionTarget()
     {
-        interfaceRoot.Visible = false;
+        uiSectionsContainer.Visible = false;
         guiHiddenToPickConnectionTarget = true;
-        selectTargetLabel.Visible = true;
+        entityConnectionHint.Visible = true;
     }
 
     private void ShowGui()
     {
-        interfaceRoot.Visible = true;
+        uiSectionsContainer.Visible = true;
         guiHiddenToPickConnectionTarget = false;
-        selectTargetLabel.Visible = false;
+        entityConnectionHint.Visible = false;
     }
 
     public override void _Process(double delta)
@@ -509,6 +509,12 @@ public partial class Editor : Page
     {
         if (string.IsNullOrEmpty(missionNameLabel.Text))
             missionNameLabel.Text = GenerateMissionName();
+    }
+
+    private void OnConnectToStageButtonPressed()
+    {
+        ShowGui();
+        entityInspector.AddConnectionWithStage();
     }
 
 

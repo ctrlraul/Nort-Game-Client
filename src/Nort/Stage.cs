@@ -140,6 +140,7 @@ public partial class Stage : Node2D
         return true;
     }
 
+    [Connectable]
     public void CompleteMission()
     {
         if (ShouldSaveProgress())
@@ -243,18 +244,28 @@ public partial class Stage : Node2D
         {
             foreach (EntityConnection connection in entity.Connections)
             {
-                if (!entitiesMap.TryGetValue(connection.targetUuid, out Entity target))
-                {
-                    AddProblem($"No entity found with UUID '{connection.targetUuid}'");
-                    continue;
-                }
-            
                 Type sourceType = entity.GetType();
                 EventInfo eventInfo = sourceType.GetEvent(connection.eventName);
 
                 if (eventInfo == null)
                 {
                     AddProblem($"Event '{connection.eventName}' not found in type {sourceType.Name}");
+                    continue;
+                }
+                
+                Node target;
+                
+                if (connection.targetUuid == null)
+                {
+                    target = this;
+                }
+                else if (entitiesMap.TryGetValue(connection.targetUuid, out Entity targetEntity))
+                {
+                    target = targetEntity;
+                }
+                else
+                {
+                    AddProblem($"No entity found with UUID '{connection.targetUuid}'");
                     continue;
                 }
             

@@ -173,6 +173,22 @@ public partial class EntityInspector : PanelContainer
         AddConnectionsListItem(entity, connection);
     }
 
+    public void AddConnectionWithStage()
+    {
+        Entity entity = selectedEntities[0];
+        EntityConnection connection = new()
+        {
+            targetUuid = null,
+            eventName = Entity.GetConnectableEvents(entity).First().Name,
+            methodName = Entity.GetConnectableMethods(Stage.Instance).First().Name,
+        };
+        
+        entity.Connections.Add(connection);
+
+        AddConnectionsListItem(entity, connection);
+    }
+    
+
     private void AddConnectionsListItem(Entity entity, EntityConnection connection)
     {
         ConnectionsListItem listItem = connectionsListItemScene.Instantiate<ConnectionsListItem>();

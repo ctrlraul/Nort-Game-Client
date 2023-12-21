@@ -16,20 +16,7 @@ font_color = Color(1, 1, 1, 0.392157)
 script = ExtResource("1_w6yix")
 missionSelectorPopupScene = ExtResource("2_g5r8g")
 
-[node name="SelectTargetLabel" type="Label" parent="."]
-unique_name_in_owner = true
-visible = false
-offset_left = 883.0
-offset_top = 40.0
-offset_right = 1037.0
-offset_bottom = 72.0
-size_flags_horizontal = 4
-size_flags_vertical = 0
-text = "Select Target"
-label_settings = ExtResource("3_6d1bo")
-
 [node name="InterfaceRoot" type="MarginContainer" parent="."]
-unique_name_in_owner = true
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -38,19 +25,38 @@ grow_vertical = 2
 mouse_filter = 2
 theme_type_variation = &"WindowMarginContainer"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="InterfaceRoot"]
+[node name="EntityConnectionHint" type="HBoxContainer" parent="InterfaceRoot"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+
+[node name="Label" type="Label" parent="InterfaceRoot/EntityConnectionHint"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Select target or"
+label_settings = ExtResource("3_6d1bo")
+
+[node name="ConnectToStageButton" type="Button" parent="InterfaceRoot/EntityConnectionHint"]
+layout_mode = 2
+text = "Connect to Stage"
+
+[node name="UiSectionsContainer" type="HBoxContainer" parent="InterfaceRoot"]
+unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
 
-[node name="LeftSide" type="Control" parent="InterfaceRoot/HBoxContainer"]
+[node name="LeftSide" type="Control" parent="InterfaceRoot/UiSectionsContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 2
 
-[node name="ReturnButton" parent="InterfaceRoot/HBoxContainer/LeftSide" instance=ExtResource("3_c0oqk")]
+[node name="ReturnButton" parent="InterfaceRoot/UiSectionsContainer/LeftSide" instance=ExtResource("3_c0oqk")]
 layout_mode = 0
 
-[node name="VBoxContainer2" type="HBoxContainer" parent="InterfaceRoot/HBoxContainer/LeftSide"]
+[node name="VBoxContainer2" type="HBoxContainer" parent="InterfaceRoot/UiSectionsContainer/LeftSide"]
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
@@ -59,21 +65,21 @@ offset_top = -20.0
 offset_right = 20.0
 grow_vertical = 0
 
-[node name="ImportButton" type="Button" parent="InterfaceRoot/HBoxContainer/LeftSide/VBoxContainer2"]
+[node name="ImportButton" type="Button" parent="InterfaceRoot/UiSectionsContainer/LeftSide/VBoxContainer2"]
 layout_mode = 2
 text = "Import
 "
 
-[node name="ExportButton" type="Button" parent="InterfaceRoot/HBoxContainer/LeftSide/VBoxContainer2"]
+[node name="ExportButton" type="Button" parent="InterfaceRoot/UiSectionsContainer/LeftSide/VBoxContainer2"]
 layout_mode = 2
 text = "Export"
 
-[node name="Center" type="Control" parent="InterfaceRoot/HBoxContainer"]
+[node name="Center" type="Control" parent="InterfaceRoot/UiSectionsContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="InterfaceRoot/HBoxContainer/Center"]
+[node name="HBoxContainer" type="HBoxContainer" parent="InterfaceRoot/UiSectionsContainer/Center"]
 layout_mode = 1
 anchors_preset = 12
 anchor_top = 1.0
@@ -87,35 +93,35 @@ size_flags_horizontal = 3
 mouse_filter = 2
 alignment = 1
 
-[node name="PlayerButton" type="Button" parent="InterfaceRoot/HBoxContainer/Center/HBoxContainer"]
+[node name="PlayerButton" type="Button" parent="InterfaceRoot/UiSectionsContainer/Center/HBoxContainer"]
 visible = false
 layout_mode = 2
 size_flags_vertical = 8
 text = "Player"
 
-[node name="CarrierButton" type="Button" parent="InterfaceRoot/HBoxContainer/Center/HBoxContainer"]
+[node name="CarrierButton" type="Button" parent="InterfaceRoot/UiSectionsContainer/Center/HBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 8
 text = "Carrier"
 
-[node name="DroneButton" type="Button" parent="InterfaceRoot/HBoxContainer/Center/HBoxContainer"]
+[node name="DroneButton" type="Button" parent="InterfaceRoot/UiSectionsContainer/Center/HBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 8
 text = "Drone"
 
-[node name="OrphanPartButton" type="Button" parent="InterfaceRoot/HBoxContainer/Center/HBoxContainer"]
+[node name="OrphanPartButton" type="Button" parent="InterfaceRoot/UiSectionsContainer/Center/HBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 8
 text = "Orphan Part
 "
 
-[node name="VBoxContainer" type="VBoxContainer" parent="InterfaceRoot/HBoxContainer/Center"]
+[node name="VBoxContainer" type="VBoxContainer" parent="InterfaceRoot/UiSectionsContainer/Center"]
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
 grow_horizontal = 2
 
-[node name="MissionNameLabel" type="LineEdit" parent="InterfaceRoot/HBoxContainer/Center/VBoxContainer"]
+[node name="MissionNameLabel" type="LineEdit" parent="InterfaceRoot/UiSectionsContainer/Center/VBoxContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
@@ -125,14 +131,14 @@ alignment = 1
 expand_to_text_length = true
 flat = true
 
-[node name="MissionIdLabel" type="Label" parent="InterfaceRoot/HBoxContainer/Center/VBoxContainer"]
+[node name="MissionIdLabel" type="Label" parent="InterfaceRoot/UiSectionsContainer/Center/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "mission-id"
 label_settings = SubResource("LabelSettings_rbl7d")
 horizontal_alignment = 1
 
-[node name="CraftBuilderButton" type="Button" parent="InterfaceRoot/HBoxContainer/Center"]
+[node name="CraftBuilderButton" type="Button" parent="InterfaceRoot/UiSectionsContainer/Center"]
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -146,12 +152,12 @@ grow_horizontal = 2
 grow_vertical = 0
 text = "Craft Builder"
 
-[node name="RightSide" type="Control" parent="InterfaceRoot/HBoxContainer"]
+[node name="RightSide" type="Control" parent="InterfaceRoot/UiSectionsContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 2
 
-[node name="MousePositionLabel" type="Label" parent="InterfaceRoot/HBoxContainer/RightSide"]
+[node name="MousePositionLabel" type="Label" parent="InterfaceRoot/UiSectionsContainer/RightSide"]
 unique_name_in_owner = true
 self_modulate = Color(1, 1, 1, 0.392157)
 layout_mode = 1
@@ -165,7 +171,7 @@ offset_top = -21.0
 grow_horizontal = 0
 grow_vertical = 0
 
-[node name="TestButton" type="Button" parent="InterfaceRoot/HBoxContainer/RightSide"]
+[node name="TestButton" type="Button" parent="InterfaceRoot/UiSectionsContainer/RightSide"]
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
@@ -178,7 +184,7 @@ grow_horizontal = 0
 grow_vertical = 0
 text = "Test"
 
-[node name="MarginContainer" type="MarginContainer" parent="InterfaceRoot/HBoxContainer/RightSide"]
+[node name="MarginContainer" type="MarginContainer" parent="InterfaceRoot/UiSectionsContainer/RightSide"]
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
@@ -189,18 +195,19 @@ theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 0
 theme_override_constants/margin_bottom = 0
 
-[node name="EntityInspector" parent="InterfaceRoot/HBoxContainer/RightSide/MarginContainer" instance=ExtResource("2_owwe5")]
+[node name="EntityInspector" parent="InterfaceRoot/UiSectionsContainer/RightSide/MarginContainer" instance=ExtResource("2_owwe5")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
 
 [connection signal="gui_input" from="InterfaceRoot" to="." method="OnInterfaceRootGuiInput"]
-[connection signal="pressed" from="InterfaceRoot/HBoxContainer/LeftSide/VBoxContainer2/ImportButton" to="." method="OnImportButtonPressed"]
-[connection signal="pressed" from="InterfaceRoot/HBoxContainer/LeftSide/VBoxContainer2/ExportButton" to="." method="OnExportButtonPressed"]
-[connection signal="pressed" from="InterfaceRoot/HBoxContainer/Center/HBoxContainer/PlayerButton" to="." method="OnPlayerButtonPressed"]
-[connection signal="pressed" from="InterfaceRoot/HBoxContainer/Center/HBoxContainer/CarrierButton" to="." method="OnCarrierButtonPressed"]
-[connection signal="pressed" from="InterfaceRoot/HBoxContainer/Center/HBoxContainer/DroneButton" to="." method="OnDroneButtonPressed"]
-[connection signal="pressed" from="InterfaceRoot/HBoxContainer/Center/HBoxContainer/OrphanPartButton" to="." method="OnOrphanPartButtonPressed"]
-[connection signal="focus_exited" from="InterfaceRoot/HBoxContainer/Center/VBoxContainer/MissionNameLabel" to="." method="OnMissionNameLabelFocusExited"]
-[connection signal="pressed" from="InterfaceRoot/HBoxContainer/Center/CraftBuilderButton" to="." method="OnCraftBuilderButtonPressed"]
-[connection signal="pressed" from="InterfaceRoot/HBoxContainer/RightSide/TestButton" to="." method="OnTestButtonPressed"]
+[connection signal="pressed" from="InterfaceRoot/EntityConnectionHint/ConnectToStageButton" to="." method="OnConnectToStageButtonPressed"]
+[connection signal="pressed" from="InterfaceRoot/UiSectionsContainer/LeftSide/VBoxContainer2/ImportButton" to="." method="OnImportButtonPressed"]
+[connection signal="pressed" from="InterfaceRoot/UiSectionsContainer/LeftSide/VBoxContainer2/ExportButton" to="." method="OnExportButtonPressed"]
+[connection signal="pressed" from="InterfaceRoot/UiSectionsContainer/Center/HBoxContainer/PlayerButton" to="." method="OnPlayerButtonPressed"]
+[connection signal="pressed" from="InterfaceRoot/UiSectionsContainer/Center/HBoxContainer/CarrierButton" to="." method="OnCarrierButtonPressed"]
+[connection signal="pressed" from="InterfaceRoot/UiSectionsContainer/Center/HBoxContainer/DroneButton" to="." method="OnDroneButtonPressed"]
+[connection signal="pressed" from="InterfaceRoot/UiSectionsContainer/Center/HBoxContainer/OrphanPartButton" to="." method="OnOrphanPartButtonPressed"]
+[connection signal="focus_exited" from="InterfaceRoot/UiSectionsContainer/Center/VBoxContainer/MissionNameLabel" to="." method="OnMissionNameLabelFocusExited"]
+[connection signal="pressed" from="InterfaceRoot/UiSectionsContainer/Center/CraftBuilderButton" to="." method="OnCraftBuilderButtonPressed"]
+[connection signal="pressed" from="InterfaceRoot/UiSectionsContainer/RightSide/TestButton" to="." method="OnTestButtonPressed"]

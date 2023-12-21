@@ -109,9 +109,9 @@ public partial class Entity : Node2D
         return events;
     }
 
-    public static List<MethodInfo> GetConnectableMethods(Entity entity)
+    public static List<MethodInfo> GetConnectableMethods(Node node)
     {
-        Type type = entity.GetType();
+        Type type = node.GetType();
         
         if (MethodsCache.TryGetValue(type, out List<MethodInfo> cachedMethods))
         {
