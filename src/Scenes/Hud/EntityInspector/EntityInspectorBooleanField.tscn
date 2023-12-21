@@ -2,22 +2,49 @@
 
 [ext_resource type="Script" path="res://Nort/Hud/EntityInspector/EntityInspectorBooleanField.cs" id="1_cggw7"]
 
-[node name="EntityInspectorBooleanField" type="HBoxContainer"]
-custom_minimum_size = Vector2(0, 30)
-offset_right = 360.0
-offset_bottom = 28.0
+[node name="EntityInspectorBooleanField" type="PanelContainer"]
+custom_minimum_size = Vector2(0, 40)
+offset_right = 300.0
+offset_bottom = 30.0
+theme_type_variation = &"PanelContainerLight"
 script = ExtResource("1_cggw7")
 
-[node name="Label" type="Label" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 14
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+custom_minimum_size = Vector2(300, 30)
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.5
-text = "Property"
+text = "Shiny"
 
-[node name="CheckBox" type="CheckBox" parent="."]
+[node name="CheckBox" type="CheckBox" parent="MarginContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_vertical = 4
 button_pressed = true
 
-[connection signal="toggled" from="CheckBox" to="." method="OnCheckBoxToggled"]
+[node name="Control" type="Control" parent="MarginContainer/HBoxContainer/CheckBox"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -290.0
+offset_top = -8.0
+offset_right = 8.0
+offset_bottom = 8.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+
+[connection signal="toggled" from="MarginContainer/HBoxContainer/CheckBox" to="MarginContainer/HBoxContainer" method="OnCheckBoxToggled"]
