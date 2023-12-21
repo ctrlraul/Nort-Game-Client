@@ -58,6 +58,8 @@ public partial class CoreBulletSkillNode : Node2D, ISkillNode
         cooldownTimer.Start();
 
         GD.Print("Core bullet fire!");
+        
+        Fired?.Invoke();
     }
 
     private void TryToFindNewTarget(CraftPart foePart)
