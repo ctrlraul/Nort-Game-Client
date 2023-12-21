@@ -4,13 +4,13 @@ using System.Linq;
 using CtrlRaul.Godot;
 using Godot;
 using Nort.Hud;
-using Nort.Pages;
 
 namespace Nort.Entities;
 
 public partial class OrphanPart : Entity
 {
-    public event Action<PartData> Collected; 
+    [Connectable]
+    public event Action Collected;
     
     
     [Savable]
@@ -122,11 +122,11 @@ public partial class OrphanPart : Entity
 
     public void Collect()
     {
-        Collected?.Invoke(GetPartData());
+        Collected?.Invoke();
         QueueFree();
     }
 
-    private PartData GetPartData()
+    public PartData GetPartData()
     {
         return new()
         {

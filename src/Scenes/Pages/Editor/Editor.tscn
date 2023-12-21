@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://gnsam7j75k7f"]
+[gd_scene load_steps=8 format=3 uid="uid://gnsam7j75k7f"]
 
 [ext_resource type="Script" path="res://Nort/Pages/Editor.cs" id="1_w6yix"]
 [ext_resource type="PackedScene" uid="uid://dg8ygdrhal03f" path="res://Scenes/Popups/MissionSelectorPopup.tscn" id="2_g5r8g"]
 [ext_resource type="PackedScene" uid="uid://crxxyndc18yre" path="res://Scenes/Hud/EntityInspector/EntityInspector.tscn" id="2_owwe5"]
+[ext_resource type="LabelSettings" uid="uid://dtfxwulwc71hw" path="res://OtherResources/big_label_settings.tres" id="3_6d1bo"]
 [ext_resource type="PackedScene" uid="uid://cdwor48b8w6ca" path="res://Scenes/UI/ReturnButton.tscn" id="3_c0oqk"]
 [ext_resource type="FontFile" uid="uid://cg0piurce428j" path="res://Fonts/monofonto_rg.otf" id="4_2i5sp"]
 
@@ -14,6 +15,18 @@ font_color = Color(1, 1, 1, 0.392157)
 [node name="Editor" type="CanvasLayer"]
 script = ExtResource("1_w6yix")
 missionSelectorPopupScene = ExtResource("2_g5r8g")
+
+[node name="SelectTargetLabel" type="Label" parent="."]
+unique_name_in_owner = true
+visible = false
+offset_left = 883.0
+offset_top = 40.0
+offset_right = 1037.0
+offset_bottom = 72.0
+size_flags_horizontal = 4
+size_flags_vertical = 0
+text = "Select Target"
+label_settings = ExtResource("3_6d1bo")
 
 [node name="InterfaceRoot" type="MarginContainer" parent="."]
 unique_name_in_owner = true

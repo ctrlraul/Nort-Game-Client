@@ -6,6 +6,7 @@ using System.Reflection;
 using CtrlRaul;
 using CtrlRaul.Godot;
 using CtrlRaul.Godot.Linq;
+using Nort.Entities;
 using Entity = Nort.Entities.Entity;
 
 using PropAttrDict = System.Collections.Generic.Dictionary<string, (System.Reflection.PropertyInfo, Nort.Hud.InspectAttribute)>;
@@ -37,6 +38,9 @@ public class InspectAttribute : Attribute
 
 public partial class EntityInspector : PanelContainer
 {
+    public event Action NewConnectionRequested;
+    
+    
     public interface IField
     {
         public event Action<object> ValueChanged;
@@ -47,10 +51,13 @@ public partial class EntityInspector : PanelContainer
     
     [Export] private PackedScene booleanFieldScene;
     [Export] private PackedScene optionsFieldScene;
+    [Export] private PackedScene connectionsListItemScene;
 
     [Ready] public Label entityLabel;
     [Ready] public Control fieldsListContainer;
     [Ready] public Control fieldsList;
+    [Ready] public Control connectionsListContainer;
+    [Ready] public Control connectionsList;
 
     private readonly List<Entity> selectedEntities = new();
 
@@ -70,6 +77,8 @@ public partial class EntityInspector : PanelContainer
         selectedEntities.Clear();
         fieldsList.QueueFreeChildren();
         fieldsListContainer.Hide();
+        connectionsList.QueueFreeChildren();
+        connectionsListContainer.Hide();
     }
     
     public void SetEntity(Entity value)
@@ -82,8 +91,13 @@ public partial class EntityInspector : PanelContainer
         
         Visible = true;
         entityLabel.Text = entityType.Name;
-        
+
         AddFieldsForProperties(GetInspectableProperties(entityType));
+
+        foreach (EntityConnection connection in value.Connections)
+            AddConnectionsListItem(value, connection);
+        
+        connectionsListContainer.Show();
     }
     
     public void SetEntities(List<Entity> entities)
@@ -142,6 +156,29 @@ public partial class EntityInspector : PanelContainer
         }
         
         AddFieldsForProperties(commonProperties);
+    }
+
+    public void AddConnectionWith(Entity target)
+    {
+        Entity entity = selectedEntities[0];
+        EntityConnection connection = new()
+        {
+            targetUuid = target.Uuid,
+            eventName = Entity.GetConnectableEvents(entity).First().Name,
+            methodName = Entity.GetConnectableMethods(target).First().Name,
+        };
+        
+        entity.Connections.Add(connection);
+
+        AddConnectionsListItem(entity, connection);
+    }
+
+    private void AddConnectionsListItem(Entity entity, EntityConnection connection)
+    {
+        ConnectionsListItem listItem = connectionsListItemScene.Instantiate<ConnectionsListItem>();
+        connectionsListContainer.AddChild(listItem);
+        listItem.SetEntity(entity);
+        listItem.SetConnection(connection);
     }
     
     private void AddFieldsForProperties(PropAttrDict propAttrDict)
@@ -325,5 +362,11 @@ public partial class EntityInspector : PanelContainer
         }
         
         return inspectableProperties;
+    }
+    
+    
+    private void NewConnectionButtonPressed()
+    {
+        NewConnectionRequested?.Invoke();
     }
 }

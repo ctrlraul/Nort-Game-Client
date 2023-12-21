@@ -109,7 +109,7 @@ public partial class CoreTractor : Node2D
 		SetTarget(null);
 	}
 
-	private void OnTargetCollected(PartData partData)
+	private void OnTargetCollected()
 	{
 		DisconnectEntityEvents(target);
 		SetTarget(null);

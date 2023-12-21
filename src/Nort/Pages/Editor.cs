@@ -30,7 +30,6 @@ public partial class Editor : Page
 
 
     private static Stage Stage => Stage.Instance;
-    private static IEnumerable<Entity> Entities => Stage.entitiesContainer.GetChildren().Cast<Entity>();
 
 
     [Export] private PackedScene missionSelectorPopupScene;
@@ -40,6 +39,7 @@ public partial class Editor : Page
     [Ready] public EntityInspector entityInspector;
     [Ready] public Label missionIdLabel;
     [Ready] public LineEdit missionNameLabel;
+    [Ready] public Control selectTargetLabel;
 
 
     private const float ZoomStep = 0.1f;
@@ -53,6 +53,7 @@ public partial class Editor : Page
     private ulong lastZoom;
     private bool panning;
     private bool hasUnsavedChange;
+    private bool guiHiddenToPickConnectionTarget;
     private Vector2 selectionStart = Vector2.Zero;
     private Vector2 copyOffset = Vector2.Zero;
     private MouseState mouseState = MouseState.Up;
@@ -64,6 +65,27 @@ public partial class Editor : Page
         this.InitializeReady();
         missionIdLabel.Text = Assets.GenerateUuid();
         missionNameLabel.Text = GenerateMissionName();
+        selectTargetLabel.Visible = false;
+        entityInspector.NewConnectionRequested += OnEntityInspectorNewConnectionRequested;
+    }
+
+    private void OnEntityInspectorNewConnectionRequested()
+    {
+        HideGuiToPickConnectionTarget();
+    }
+
+    private void HideGuiToPickConnectionTarget()
+    {
+        interfaceRoot.Visible = false;
+        guiHiddenToPickConnectionTarget = true;
+        selectTargetLabel.Visible = true;
+    }
+
+    private void ShowGui()
+    {
+        interfaceRoot.Visible = true;
+        guiHiddenToPickConnectionTarget = false;
+        selectTargetLabel.Visible = false;
     }
 
     public override void _Process(double delta)
@@ -123,6 +145,12 @@ public partial class Editor : Page
                 else if (Input.IsActionJustPressed("delete"))
                 {
                     ShortcutDelete();
+                    GetViewport().SetInputAsHandled();
+                }
+                else if (Input.IsActionPressed("escape"))
+                {
+                    if (guiHiddenToPickConnectionTarget)
+                        ShowGui();
                     GetViewport().SetInputAsHandled();
                 }
 
@@ -187,7 +215,7 @@ public partial class Editor : Page
         {
             id = missionIdLabel.Text,
             displayName = missionNameLabel.Text,
-            entitySetups = Entities.Select(Entity.GetSetup).ToList()
+            entitySetups = Stage.GetEntities().Select(Entity.GetSetup).ToList()
         };
     }
     
@@ -197,6 +225,35 @@ public partial class Editor : Page
         entity.Position = Stage.camera.Position.Snapped(gridSnap);
         entityInspector.SetEntity(entity);
     }
+
+
+    #region Entity Event Connection
+
+    public void AddConnection(Entity source, Entity target, string eventName, string methodName)
+    {
+        source.Connections.Add(new()
+        {
+            targetUuid = target.Uuid,
+            eventName = eventName,
+            methodName = methodName
+        });
+    }
+
+    public void RemoveConnection(Entity source, Entity target, string eventName, string methodName)
+    {
+        int index = source.Connections.FindIndex(connection => (
+            connection.targetUuid == target.Uuid &&
+            connection.eventName  == eventName   &&
+            connection.methodName == methodName
+        ));
+
+        if (index == -1)
+            throw new Exception("Connection not found");
+        
+        source.Connections.RemoveAt(index);
+    }
+
+    #endregion
     
     
     #region Shortcut methods
@@ -234,7 +291,7 @@ public partial class Editor : Page
 
     public void ShortcutSelectAll()
     {
-        foreach (Entity entity in Entities)
+        foreach (Entity entity in Stage.GetEntities())
         {
             if (!selection.Contains(entity))
             {
@@ -272,38 +329,58 @@ public partial class Editor : Page
         {
             case MouseState.Down:
 
-                Entity hoveredEntity = Stage.GetEntityOnMouse();
-
-                if (mouseButtonEvent.ShiftPressed)
+                Entity entity = Stage.GetEntityOnMouse();
+                
+                if (entity == null)
                 {
-                    if (hoveredEntity != null)
+                    if (guiHiddenToPickConnectionTarget)
                     {
-                        if (selection.Contains(hoveredEntity))
+                        ShowGui();
+                    }
+                    else
+                    {
+                        if (mouseButtonEvent.ShiftPressed)
                         {
-                            selection.Remove(hoveredEntity);
+                        
                         }
                         else
                         {
-                            selection.Add(hoveredEntity);
+                            selection.Clear();
+                            entityInspector.Clear();
                         }
                     }
                 }
                 else
                 {
-                    if (hoveredEntity == null)
+                    if (guiHiddenToPickConnectionTarget)
                     {
-                        selection.Clear();
+                        entityInspector.AddConnectionWith(entity);
+                        ShowGui();
                     }
-                    else
+                    else 
                     {
-                        if (!selection.Contains(hoveredEntity))
-                            selection.Clear();
+                        if (mouseButtonEvent.ShiftPressed)
+                        {
+                            if (selection.Contains(entity))
+                            {
+                                selection.Remove(entity);
+                            }
+                            else
+                            {
+                                selection.Add(entity);
+                            }
+                        }
+                        else
+                        {
+                            if (!selection.Contains(entity))
+                                selection.Clear();
 
-                        selection.Add(hoveredEntity);
+                            selection.Add(entity);
+                        }
+                        
+                        entityInspector.SetEntities(selection);
                     }
                 }
-
-                entityInspector.SetEntities(selection);
 
                 break;
 

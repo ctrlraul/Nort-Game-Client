@@ -99,8 +99,9 @@ public partial class Craft : Entity
         
         FactionChanged?.Invoke();
     }
-
-
+    
+    
+    [Connectable]
     public void Destroy()
     {
         Hull = 0;

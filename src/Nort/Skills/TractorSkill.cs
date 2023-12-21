@@ -77,7 +77,7 @@ public partial class TractorSkill : Node2D
         Target = null;
     }
 
-    private void OnTargetCollected(PartData partData)
+    private void OnTargetCollected()
     {
         DisconnectTargetEvents(Target);
         Target = null;

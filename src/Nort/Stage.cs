@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using CtrlRaul;
 using CtrlRaul.Godot;
 using CtrlRaul.Godot.Linq;
@@ -31,6 +32,7 @@ public partial class Stage : Node2D
     private readonly Logger logger = new("Stage");
 
     private readonly List<string> problems = new();
+    private readonly Dictionary<string, Entity> entitiesMap = new();
     public readonly List<PartData> partsCollected = new();
 
     private PlayerCraft player;
@@ -110,6 +112,8 @@ public partial class Stage : Node2D
                 logger.Error($"Failed to spawn entity:\n{exception}");
             }
         }
+
+        MakeConnections();
         
         if (problems.Any())
         {
@@ -155,8 +159,14 @@ public partial class Stage : Node2D
         camera.Position = Vector2.Zero;
         entitiesContainer.QueueFreeChildren();
         problems.Clear();
+        entitiesMap.Clear();
         partsCollected.Clear();
         Player = null;
+    }
+
+    public Entity GetEntityByUuid(string uuid)
+    {
+        return entitiesMap.TryGetValue(uuid, out Entity entity) ? entity : null;
     }
     
 
@@ -178,27 +188,22 @@ public partial class Stage : Node2D
     public T Spawn<T>() where T : Entity
     {
         T entity = InstantiateEntityScene(typeof(T).Name) as T;
-        entitiesContainer.AddChild(entity);
+        Spawn(entity);
         return entity;
     }
     
     public Entity Spawn(EntitySetup setup)
     {
-        if (!setup.TryGetValue("Type", out object value) || value is not string typeName)
-            throw new Exception("Invalid or missing 'Type' property in entity setup");
-        
-        Entity entity = InstantiateEntityScene(typeName);
-        
+        Entity entity = InstantiateEntityScene(setup.typeName);
         Entity.SetSetup(entity, setup);
-
         Spawn(entity);
-        
         return entity;
     }
 
     public void Spawn(Entity entity)
     {
         entitiesContainer.AddChild(entity);
+        entitiesMap.Add(entity.Uuid, entity);
 
         switch (entity)
         {
@@ -222,8 +227,50 @@ public partial class Stage : Node2D
                 break;
             
             case OrphanPart orphanPart:
-                orphanPart.Collected += OnOrphanPartCollected;
+                orphanPart.Collected += () => OnOrphanPartCollected(orphanPart.GetPartData());
                 break;
+        }
+    }
+
+    public IEnumerable<Entity> GetEntities()
+    {
+        return entitiesContainer.GetChildren().Cast<Entity>();
+    }
+
+    public void MakeConnections()
+    {
+        foreach (Entity entity in GetEntities())
+        {
+            foreach (EntityConnection connection in entity.Connections)
+            {
+                if (!entitiesMap.TryGetValue(connection.targetUuid, out Entity target))
+                {
+                    AddProblem($"No entity found with UUID '{connection.targetUuid}'");
+                    continue;
+                }
+            
+                Type sourceType = entity.GetType();
+                EventInfo eventInfo = sourceType.GetEvent(connection.eventName);
+
+                if (eventInfo == null)
+                {
+                    AddProblem($"Event '{connection.eventName}' not found in type {sourceType.Name}");
+                    continue;
+                }
+            
+                Type targetType = target.GetType();
+                MethodInfo methodInfo = targetType.GetMethod(connection.methodName);
+
+                if (methodInfo == null)
+                {
+                    AddProblem($"Method '{connection.methodName}' not found in type {targetType.Name}");
+                    continue;
+                }
+                
+                Delegate methodDelegate = Delegate.CreateDelegate(eventInfo.EventHandlerType, target, methodInfo);
+            
+                eventInfo.AddEventHandler(entity, methodDelegate);
+            }
         }
     }
     
