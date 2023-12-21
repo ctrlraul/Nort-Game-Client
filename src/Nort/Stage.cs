@@ -109,7 +109,7 @@ public partial class Stage : Node2D
             }
             catch (Exception exception)
             {
-                logger.Error($"Failed to spawn entity:\n{exception}");
+                AddProblem($"Failed to spawn entity:\n{exception}");
             }
         }
 
