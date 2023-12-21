@@ -107,10 +107,7 @@ public partial class Craft : Entity
         Core = 0;
 
         foreach (CraftPart part in GetParts())
-        {
             part.Destroy();
-            part.QueueFree();
-        }
 
         QueueFree();
         IsDestroyed = true;
