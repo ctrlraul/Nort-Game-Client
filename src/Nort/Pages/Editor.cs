@@ -225,35 +225,6 @@ public partial class Editor : Page
         entity.Position = Stage.camera.Position.Snapped(gridSnap);
         entityInspector.SetEntity(entity);
     }
-
-
-    #region Entity Event Connection
-
-    public void AddConnection(Entity source, Entity target, string eventName, string methodName)
-    {
-        source.Connections.Add(new()
-        {
-            targetUuid = target.Uuid,
-            eventName = eventName,
-            methodName = methodName
-        });
-    }
-
-    public void RemoveConnection(Entity source, Entity target, string eventName, string methodName)
-    {
-        int index = source.Connections.FindIndex(connection => (
-            connection.targetUuid == target.Uuid &&
-            connection.eventName  == eventName   &&
-            connection.methodName == methodName
-        ));
-
-        if (index == -1)
-            throw new Exception("Connection not found");
-        
-        source.Connections.RemoveAt(index);
-    }
-
-    #endregion
     
     
     #region Shortcut methods
