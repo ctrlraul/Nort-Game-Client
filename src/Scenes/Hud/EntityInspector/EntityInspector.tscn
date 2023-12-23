@@ -8,7 +8,7 @@
 
 [node name="EntityInspector" type="PanelContainer"]
 offset_right = 492.0
-offset_bottom = 647.0
+offset_bottom = 346.0
 script = ExtResource("1_mbvbo")
 booleanFieldScene = ExtResource("3_7afne")
 optionsFieldScene = ExtResource("2_i4mle")
@@ -54,14 +54,14 @@ layout_mode = 2
 layout_mode = 2
 text = "Connections"
 
-[node name="ConnectionsList" type="VBoxContainer" parent="VBoxContainer/ConnectionsListContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/ConnectionsListContainer"]
+layout_mode = 2
+
+[node name="ConnectionsList" type="VBoxContainer" parent="VBoxContainer/ConnectionsListContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/ConnectionsListContainer/ConnectionsList"]
-layout_mode = 2
-
-[node name="ConnectionsListItem" parent="VBoxContainer/ConnectionsListContainer/ConnectionsList/VBoxContainer" instance=ExtResource("4_3yic2")]
+[node name="ConnectionsListItem" parent="VBoxContainer/ConnectionsListContainer/VBoxContainer/ConnectionsList" instance=ExtResource("4_3yic2")]
 layout_mode = 2
 
 [node name="NewConnectionButton" type="Button" parent="VBoxContainer/ConnectionsListContainer"]

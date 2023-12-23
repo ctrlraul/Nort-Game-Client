@@ -192,7 +192,7 @@ public partial class EntityInspector : PanelContainer
     private void AddConnectionsListItem(Entity entity, EntityConnection connection)
     {
         ConnectionsListItem listItem = connectionsListItemScene.Instantiate<ConnectionsListItem>();
-        connectionsListContainer.AddChild(listItem);
+        connectionsList.AddChild(listItem);
         listItem.SetEntity(entity);
         listItem.SetConnection(connection);
     }
