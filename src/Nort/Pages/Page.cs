@@ -5,7 +5,7 @@ using CtrlRaul;
 
 namespace Nort.Pages;
 
-public partial class Page : CanvasLayer
+public abstract partial class Page : CanvasLayer
 {
     protected readonly Logger logger;
 
