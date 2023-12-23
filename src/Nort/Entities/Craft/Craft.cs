@@ -8,7 +8,7 @@ using Nort.Skills;
 
 namespace Nort.Entities;
 
-public partial class Craft : Entity
+public abstract partial class Craft : Entity
 {
     public event Action StatsChanged;
     public event Action FactionChanged;

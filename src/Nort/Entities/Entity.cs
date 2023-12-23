@@ -32,7 +32,7 @@ public class EntityConnection
     public string methodName;
 }
 
-public partial class Entity : Node2D
+public abstract partial class Entity : Node2D
 {
     #region Static
 
