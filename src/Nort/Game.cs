@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using CtrlRaul;
 using Godot;
 using Nort.Pages;
+using Nort.UI.Overlays;
 
 namespace Nort;
 
@@ -14,7 +15,7 @@ public partial class Game : Node
     private event Action Initialized;
     public event Action<Player> PlayerChanged;
 
-    private Task initializationTask = null;
+    private Task initializationTask;
 
     private Player currentPlayer;
     public Player CurrentPlayer
@@ -45,6 +46,14 @@ public partial class Game : Node
     public override void _Ready()
     {
         base._Ready();
+
+#if DEBUG
+        PackedScene consoleOverlayScene = GD.Load<PackedScene>(Config.ConsoleOverlayScenePath);
+        ConsoleOverlay consoleOverlay = consoleOverlayScene.Instantiate<ConsoleOverlay>();
+        AddChild(consoleOverlay);
+        Logger.externalLogger = consoleOverlay;
+#endif
+     
         PagesNavigator.Instance.SetDefaultScene(Config.Pages.MainMenu);
         PagesNavigator.Instance.AddMiddleware(ClearStageMiddleware);
         PagesNavigator.Instance.AddMiddleware(InitializePageMiddleware);
@@ -106,13 +115,17 @@ public partial class Game : Node
             
             logger.Error(exception);
 
-            // if (PagesNavigator.Instance.IsFirstScene(page))
-            // {
-            //     // Show something special about the game itself failing to launch and dev contact
-            // }
+            if (PagesNavigator.Instance.IsFirstScene(page))
+            {
+                // Do sum?
+            }
+            else
+            {
+                logger.Log("Page changing cancelled");
+                PagesNavigator.Instance.Cancel();
+            }
 
             PopupsManager.Instance.Error(exception.Message, $"Failed to initialize {page.Name} page!");
-            PagesNavigator.Instance.Cancel();
         }
 
         if (!coveringTask.IsCompleted)

@@ -3,9 +3,9 @@
 [ext_resource type="PackedScene" uid="uid://lym42cvdb0b3" path="res://Scenes/Popups/GenericPopup.tscn" id="1_2mjio"]
 [ext_resource type="Script" path="res://Nort/Popups/PartBuilderPopup.cs" id="2_c7j3o"]
 [ext_resource type="PackedScene" uid="uid://uk8tpg655i5w" path="res://Scenes/UI/DisplayPart.tscn" id="3_nkthf"]
-[ext_resource type="Texture2D" uid="uid://b3bm4djf5tas8" path="res://assets/images/part_example.png" id="4_kvnmx"]
+[ext_resource type="Texture2D" uid="uid://b3bm4djf5tas8" path="res://Images/placeholders/part.png" id="4_kvnmx"]
 [ext_resource type="PackedScene" uid="uid://yu4ujxccdpgt" path="res://Scenes/UI/SkillOptions.tscn" id="5_pyy0m"]
-[ext_resource type="Theme" uid="uid://85byrm5eq3ab" path="res://theme/theme.tres" id="6_fqjc5"]
+[ext_resource type="Theme" uid="uid://85byrm5eq3ab" path="res://OtherResources/theme.tres" id="6_fqjc5"]
 
 [node name="PartBuilderPopup" instance=ExtResource("1_2mjio")]
 script = ExtResource("2_c7j3o")

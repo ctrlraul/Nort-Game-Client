@@ -2,8 +2,8 @@
 
 [ext_resource type="Script" path="res://Nort/Listing/PlayerListItem.cs" id="1_dwdae"]
 [ext_resource type="PackedScene" uid="uid://cxdrb6lxh18qh" path="res://Scenes/UI/DisplayCraft.tscn" id="2_o1gn8"]
-[ext_resource type="Texture2D" uid="uid://duotyrshpkhha" path="res://theme/button_x.png" id="3_t1n8w"]
-[ext_resource type="Texture2D" uid="uid://bhxn77jhp6maq" path="res://theme/button_x_ruby.png" id="4_d4q6w"]
+[ext_resource type="Texture2D" uid="uid://duotyrshpkhha" path="res://Images/theme/button_x.png" id="3_t1n8w"]
+[ext_resource type="Texture2D" uid="uid://bhxn77jhp6maq" path="res://Images/theme/button_x_ruby.png" id="4_d4q6w"]
 
 [node name="PlayerListItem" type="PanelContainer"]
 anchors_preset = 10

@@ -2,7 +2,7 @@ using Godot;
 using CtrlRaul.Godot;
 using Nort.Entities;
 
-namespace Nort.Pages.MissionHud;
+namespace Nort.Pages;
 
 public partial class SkillButton : TextureButton
 {

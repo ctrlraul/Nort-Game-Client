@@ -1,6 +1,6 @@
 ﻿{
   "id": "core_bullet",
   "displayName": "Core Bullet",
-  "scenePath": "CoreBulletSkillNode.tscn",
+  "scenePath": "CoreBulletSkill.tscn",
   "mass": 5
 }

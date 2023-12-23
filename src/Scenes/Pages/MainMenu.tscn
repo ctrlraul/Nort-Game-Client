@@ -1,0 +1,106 @@
+[gd_scene load_steps=7 format=3 uid="uid://di6wg5igk5hpe"]
+
+[ext_resource type="Script" path="res://Nort/Pages/MainMenu.cs" id="1_ngwbq"]
+[ext_resource type="Theme" uid="uid://85byrm5eq3ab" path="res://OtherResources/theme.tres" id="2_3jnk7"]
+[ext_resource type="PackedScene" uid="uid://djqq8s6miovq7" path="res://Scenes/FloatingAnimation.tscn" id="3_jmepi"]
+[ext_resource type="Material" uid="uid://bscgpp7x5c27j" path="res://Materials/shiny_part_shader_material.tres" id="4_t0a7q"]
+[ext_resource type="Texture2D" uid="uid://dgqwtel1q4ppk" path="res://Images/branding/logo_themed.png" id="5_bktyo"]
+[ext_resource type="PackedScene" uid="uid://cxdrb6lxh18qh" path="res://Scenes/UI/DisplayCraft.tscn" id="6_0tu20"]
+
+[node name="MainMenu" type="CanvasLayer"]
+script = ExtResource("1_ngwbq")
+
+[node name="Theme" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_3jnk7")
+
+[node name="MarginContainer" type="MarginContainer" parent="Theme"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_type_variation = &"WindowMarginContainer"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Theme/MarginContainer"]
+layout_mode = 2
+
+[node name="LogoContainer" type="CenterContainer" parent="Theme/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Control" type="Control" parent="Theme/MarginContainer/VBoxContainer/LogoContainer"]
+layout_mode = 2
+
+[node name="FloatingAnimation" parent="Theme/MarginContainer/VBoxContainer/LogoContainer/Control" instance=ExtResource("3_jmepi")]
+remote_path = NodePath("../Logo2DWrapper")
+
+[node name="Logo2DWrapper" type="Node2D" parent="Theme/MarginContainer/VBoxContainer/LogoContainer/Control"]
+
+[node name="TextureRect" type="TextureRect" parent="Theme/MarginContainer/VBoxContainer/LogoContainer/Control/Logo2DWrapper"]
+material = ExtResource("4_t0a7q")
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -250.0
+offset_top = -92.5
+offset_right = 250.0
+offset_bottom = 92.5
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("5_bktyo")
+
+[node name="MarginContainer" type="MarginContainer" parent="Theme/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="ButtonsContainer" type="VBoxContainer" parent="Theme/MarginContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 1.5
+alignment = 1
+
+[node name="StartButton" type="Button" parent="Theme/MarginContainer/VBoxContainer/MarginContainer/ButtonsContainer"]
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Start"
+
+[node name="MissionEditorButton" type="Button" parent="Theme/MarginContainer/VBoxContainer/MarginContainer/ButtonsContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Editor"
+
+[node name="Control" type="Control" parent="Theme/MarginContainer/VBoxContainer/MarginContainer"]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+
+[node name="DisplayCraft" parent="Theme/MarginContainer/VBoxContainer/MarginContainer/Control" instance=ExtResource("6_0tu20")]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[connection signal="pressed" from="Theme/MarginContainer/VBoxContainer/MarginContainer/ButtonsContainer/StartButton" to="." method="OnStartButtonPressed"]
+[connection signal="pressed" from="Theme/MarginContainer/VBoxContainer/MarginContainer/ButtonsContainer/MissionEditorButton" to="." method="OnMissionEditorButtonPressed"]

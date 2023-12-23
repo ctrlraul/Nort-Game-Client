@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://lym42cvdb0b3" path="res://Scenes/Popups/GenericPopup.tscn" id="1_gdecb"]
 [ext_resource type="Script" path="res://Nort/Popups/DialogPopup.cs" id="2_cb2ph"]
-[ext_resource type="FontVariation" uid="uid://d3mpjilq7jk34" path="res://theme/fonts/AireExterior.tres" id="3_5lmgr"]
+[ext_resource type="FontVariation" uid="uid://d3mpjilq7jk34" path="res://Fonts/AireExterior.tres" id="3_5lmgr"]
 
 [node name="DialogPopup" instance=ExtResource("1_gdecb")]
 script = ExtResource("2_cb2ph")

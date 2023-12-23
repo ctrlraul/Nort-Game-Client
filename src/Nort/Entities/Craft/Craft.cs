@@ -15,7 +15,7 @@ public abstract partial class Craft : Entity
     
     [Connectable] public event Action<Craft> Destroyed;
 
-    [Export] private PackedScene craftBodyPartScene;
+    [Export] private PackedScene craftPartScene;
 
     [Ready] public Node2D partsContainer;
     [Ready] public Node2D skillsContainer;
@@ -119,7 +119,7 @@ public abstract partial class Craft : Entity
     
     private CraftPart AddPart(BlueprintPart blueprintPart)
     {
-        CraftPart part = craftBodyPartScene.Instantiate<CraftPart>();
+        CraftPart part = craftPartScene.Instantiate<CraftPart>();
 
         part.Craft = this; // I don't like this
         part.Faction = Faction;
@@ -153,7 +153,7 @@ public abstract partial class Craft : Entity
     {
         switch (from)
         {
-            case BulletSkillNode:
+            case BulletSkill:
                 Hull -= damage;
 
                 if (Hull >= 0)

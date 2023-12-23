@@ -134,7 +134,7 @@ public partial class Stage : Node2D
         if (Game.Instance.CurrentPlayer == null)
             return false;
 
-        if (PagesNavigator.Instance.CurrentPage is MissionPage { FromEditor: true })
+        if (PagesNavigator.Instance.CurrentPage is MissionHud { FromEditor: true })
             return false;
 
         return true;
@@ -173,17 +173,15 @@ public partial class Stage : Node2D
 
     private Entity InstantiateEntityScene(string typeName)
     {
-        PackedScene scene = typeName switch
+        return typeName switch
         {
-            nameof(PlayerCraft) => playerCraftScene,
-            nameof(CarrierCraft) => carrierCraftScene,
-            nameof(DroneCraft) => droneCraftScene,
-            nameof(OrphanPart) => orphanPartScene,
+            nameof(PlayerCraft) => playerCraftScene.Instantiate<PlayerCraft>(),
+            nameof(CarrierCraft) => carrierCraftScene.Instantiate<CarrierCraft>(),
+            nameof(DroneCraft) => droneCraftScene.Instantiate<DroneCraft>(),
+            nameof(OrphanPart) => orphanPartScene.Instantiate<OrphanPart>(),
             
             _ => throw new Exception($"No entity scene configured for type '{typeName}'")
         };
-
-        return scene.Instantiate<Entity>();
     }
     
     public T Spawn<T>() where T : Entity

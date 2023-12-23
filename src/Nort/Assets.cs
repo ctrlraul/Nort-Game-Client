@@ -30,13 +30,13 @@ public class Assets : Singleton<Assets>
         }
     }
     
-    public static readonly Texture2D MissingPartTexture = GD.Load<Texture2D>("res://images/part_example.png");
-    public static readonly Texture2D MissingSkillTexture = GD.Load<Texture2D>("res://images/skill_placeholder.png");
-    public static readonly Texture2D CoreLightTexture = GD.Load<Texture2D>("res://images/core_light.png");
+    public static readonly Texture2D PartTexturePlaceholder = GD.Load<Texture2D>("res://Images/placeholders/part.png");
+    public static readonly Texture2D SkillTexturePlaceholder = GD.Load<Texture2D>("res://Images/placeholders/skill.png");
+    public static readonly Texture2D CoreLightTexture = GD.Load<Texture2D>("res://Images/core_light.png");
     public static readonly ShaderMaterial ShinyMaterial = GD.Load<ShaderMaterial>("res://Materials/shiny_part_shader_material.tres");
     public static readonly ShaderMaterial PartOutlineMaterial = GD.Load<ShaderMaterial>("res://Materials/part_outline_shader_material.tres");
 
-    public const string SkillTexturesDirectory = "res://images/skills";
+    public const string SkillTexturesDirectory = "res://Images/skills";
     public const string SkillsDirectoryName = "skills";
     public const string PartsDirectoryName = "parts";
     public const string PartTexturesDirectoryName = "part_textures";
@@ -394,7 +394,7 @@ public class Assets : Singleton<Assets>
 
     public Texture2D GetPartTexture(string partId)
     {
-        return partTextures.TryGetValue(partId, out Texture2D texture) ? texture : MissingPartTexture;
+        return partTextures.TryGetValue(partId, out Texture2D texture) ? texture : PartTexturePlaceholder;
     }
 
     public Texture2D GetPartTexture(Part part)
@@ -410,7 +410,7 @@ public class Assets : Singleton<Assets>
     
     public Texture2D GetSkillTexture(string id)
     {
-        return skillTextures.TryGetValue(id, out Texture2D texture) ? texture : MissingSkillTexture;
+        return skillTextures.TryGetValue(id, out Texture2D texture) ? texture : SkillTexturePlaceholder;
     }
     
 

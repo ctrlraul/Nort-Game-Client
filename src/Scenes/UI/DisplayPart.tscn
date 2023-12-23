@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Nort/UI/DisplayPart.cs" id="1_vujig"]
 [ext_resource type="Material" uid="uid://bscgpp7x5c27j" path="res://Materials/shiny_part_shader_material.tres" id="2_ysht6"]
-[ext_resource type="Texture2D" uid="uid://b3bm4djf5tas8" path="res://Images/part_example.png" id="3_a3st0"]
+[ext_resource type="Texture2D" uid="uid://b3bm4djf5tas8" path="res://Images/placeholders/part.png" id="3_a3st0"]
 
 [node name="DisplayPart" type="Control"]
 layout_mode = 3

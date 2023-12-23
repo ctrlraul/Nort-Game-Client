@@ -23,7 +23,7 @@ public partial class LobbyPage : Page
 
     private void OnTestButtonPressed()
     {
-        MissionPage.NavigationData data = new(fromEditor:false, Assets.Instance.GetMission("basics"));
+        MissionHud.NavigationData data = new(fromEditor:false, Assets.Instance.GetMission("basics"));
         _ = PagesNavigator.Instance.GoTo(Config.Pages.Mission, data);
     }
 }

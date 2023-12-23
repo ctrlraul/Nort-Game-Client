@@ -1,12 +1,12 @@
 [gd_scene load_steps=13 format=3 uid="uid://d4mu3n1tu5q86"]
 
 [ext_resource type="Texture2D" uid="uid://byfrf7xyw43a2" path="res://Images/skills/drone.png" id="1_j2b34"]
-[ext_resource type="Texture2D" uid="uid://d3vturuwlqnjf" path="res://Images/theme/mission_hud/skill_button_normal.png" id="1_l6o8h"]
-[ext_resource type="Texture2D" uid="uid://dedwit1uji764" path="res://Images/theme/mission_hud/skill_button_press.png" id="2_kmecp"]
-[ext_resource type="Texture2D" uid="uid://v4fqr4d3c5pm" path="res://Images/theme/mission_hud/skill_button_hover.png" id="3_0telk"]
+[ext_resource type="Texture2D" uid="uid://d3vturuwlqnjf" path="res://Images/theme/MissionHud/skill_button_normal.png" id="1_l6o8h"]
+[ext_resource type="Texture2D" uid="uid://dedwit1uji764" path="res://Images/theme/MissionHud/skill_button_press.png" id="2_kmecp"]
+[ext_resource type="Texture2D" uid="uid://v4fqr4d3c5pm" path="res://Images/theme/MissionHud/skill_button_hover.png" id="3_0telk"]
 [ext_resource type="Script" path="res://Nort/Pages/MissionHud/SkillButton.cs" id="4_0sh67"]
-[ext_resource type="Shader" path="res://Scenes/Pages/MissionHud/progress_bar.gdshader" id="5_0gnqk"]
-[ext_resource type="Texture2D" uid="uid://d1778lf6rx0ny" path="res://Images/theme/mission_hud/skill_button_progress.png" id="5_qw7ox"]
+[ext_resource type="Shader" path="res://Materials/SkillButtonCooldownBar.gdshader" id="5_0gnqk"]
+[ext_resource type="Texture2D" uid="uid://d1778lf6rx0ny" path="res://Images/theme/MissionHud/skill_button_progress.png" id="5_qw7ox"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_6e6ia"]
 resource_local_to_scene = true

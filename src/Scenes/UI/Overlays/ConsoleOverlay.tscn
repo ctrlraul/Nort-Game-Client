@@ -1,0 +1,88 @@
+[gd_scene load_steps=4 format=3 uid="uid://dw356ow55yc2t"]
+
+[ext_resource type="Script" path="res://Nort/UI/Overlays/ConsoleOverlay.cs" id="1_xogfn"]
+[ext_resource type="Texture2D" uid="uid://bb2c5v84mdbhh" path="res://Images/vignette.png" id="2_0a5vg"]
+[ext_resource type="Texture2D" uid="uid://cliyyksspwsp0" path="res://Images/branding/logo_stencil.png" id="2_hh3f1"]
+
+[node name="Console" type="CanvasLayer"]
+layer = 100
+script = ExtResource("1_xogfn")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.564706)
+
+[node name="TextureRect" type="TextureRect" parent="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_0a5vg")
+
+[node name="MarginContainer" type="MarginContainer" parent="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_right = 30
+theme_override_constants/margin_bottom = 30
+
+[node name="Control" type="Control" parent="Control/MarginContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/MarginContainer/Control"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -155.135
+offset_top = -70.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="TextureRect" type="TextureRect" parent="Control/MarginContainer/Control/MarginContainer"]
+self_modulate = Color(1, 1, 1, 0.0509804)
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+texture = ExtResource("2_hh3f1")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Label" type="Label" parent="Control/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Console"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Control/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="LinesContainer" type="VBoxContainer" parent="Control/MarginContainer/VBoxContainer/ScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 2

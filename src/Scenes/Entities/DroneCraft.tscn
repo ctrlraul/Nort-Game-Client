@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://cchjaw6os6aaa"]
+[gd_scene load_steps=7 format=3 uid="uid://cchjaw6os6aaa"]
 
 [ext_resource type="PackedScene" uid="uid://b1xci2ckb2rvw" path="res://Scenes/Entities/Craft/Craft.tscn" id="1_q876r"]
 [ext_resource type="Script" path="res://Nort/Entities/DroneCraft.cs" id="2_ecuyt"]
 [ext_resource type="PackedScene" uid="uid://djqq8s6miovq7" path="res://Scenes/FloatingAnimation.tscn" id="3_8pbr3"]
+[ext_resource type="PackedScene" uid="uid://c8vjpl3s8tb65" path="res://Scenes/Entities/Craft/CraftPart.tscn" id="3_t2rtf"]
 [ext_resource type="PackedScene" uid="uid://p46oi0to68au" path="res://Scenes/Entities/Components/FlightComponent.tscn" id="4_nlall"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_xdbrn"]
@@ -10,6 +11,7 @@ radius = 700.0
 
 [node name="DroneCraft" instance=ExtResource("1_q876r")]
 script = ExtResource("2_ecuyt")
+craftPartScene = ExtResource("3_t2rtf")
 
 [node name="FlightComponent" parent="." index="1" instance=ExtResource("4_nlall")]
 unique_name_in_owner = true

@@ -24,13 +24,15 @@ public static class Config
     public const float DropRateHull = 1.0f / 10f;
     public const float DropRateShiny = 1.0f / 1000f;
 
+    public const string ConsoleOverlayScenePath = "res://Scenes/Ui/Overlays/ConsoleOverlay.tscn";
+
     public static class Pages
     {
-        public const string MainMenu = "res://Scenes/Pages/MainMenuPage.tscn";
+        public const string MainMenu = "res://Scenes/Pages/MainMenu.tscn";
         public const string LocalPlayers = "res://Scenes/Pages/LocalPlayersPage/LocalPlayersPage.tscn";
         public const string Lobby = "res://Scenes/Pages/LobbyPage.tscn";
         public const string CraftBuilder = "res://Scenes/Pages/CraftBuilder/CraftBuilder.tscn";
-        public const string Mission = "res://Scenes/Pages/MissionPage.tscn";
+        public const string Mission = "res://Scenes/Pages/MissionHud/MissionHud.tscn";
         public const string MissionEditor = "res://Scenes/Pages/Editor/Editor.tscn";
     }
 
