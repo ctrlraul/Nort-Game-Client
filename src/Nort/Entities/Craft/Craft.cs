@@ -13,7 +13,7 @@ public abstract partial class Craft : Entity
     public event Action StatsChanged;
     public event Action FactionChanged;
     
-    [Connectable] public event Action<Craft> Destroyed;
+    [Connectable] public event Action Destroyed;
 
     [Export] private PackedScene craftPartScene;
 
@@ -113,7 +113,7 @@ public abstract partial class Craft : Entity
 
         QueueFree();
         IsDestroyed = true;
-        Destroyed?.Invoke(this);
+        Destroyed?.Invoke();
     }
 
     

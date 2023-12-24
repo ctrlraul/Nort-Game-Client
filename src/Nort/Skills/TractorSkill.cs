@@ -71,7 +71,7 @@ public partial class TractorSkill : Node2D
     }
 
 
-    private void OnTargetDestroyed(Craft craft)
+    private void OnTargetDestroyed()
     {
         DisconnectTargetEvents(Target);
         Target = null;

@@ -103,7 +103,7 @@ public partial class CoreTractor : Node2D
 	}
 
 
-	private void OnTargetDestroyed(Craft craft)
+	private void OnTargetDestroyed()
 	{
 		DisconnectEntityEvents(target);
 		SetTarget(null);
