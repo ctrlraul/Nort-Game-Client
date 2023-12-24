@@ -194,14 +194,18 @@ public partial class Stage : Node2D
     public Entity Spawn(EntitySetup setup)
     {
         Entity entity = InstantiateEntityScene(setup.typeName);
-        Entity.SetSetup(entity, setup);
-        Spawn(entity);
+        Spawn(entity, setup);
         return entity;
     }
 
-    public void Spawn(Entity entity)
+    public void Spawn(Entity entity, EntitySetup setup = default)
     {
         entitiesContainer.AddChild(entity);
+        
+        if (setup != default)
+            Entity.SetSetup(entity, setup);
+
+        // Important that this comes after setting the setup since that's when the entity's UUID is set.
         entitiesMap.Add(entity.Uuid, entity);
 
         switch (entity)
