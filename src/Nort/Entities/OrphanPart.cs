@@ -12,35 +12,47 @@ public partial class OrphanPart : Entity
     [Connectable]
     public event Action Collected;
     
+    [Connectable]
+    public event Action Destroyed;
+    
     
     [Savable]
     [Inspect(nameof(PartIdOptions))]
     public string PartId
     {
-        get => Part.id;
-        set => SetPartId(value);
+        get => partId;
+        set
+        {
+            partId = value;
+            sprite2D.Texture = Assets.Instance.GetPartTexture(value);
+        }
     }
     
     [Savable]
     [Inspect(nameof(SkillIdOptions))]
     public string SkillId
     {
-        get => Skill?.id;
-        set => SetSkillId(value);
+        get => skillId;
+        set
+        {
+            skillId = value;
+            skillSprite.Texture = string.IsNullOrEmpty(skillId) ? null : Assets.Instance.GetSkillTexture(skillId);
+        }
     }
+
     
     [Savable, Inspect]
     public bool Flipped
     {
-        get => flipped;
-        set => SetFlipped(value);
+        get => sprite2D.FlipH;
+        set => sprite2D.FlipH = value;
     }
     
     [Savable, Inspect]
     public bool Shiny
     {
-        get => shiny;
-        set => SetShiny(value);
+        get => material.GetShaderParameter("shiny").AsBool();
+        set => material.SetShaderParameter("shiny", value);
     }
 
     public IEnumerable<string> PartIdOptions => Assets.Instance.GetParts().Select(p => p.id);
@@ -50,82 +62,62 @@ public partial class OrphanPart : Entity
     [Ready] public Sprite2D skillSprite;
     [Ready] public AnimationPlayer animationPlayer;
 
-    private bool flipped;
-    private bool shiny;
-    public Part Part { get; private set; }
-    public Skill Skill { get; private set; }
+    private ShaderMaterial material;
+
+    private string partId;
+    private string skillId;
+
+    public bool Collectable { get; private set; } = true;
+    public bool AppearOnRadar { get; private set; }
 
 
-    public OrphanPart()
-    {
-        PartId = Config.InitialPart;
-    }
-    
-    
-    public override void _Ready()
+    public override async void _Ready()
     {
         base._Ready();
         this.InitializeReady();
-        Initialize();
-    }
 
+        material = sprite2D.Material as ShaderMaterial;
 
-    private async void Initialize()
-    {
+        if (material == null)
+            throw new Exception($"Expected a {nameof(ShaderMaterial)} material on sprite");
+        
+        material.SetShaderParameter("dissolve_noise_offset", new Vector2(GD.Randi() % 256, GD.Randi() % 256));
+        
         await Game.Instance.Initialize();
         
-        SetPartId(PartId);
-        SetSkillId(SkillId);
-        SetFlipped(flipped);
-        SetShiny(shiny);
+        PartId = Config.InitialPart;
+        SkillId = null;
+        Flipped = false;
+        Shiny = false;
         
-        sprite2D.SelfModulate = Config.FactionlessColor;
         skillSprite.GlobalRotation = 0;
-
-        animationPlayer.SpeedScale = (0.05f + 0.1f * GD.Randf()) * (GD.Randf() > 0.5f ? 1 : -1);
-        animationPlayer.Play("rotate");
-        animationPlayer.Seek(GD.Randf());
+        
+        SetColor(Config.FactionlessColor);
     }
 
-    private void SetPartId(string value)
+
+    public void BrokenOff(bool collectable)
     {
-        Part = Assets.Instance.GetPart(value);
-
-        if (IsInsideTree())
-            sprite2D.Texture = Assets.Instance.GetPartTexture(Part);
+        Collectable = collectable;
+        
+        GetTree().CreateTimer(0.5).Timeout += () =>
+        {
+            if (collectable)
+            {
+                AppearOnRadar = true;
+            }
+            else
+            {
+                animationPlayer.Play("dissolve");
+            }
+        };
     }
-
-    private void SetSkillId(string value)
+    
+    public void SetColor(Color value)
     {
-        Skill = string.IsNullOrEmpty(value) ? null : Assets.Instance.GetSkill(value);
-
-        if (IsInsideTree())
-            skillSprite.Texture = Skill == null ? null : Assets.Instance.GetSkillTexture(Skill.id);
+        sprite2D.SelfModulate = value;
     }
-
-    private void SetFlipped(bool value)
-    {
-        flipped = value;
-
-        if (IsInsideTree())
-            sprite2D.FlipH = value;
-    }
-
-    private void SetShiny(bool value)
-    {
-        shiny = value;
-
-        if (IsInsideTree())
-            sprite2D.Material = value ? Assets.ShinyMaterial : null;
-    }
-
-
-    public void Collect()
-    {
-        Collected?.Invoke();
-        QueueFree();
-    }
-
+    
     public PartData GetPartData()
     {
         return new()
@@ -134,5 +126,20 @@ public partial class OrphanPart : Entity
             skillId = SkillId,
             shiny = Shiny
         };
+    }
+    
+    
+    [Connectable]
+    public void Collect()
+    {
+        QueueFree();
+        Collected?.Invoke();
+    }
+
+    [Connectable]
+    public void Destroy()
+    {
+        QueueFree();
+        Destroyed?.Invoke();
     }
 }

@@ -1,9 +1,9 @@
 [gd_scene load_steps=10 format=3 uid="uid://cv32wh2kql0cr"]
 
 [ext_resource type="Script" path="res://Nort/Entities/OrphanPart.cs" id="1_vxt4t"]
-[ext_resource type="Material" uid="uid://bscgpp7x5c27j" path="res://Materials/shiny_part_shader_material.tres" id="2_h38mt"]
+[ext_resource type="Material" uid="uid://b0gfd63ot4box" path="res://Materials/OrphanPart.tres" id="2_dalp6"]
+[ext_resource type="Texture2D" uid="uid://byspjirfsyens" path="res://Images/placeholders/skill.png" id="3_k4qgi"]
 [ext_resource type="Texture2D" uid="uid://b3bm4djf5tas8" path="res://Images/placeholders/part.png" id="3_wpltv"]
-[ext_resource type="Texture2D" uid="uid://hlcyw0kime5w" path="res://Images/skills/bullet.png" id="4_y8gsh"]
 [ext_resource type="PackedScene" uid="uid://djqq8s6miovq7" path="res://Scenes/FloatingAnimation.tscn" id="5_hwn4i"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ib0p8"]
@@ -14,55 +14,67 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("GFX:rotation")
+tracks/0/path = NodePath("Sprite2D:material:shader_parameter/threshould")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [0.0]
+"values": [1.0]
 }
 
-[sub_resource type="Animation" id="Animation_ylhcj"]
-resource_name = "rotate"
-loop_mode = 1
+[sub_resource type="Animation" id="Animation_glb83"]
+resource_name = "dissolve"
+loop_mode = 2
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("GFX:rotation")
+tracks/0/path = NodePath("Sprite2D:material:shader_parameter/threshould")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0, 1),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [0.0, 6.28319]
+"values": [1.0, 0.0]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(1),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"Destroy"
+}]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_k87aq"]
 _data = {
 "RESET": SubResource("Animation_0k08t"),
-"rotate": SubResource("Animation_ylhcj")
+"dissolve": SubResource("Animation_glb83")
 }
 
 [node name="OrphanPart" type="Node2D"]
 script = ExtResource("1_vxt4t")
 
-[node name="GFX" type="Node2D" parent="."]
-
-[node name="Sprite2D" type="Sprite2D" parent="GFX"]
+[node name="Sprite2D" type="Sprite2D" parent="."]
 unique_name_in_owner = true
-self_modulate = Color(1, 0, 1, 1)
-material = ExtResource("2_h38mt")
+self_modulate = Color(0, 1, 0.498039, 1)
+material = ExtResource("2_dalp6")
 texture = ExtResource("3_wpltv")
 
-[node name="SkillSprite" type="Sprite2D" parent="GFX"]
+[node name="SkillSprite" type="Sprite2D" parent="Sprite2D"]
 unique_name_in_owner = true
-texture = ExtResource("4_y8gsh")
+use_parent_material = true
+texture = ExtResource("3_k4qgi")
 
 [node name="FloatingAnimation" parent="." instance=ExtResource("5_hwn4i")]
-remote_path = NodePath("../GFX")
 
 [node name="HitBox" type="Area2D" parent="."]
 collision_layer = 4
@@ -81,4 +93,3 @@ reset_on_save = false
 libraries = {
 "": SubResource("AnimationLibrary_k87aq")
 }
-speed_scale = 0.1

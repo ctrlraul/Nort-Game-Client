@@ -122,9 +122,6 @@ public partial class CraftPart : Area2D
 
         if (hull > 0)
             return;
-        
-        if (GD.Randf() <= GetDropRate())
-            Drop();
 
         Destroy();
     }
@@ -139,16 +136,22 @@ public partial class CraftPart : Area2D
         orphanPart.SkillId = blueprint.skillId;
         orphanPart.Flipped = blueprint.flipped;
         orphanPart.Shiny = blueprint.shiny || ShinyDropRoll();
+        orphanPart.Velocity = Craft.Velocity + Position.Normalized() * (3 + GD.Randf() * 3);
+        orphanPart.SetColor(sprite2D.SelfModulate);
+        orphanPart.BrokenOff(GD.Randf() < GetDropRate());
     }
 
     public void Destroy()
     {
+        IsDestroyed = true;
+        
+        CallDeferred(nameof(Drop));
+        
         foreach (Node skillNode in skillNodes.Cast<Node>())
             skillNode.QueueFree();
         
         QueueFree();
-        IsDestroyed = true;
-        Modulate *= new Color(1, 1, 1, 0.5f);
+        
         Destroyed?.Invoke(this);
     }
 
