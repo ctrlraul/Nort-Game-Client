@@ -1,0 +1,68 @@
+{
+  "id": "scapel",
+  "core": {
+    "flipped": false,
+    "x": 0.0,
+    "y": 0.0,
+    "angle": 0.0,
+    "shiny": false,
+    "partId": "core_1",
+    "skillId": null
+  },
+  "hulls": [
+    {
+      "flipped": false,
+      "x": 0.0,
+      "y": -32.0,
+      "angle": -270.0,
+      "shiny": false,
+      "partId": "center_small_2",
+      "skillId": ""
+    },
+    {
+      "flipped": false,
+      "x": 80.0,
+      "y": 0.0,
+      "angle": 0.0,
+      "shiny": false,
+      "partId": "small_tail_3",
+      "skillId": "bullet"
+    },
+    {
+      "flipped": false,
+      "x": 80.0,
+      "y": 48.0,
+      "angle": -180.0,
+      "shiny": false,
+      "partId": "tiny_tail_1",
+      "skillId": ""
+    },
+    {
+      "flipped": false,
+      "x": -80.0,
+      "y": 0.0,
+      "angle": 0.0,
+      "shiny": false,
+      "partId": "small_tail_3",
+      "skillId": "bullet"
+    },
+    {
+      "flipped": false,
+      "x": -80.0,
+      "y": 48.0,
+      "angle": -180.0,
+      "shiny": false,
+      "partId": "tiny_tail_1",
+      "skillId": ""
+    },
+    {
+      "flipped": false,
+      "x": 0.0,
+      "y": 48.0,
+      "angle": 0.0,
+      "shiny": false,
+      "partId": "tail_1",
+      "skillId": ""
+    }
+  ]
+}
