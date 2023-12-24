@@ -255,17 +255,9 @@ public partial class Stage : Node2D
                     continue;
                 }
                 
-                Node target;
+                Node target = connection.targetUuid != null ? GetEntityByUuid(connection.targetUuid) : null;
                 
-                if (connection.targetUuid == null)
-                {
-                    target = this;
-                }
-                else if (entitiesMap.TryGetValue(connection.targetUuid, out Entity targetEntity))
-                {
-                    target = targetEntity;
-                }
-                else
+                if (target == null)
                 {
                     AddProblem($"No entity found with UUID '{connection.targetUuid}'");
                     continue;
