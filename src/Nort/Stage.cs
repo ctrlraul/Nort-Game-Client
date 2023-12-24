@@ -119,7 +119,7 @@ public partial class Stage : Node2D
         {
             string problemsList = problems.Aggregate(((current, next) => current + "\n" + next));
             DialogPopup popup = PopupsManager.Instance.Error(problemsList, "There were a few problems when loading this mission!");
-            popup.Width = 800;
+            popup.Width = 1000;
         }
     }
 
