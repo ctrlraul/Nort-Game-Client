@@ -210,9 +210,9 @@ public partial class Stage : Node2D
                 
                 if (Player != null)
                 {
-                    logger.Warn("Spawning a player while another instance already exists, destroying old instance");
+                    logger.Warn("Spawning a player while another instance already exists, freeing old instance");
                     Player.Destroyed -= OnPlayerDestroyed;
-                    Player.Destroy();
+                    Player.QueueFree();
                 }
 
                 Player = newPlayer;
