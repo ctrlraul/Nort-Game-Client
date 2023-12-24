@@ -40,7 +40,7 @@ public partial class CraftPart : Area2D
     {
         this.InitializeReady();
         
-        //SetFaction(Faction);
+        SetFaction(Faction);
         SetBlueprint(Blueprint);
     }
 
