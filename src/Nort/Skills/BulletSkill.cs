@@ -52,7 +52,7 @@ public partial class BulletSkill : Node2D, ISkillNode
             else
             {
                 SetPhysicsProcess(false);
-                Rotation = -Mathf.Pi / 2; // Point up
+                PointUp();
             }
         }
     }
@@ -65,10 +65,8 @@ public partial class BulletSkill : Node2D, ISkillNode
         
         if (cooldownTimer.WaitTime < particles.Lifetime)
             Logger.Warn(GetType().Name, "Firing cooldown should be greater than the particles' lifespan");
-        
-        range.CollisionMask = Assets.Instance.GetFactionCollisionMask(Part.Faction);
-        rayCast2D.CollisionMask = range.CollisionMask;
 
+        PointUp();
         UpdateCollisionMasks();
 
         Part.Craft.FactionChanged += OnCraftFactionChanged;
@@ -86,6 +84,11 @@ public partial class BulletSkill : Node2D, ISkillNode
     private void LookForATarget()
     {
         Target = range.GetOverlappingAreas().FindNearest(GlobalPosition, true) as CraftPart;
+    }
+    
+    private void PointUp()
+    {
+        Rotation = -Mathf.Pi / 2;
     }
 
     private void UpdateCollisionMasks()
