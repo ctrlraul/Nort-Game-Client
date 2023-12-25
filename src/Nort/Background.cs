@@ -37,7 +37,7 @@ public partial class Background : Sprite2D
 	{
 		Scale = GetViewportRect().Size / camera.Zoom;
 		shaderMaterial.SetShaderParameter("position", GlobalPosition / Scale);
-		shaderMaterial.SetShaderParameter("zoom", camera.Zoom);
+		shaderMaterial.SetShaderParameter("zoom", camera.Zoom * 4);
 	}
 
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://6wfise1ybf04"]
+[gd_scene load_steps=14 format=3 uid="uid://6wfise1ybf04"]
 
 [ext_resource type="Script" path="res://Nort/Stage.cs" id="1_8dh8q"]
 [ext_resource type="PackedScene" uid="uid://bq5ax7cccxg6l" path="res://Scenes/Entities/CarrierCraft.tscn" id="2_vgo7s"]
@@ -10,12 +10,14 @@
 [ext_resource type="Texture2D" uid="uid://befuwhu6fhiow" path="res://Images/white_pixel.png" id="7_iqj1e"]
 [ext_resource type="Texture2D" uid="uid://csg6q230ifxce" path="res://Images/background_noise.png" id="7_w12bg"]
 [ext_resource type="Script" path="res://Nort/Background.cs" id="9_0twj1"]
+[ext_resource type="PackedScene" uid="uid://dfd0bn0pw2rmw" path="res://Scenes/BackgroundParticles.tscn" id="11_p01hl"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_w5bwr"]
 shader = ExtResource("6_0jn7l")
 shader_parameter/zoom = Vector2(1, 1)
 shader_parameter/position = Vector2(0, 0)
 shader_parameter/aspect = Vector2(1, 0.707494)
+shader_parameter/parallax = 0.5
 shader_parameter/noise = ExtResource("7_w12bg")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2nl80"]
@@ -28,21 +30,17 @@ playerCraftScene = ExtResource("3_a35qp")
 droneCraftScene = ExtResource("4_f7v6k")
 orphanPartScene = ExtResource("4_lu1fc")
 
-[node name="Background" type="Sprite2D" parent="." node_paths=PackedStringArray("camera")]
+[node name="Camera" type="Camera2D" parent="."]
 unique_name_in_owner = true
-self_modulate = Color(0.0156863, 0.0980392, 0.160784, 1)
+
+[node name="Background" type="Sprite2D" parent="Camera" node_paths=PackedStringArray("camera")]
+unique_name_in_owner = true
+self_modulate = Color(0.0196078, 0.0705882, 0.188235, 1)
 material = SubResource("ShaderMaterial_w5bwr")
 scale = Vector2(1920, 1080)
 texture = ExtResource("7_iqj1e")
 script = ExtResource("9_0twj1")
-camera = NodePath("../Camera")
-
-[node name="Camera" type="Camera2D" parent="."]
-unique_name_in_owner = true
-
-[node name="RemoteTransform2D" type="RemoteTransform2D" parent="Camera"]
-remote_path = NodePath("../../Background")
-update_scale = false
+camera = NodePath("..")
 
 [node name="Grid" type="Node2D" parent="." node_paths=PackedStringArray("camera")]
 unique_name_in_owner = true
@@ -62,3 +60,5 @@ monitorable = false
 [node name="CollisionShape2D" type="CollisionShape2D" parent="MouseArea"]
 shape = SubResource("RectangleShape2D_2nl80")
 debug_color = Color(1, 1, 1, 0.419608)
+
+[node name="BackgroundParticles" parent="." instance=ExtResource("11_p01hl")]

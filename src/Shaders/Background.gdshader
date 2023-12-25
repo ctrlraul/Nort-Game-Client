@@ -3,6 +3,7 @@ shader_type canvas_item;
 uniform vec2 zoom = vec2(1);
 uniform vec2 position = vec2(0);
 uniform vec2 aspect = vec2(1);
+uniform float parallax = 0.5;
 uniform sampler2D noise;
 
 vec4 texturePointSmooth(sampler2D tex, vec2 uv) {
@@ -20,6 +21,6 @@ void fragment() {
 	//vec2 zoom = vec2(1.5 + sin(TIME / 2.0));
 	//vec2 position = vec2(cos(TIME / 5.0), sin(TIME / 5.0));
 	//vec2 aspect = vec2(1, 1080 / 1920);
-	vec2 transformed_uv = (UV - 0.5) / zoom * aspect + position / zoom * aspect + 0.5;
+	vec2 transformed_uv = (UV - 0.5) / zoom * aspect + position * parallax / zoom * aspect + 0.5;
 	COLOR *= texturePointSmooth(noise, fract(transformed_uv));
 }
