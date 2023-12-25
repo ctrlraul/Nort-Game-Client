@@ -163,7 +163,7 @@ public partial class Editor : Page
     {
         await Game.Instance.Initialize();
 
-        Stage.SetGrid(gridSnap.X);
+        Stage.SetGrid(gridSnap.X * 4);
 
         if (PagesNavigator.Instance.NavigationData is NavigationData data)
         {
