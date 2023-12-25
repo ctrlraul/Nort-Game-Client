@@ -10,6 +10,9 @@ public partial class MainMenu : Page
     [Ready] public DisplayCraft displayCraft;
     [Ready] public Button missionEditorButton;
 
+    private Tween zoomTween;
+    
+
     public override void _Ready()
     {
         base._Ready();
@@ -26,13 +29,15 @@ public partial class MainMenu : Page
     {
         base._ExitTree();
         Game.Instance.PlayerChanged -= UpdatePlayerCraftDisplay;
+        zoomTween?.Stop();
     }
 
     public override async Task Initialize()
     {
         await Game.Instance.Initialize();
         UpdatePlayerCraftDisplay(Game.Instance.CurrentPlayer);
-        DoCoolZoom();
+        if (PagesNavigator.Instance.IsFirstScene(this))
+            DoCoolZoom();
     }
 
     private void UpdatePlayerCraftDisplay(Player player)
@@ -48,6 +53,18 @@ public partial class MainMenu : Page
             displayCraft.Visible = false;
         }
     }
+
+    private void DoCoolZoom()
+    {
+        Stage.Instance.camera.Zoom = new Vector2(0.25f, 0.25f);
+
+        zoomTween = Stage.Instance.CreateTween();
+        zoomTween.SetEase(Tween.EaseType.Out);
+        zoomTween.SetTrans(Tween.TransitionType.Expo);
+        zoomTween.TweenProperty(Stage.Instance.camera, "zoom", new Vector2(0.5f, 0.5f), 10);
+        zoomTween.Finished += () => zoomTween = null;
+    }
+    
 
     private static async void OnStartButtonPressed()
     {
@@ -66,16 +83,5 @@ public partial class MainMenu : Page
     private static async void OnMissionEditorButtonPressed()
     {
         await PagesNavigator.Instance.GoTo(Config.Pages.MissionEditor);
-    }
-
-    private static void DoCoolZoom()
-    {
-        Stage.Instance.camera.Zoom = new Vector2(0.25f, 0.25f);
-
-        Tween tween = Stage.Instance.CreateTween();
-
-        tween.SetEase(Tween.EaseType.Out);
-        tween.SetTrans(Tween.TransitionType.Expo);
-        tween.TweenProperty(Stage.Instance.camera, "zoom", new Vector2(0.5f, 0.5f), 10);
     }
 }
