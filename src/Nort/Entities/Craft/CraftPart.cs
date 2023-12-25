@@ -155,12 +155,17 @@ public partial class CraftPart : Area2D
         Destroyed?.Invoke(this);
     }
 
+    public void SetColorScale(float scale)
+    {
+        sprite2D.SelfModulate = Config.FactionlessColor.Lerp(Faction.Color, scale);
+    }
+    
+
     private void UpdateColor()
     {
         if (hullMax > 0)
         {
-            float weight = Mathf.Max(0, hull) / hullMax;
-            sprite2D.SelfModulate = Config.FactionlessColor.Lerp(Faction.Color, weight);
+            SetColorScale(Mathf.Max(0, hull) / hullMax);
         }
         else
         {

@@ -163,6 +163,8 @@ public abstract partial class Craft : Entity
                 {
                     Core += Hull;
 
+                    corePart.SetColorScale(Core / CoreMax);
+
                     if (Core <= 0)
                         Destroy();
                 }
