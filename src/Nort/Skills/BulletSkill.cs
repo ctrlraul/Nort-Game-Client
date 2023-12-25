@@ -69,6 +69,10 @@ public partial class BulletSkill : Node2D, ISkillNode
         range.CollisionMask = Assets.Instance.GetFactionCollisionMask(Part.Faction);
         rayCast2D.CollisionMask = range.CollisionMask;
 
+        UpdateCollisionMasks();
+
+        Part.Craft.FactionChanged += OnCraftFactionChanged;
+
         SetPhysicsProcess(false);
     }
 
@@ -82,6 +86,16 @@ public partial class BulletSkill : Node2D, ISkillNode
     private void LookForATarget()
     {
         Target = range.GetOverlappingAreas().FindNearest(GlobalPosition, true) as CraftPart;
+    }
+
+    private void UpdateCollisionMasks()
+    {
+        range.CollisionMask = Assets.Instance.GetFactionCollisionMask(Part.Faction);
+        rayCast2D.CollisionMask = range.CollisionMask;
+        if (Target != null)
+        {
+            LookForATarget();
+        }
     }
 
     public void Fire()
@@ -108,6 +122,11 @@ public partial class BulletSkill : Node2D, ISkillNode
         }
     }
 
+
+    private void OnCraftFactionChanged()
+    {
+        UpdateCollisionMasks();
+    }
     
     private void OnRangeAreaEntered(Area2D area)
     {
