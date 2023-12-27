@@ -1,0 +1,9 @@
+{
+	"id": "wing_3",
+	"displayName": "Wall",
+	"textureName": "SmallWing3.png",
+	"type": "HULL",
+	"hull": 40,
+	"core": 10,
+	"mass": 10
+}
