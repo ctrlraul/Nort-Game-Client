@@ -8,7 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://1sggqnuj0evg" path="res://Scenes/Entities/Components/CoreTractor.tscn" id="4_otqb4"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_dqwve"]
-radius = 80.0
+radius = 50.0
 
 [sub_resource type="LabelSettings" id="LabelSettings_yi16s"]
 font_size = 32

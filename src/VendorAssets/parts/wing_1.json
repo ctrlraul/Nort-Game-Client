@@ -1,9 +1,0 @@
-{
-	"id": "wing_1",
-	"displayName": "Pidgeon",
-	"textureName": "wing_1.png",
-	"type": "HULL",
-	"hull": 35,
-	"core": 15,
-	"mass": 10
-}

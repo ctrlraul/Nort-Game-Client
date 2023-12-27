@@ -12,6 +12,7 @@ public partial class PartTransformControls : Control
 
 	private const int Angles = 16;
 
+	[Ready] public Control partOutlineContainer;
 	[Ready] public TextureRect partOutline;
 	[Ready] public Control buttonsMargin;
 	[Ready] public Control rotateIconCenterer;
@@ -21,8 +22,6 @@ public partial class PartTransformControls : Control
 
 	private float rotationStartAngle;
 	private float lastMouseWheelSpin;
-
-	private float currentAngle;
 
 	public bool Flipped
 	{
@@ -36,12 +35,11 @@ public partial class PartTransformControls : Control
 
 	public float Angle
 	{
-		get => currentAngle;
+		get => partOutlineContainer.RotationDegrees;
 		set
 		{
-			currentAngle = value;
 			rotateIconContainer.RotationDegrees = value;
-			partOutline.RotationDegrees = value;
+			partOutlineContainer.RotationDegrees = value;
 		}
 	}
 
@@ -55,12 +53,9 @@ public partial class PartTransformControls : Control
 			if (value != null)
 			{
 				Texture2D texture = Assets.Instance.GetPartTexture(value.partData.partId);
-				Vector2 textureSize = texture.GetSize();
 
 				partOutline.Texture = texture;
-				partOutline.Size = textureSize;
-				partOutline.PivotOffset = textureSize * 0.5f;
-				partOutline.Position = -textureSize * 0.5f;
+				partOutline.Size = texture.GetSize();
 
 				Angle = value.Angle;
 				Flipped = value.Flipped;
@@ -123,7 +118,7 @@ public partial class PartTransformControls : Control
 		}
 
 		Position = control.Position + Part.Position * control.Scale;
-		partOutline.Scale = control.Scale;
+		partOutlineContainer.Scale = control.Scale;
 		buttonsMargin.Position = buttonsMargin.Position with
 		{
 			Y = partOutline.Texture.GetHeight() * 0.5f * control.Scale.Y + 20
@@ -135,7 +130,7 @@ public partial class PartTransformControls : Control
 		Vector2 mouse = GetLocalMousePosition();
 		float mouseAngle = mouse.Angle();
 
-		rotationStartAngle = mouseAngle - currentAngle;
+		rotationStartAngle = mouseAngle - Angle;
 
 		line2D.Visible = true;
 		line2D.Rotation = mouseAngle;

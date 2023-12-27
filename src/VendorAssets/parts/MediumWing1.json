@@ -1,0 +1,9 @@
+{
+	"id": "MediumWing1",
+	"displayName": "Attacker",
+	"textureName": "MediumWing1.png",
+	"type": "HULL",
+	"hull": 35,
+	"core": 15,
+	"mass": 10
+}

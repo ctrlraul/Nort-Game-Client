@@ -1,9 +1,0 @@
-{
-	"id": "center_1",
-	"displayName": "Center",
-	"textureName": "center_1.png",
-	"type": "HULL",
-	"hull": 30,
-	"core": 30,
-	"mass": 10
-}

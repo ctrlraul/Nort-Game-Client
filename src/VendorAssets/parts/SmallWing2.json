@@ -1,0 +1,9 @@
+{
+	"id": "wing_2",
+	"displayName": "Fighter",
+	"textureName": "SmallWing2.png",
+	"type": "HULL",
+	"hull": 40,
+	"core": 10,
+	"mass": 10
+}

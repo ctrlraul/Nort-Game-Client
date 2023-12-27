@@ -1,0 +1,9 @@
+{
+	"id": "core_2",
+	"displayName": "Belt Core",
+	"textureName": "SmallCore2.png",
+	"type": "CORE",
+	"hull": 40,
+	"core": 20,
+	"mass": 15
+}

@@ -12,6 +12,7 @@ script = ExtResource("1_ovr6u")
 [node name="Sprite2D" type="Sprite2D" parent="Node"]
 unique_name_in_owner = true
 material = ExtResource("2_il157")
+scale = Vector2(1e-05, 0.5)
 texture = ExtResource("3_gh5x6")
 offset = Vector2(16, 0)
 

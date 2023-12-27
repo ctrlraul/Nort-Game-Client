@@ -46,7 +46,7 @@ public partial class Editor : Page
     private const float ZoomMin = 0.1f;
     private const float ZoomMax = 1f;
 
-    private readonly Vector2I gridSnap = Vector2I.One * 128;
+    private readonly Vector2I gridSnap = Vector2I.One * 64;
     private readonly Dictionary<Entity, Vector2> dragOffsets = new();
     private readonly List<Entity> selection = new();
     private readonly List<EntitySetup> copied = new();
@@ -162,8 +162,6 @@ public partial class Editor : Page
     public override async Task Initialize()
     {
         await Game.Instance.Initialize();
-
-        //Stage.SetGrid(gridSnap.X * 4);
 
         if (PagesNavigator.Instance.NavigationData is NavigationData data)
         {

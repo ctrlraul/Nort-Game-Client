@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://6wfise1ybf04"]
+[gd_scene load_steps=15 format=3 uid="uid://6wfise1ybf04"]
 
 [ext_resource type="Script" path="res://Nort/Stage.cs" id="1_8dh8q"]
 [ext_resource type="PackedScene" uid="uid://bq5ax7cccxg6l" path="res://Scenes/Entities/CarrierCraft.tscn" id="2_vgo7s"]
@@ -22,6 +22,22 @@ shader_parameter/noise = ExtResource("7_w12bg")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2nl80"]
 size = Vector2(1, 1)
+
+[sub_resource type="Environment" id="Environment_dpwjd"]
+background_mode = 3
+glow_enabled = true
+glow_levels/1 = 3.2
+glow_levels/2 = 2.0
+glow_levels/3 = 1.95
+glow_levels/4 = 3.1
+glow_levels/5 = 3.1
+glow_levels/6 = 2.2
+glow_levels/7 = 2.8
+glow_intensity = 0.46
+glow_strength = 0.46
+glow_bloom = 0.06
+glow_blend_mode = 1
+adjustment_enabled = true
 
 [node name="Stage" type="Node2D"]
 script = ExtResource("1_8dh8q")
@@ -62,3 +78,6 @@ shape = SubResource("RectangleShape2D_2nl80")
 debug_color = Color(1, 1, 1, 0.419608)
 
 [node name="BackgroundParticles" parent="." instance=ExtResource("11_p01hl")]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_dpwjd")

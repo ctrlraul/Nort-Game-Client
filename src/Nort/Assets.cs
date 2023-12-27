@@ -146,6 +146,8 @@ public class Assets : Singleton<Assets>
                     logger.Error($"Failed to load texture for part '{part.id}' from '{path}'");
                     continue;
                 }
+
+                texture = AddMargin(texture);
             
                 partTextures.Add(part.id, texture);
             }
@@ -428,5 +430,26 @@ public class Assets : Singleton<Assets>
     public static string GenerateUuid()
     {
         return Guid.NewGuid().ToString();
+    }
+
+    private static Texture2D AddMargin(Texture2D texture, int margin = 1)
+    {
+        Vector2I size = (Vector2I)texture.GetSize();
+        
+        Image originalImage = texture.GetImage();
+        Image image = Image.Create(
+            size.X + margin * 2,
+            size.Y + margin * 2,
+            originalImage.HasMipmaps(),
+            originalImage.GetFormat()
+        );
+        
+        image.BlitRect(
+            originalImage,
+            new Rect2I(Vector2I.Zero, size),
+            Vector2I.One * margin
+        );
+        
+        return ImageTexture.CreateFromImage(image);
     }
 }

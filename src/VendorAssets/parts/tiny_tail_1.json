@@ -1,9 +1,0 @@
-{
-	"id": "tiny_tail_1",
-	"displayName": "Tiny Tail",
-	"textureName": "tiny_tail_1.png",
-	"type": "HULL",
-	"hull": 15,
-	"core": 5,
-	"mass": 5
-}

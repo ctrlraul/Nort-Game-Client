@@ -23,8 +23,10 @@ public partial class OrphanPart : Entity
         get => partId;
         set
         {
+            Texture2D texture = Assets.Instance.GetPartTexture(value);
             partId = value;
-            sprite2D.Texture = Assets.Instance.GetPartTexture(value);
+            sprite2D.Texture = texture;
+            collisionShape2D.Shape = new RectangleShape2D { Size = texture.GetSize() };
         }
     }
     
@@ -60,6 +62,7 @@ public partial class OrphanPart : Entity
     
     [Ready] public Sprite2D sprite2D;
     [Ready] public Sprite2D skillSprite;
+    [Ready] public CollisionShape2D collisionShape2D;
     [Ready] public AnimationPlayer animationPlayer;
 
     private ShaderMaterial material;

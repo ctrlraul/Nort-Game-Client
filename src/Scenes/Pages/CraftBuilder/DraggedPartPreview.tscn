@@ -11,4 +11,4 @@ script = ExtResource("1_4t4u2")
 
 [node name="DisplayPart" parent="." instance=ExtResource("1_jol1y")]
 unique_name_in_owner = true
-scale = Vector2(0.5, 0.5)
+scale = Vector2(0.75, 0.75)

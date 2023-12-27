@@ -6,8 +6,8 @@
 [ext_resource type="Texture2D" uid="uid://b3bm4djf5tas8" path="res://Images/placeholders/part.png" id="3_wpltv"]
 [ext_resource type="PackedScene" uid="uid://djqq8s6miovq7" path="res://Scenes/FloatingAnimation.tscn" id="5_hwn4i"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_ib0p8"]
-radius = 60.0
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_h0kp0"]
+size = Vector2(80, 69)
 
 [sub_resource type="Animation" id="Animation_0k08t"]
 length = 0.001
@@ -63,6 +63,17 @@ _data = {
 [node name="OrphanPart" type="Node2D"]
 script = ExtResource("1_vxt4t")
 
+[node name="HitBox" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 0
+input_pickable = false
+monitoring = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
+unique_name_in_owner = true
+shape = SubResource("RectangleShape2D_h0kp0")
+debug_color = Color(0, 1, 1, 0.15)
+
 [node name="Sprite2D" type="Sprite2D" parent="."]
 unique_name_in_owner = true
 self_modulate = Color(0, 1, 0.498039, 1)
@@ -75,17 +86,6 @@ use_parent_material = true
 texture = ExtResource("3_k4qgi")
 
 [node name="FloatingAnimation" parent="." instance=ExtResource("5_hwn4i")]
-
-[node name="HitBox" type="Area2D" parent="."]
-collision_layer = 4
-collision_mask = 0
-input_pickable = false
-monitoring = false
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
-unique_name_in_owner = true
-shape = SubResource("CircleShape2D_ib0p8")
-debug_color = Color(0, 1, 1, 0.15)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 unique_name_in_owner = true

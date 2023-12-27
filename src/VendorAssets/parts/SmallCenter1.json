@@ -1,0 +1,9 @@
+{
+	"id": "center_1",
+	"displayName": "Prism",
+	"textureName": "SmallCenter1.png",
+	"type": "HULL",
+	"hull": 30,
+	"core": 30,
+	"mass": 10
+}

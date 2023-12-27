@@ -1,27 +1,41 @@
 {
-	"core": {
-		"partId": "core_1",
-		"x": 0,
-		"y": 0
-	},
-	"id": "pequeno",
-	"hulls": [
-		{
-			"angle": -180,
-			"partId": "tail_1",
-			"x": 0,
-			"y": -16
-		},
-		{
-			"partId": "wing_1",
-			"flipped": true,
-			"x": 64,
-			"y": 32
-		},
-		{
-			"partId": "wing_1",
-			"x": -64,
-			"y": 32
-		}
-	]
+  "id": "pequeno",
+  "core": {
+    "flipped": false,
+    "x": 0.0,
+    "y": 0.0,
+    "angle": 0.0,
+    "shiny": false,
+    "partId": "core_1",
+    "skillId": null
+  },
+  "hulls": [
+    {
+      "flipped": false,
+      "x": 0.0,
+      "y": -16.0,
+      "angle": -180.0,
+      "shiny": false,
+      "partId": "tail_1",
+      "skillId": null
+    },
+    {
+      "flipped": false,
+      "x": -48.0,
+      "y": 16.0,
+      "angle": 0.0,
+      "shiny": false,
+      "partId": "wing_1",
+      "skillId": null
+    },
+    {
+      "flipped": true,
+      "x": 48.0,
+      "y": 16.0,
+      "angle": 0.0,
+      "shiny": false,
+      "partId": "wing_1",
+      "skillId": null
+    }
+  ]
 }

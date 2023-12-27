@@ -162,7 +162,7 @@ public partial class Stage : Node2D
 
     public void Clear()
     {
-        camera.Zoom = Vector2.One * 0.5f;
+        camera.Zoom = Vector2.One * 0.75f;
         camera.Position = Vector2.Zero;
         entitiesContainer.QueueFreeChildren();
         problems.Clear();
