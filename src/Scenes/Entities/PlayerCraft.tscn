@@ -36,7 +36,10 @@ monitorable = false
 shape = SubResource("CircleShape2D_dqwve")
 debug_color = Color(0, 1, 1, 0)
 
-[node name="Label" type="Label" parent="." index="4"]
+[node name="AudioListener2D" type="AudioListener2D" parent="." index="4"]
+current = true
+
+[node name="Label" type="Label" parent="." index="5"]
 unique_name_in_owner = true
 offset_left = -100.0
 offset_top = 90.0

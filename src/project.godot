@@ -27,6 +27,7 @@ PagesNavigator="*res://Nort/PagesNavigator.cs"
 DragManager="*res://Nort/DragManager.cs"
 Stage="*res://Scenes/Stage.tscn"
 PopupsManager="*res://Nort/PopupsManager.cs"
+AudioManager="*res://Nort/AudioManager.cs"
 
 [display]
 

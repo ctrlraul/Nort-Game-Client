@@ -1,16 +1,21 @@
-[gd_scene load_steps=4 format=3 uid="uid://c8vjpl3s8tb65"]
+[gd_scene load_steps=8 format=3 uid="uid://c8vjpl3s8tb65"]
 
 [ext_resource type="Script" path="res://Nort/Entities/Craft/CraftPart.cs" id="1_5ku08"]
 [ext_resource type="Texture2D" uid="uid://b3bm4djf5tas8" path="res://Images/placeholders/part.png" id="2_5mk3m"]
+[ext_resource type="AudioStream" uid="uid://ck8cyiwuxu0cj" path="res://Sounds/CraftPartDetached2.wav" id="2_fjj7c"]
+[ext_resource type="AudioStream" uid="uid://ddrfx4t60s0s2" path="res://Sounds/CraftPartDetached3.wav" id="3_51veb"]
+[ext_resource type="AudioStream" uid="uid://daqqgtlhqlaae" path="res://Sounds/CraftPartDetached4.wav" id="4_uf7h4"]
+[ext_resource type="AudioStream" uid="uid://q672w1mqj8fu" path="res://Sounds/CraftPartDetached1.wav" id="5_e84wd"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5hmw0"]
-size = Vector2(128, 108)
+size = Vector2(81, 69)
 
 [node name="CraftPart" type="Area2D"]
 collision_layer = 0
 collision_mask = 0
 monitoring = false
 script = ExtResource("1_5ku08")
+dropSounds = Array[AudioStream]([ExtResource("2_fjj7c"), ExtResource("3_51veb"), ExtResource("4_uf7h4"), ExtResource("5_e84wd")])
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 unique_name_in_owner = true
@@ -21,3 +26,7 @@ texture = ExtResource("2_5mk3m")
 unique_name_in_owner = true
 shape = SubResource("RectangleShape2D_5hmw0")
 debug_color = Color(0, 1, 0, 0.15)
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+unique_name_in_owner = true
+stream = ExtResource("4_uf7h4")

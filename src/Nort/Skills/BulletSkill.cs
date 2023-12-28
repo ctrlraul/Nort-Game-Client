@@ -30,7 +30,6 @@ public partial class BulletSkill : Node2D, ISkillNode
     [Ready] public GpuParticles2D particles;
     [Ready] public Timer cooldownTimer;
     
-    
     private CraftPart target;
     public CraftPart Target
     {
@@ -121,6 +120,7 @@ public partial class BulletSkill : Node2D, ISkillNode
         if (rayCast2D.GetCollider() is CraftPart partHit)
         {
             partHit.Craft.TakeHit(partHit, this, Damage);
+            AudioManager.Instance.PlayBulletFired(GlobalPosition);
             Fired?.Invoke();
         }
     }

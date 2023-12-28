@@ -15,7 +15,6 @@ public partial class CraftPart : Area2D
     
     [Ready] public Sprite2D sprite2D;
     [Ready] public CollisionShape2D collisionShape2D;
-    [Ready] public AudioStreamPlayer2D audioStreamPlayer2D;
     
     public readonly List<ISkillNode> skillNodes = new();
     public float hullMax;
@@ -43,8 +42,6 @@ public partial class CraftPart : Area2D
     public override void _Ready()
     {
         this.InitializeReady();
-        
-        audioStreamPlayer2D.Stream = dropSounds.PickRandom();
         
         SetFaction(Faction);
         SetBlueprint(Blueprint);
@@ -158,7 +155,7 @@ public partial class CraftPart : Area2D
         
         QueueFree();
 
-        audioStreamPlayer2D.Play();
+        //AudioManager.Instance.PlayPartDetached(GlobalPosition);
         
         Destroyed?.Invoke(this);
     }
