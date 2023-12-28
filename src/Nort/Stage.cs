@@ -19,13 +19,18 @@ public partial class Stage : Node2D
     public event Action<Craft> PlayerSpawned;
     public event Action PlayerDestroyed;
 
+    // Entities
     [Export] private PackedScene carrierCraftScene;
     [Export] private PackedScene playerCraftScene;
     [Export] private PackedScene droneCraftScene;
     [Export] private PackedScene orphanPartScene;
+    
+    // Effects
+    [Export] private PackedScene coreExplosionScene;
 
     [Ready] public Grid grid;
     [Ready] public Node2D entitiesContainer;
+    [Ready] public Node2D effectsContainer;
     [Ready] public Area2D mouseArea;
     [Ready] public Camera2D camera;
 
@@ -95,7 +100,7 @@ public partial class Stage : Node2D
 
     private void CameraFollowPlayer()
     {
-        Vector2 targetZoom = Vector2.One * 0.5f - Vector2.One * Player.Velocity.Length() * 0.01f;
+        Vector2 targetZoom = Vector2.One * 0.5f - Vector2.One * Player.Velocity.Length() * 0.005f;
         Vector2 targetPosition = Player.Position + Player.Velocity * 110;
         camera.Zoom = camera.Zoom.Lerp(targetZoom, 0.005f);
         camera.Position = camera.Position.Lerp(targetPosition, 0.01f);
@@ -283,6 +288,14 @@ public partial class Stage : Node2D
                 eventInfo.AddEventHandler(entity, methodDelegate);
             }
         }
+    }
+
+    
+    public void AddCoreExplosionEffect(Vector2 position)
+    {
+        Node2D effect = coreExplosionScene.Instantiate<Node2D>();
+        effect.Position = position;
+        effectsContainer.AddChild(effect);
     }
     
 

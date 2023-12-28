@@ -107,7 +107,9 @@ public abstract partial class Craft : Entity
     {
         Hull = 0;
         Core = 0;
-
+        
+        Stage.Instance.AddCoreExplosionEffect(GlobalPosition);
+        
         foreach (CraftPart part in GetParts())
             part.Destroy();
 

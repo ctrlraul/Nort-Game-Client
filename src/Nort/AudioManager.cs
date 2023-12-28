@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using CtrlRaul;
 using Godot;
 
 namespace Nort;
@@ -29,6 +28,13 @@ public partial class AudioManager : Node
         GD.Load<AudioStream>("res://Sounds/CraftPartDetached2.wav"),
         GD.Load<AudioStream>("res://Sounds/CraftPartDetached3.wav"),
         GD.Load<AudioStream>("res://Sounds/CraftPartDetached4.wav"),
+    };
+
+    private readonly AudioStream[] explosionSounds =
+    {
+        GD.Load<AudioStream>("res://Sounds/Explosion1.wav"),
+        GD.Load<AudioStream>("res://Sounds/Explosion2.wav"),
+        GD.Load<AudioStream>("res://Sounds/Explosion3.wav"),
     };
 
 
@@ -102,6 +108,24 @@ public partial class AudioManager : Node
         audioStreamPlayer2D.Autoplay = true;
         audioStreamPlayer2D.PitchScale = 0.75f + random.NextSingle() * 0.5f;
         audioStreamPlayer2D.Stream = partDetachedSounds[random.Next() % partDetachedSounds.Length];
+        
+        AddChild(audioStreamPlayer2D);
+        audioStreamPlayer2D.Finished += audioStreamPlayer2D.QueueFree;
+
+        return audioStreamPlayer2D;
+    }
+    
+    public AudioStreamPlayer2D PlayExplosion(Vector2 position)
+    {
+        if (Mute)
+            return null;
+        
+        AudioStreamPlayer2D audioStreamPlayer2D = new();
+
+        audioStreamPlayer2D.Position = position;
+        audioStreamPlayer2D.Autoplay = true;
+        audioStreamPlayer2D.PitchScale = 0.75f + random.NextSingle() * 0.5f;
+        audioStreamPlayer2D.Stream = explosionSounds[random.Next() % explosionSounds.Length];
         
         AddChild(audioStreamPlayer2D);
         audioStreamPlayer2D.Finished += audioStreamPlayer2D.QueueFree;
