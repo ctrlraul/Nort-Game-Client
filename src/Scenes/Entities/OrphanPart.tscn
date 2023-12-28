@@ -72,6 +72,7 @@ monitoring = false
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
 unique_name_in_owner = true
 shape = SubResource("RectangleShape2D_h0kp0")
+disabled = true
 debug_color = Color(0, 1, 1, 0.15)
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

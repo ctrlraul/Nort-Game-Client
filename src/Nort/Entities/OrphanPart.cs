@@ -85,6 +85,9 @@ public partial class OrphanPart : Entity
             throw new Exception($"Expected a {nameof(ShaderMaterial)} material on sprite");
         
         material.SetShaderParameter("dissolve_noise_offset", new Vector2(GD.Randi() % 256, GD.Randi() % 256));
+
+        if (Game.Instance.InMissionEditor)
+            collisionShape2D.Disabled = false;
         
         await Game.Instance.Initialize();
         
@@ -108,6 +111,7 @@ public partial class OrphanPart : Entity
             if (collectable)
             {
                 AppearOnRadar = true;
+                collisionShape2D.Disabled = true;
             }
             else
             {

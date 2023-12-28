@@ -101,7 +101,7 @@ public partial class PlayerCraft : Craft
         if (Game.Instance.InMissionEditor)
             return;
         
-        if (area.Owner is OrphanPart orphanPart)
+        if (area.Owner is OrphanPart { Collectable: true } orphanPart)
         {
             orphanPart.Collect();
         }

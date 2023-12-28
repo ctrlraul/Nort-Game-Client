@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using CtrlRaul.Godot;
 using Godot;
+using Godot.Collections;
 
 namespace Nort.Entities;
 
@@ -10,8 +11,11 @@ public partial class CraftPart : Area2D
 {
     public event Action<CraftPart> Destroyed;
 
+    [Export] private Array<AudioStream> dropSounds; 
+    
     [Ready] public Sprite2D sprite2D;
     [Ready] public CollisionShape2D collisionShape2D;
+    [Ready] public AudioStreamPlayer2D audioStreamPlayer2D;
     
     public readonly List<ISkillNode> skillNodes = new();
     public float hullMax;
@@ -39,6 +43,8 @@ public partial class CraftPart : Area2D
     public override void _Ready()
     {
         this.InitializeReady();
+        
+        audioStreamPlayer2D.Stream = dropSounds.PickRandom();
         
         SetFaction(Faction);
         SetBlueprint(Blueprint);
@@ -138,7 +144,7 @@ public partial class CraftPart : Area2D
         orphanPart.Shiny = blueprint.shiny || ShinyDropRoll();
         orphanPart.Velocity = Craft.Velocity + Position.Normalized() * (3 + GD.Randf() * 3);
         orphanPart.SetColor(sprite2D.SelfModulate);
-        orphanPart.BrokenOff(GD.Randf() < GetDropRate());
+        orphanPart.BrokenOff(Craft is not PlayerCraft && GD.Randf() < GetDropRate());
     }
 
     public void Destroy()
@@ -151,6 +157,8 @@ public partial class CraftPart : Area2D
             skillNode.QueueFree();
         
         QueueFree();
+
+        audioStreamPlayer2D.Play();
         
         Destroyed?.Invoke(this);
     }
