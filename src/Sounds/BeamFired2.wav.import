@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://cmtiqeonywnh1"
-path="res://.godot/imported/BeamFire2.wav-e19234f454a40a3cde770453a5d6f662.sample"
+path="res://.godot/imported/BeamFired2.wav-a5dbcd58a9975d1af2e42398524e59f1.sample"
 
 [deps]
 
-source_file="res://Sounds/BeamFire2.wav"
-dest_files=["res://.godot/imported/BeamFire2.wav-e19234f454a40a3cde770453a5d6f662.sample"]
+source_file="res://Sounds/BeamFired2.wav"
+dest_files=["res://.godot/imported/BeamFired2.wav-a5dbcd58a9975d1af2e42398524e59f1.sample"]
 
 [params]
 

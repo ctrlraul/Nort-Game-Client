@@ -17,6 +17,12 @@ public partial class AudioManager : Node
         GD.Load<AudioStream>("res://Sounds/BulletFired1.wav"),
     };
 
+    private readonly AudioStream[] beamFiredSounds =
+    {
+        GD.Load<AudioStream>("res://Sounds/BeamFired1.wav"),
+        GD.Load<AudioStream>("res://Sounds/BeamFired2.wav"),
+    };
+
     private readonly AudioStream[] partDetachedSounds =
     {
         GD.Load<AudioStream>("res://Sounds/CraftPartDetached1.wav"),
@@ -60,6 +66,24 @@ public partial class AudioManager : Node
         audioStreamPlayer2D.Autoplay = true;
         audioStreamPlayer2D.PitchScale = 0.5f + random.NextSingle();
         audioStreamPlayer2D.Stream = bulletFiredSounds[random.Next() % bulletFiredSounds.Length];
+        
+        AddChild(audioStreamPlayer2D);
+        audioStreamPlayer2D.Finished += audioStreamPlayer2D.QueueFree;
+
+        return audioStreamPlayer2D;
+    }
+    
+    public AudioStreamPlayer2D PlayBeamFired(Vector2 position)
+    {
+        if (Mute)
+            return null;
+        
+        AudioStreamPlayer2D audioStreamPlayer2D = new();
+
+        audioStreamPlayer2D.Position = position;
+        audioStreamPlayer2D.Autoplay = true;
+        audioStreamPlayer2D.PitchScale = 0.5f + random.NextSingle();
+        audioStreamPlayer2D.Stream = beamFiredSounds[random.Next() % beamFiredSounds.Length];
         
         AddChild(audioStreamPlayer2D);
         audioStreamPlayer2D.Finished += audioStreamPlayer2D.QueueFree;

@@ -1,0 +1,6 @@
+﻿{
+  "id": "beam",
+  "displayName": "Beam",
+  "scenePath": "BeamSkill.tscn",
+  "mass": 30
+}
