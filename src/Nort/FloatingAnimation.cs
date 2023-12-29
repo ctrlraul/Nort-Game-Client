@@ -10,6 +10,6 @@ public partial class FloatingAnimation : RemoteTransform2D
 	public override void _Ready()
 	{
 		this.InitializeReady();
-		animationPlayer.Play("float");
+		animationPlayer.Seek(GD.Randf());
 	}
 }

@@ -19,8 +19,8 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id="Animation_2fr4s"]
 resource_name = "float"
-length = 4.0
 loop_mode = 1
+step = 0.05
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -28,7 +28,7 @@ tracks/0/path = NodePath(".:position:x")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 1, 2, 3),
+"times": PackedFloat32Array(0, 0.25, 0.5, 0.75),
 "transitions": PackedFloat32Array(0.5, 2, 0.5, 2),
 "update": 0,
 "values": [0.0, 5.0, 0.0, -5.0]
@@ -40,7 +40,7 @@ tracks/1/path = NodePath(".:position:y")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 1, 2, 3),
+"times": PackedFloat32Array(0, 0.25, 0.5, 0.75),
 "transitions": PackedFloat32Array(2, 0.5, 2, 0.5),
 "update": 0,
 "values": [5.0, 0.0, -5.0, 0.0]
@@ -62,3 +62,5 @@ unique_name_in_owner = true
 libraries = {
 "": SubResource("AnimationLibrary_qqt1e")
 }
+autoplay = "float"
+speed_scale = 0.25
