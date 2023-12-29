@@ -1,6 +1,7 @@
 {
 	"core": {
 		"partId": "core_1",
+		"skillId": "core_bullet",
 		"X": 0,
 		"Y": 0
 	},

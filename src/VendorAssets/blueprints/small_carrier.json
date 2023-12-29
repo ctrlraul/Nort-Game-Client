@@ -1,122 +1,122 @@
 {
-  "id": "small_carrier",
-  "core": {
-    "flipped": false,
-    "x": 0.0,
-    "y": 0.0,
-    "angle": 0.0,
-    "shiny": false,
-    "partId": "core_2",
-    "skillId": null
-  },
-  "hulls": [
-    {
-      "flipped": false,
-      "x": -80.0,
-      "y": 24.0,
-      "angle": -270.0,
-      "shiny": false,
-      "partId": "wing_3",
-      "skillId": ""
-    },
-    {
-      "flipped": false,
-      "x": 0.0,
-      "y": 48.0,
-      "angle": -270.0,
-      "shiny": false,
-      "partId": "center_1",
-      "skillId": "drone"
-    },
-    {
-      "flipped": false,
-      "x": -80.0,
-      "y": -24.0,
-      "angle": -90.0,
-      "shiny": false,
-      "partId": "wing_3",
-      "skillId": ""
-    },
-    {
-      "flipped": false,
-      "x": 80.0,
-      "y": -24.0,
-      "angle": -90.0,
-      "shiny": false,
-      "partId": "wing_3",
-      "skillId": ""
-    },
-    {
-      "flipped": true,
-      "x": 80.0,
-      "y": 24.0,
-      "angle": -90.0,
-      "shiny": false,
-      "partId": "wing_3",
-      "skillId": ""
-    },
-    {
-      "flipped": false,
-      "x": 0.0,
-      "y": -48.0,
-      "angle": -90.0,
-      "shiny": false,
-      "partId": "center_1",
-      "skillId": ""
-    },
-    {
-      "flipped": true,
-      "x": -48.0,
-      "y": 32.0,
-      "angle": -180.0,
-      "shiny": false,
-      "partId": "wing_1",
-      "skillId": ""
-    },
-    {
-      "flipped": false,
-      "x": -48.0,
-      "y": -40.0,
-      "angle": -0.0,
-      "shiny": false,
-      "partId": "wing_1",
-      "skillId": ""
-    },
-    {
-      "flipped": false,
-      "x": -80.0,
-      "y": 0.0,
-      "angle": -270.0,
-      "shiny": false,
-      "partId": "center_small_2",
-      "skillId": "bullet"
-    },
-    {
-      "flipped": true,
-      "x": 48.0,
-      "y": -40.0,
-      "angle": -0.0,
-      "shiny": false,
-      "partId": "wing_1",
-      "skillId": ""
-    },
-    {
-      "flipped": false,
-      "x": 48.0,
-      "y": 32.0,
-      "angle": -180.0,
-      "shiny": false,
-      "partId": "wing_1",
-      "skillId": ""
-    },
-    {
-      "flipped": false,
-      "x": 80.0,
-      "y": 0.0,
-      "angle": -90.0,
-      "shiny": false,
-      "partId": "center_small_2",
-      "skillId": "beam"
-    }
-  ]
+	"id": "small_carrier",
+	"core": {
+		"flipped": false,
+		"x": 0.0,
+		"y": 0.0,
+		"angle": 0.0,
+		"shiny": false,
+		"partId": "core_2",
+		"skillId": "core_bullet"
+	},
+	"hulls": [
+		{
+			"flipped": false,
+			"x": -80.0,
+			"y": 24.0,
+			"angle": -270.0,
+			"shiny": false,
+			"partId": "wing_3",
+			"skillId": ""
+		},
+		{
+			"flipped": false,
+			"x": 0.0,
+			"y": 48.0,
+			"angle": -270.0,
+			"shiny": false,
+			"partId": "center_1",
+			"skillId": "drone"
+		},
+		{
+			"flipped": false,
+			"x": -80.0,
+			"y": -24.0,
+			"angle": -90.0,
+			"shiny": false,
+			"partId": "wing_3",
+			"skillId": ""
+		},
+		{
+			"flipped": false,
+			"x": 80.0,
+			"y": -24.0,
+			"angle": -90.0,
+			"shiny": false,
+			"partId": "wing_3",
+			"skillId": ""
+		},
+		{
+			"flipped": true,
+			"x": 80.0,
+			"y": 24.0,
+			"angle": -90.0,
+			"shiny": false,
+			"partId": "wing_3",
+			"skillId": ""
+		},
+		{
+			"flipped": false,
+			"x": 0.0,
+			"y": -48.0,
+			"angle": -90.0,
+			"shiny": false,
+			"partId": "center_1",
+			"skillId": ""
+		},
+		{
+			"flipped": true,
+			"x": -48.0,
+			"y": 32.0,
+			"angle": -180.0,
+			"shiny": false,
+			"partId": "wing_1",
+			"skillId": ""
+		},
+		{
+			"flipped": false,
+			"x": -48.0,
+			"y": -40.0,
+			"angle": -0.0,
+			"shiny": false,
+			"partId": "wing_1",
+			"skillId": ""
+		},
+		{
+			"flipped": false,
+			"x": -80.0,
+			"y": 0.0,
+			"angle": -270.0,
+			"shiny": false,
+			"partId": "center_small_2",
+			"skillId": "bullet"
+		},
+		{
+			"flipped": true,
+			"x": 48.0,
+			"y": -40.0,
+			"angle": -0.0,
+			"shiny": false,
+			"partId": "wing_1",
+			"skillId": ""
+		},
+		{
+			"flipped": false,
+			"x": 48.0,
+			"y": 32.0,
+			"angle": -180.0,
+			"shiny": false,
+			"partId": "wing_1",
+			"skillId": ""
+		},
+		{
+			"flipped": false,
+			"x": 80.0,
+			"y": 0.0,
+			"angle": -90.0,
+			"shiny": false,
+			"partId": "center_small_2",
+			"skillId": "beam"
+		}
+	]
 }

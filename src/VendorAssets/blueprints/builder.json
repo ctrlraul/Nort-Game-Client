@@ -1,32 +1,32 @@
 {
-  "id": "builder",
-  "core": {
-    "flipped": false,
-    "x": 0.0,
-    "y": 0.0,
-    "angle": 0.0,
-    "shiny": false,
-    "partId": "core_2",
-    "skillId": null
-  },
-  "hulls": [
-    {
-      "flipped": false,
-      "x": 0.0,
-      "y": 80.0,
-      "angle": 0.0,
-      "shiny": false,
-      "partId": "tiny_center_1",
-      "skillId": ""
-    },
-    {
-      "flipped": false,
-      "x": 0.0,
-      "y": -80.0,
-      "angle": -180.0,
-      "shiny": false,
-      "partId": "tiny_center_1",
-      "skillId": ""
-    }
-  ]
+	"id": "builder",
+	"core": {
+		"flipped": false,
+		"x": 0.0,
+		"y": 0.0,
+		"angle": 0.0,
+		"shiny": false,
+		"partId": "core_2",
+		"skillId": "core_bullet"
+	},
+	"hulls": [
+		{
+			"flipped": false,
+			"x": 0.0,
+			"y": 80.0,
+			"angle": 0.0,
+			"shiny": false,
+			"partId": "tiny_center_1",
+			"skillId": ""
+		},
+		{
+			"flipped": false,
+			"x": 0.0,
+			"y": -80.0,
+			"angle": -180.0,
+			"shiny": false,
+			"partId": "tiny_center_1",
+			"skillId": ""
+		}
+	]
 }

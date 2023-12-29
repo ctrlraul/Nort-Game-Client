@@ -1,32 +1,32 @@
 {
-  "id": "brisk",
-  "core": {
-    "flipped": false,
-    "x": 0.0,
-    "y": 0.0,
-    "angle": 0.0,
-    "shiny": false,
-    "partId": "center_1",
-    "skillId": "bullet"
-  },
-  "hulls": [
-    {
-      "flipped": false,
-      "x": -48.0,
-      "y": 0.0,
-      "angle": -200.0,
-      "shiny": false,
-      "partId": "wing_2",
-      "skillId": null
-    },
-    {
-      "flipped": true,
-      "x": 48.0,
-      "y": 0.0,
-      "angle": -157.5,
-      "shiny": false,
-      "partId": "wing_2",
-      "skillId": null
-    }
-  ]
+	"id": "brisk",
+	"core": {
+		"flipped": false,
+		"x": 0.0,
+		"y": 0.0,
+		"angle": 0.0,
+		"shiny": false,
+		"partId": "center_1",
+		"skillId": "bullet"
+	},
+	"hulls": [
+		{
+			"flipped": false,
+			"x": -48.0,
+			"y": 0.0,
+			"angle": -200.0,
+			"shiny": false,
+			"partId": "wing_2",
+			"skillId": null
+		},
+		{
+			"flipped": true,
+			"x": 48.0,
+			"y": 0.0,
+			"angle": -157.5,
+			"shiny": false,
+			"partId": "wing_2",
+			"skillId": null
+		}
+	]
 }

@@ -1,68 +1,68 @@
 {
-  "id": "scapel",
-  "core": {
-    "flipped": false,
-    "x": 0.0,
-    "y": 0.0,
-    "angle": 0.0,
-    "shiny": false,
-    "partId": "core_1",
-    "skillId": null
-  },
-  "hulls": [
-    {
-      "flipped": false,
-      "x": -48.0,
-      "y": 32.0,
-      "angle": -225.0,
-      "shiny": false,
-      "partId": "tiny_tail_1",
-      "skillId": ""
-    },
-    {
-      "flipped": false,
-      "x": 48.0,
-      "y": 32.0,
-      "angle": -135.0,
-      "shiny": false,
-      "partId": "tiny_tail_1",
-      "skillId": ""
-    },
-    {
-      "flipped": false,
-      "x": 0.0,
-      "y": 32.0,
-      "angle": 0.0,
-      "shiny": false,
-      "partId": "tail_1",
-      "skillId": ""
-    },
-    {
-      "flipped": false,
-      "x": 0.0,
-      "y": -16.0,
-      "angle": -180.0,
-      "shiny": false,
-      "partId": "tail_2",
-      "skillId": ""
-    },
-    {
-      "flipped": false,
-      "x": 48.0,
-      "y": 0.0,
-      "angle": 0.0,
-      "shiny": false,
-      "partId": "wing_2",
-      "skillId": "bullet"
-    },
-    {
-      "flipped": true,
-      "x": -48.0,
-      "y": 0.0,
-      "angle": 0.0,
-      "shiny": false,
-      "partId": "wing_2",
-      "skillId": "bullet"
-    }
-  ]
+	"id": "scapel",
+	"core": {
+		"flipped": false,
+		"x": 0.0,
+		"y": 0.0,
+		"angle": 0.0,
+		"shiny": false,
+		"partId": "core_1",
+		"skillId": "core_bullet"
+	},
+	"hulls": [
+		{
+			"flipped": false,
+			"x": -48.0,
+			"y": 32.0,
+			"angle": -225.0,
+			"shiny": false,
+			"partId": "tiny_tail_1",
+			"skillId": ""
+		},
+		{
+			"flipped": false,
+			"x": 48.0,
+			"y": 32.0,
+			"angle": -135.0,
+			"shiny": false,
+			"partId": "tiny_tail_1",
+			"skillId": ""
+		},
+		{
+			"flipped": false,
+			"x": 0.0,
+			"y": 32.0,
+			"angle": 0.0,
+			"shiny": false,
+			"partId": "tail_1",
+			"skillId": ""
+		},
+		{
+			"flipped": false,
+			"x": 0.0,
+			"y": -16.0,
+			"angle": -180.0,
+			"shiny": false,
+			"partId": "tail_2",
+			"skillId": ""
+		},
+		{
+			"flipped": false,
+			"x": 48.0,
+			"y": 0.0,
+			"angle": 0.0,
+			"shiny": false,
+			"partId": "wing_2",
+			"skillId": "bullet"
+		},
+		{
+			"flipped": true,
+			"x": -48.0,
+			"y": 0.0,
+			"angle": 0.0,
+			"shiny": false,
+			"partId": "wing_2",
+			"skillId": "bullet"
+		}
+	]
 }
