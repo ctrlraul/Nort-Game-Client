@@ -1,0 +1,53 @@
+[gd_scene load_steps=4 format=3 uid="uid://cw6g0apqxpefo"]
+
+[ext_resource type="Texture2D" uid="uid://cdxq0wm7r0gej" path="res://Images/KeyboardKey.png" id="1_lo8jp"]
+[ext_resource type="Script" path="res://Nort/UI/KeyboardKey.cs" id="1_qdik1"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_1iq1i"]
+font_size = 14
+
+[node name="KeyboardKey" type="MarginContainer"]
+custom_minimum_size = Vector2(30, 30)
+offset_right = 30.0
+offset_bottom = 30.0
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+script = ExtResource("1_qdik1")
+Text = "E"
+metadata/_edit_group_ = true
+
+[node name="NinePatchRect" type="NinePatchRect" parent="."]
+layout_mode = 2
+texture = ExtResource("1_lo8jp")
+patch_margin_left = 8
+patch_margin_right = 8
+
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="."]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="AspectRatioContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="AspectRatioContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 10
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 0
+
+[node name="Label" type="Label" parent="AspectRatioContainer/VBoxContainer/MarginContainer"]
+unique_name_in_owner = true
+self_modulate = Color(0, 1, 0.498039, 1)
+layout_mode = 2
+text = "E"
+label_settings = SubResource("LabelSettings_1iq1i")
+horizontal_alignment = 1
+
+[node name="Spacer" type="Control" parent="AspectRatioContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.86

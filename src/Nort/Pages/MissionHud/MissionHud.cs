@@ -4,7 +4,7 @@ using CtrlRaul.Godot;
 using CtrlRaul.Godot.Linq;
 using Nort.UI;
 using Nort.UI.Overlays;
-using Craft = Nort.Entities.Craft;
+using Nort.Entities;
 
 namespace Nort.Pages;
 
@@ -25,12 +25,14 @@ public partial class MissionHud : Page
     [Export] public PackedScene pauseOverlayScene;
     [Export] public PackedScene skillButtonScene;
 
+    [Ready] public Control uiRoot;
     [Ready] public SimpleProgressBar hullProgressBar;
     [Ready] public SimpleProgressBar coreProgressBar;
     [Ready] public Control skillButtons;
+    [Ready] public Control interactionIndicator;
 
     private Mission mission;
-    private Craft player;
+    private PlayerCraft player;
 
     public bool FromEditor { get; private set; }
     
@@ -56,6 +58,19 @@ public partial class MissionHud : Page
     {
         hullProgressBar.Progress = player.Hull / player.HullMax;
         coreProgressBar.Progress = player.Core / player.CoreMax;
+
+        if (player.InteractableFocused != null)
+        {
+            interactionIndicator.Visible = true;
+            interactionIndicator.Position = uiRoot.Size * 0.5f -
+                                            (Stage.Instance.camera.Position -
+                                             player.InteractableFocused.GlobalPosition) * Stage.Instance.camera.Zoom +
+                                            Vector2.Down * player.InteractableFocused.Radius;
+        }
+        else
+        {
+            interactionIndicator.Visible = false;
+        }
     }
     
     public override async Task Initialize()
@@ -97,7 +112,7 @@ public partial class MissionHud : Page
         }
     }
 
-    private void OnPlayerSpawned(Craft craft)
+    private void OnPlayerSpawned(PlayerCraft craft)
     {
         player = craft;
         

@@ -172,6 +172,7 @@ public partial class Editor : Page
         else
         {
             Stage.Spawn<PlayerCraft>();
+            Stage.Spawn<ConductorCraft>().Position = Vector2.Right * 300;
         }
     }
 

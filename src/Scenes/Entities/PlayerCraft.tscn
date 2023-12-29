@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://dnfpufrxifb44"]
+[gd_scene load_steps=10 format=3 uid="uid://dnfpufrxifb44"]
 
 [ext_resource type="PackedScene" uid="uid://b1xci2ckb2rvw" path="res://Scenes/Entities/Craft/Craft.tscn" id="1_hcr24"]
 [ext_resource type="Script" path="res://Nort/Entities/PlayerCraft.cs" id="2_kv5h0"]
@@ -9,6 +9,9 @@
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_dqwve"]
 radius = 50.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_c4tym"]
+radius = 160.0
 
 [sub_resource type="LabelSettings" id="LabelSettings_yi16s"]
 font_size = 32
@@ -36,10 +39,19 @@ monitorable = false
 shape = SubResource("CircleShape2D_dqwve")
 debug_color = Color(0, 1, 1, 0)
 
-[node name="AudioListener2D" type="AudioListener2D" parent="." index="4"]
+[node name="InteractingRange" type="Area2D" parent="." index="4"]
+collision_layer = 0
+collision_mask = 2
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractingRange" index="0"]
+shape = SubResource("CircleShape2D_c4tym")
+debug_color = Color(1, 1, 0, 0)
+
+[node name="AudioListener2D" type="AudioListener2D" parent="." index="5"]
 current = true
 
-[node name="Label" type="Label" parent="." index="5"]
+[node name="Label" type="Label" parent="." index="6"]
 unique_name_in_owner = true
 offset_left = -100.0
 offset_top = 90.0
@@ -50,3 +62,5 @@ label_settings = SubResource("LabelSettings_yi16s")
 horizontal_alignment = 1
 
 [connection signal="area_entered" from="CollectingRange" to="." method="OnCollectionRangeAreaEntered"]
+[connection signal="area_entered" from="InteractingRange" to="." method="OnInteractingRangeAreaEntered"]
+[connection signal="area_exited" from="InteractingRange" to="." method="OnInteractingRangeAreaExited"]

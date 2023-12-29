@@ -16,13 +16,14 @@ public partial class Stage : Node2D
 {
     public static Stage Instance { get; private set; }
 
-    public event Action<Craft> PlayerSpawned;
+    public event Action<PlayerCraft> PlayerSpawned;
     public event Action PlayerDestroyed;
 
     // Entities
     [Export] private PackedScene carrierCraftScene;
     [Export] private PackedScene playerCraftScene;
     [Export] private PackedScene droneCraftScene;
+    [Export] private PackedScene conductorCraftScene;
     [Export] private PackedScene orphanPartScene;
     [Export] private PackedScene coreBulletProjectileScene;
     
@@ -101,7 +102,7 @@ public partial class Stage : Node2D
 
     private void CameraFollowPlayer()
     {
-        Vector2 targetZoom = Vector2.One * 0.5f - Vector2.One * Player.Velocity.Length() * 0.005f;
+        Vector2 targetZoom = Vector2.One * 0.75f - Vector2.One * Player.Velocity.Length() * 0.01f;
         Vector2 targetPosition = Player.Position + Player.Velocity * 110;
         camera.Zoom = camera.Zoom.Lerp(targetZoom, 0.005f);
         camera.Position = camera.Position.Lerp(targetPosition, 0.01f);
@@ -190,6 +191,7 @@ public partial class Stage : Node2D
             nameof(PlayerCraft) => playerCraftScene.Instantiate<PlayerCraft>(),
             nameof(CarrierCraft) => carrierCraftScene.Instantiate<CarrierCraft>(),
             nameof(DroneCraft) => droneCraftScene.Instantiate<DroneCraft>(),
+            nameof(ConductorCraft) => conductorCraftScene.Instantiate<ConductorCraft>(),
             nameof(OrphanPart) => orphanPartScene.Instantiate<OrphanPart>(),
             nameof(CoreBulletProjectile) => coreBulletProjectileScene.Instantiate<CoreBulletProjectile>(),
             

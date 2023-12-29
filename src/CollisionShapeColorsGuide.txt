@@ -5,5 +5,6 @@ Skill Range = #ff0000 (Red)
 AI Range = #ff8000 (Orange)
 Craft Body = #00ff00 (Green)
 Orphan Part = #00ffff (Cyan)
+Interactable = #ffff00 (Yellow)
 
 Anything not denoted = default color

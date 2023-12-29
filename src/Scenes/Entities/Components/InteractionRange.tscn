@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://bnflbdc306yxy"]
+
+[ext_resource type="Script" path="res://Nort/Entities/Components/InteractionRange.cs" id="1_1i6bq"]
+
+[node name="InteractionRange" type="Area2D"]
+collision_layer = 2
+collision_mask = 0
+monitoring = false
+script = ExtResource("1_1i6bq")

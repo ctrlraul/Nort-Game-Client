@@ -1,0 +1,195 @@
+[gd_scene load_steps=20 format=3 uid="uid://bu3xitidft7fc"]
+
+[ext_resource type="PackedScene" uid="uid://b1xci2ckb2rvw" path="res://Scenes/Entities/Craft/Craft.tscn" id="1_gcspx"]
+[ext_resource type="Script" path="res://Nort/Entities/ConductorCraft.cs" id="2_pbokw"]
+[ext_resource type="PackedScene" uid="uid://djqq8s6miovq7" path="res://Scenes/FloatingAnimation.tscn" id="2_rfa1d"]
+[ext_resource type="PackedScene" uid="uid://c8vjpl3s8tb65" path="res://Scenes/Entities/Craft/CraftPart.tscn" id="3_82hjt"]
+[ext_resource type="Texture2D" uid="uid://bu5jfqbcbj6tu" path="res://Images/Portal.png" id="4_tnr0c"]
+[ext_resource type="Texture2D" uid="uid://6rlcrauxtj7e" path="res://Images/particle_solid.png" id="4_yq8c5"]
+[ext_resource type="Texture2D" uid="uid://cut7lwp5ecylb" path="res://Images/PortalLights.png" id="5_btjl3"]
+[ext_resource type="Material" uid="uid://cljg1ytg5x80f" path="res://Materials/add.tres" id="5_nwtiu"]
+[ext_resource type="Texture2D" uid="uid://kuqm6ucf6orc" path="res://Images/PortalRange.png" id="5_suhn2"]
+[ext_resource type="PackedScene" uid="uid://bnflbdc306yxy" path="res://Scenes/Entities/Components/InteractionRange.tscn" id="10_1cmvb"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_xt8db"]
+
+[sub_resource type="Curve" id="Curve_aj7si"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.361518, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -4.2147, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_kehvr"]
+curve = SubResource("Curve_aj7si")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ir30j"]
+particle_flag_disable_z = true
+emission_shape = 6
+emission_ring_axis = Vector3(0, 0, 1)
+emission_ring_height = 0.0
+emission_ring_radius = 46.0
+emission_ring_inner_radius = 46.0
+angle_max = 360.0
+spread = 180.0
+initial_velocity_min = 10.0
+initial_velocity_max = 10.0
+gravity = Vector3(0, 0, 0)
+scale_min = 0.1
+scale_max = 0.4
+scale_curve = SubResource("CurveTexture_kehvr")
+turbulence_enabled = true
+turbulence_noise_scale = 9.5
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_850yg"]
+radius = 50.0
+
+[sub_resource type="Animation" id="Animation_8aoun"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PortalStuff/Portal:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PortalStuff/Portal:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_5tb0u"]
+resource_name = "spin_portal"
+length = 2.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PortalStuff/Portal:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 6.28319]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PortalStuff/Portal:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_yb400"]
+resource_name = "summon_portal"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PortalStuff/Portal:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 3.14159]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PortalStuff/Portal:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(0.34151, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(1, 1)]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AnimationPlayer")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(1),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": ["spin_portal", -1, 1.0, false],
+"method": &"play"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ltnae"]
+_data = {
+"RESET": SubResource("Animation_8aoun"),
+"spin_portal": SubResource("Animation_5tb0u"),
+"summon_portal": SubResource("Animation_yb400")
+}
+
+[node name="ConductorCraft" instance=ExtResource("1_gcspx")]
+script = ExtResource("2_pbokw")
+craftPartScene = ExtResource("3_82hjt")
+
+[node name="FloatingAnimation" parent="." index="1" instance=ExtResource("2_rfa1d")]
+remote_path = NodePath("../Body")
+
+[node name="PortalStuff" type="Node2D" parent="." index="2"]
+position = Vector2(0, 105)
+
+[node name="PortalRange" type="Sprite2D" parent="PortalStuff" index="0"]
+visible = false
+modulate = Color(0, 1, 0.498039, 0.376471)
+material = ExtResource("5_nwtiu")
+texture = ExtResource("5_suhn2")
+
+[node name="Portal" type="Sprite2D" parent="PortalStuff" index="1"]
+self_modulate = Color(0, 1, 0.498039, 1)
+material = SubResource("CanvasItemMaterial_xt8db")
+texture = ExtResource("4_tnr0c")
+
+[node name="PortalLights" type="Sprite2D" parent="PortalStuff/Portal" index="0"]
+texture = ExtResource("5_btjl3")
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="PortalStuff" index="2"]
+self_modulate = Color(0.305882, 1, 0.498039, 1)
+process_material = SubResource("ParticleProcessMaterial_ir30j")
+texture = ExtResource("4_yq8c5")
+lifetime = 3.0
+fixed_fps = 60
+
+[node name="FloatingAnimation" parent="PortalStuff" index="3" instance=ExtResource("2_rfa1d")]
+unique_name_in_owner = true
+remote_path = NodePath("../Portal")
+
+[node name="InteractionRange" parent="PortalStuff" index="4" instance=ExtResource("10_1cmvb")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PortalStuff/InteractionRange" index="0"]
+shape = SubResource("CircleShape2D_850yg")
+debug_color = Color(1, 1, 0, 0.15)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="3"]
+libraries = {
+"": SubResource("AnimationLibrary_ltnae")
+}
+autoplay = "summon_portal"
+
+[connection signal="Interacted" from="PortalStuff/InteractionRange" to="." method="OnInteractionRangeInteracted"]

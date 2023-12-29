@@ -1,9 +1,11 @@
-[gd_scene load_steps=9 format=3 uid="uid://m3i0qedakhoo"]
+[gd_scene load_steps=11 format=3 uid="uid://m3i0qedakhoo"]
 
 [ext_resource type="Script" path="res://Nort/Pages/MissionHud/MissionHud.cs" id="1_qmqk6"]
 [ext_resource type="PackedScene" uid="uid://whj2kaikbqfx" path="res://Scenes/UI/Overlays/PauseOverlay.tscn" id="2_5pulk"]
 [ext_resource type="PackedScene" uid="uid://dogjqbi647gty" path="res://Scenes/UI/SimpleProgressBar.tscn" id="2_dm4nt"]
+[ext_resource type="PackedScene" uid="uid://cw6g0apqxpefo" path="res://Scenes/UI/KeyboardKey.tscn" id="4_bhsh2"]
 [ext_resource type="Texture2D" uid="uid://b5qg2cai66rhe" path="res://Images/theme/MissionHud/skills_bar.png" id="4_natrv"]
+[ext_resource type="Texture2D" uid="uid://dqlsexnb6s0e2" path="res://Images/DialogPanel.png" id="4_ydboj"]
 [ext_resource type="PackedScene" uid="uid://d4mu3n1tu5q86" path="res://Scenes/Pages/MissionHud/SkillButton.tscn" id="5_hkoxc"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_s8wqn"]
@@ -19,12 +21,13 @@ region = Rect2(27, 0, 77, 129)
 atlas = ExtResource("4_natrv")
 region = Rect2(105, 0, 118, 129)
 
-[node name="Mission" type="CanvasLayer"]
+[node name="MissionHud" type="CanvasLayer"]
 script = ExtResource("1_qmqk6")
 pauseOverlayScene = ExtResource("2_5pulk")
 skillButtonScene = ExtResource("5_hkoxc")
 
-[node name="Theme" type="Control" parent="."]
+[node name="UiRoot" type="Control" parent="."]
+unique_name_in_owner = true
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -33,7 +36,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="Theme"]
+[node name="MarginContainer" type="MarginContainer" parent="UiRoot"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -43,11 +46,11 @@ grow_vertical = 2
 mouse_filter = 2
 theme_type_variation = &"WindowMarginContainer"
 
-[node name="Control" type="Control" parent="Theme/MarginContainer"]
+[node name="Control" type="Control" parent="UiRoot/MarginContainer"]
 layout_mode = 2
 mouse_filter = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Theme/MarginContainer/Control"]
+[node name="VBoxContainer" type="VBoxContainer" parent="UiRoot/MarginContainer/Control"]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -59,7 +62,7 @@ grow_horizontal = 2
 mouse_filter = 2
 theme_override_constants/separation = 0
 
-[node name="HullProgressBar" parent="Theme/MarginContainer/Control/VBoxContainer" instance=ExtResource("2_dm4nt")]
+[node name="HullProgressBar" parent="UiRoot/MarginContainer/Control/VBoxContainer" instance=ExtResource("2_dm4nt")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 10)
 layout_mode = 2
@@ -68,7 +71,7 @@ size_flags_vertical = 0
 Color = Color(1, 0, 1, 1)
 Progress = 0.75
 
-[node name="CoreProgressBar" parent="Theme/MarginContainer/Control/VBoxContainer" instance=ExtResource("2_dm4nt")]
+[node name="CoreProgressBar" parent="UiRoot/MarginContainer/Control/VBoxContainer" instance=ExtResource("2_dm4nt")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 10)
 layout_mode = 2
@@ -77,7 +80,7 @@ size_flags_vertical = 0
 Color = Color(1, 1, 1, 1)
 Progress = 0.5
 
-[node name="Control" type="Control" parent="Theme/MarginContainer/Control"]
+[node name="Control" type="Control" parent="UiRoot/MarginContainer/Control"]
 visible = false
 layout_mode = 1
 anchors_preset = 1
@@ -88,7 +91,7 @@ offset_bottom = 200.0
 grow_horizontal = 0
 mouse_filter = 2
 
-[node name="PanelContainer" type="PanelContainer" parent="Theme/MarginContainer/Control/Control"]
+[node name="PanelContainer" type="PanelContainer" parent="UiRoot/MarginContainer/Control/Control"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -97,7 +100,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_type_variation = &"PanelContainerDarken"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Theme/MarginContainer/Control"]
+[node name="HBoxContainer" type="HBoxContainer" parent="UiRoot/MarginContainer/Control"]
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
@@ -106,12 +109,12 @@ offset_top = -40.0
 offset_right = 40.0
 grow_vertical = 0
 
-[node name="SkillButton" type="Button" parent="Theme/MarginContainer/Control/HBoxContainer"]
+[node name="SkillButton" type="Button" parent="UiRoot/MarginContainer/Control/HBoxContainer"]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 flat = true
 
-[node name="MarginContainer2" type="MarginContainer" parent="Theme"]
+[node name="MarginContainer2" type="MarginContainer" parent="UiRoot"]
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
@@ -124,51 +127,101 @@ theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 0
 theme_override_constants/margin_bottom = 0
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="Theme/MarginContainer2"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="UiRoot/MarginContainer2"]
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="TextureRect" type="TextureRect" parent="Theme/MarginContainer2/HBoxContainer2"]
+[node name="TextureRect" type="TextureRect" parent="UiRoot/MarginContainer2/HBoxContainer2"]
 layout_mode = 2
 texture = SubResource("AtlasTexture_s8wqn")
 
-[node name="MarginContainer" type="MarginContainer" parent="Theme/MarginContainer2/HBoxContainer2"]
+[node name="MarginContainer" type="MarginContainer" parent="UiRoot/MarginContainer2/HBoxContainer2"]
 layout_mode = 2
 theme_override_constants/margin_left = 0
 theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 0
 theme_override_constants/margin_bottom = 0
 
-[node name="TextureRect2" type="TextureRect" parent="Theme/MarginContainer2/HBoxContainer2/MarginContainer"]
+[node name="TextureRect2" type="TextureRect" parent="UiRoot/MarginContainer2/HBoxContainer2/MarginContainer"]
 layout_mode = 2
 texture = SubResource("AtlasTexture_g4rmj")
 
-[node name="MarginContainer" type="MarginContainer" parent="Theme/MarginContainer2/HBoxContainer2/MarginContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="UiRoot/MarginContainer2/HBoxContainer2/MarginContainer"]
 layout_mode = 2
 theme_override_constants/margin_bottom = 0
 
-[node name="SkillButtons" type="HBoxContainer" parent="Theme/MarginContainer2/HBoxContainer2/MarginContainer/MarginContainer"]
+[node name="SkillButtons" type="HBoxContainer" parent="UiRoot/MarginContainer2/HBoxContainer2/MarginContainer/MarginContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 20
 
-[node name="SkillButton" parent="Theme/MarginContainer2/HBoxContainer2/MarginContainer/MarginContainer/SkillButtons" instance=ExtResource("5_hkoxc")]
+[node name="SkillButton" parent="UiRoot/MarginContainer2/HBoxContainer2/MarginContainer/MarginContainer/SkillButtons" instance=ExtResource("5_hkoxc")]
 layout_mode = 2
 
-[node name="SkillButton2" parent="Theme/MarginContainer2/HBoxContainer2/MarginContainer/MarginContainer/SkillButtons" instance=ExtResource("5_hkoxc")]
+[node name="SkillButton2" parent="UiRoot/MarginContainer2/HBoxContainer2/MarginContainer/MarginContainer/SkillButtons" instance=ExtResource("5_hkoxc")]
 layout_mode = 2
 
-[node name="SkillButton3" parent="Theme/MarginContainer2/HBoxContainer2/MarginContainer/MarginContainer/SkillButtons" instance=ExtResource("5_hkoxc")]
+[node name="SkillButton3" parent="UiRoot/MarginContainer2/HBoxContainer2/MarginContainer/MarginContainer/SkillButtons" instance=ExtResource("5_hkoxc")]
 layout_mode = 2
 
-[node name="Control" type="Control" parent="Theme/MarginContainer2/HBoxContainer2"]
+[node name="Control" type="Control" parent="UiRoot/MarginContainer2/HBoxContainer2"]
 show_behind_parent = true
 layout_mode = 2
 
-[node name="TextureRect" type="TextureRect" parent="Theme/MarginContainer2/HBoxContainer2/Control"]
+[node name="TextureRect" type="TextureRect" parent="UiRoot/MarginContainer2/HBoxContainer2/Control"]
 layout_mode = 0
 offset_left = -48.0
 offset_right = 72.0
 offset_bottom = 129.0
 mouse_filter = 2
 texture = SubResource("AtlasTexture_kgi2c")
+
+[node name="InteractionIndicator" type="Control" parent="UiRoot"]
+unique_name_in_owner = true
+top_level = true
+layout_mode = 1
+anchors_preset = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UiRoot/InteractionIndicator"]
+layout_mode = 2
+offset_left = -200.0
+offset_top = 8.0
+offset_right = 200.0
+offset_bottom = 38.0
+theme_override_constants/separation = 5
+alignment = 1
+
+[node name="MarginContainer4" type="MarginContainer" parent="UiRoot/InteractionIndicator/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="NinePatchRect" type="NinePatchRect" parent="UiRoot/InteractionIndicator/HBoxContainer/MarginContainer4"]
+self_modulate = Color(1, 1, 1, 0.827451)
+layout_mode = 2
+texture = ExtResource("4_ydboj")
+patch_margin_left = 8
+patch_margin_top = 8
+patch_margin_right = 8
+patch_margin_bottom = 8
+
+[node name="MarginContainer" type="MarginContainer" parent="UiRoot/InteractionIndicator/HBoxContainer/MarginContainer4"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UiRoot/InteractionIndicator/HBoxContainer/MarginContainer4/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="KeyboardKeyButton" parent="UiRoot/InteractionIndicator/HBoxContainer/MarginContainer4/MarginContainer/HBoxContainer" instance=ExtResource("4_bhsh2")]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UiRoot/InteractionIndicator/HBoxContainer/MarginContainer4/MarginContainer/HBoxContainer"]
+layout_mode = 2
+text = "Interact"
