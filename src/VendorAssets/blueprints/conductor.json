@@ -1,0 +1,95 @@
+{
+	"id": "conductor",
+	"core": {
+		"flipped": false,
+		"x": 0.0,
+		"y": 0.0,
+		"angle": 0.0,
+		"shiny": false,
+		"partId": "core_2",
+		"skillId": "core_bullet"
+	},
+	"hulls": [
+		{
+			"flipped": true,
+			"x": -56.0,
+			"y": 16.0,
+			"angle": -90.0,
+			"shiny": false,
+			"partId": "wing_2",
+			"skillId": ""
+		},
+		{
+			"flipped": false,
+			"x": 56.0,
+			"y": 16.0,
+			"angle": -270.0,
+			"shiny": false,
+			"partId": "wing_2",
+			"skillId": ""
+		},
+		{
+			"flipped": true,
+			"x": 24.0,
+			"y": -56.0,
+			"angle": 0.0,
+			"shiny": false,
+			"partId": "small_antenna_1",
+			"skillId": ""
+		},
+		{
+			"flipped": true,
+			"x": -24.0,
+			"y": -16.0,
+			"angle": -90.0,
+			"shiny": false,
+			"partId": "wing_3",
+			"skillId": ""
+		},
+		{
+			"flipped": true,
+			"x": 24.0,
+			"y": -16.0,
+			"angle": -90.0,
+			"shiny": false,
+			"partId": "wing_3",
+			"skillId": ""
+		},
+		{
+			"flipped": false,
+			"x": 80.0,
+			"y": 72.0,
+			"angle": -90.000244,
+			"shiny": false,
+			"partId": "tiny_tail_1",
+			"skillId": ""
+		},
+		{
+			"flipped": false,
+			"x": -80.0,
+			"y": 72.0,
+			"angle": -270.0,
+			"shiny": false,
+			"partId": "tiny_tail_1",
+			"skillId": ""
+		},
+		{
+			"flipped": false,
+			"x": 80.0,
+			"y": 40.0,
+			"angle": 180.0,
+			"shiny": false,
+			"partId": "center_small_2",
+			"skillId": ""
+		},
+		{
+			"flipped": false,
+			"x": -80.0,
+			"y": 40.0,
+			"angle": -180.0,
+			"shiny": false,
+			"partId": "center_small_2",
+			"skillId": ""
+		}
+	]
+}
