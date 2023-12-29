@@ -84,32 +84,21 @@ public partial class CraftPart : Area2D
         sprite2D.Material = blueprint.shiny ? Assets.ShinyMaterial : null;
         
         collisionShape2D.Shape = new RectangleShape2D { Size = sprite2D.Texture.GetSize() };
-
-        List<Skill> skills = new();
         
         if (Assets.IsCore(blueprint.Part))
-        {
-            skills.Add(Assets.Instance.DefaultCoreSkill);
-            Sprite2D coreLight = new();
-            coreLight.Texture = Assets.CoreLightTexture;
-            AddChild(coreLight);
-        }
+            AddChild(new Sprite2D { Texture = Assets.CoreLightTexture });
 
         if (!string.IsNullOrEmpty(blueprint.skillId))
-            skills.Add(blueprint.Skill);
-        
-        foreach (Skill skill in skills)
         {
-            Node2D node = skill.Scene.Instantiate<Node2D>();
+            Node2D node = blueprint.Skill.Scene.Instantiate<Node2D>();
             
             node.Position = Position;
 
-            if (node is ISkillNode skillNode)
+            if (node is ISkillNode skillNode) // Should always be truthy btw
             {
                 skillNode.Part = this;
                 skillNodes.Add(skillNode);
             }
-            
         }
 
         if (faction != null) // Actually not sure why this check is needed

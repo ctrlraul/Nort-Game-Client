@@ -130,7 +130,7 @@ public abstract partial class Entity : Node2D
     #endregion
     
     
-    private const float Damp = 0.95f;
+    protected virtual float Damp { get; } = 0.95f;
 
     public string Uuid { get; set; } = Assets.GenerateUuid();
     

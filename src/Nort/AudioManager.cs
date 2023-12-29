@@ -16,6 +16,14 @@ public partial class AudioManager : Node
         GD.Load<AudioStream>("res://Sounds/BulletFired1.wav"),
     };
 
+    private readonly AudioStream[] coreBulletFiredSounds =
+    {
+        GD.Load<AudioStream>("res://Sounds/CoreBulletFired1.wav"),
+        GD.Load<AudioStream>("res://Sounds/CoreBulletFired2.wav"),
+        GD.Load<AudioStream>("res://Sounds/CoreBulletFired3.wav"),
+        GD.Load<AudioStream>("res://Sounds/CoreBulletFired4.wav"),
+    };
+
     private readonly AudioStream[] beamFiredSounds =
     {
         GD.Load<AudioStream>("res://Sounds/BeamFired1.wav"),
@@ -63,6 +71,7 @@ public partial class AudioManager : Node
     
     public AudioStreamPlayer2D PlayBulletFired(Vector2 position) => PlaySound(position, bulletFiredSounds);
     
+    public AudioStreamPlayer2D PlayCoreBulletFired(Vector2 position) => PlaySound(position, coreBulletFiredSounds);
     
     public AudioStreamPlayer2D PlayBeamFired(Vector2 position) => PlaySound(position, beamFiredSounds);
     

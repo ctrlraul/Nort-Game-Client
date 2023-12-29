@@ -6,30 +6,29 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_v2vhg"]
 radius = 700.0
 
-[node name="CoreBulletSkillNode" type="Node2D"]
+[node name="CoreBulletSkill" type="Node2D"]
 script = ExtResource("1_a1m0x")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-visible = false
+unique_name_in_owner = true
 texture = ExtResource("2_31aju")
 
-[node name="RangeArea" type="Area2D" parent="."]
+[node name="Range" type="Area2D" parent="."]
 unique_name_in_owner = true
 collision_layer = 0
 monitorable = false
 
-[node name="RangeAreaCollisionShape2D" type="CollisionShape2D" parent="RangeArea"]
-unique_name_in_owner = true
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Range"]
 shape = SubResource("CircleShape2D_v2vhg")
 debug_color = Color(1, 0, 0, 0)
 
 [node name="CooldownTimer" type="Timer" parent="."]
 unique_name_in_owner = true
 process_callback = 0
-wait_time = 0.5
+wait_time = 0.8
 one_shot = true
 autostart = true
 
-[connection signal="area_entered" from="RangeArea" to="." method="_on_range_area_area_entered"]
-[connection signal="area_exited" from="RangeArea" to="." method="_on_range_area_area_exited"]
-[connection signal="timeout" from="CooldownTimer" to="." method="_on_cooldown_timer_timeout"]
+[connection signal="area_entered" from="Range" to="." method="OnRangeAreaEntered"]
+[connection signal="area_exited" from="Range" to="." method="OnRangeAreaExited"]
+[connection signal="timeout" from="CooldownTimer" to="." method="OnCooldownTimerTimeout"]

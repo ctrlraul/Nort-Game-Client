@@ -1,8 +1,8 @@
 ﻿using Godot;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using CtrlRaul.Godot;
+using CtrlRaul.Godot.Linq;
 using Nort.Entities;
 
 namespace Nort.Skills;
@@ -17,101 +17,107 @@ public partial class CoreBulletSkill : Node2D, ISkillNode
     
     public float CooldownMax => (float)cooldownTimer.WaitTime;
     public float Cooldown => (float)cooldownTimer.TimeLeft;
-    public Texture2D Texture => GetNode<Sprite2D>("Sprite2D").Texture;
+    public Texture2D Texture => sprite2D.Texture;
 
     #endregion
     
     
-    [Ready] public Area2D rangeArea;
-    [Ready] public CollisionShape2D rangeAreaCollisionShape2D;
+    [Ready] public Area2D range;
     [Ready] public Timer cooldownTimer;
+    [Ready] public Sprite2D sprite2D;
 
     private CraftPart target;
-    private CraftPart Target
+    public CraftPart Target
     {
         get => target;
-        set => SetTarget(value);
+        set
+        {
+            if (value == target)
+                return;
+
+            target = value;
+
+            if (IsInstanceValid(target))
+                CallDeferred(nameof(Fire));
+        }
     }
+    
 
     public override void _Ready()
     {
         this.InitializeReady();
-        SetPhysicsProcess(false);
+        UpdateCollisionMasks();
+        sprite2D.Visible = false;
+        Part.Craft.FactionChanged += OnCraftFactionChanged;
+    }
+    
+
+    private void LookForATarget()
+    {
+        Target = GetPartsInRange().FindNearest(GlobalPosition, true);
     }
 
-    public override void _PhysicsProcess(double delta)
+    private void UpdateCollisionMasks()
     {
-        GlobalRotation = GlobalPosition.AngleToPoint(Target.GlobalPosition) + Mathf.Pi * 0.5f;
+        range.CollisionMask = Assets.Instance.GetFactionCollisionMask(Part.Faction);
+        if (Target != null)
+        {
+            LookForATarget();
+        }
+    }
+    
+    private IEnumerable<CraftPart> GetPartsInRange()
+    {
+        List<CraftPart> result = new();
+
+        foreach (Area2D overlappingArea in range.GetOverlappingAreas())
+        {
+            if (overlappingArea is CraftPart { IsDestroyed: false } craftPart)
+                result.Add(craftPart);
+        }
+
+        return result;
     }
 
     public void Fire()
     {
-        if (Target == null || cooldownTimer.TimeLeft > 0)
-            return; 
+        if (Game.Instance.InMissionEditor)
+            return;
 
-        if (Target.IsDestroyed)
-            TryToFindNewTarget(null);
+        if (Part.IsDestroyed)
+            return;
 
         if (Target == null)
             return;
-
-        cooldownTimer.Start();
-
-        GD.Print("Core bullet fire!");
         
-        Fired?.Invoke();
-    }
-
-    private void TryToFindNewTarget(CraftPart foePart)
-    {
-        List<CraftPart> foePartsInRange = GetFoePartsInArea(rangeArea).ToList();
-        Target = foePartsInRange.Any() ? foePartsInRange[(int)GD.Randi() % foePartsInRange.Count] : null;
-    }
-
-    private bool IsFoePartArea(Area2D area)
-    {
-        return (area.Owner as CraftPart)!.Faction != Part.Faction;
-    }
-
-    private IEnumerable<CraftPart> GetFoePartsInArea(Area2D area)
-    {
-        return area.GetOverlappingAreas()
-            .Where(area2 => IsFoePartArea(area2) && !(area2.Owner as CraftPart)!.IsDestroyed)
-            .Select(partArea => partArea.Owner as CraftPart);
-    }
-
-    private void SetTarget(CraftPart value)
-    {
-        if (value == target)
+        if (cooldownTimer.TimeLeft > 0)
             return;
 
-        if (target is { IsDestroyed: false })
-            target.Destroyed -= TryToFindNewTarget;
+        cooldownTimer.Start();
+        CoreBulletProjectile projectile = Stage.Instance.Spawn<CoreBulletProjectile>();
+        projectile.SetSource(this);
+        Fired?.Invoke();
+    }
+    
 
-        target = value;
-
-        if (target != null)
-        {
-            target.Destroyed += TryToFindNewTarget;
-            Fire();
-            SetPhysicsProcess(true);
-        }
-        else
-        {
-            Rotation = 0;
-            SetPhysicsProcess(false);
-        }
+    private void OnCraftFactionChanged()
+    {
+        UpdateCollisionMasks();
     }
 
-    private void OnRangeAreaAreaEntered(Area2D area)
+    private void OnRangeAreaEntered(Area2D area)
     {
-        if (Target == null && IsFoePartArea(area))
-            Target = (CraftPart)area.Owner;
+        Target ??= (CraftPart)area;
     }
 
-    private void OnRangeAreaAreaExited(Area2D area)
+    private void OnRangeAreaExited(Area2D area)
     {
-        if (Target != null && area.Owner == Target)
-            TryToFindNewTarget(null);
+        if (area == Target)
+            LookForATarget();
+    }
+    
+    private void OnCooldownTimerTimeout()
+    {
+        CallDeferred(nameof(Fire));
     }
 }

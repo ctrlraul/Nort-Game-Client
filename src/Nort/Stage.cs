@@ -24,6 +24,7 @@ public partial class Stage : Node2D
     [Export] private PackedScene playerCraftScene;
     [Export] private PackedScene droneCraftScene;
     [Export] private PackedScene orphanPartScene;
+    [Export] private PackedScene coreBulletProjectileScene;
     
     // Effects
     [Export] private PackedScene coreExplosionScene;
@@ -190,6 +191,7 @@ public partial class Stage : Node2D
             nameof(CarrierCraft) => carrierCraftScene.Instantiate<CarrierCraft>(),
             nameof(DroneCraft) => droneCraftScene.Instantiate<DroneCraft>(),
             nameof(OrphanPart) => orphanPartScene.Instantiate<OrphanPart>(),
+            nameof(CoreBulletProjectile) => coreBulletProjectileScene.Instantiate<CoreBulletProjectile>(),
             
             _ => throw new Exception($"No entity scene configured for type '{typeName}'")
         };
