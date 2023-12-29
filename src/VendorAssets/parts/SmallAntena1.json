@@ -1,0 +1,9 @@
+{
+	"id": "small_antenna_1",
+	"displayName": "Small Antenna",
+	"textureName": "SmallAntenna1.png",
+	"type": "HULL",
+	"hull": 20,
+	"core": 20,
+	"mass": 5
+}
