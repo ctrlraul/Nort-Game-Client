@@ -71,14 +71,6 @@ public partial class PlayerCraft : Craft
         }
     }
     
-    // public override void _Process(double delta)
-    // {
-    //     if (Engine.GetFramesDrawn() % 4 == 0)
-    //     {
-    //         
-    //     }
-    // }
-    
     public override void _PhysicsProcess(double delta)
     {
         base._PhysicsProcess(delta);
@@ -95,18 +87,6 @@ public partial class PlayerCraft : Craft
 
         label.Position = label.Position with { Y = blueprintVisualRect.Position.Y + blueprintVisualRect.Size.Y + 20 };
     }
-
-    private void OnCollectionRangeAreaEntered(Area2D area)
-    {
-        if (Game.Instance.InMissionEditor)
-            return;
-        
-        if (area.Owner is OrphanPart { Collectable: true } orphanPart)
-        {
-            orphanPart.Collect();
-        }
-    }
-    
     
     private static Vector2 GetKeyboardMotionDirection()
     {
@@ -122,5 +102,17 @@ public partial class PlayerCraft : Craft
             direction.Y += 1;
     
         return direction;
+    }
+
+    
+    private void OnCollectionRangeAreaEntered(Area2D area)
+    {
+        if (Game.Instance.InMissionEditor)
+            return;
+        
+        if (area.Owner is OrphanPart { Collectable: true } orphanPart)
+        {
+            orphanPart.Collect();
+        }
     }
 }
