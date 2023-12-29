@@ -154,33 +154,28 @@ public abstract partial class Craft : Entity
 
     public void TakeHit(CraftPart part, ISkillNode from, float damage)
     {
-        switch (from)
+        Hull -= damage;
+
+        if (Hull >= 0)
+            return;
+
+        if (part == corePart)
         {
-            case BulletSkill:
-                Hull -= damage;
+            Core += Hull;
 
-                if (Hull >= 0)
-                    return;
+            corePart.SetColorScale(Core / CoreMax);
 
-                if (part == corePart)
-                {
-                    Core += Hull;
-
-                    corePart.SetColorScale(Core / CoreMax);
-
-                    if (Core <= 0)
-                        Destroy();
-                }
-                else
-                {
-                    part.TakeDamage(Hull * -1);
-                }
-
-                Hull = 0;
-            
-                StatsChanged?.Invoke();
-                break;
+            if (Core <= 0)
+                Destroy();
         }
+        else
+        {
+            part.TakeDamage(Hull * -1);
+        }
+
+        Hull = 0;
+    
+        StatsChanged?.Invoke();
     }
 
     private void OnPartDestroyed(CraftPart part)
