@@ -113,16 +113,15 @@ public partial class BulletSkill : Node2D, ISkillNode
         
         if (cooldownTimer.TimeLeft > 0)
             return;
+
+        if (rayCast2D.GetCollider() is not CraftPart partHit)
+            return;
         
         cooldownTimer.Start();
         particles.Emitting = true;
-        
-        if (rayCast2D.GetCollider() is CraftPart partHit)
-        {
-            partHit.Craft.TakeHit(partHit, this, Damage);
-            AudioManager.Instance.PlayBulletFired(GlobalPosition);
-            Fired?.Invoke();
-        }
+        partHit.Craft.TakeHit(partHit, this, Damage);
+        AudioManager.Instance.PlayBulletFired(GlobalPosition);
+        Fired?.Invoke();
     }
 
 
