@@ -101,8 +101,7 @@ public partial class CraftPart : Area2D
             }
         }
 
-        if (faction != null) // Actually not sure why this check is needed
-            UpdateColor();
+        UpdateColor();
     }
 
     
