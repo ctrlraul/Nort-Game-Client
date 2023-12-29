@@ -283,7 +283,7 @@ public partial class Stage : Node2D
                     continue;
                 }
                 
-                Delegate methodDelegate = Delegate.CreateDelegate(eventInfo.EventHandlerType, target, methodInfo);
+                Delegate methodDelegate = Delegate.CreateDelegate(eventInfo.EventHandlerType!, target, methodInfo);
             
                 eventInfo.AddEventHandler(entity, methodDelegate);
             }
