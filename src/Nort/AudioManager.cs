@@ -21,7 +21,6 @@ public partial class AudioManager : Node
         GD.Load<AudioStream>("res://Sounds/CoreBulletFired1.wav"),
         GD.Load<AudioStream>("res://Sounds/CoreBulletFired2.wav"),
         GD.Load<AudioStream>("res://Sounds/CoreBulletFired3.wav"),
-        GD.Load<AudioStream>("res://Sounds/CoreBulletFired4.wav"),
     };
 
     private readonly AudioStream[] beamFiredSounds =
