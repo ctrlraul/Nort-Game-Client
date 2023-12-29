@@ -1,7 +1,6 @@
-[gd_scene load_steps=8 format=3 uid="uid://dln0sc730korg"]
+[gd_scene load_steps=7 format=3 uid="uid://dln0sc730korg"]
 
 [ext_resource type="Script" path="res://Nort/Skills/BulletSkill.cs" id="1_70pev"]
-[ext_resource type="Material" uid="uid://butcjeuqllk5q" path="res://Materials/smooth_rect_border_shader_material.tres" id="2_0820g"]
 [ext_resource type="Texture2D" uid="uid://hlcyw0kime5w" path="res://Images/skills/bullet.png" id="2_t1j6l"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_v2vhg"]
@@ -49,7 +48,6 @@ collide_with_areas = true
 collide_with_bodies = false
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-material = ExtResource("2_0820g")
 rotation = 1.5708
 texture = ExtResource("2_t1j6l")
 
