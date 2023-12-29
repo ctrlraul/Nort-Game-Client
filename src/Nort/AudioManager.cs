@@ -61,43 +61,17 @@ public partial class AudioManager : Node
     }
     
     
-    public AudioStreamPlayer2D PlayBulletFired(Vector2 position)
-    {
-        if (Mute)
-            return null;
-        
-        AudioStreamPlayer2D audioStreamPlayer2D = new();
-
-        audioStreamPlayer2D.Position = position;
-        audioStreamPlayer2D.Autoplay = true;
-        audioStreamPlayer2D.PitchScale = 0.5f + random.NextSingle();
-        audioStreamPlayer2D.Stream = bulletFiredSounds[random.Next() % bulletFiredSounds.Length];
-        
-        AddChild(audioStreamPlayer2D);
-        audioStreamPlayer2D.Finished += audioStreamPlayer2D.QueueFree;
-
-        return audioStreamPlayer2D;
-    }
+    public AudioStreamPlayer2D PlayBulletFired(Vector2 position) => PlaySound(position, bulletFiredSounds);
     
-    public AudioStreamPlayer2D PlayBeamFired(Vector2 position)
-    {
-        if (Mute)
-            return null;
-        
-        AudioStreamPlayer2D audioStreamPlayer2D = new();
-
-        audioStreamPlayer2D.Position = position;
-        audioStreamPlayer2D.Autoplay = true;
-        audioStreamPlayer2D.PitchScale = 0.5f + random.NextSingle();
-        audioStreamPlayer2D.Stream = beamFiredSounds[random.Next() % beamFiredSounds.Length];
-        
-        AddChild(audioStreamPlayer2D);
-        audioStreamPlayer2D.Finished += audioStreamPlayer2D.QueueFree;
-
-        return audioStreamPlayer2D;
-    }
     
-    public AudioStreamPlayer2D PlayPartDetached(Vector2 position)
+    public AudioStreamPlayer2D PlayBeamFired(Vector2 position) => PlaySound(position, beamFiredSounds);
+    
+    public AudioStreamPlayer2D PlayPartDetached(Vector2 position) => PlaySound(position, partDetachedSounds);
+    
+    public AudioStreamPlayer2D PlayExplosion(Vector2 position) => PlaySound(position, explosionSounds);
+    
+    
+    private AudioStreamPlayer2D PlaySound(Vector2 position, AudioStream[] sounds)
     {
         if (Mute)
             return null;
@@ -107,25 +81,7 @@ public partial class AudioManager : Node
         audioStreamPlayer2D.Position = position;
         audioStreamPlayer2D.Autoplay = true;
         audioStreamPlayer2D.PitchScale = 0.75f + random.NextSingle() * 0.5f;
-        audioStreamPlayer2D.Stream = partDetachedSounds[random.Next() % partDetachedSounds.Length];
-        
-        AddChild(audioStreamPlayer2D);
-        audioStreamPlayer2D.Finished += audioStreamPlayer2D.QueueFree;
-
-        return audioStreamPlayer2D;
-    }
-    
-    public AudioStreamPlayer2D PlayExplosion(Vector2 position)
-    {
-        if (Mute)
-            return null;
-        
-        AudioStreamPlayer2D audioStreamPlayer2D = new();
-
-        audioStreamPlayer2D.Position = position;
-        audioStreamPlayer2D.Autoplay = true;
-        audioStreamPlayer2D.PitchScale = 0.75f + random.NextSingle() * 0.5f;
-        audioStreamPlayer2D.Stream = explosionSounds[random.Next() % explosionSounds.Length];
+        audioStreamPlayer2D.Stream = sounds[random.Next() % sounds.Length];
         
         AddChild(audioStreamPlayer2D);
         audioStreamPlayer2D.Finished += audioStreamPlayer2D.QueueFree;
