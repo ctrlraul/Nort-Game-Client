@@ -3,15 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using CtrlRaul.Godot;
 using Godot;
-using Godot.Collections;
 
 namespace Nort.Entities;
 
 public partial class CraftPart : Area2D
 {
     public event Action<CraftPart> Destroyed;
-
-    [Export] private Array<AudioStream> dropSounds; 
     
     [Ready] public Sprite2D sprite2D;
     [Ready] public CollisionShape2D collisionShape2D;
