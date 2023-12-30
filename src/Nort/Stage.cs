@@ -16,6 +16,7 @@ public partial class Stage : Node2D
 {
     public static Stage Instance { get; private set; }
 
+    public event Action<MissionCompletion> MissionCompleted;
     public event Action<PlayerCraft> PlayerSpawned;
     public event Action PlayerDestroyed;
 
@@ -156,6 +157,11 @@ public partial class Stage : Node2D
     [Connectable]
     public void CompleteMission()
     {
+        MissionCompletion missionCompletion = new()
+        {
+            partsCollected = partsCollected.ToArray()
+        };
+
         if (ShouldSaveProgress())
         {
             foreach (PartData partData in partsCollected)
@@ -165,6 +171,8 @@ public partial class Stage : Node2D
             
             LocalPlayersManager.Instance.StoreLocalPlayer(Game.Instance.CurrentPlayer);
         }
+
+        MissionCompleted?.Invoke(missionCompletion);
     }
 
     public void Clear()
@@ -246,6 +254,11 @@ public partial class Stage : Node2D
             
             case OrphanPart orphanPart:
                 orphanPart.Collected += () => OnOrphanPartCollected(orphanPart.GetPartData());
+                break;
+
+            case ConductorCraft conductorCraft:
+                conductorCraft.Conduct += CompleteMission;
+
                 break;
         }
     }

@@ -23,6 +23,7 @@ public partial class MissionHud : Page
     }
 
     [Export] public PackedScene pauseOverlayScene;
+    [Export] public PackedScene missionCompleteOverlayScene;
     [Export] public PackedScene skillButtonScene;
 
     [Ready] public Control uiRoot;
@@ -43,6 +44,7 @@ public partial class MissionHud : Page
         this.InitializeReady();
         Stage.Instance.PlayerSpawned += OnPlayerSpawned;
         Stage.Instance.PlayerDestroyed += OnPlayerDestroyed;
+        Stage.Instance.MissionCompleted += OnMissionCompleted;
         skillButtons.QueueFreeChildren();
         SetProcess(false);
     }
@@ -135,6 +137,14 @@ public partial class MissionHud : Page
         hullProgressBar.Progress = 0;
         coreProgressBar.Progress = 0;
         SetProcess(false);
+    }
+
+    private void OnMissionCompleted(MissionCompletion missionCompletion)
+    {
+        MissionCompleteOverlay overlay = missionCompleteOverlayScene.Instantiate<MissionCompleteOverlay>();
+        AddChild(overlay);
+        overlay.SetMissionCompletion(missionCompletion);
+        Visible = false;
     }
 
     private void OnUnpaused()

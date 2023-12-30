@@ -1,8 +1,9 @@
-[gd_scene load_steps=11 format=3 uid="uid://m3i0qedakhoo"]
+[gd_scene load_steps=12 format=3 uid="uid://m3i0qedakhoo"]
 
 [ext_resource type="Script" path="res://Nort/Pages/MissionHud/MissionHud.cs" id="1_qmqk6"]
 [ext_resource type="PackedScene" uid="uid://whj2kaikbqfx" path="res://Scenes/UI/Overlays/PauseOverlay.tscn" id="2_5pulk"]
 [ext_resource type="PackedScene" uid="uid://dogjqbi647gty" path="res://Scenes/UI/SimpleProgressBar.tscn" id="2_dm4nt"]
+[ext_resource type="PackedScene" uid="uid://btq1ywvxtogl5" path="res://Scenes/UI/Overlays/MissionCompleteOverlay.tscn" id="3_6b4km"]
 [ext_resource type="PackedScene" uid="uid://cw6g0apqxpefo" path="res://Scenes/UI/KeyboardKey.tscn" id="4_bhsh2"]
 [ext_resource type="Texture2D" uid="uid://b5qg2cai66rhe" path="res://Images/theme/MissionHud/skills_bar.png" id="4_natrv"]
 [ext_resource type="Texture2D" uid="uid://dqlsexnb6s0e2" path="res://Images/DialogPanel.png" id="4_ydboj"]
@@ -24,6 +25,7 @@ region = Rect2(105, 0, 118, 129)
 [node name="MissionHud" type="CanvasLayer"]
 script = ExtResource("1_qmqk6")
 pauseOverlayScene = ExtResource("2_5pulk")
+missionCompleteOverlayScene = ExtResource("3_6b4km")
 skillButtonScene = ExtResource("5_hkoxc")
 
 [node name="UiRoot" type="Control" parent="."]

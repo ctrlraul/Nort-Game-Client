@@ -1,11 +1,51 @@
-[gd_scene load_steps=2 format=3 uid="uid://btq1ywvxtogl5"]
+[gd_scene load_steps=10 format=3 uid="uid://btq1ywvxtogl5"]
 
 [ext_resource type="Script" path="res://Nort/UI/Overlays/MissionCompleteOverlay.cs" id="1_h35r3"]
+[ext_resource type="Texture2D" uid="uid://bb2c5v84mdbhh" path="res://Images/vignette.png" id="2_mk7yu"]
+[ext_resource type="LabelSettings" uid="uid://dtfxwulwc71hw" path="res://OtherResources/big_label_settings.tres" id="3_h44hj"]
+[ext_resource type="FontFile" uid="uid://c0h6fcpyeopn5" path="res://Fonts/doomed/doomed.ttf" id="3_hbkeo"]
+[ext_resource type="FontVariation" uid="uid://d3mpjilq7jk34" path="res://Fonts/AireExterior.tres" id="3_st48b"]
+[ext_resource type="PackedScene" uid="uid://pdvk3vguogsl" path="res://Scenes/Lists/PartsList.tscn" id="6_sq0jv"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_nfyky"]
+font = ExtResource("3_st48b")
+font_size = 80
+
+[sub_resource type="LabelSettings" id="LabelSettings_conq3"]
+font = ExtResource("3_hbkeo")
+font_size = 128
+outline_size = 5
+outline_color = Color(0, 1, 1, 1)
+shadow_size = 11
+shadow_color = Color(0, 1, 1, 0.129412)
+shadow_offset = Vector2(0, 4)
+
+[sub_resource type="LabelSettings" id="LabelSettings_d8hig"]
+font = ExtResource("3_st48b")
+font_size = 128
 
 [node name="MissionCompleteOverlay" type="CanvasLayer"]
 script = ExtResource("1_h35r3")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_mk7yu")
+
+[node name="MarginContainer" type="MarginContainer" parent="Control"]
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -13,5 +53,102 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_type_variation = &"WindowMarginContainer"
 
-[node name="Control" type="Control" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/MarginContainer"]
 layout_mode = 2
+
+[node name="Label" type="Label" parent="Control/MarginContainer/VBoxContainer"]
+self_modulate = Color(0, 1, 0.498039, 1)
+layout_mode = 2
+text = "MISSION COMPLETED"
+label_settings = SubResource("LabelSettings_nfyky")
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Control" type="Control" parent="Control/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Center" type="Control" parent="Control/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/MarginContainer/VBoxContainer/HBoxContainer/Center"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="Control/MarginContainer/VBoxContainer/HBoxContainer/Center/VBoxContainer"]
+layout_mode = 2
+text = "RANK"
+label_settings = ExtResource("3_h44hj")
+horizontal_alignment = 1
+
+[node name="RankLabel" type="Label" parent="Control/MarginContainer/VBoxContainer/HBoxContainer/Center/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "S"
+label_settings = SubResource("LabelSettings_conq3")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Spacer" type="Control" parent="Control/MarginContainer/VBoxContainer/HBoxContainer/Center/VBoxContainer"]
+custom_minimum_size = Vector2(0, 70)
+layout_mode = 2
+
+[node name="ScoreLabel" type="Label" parent="Control/MarginContainer/VBoxContainer/HBoxContainer/Center/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "20000"
+label_settings = SubResource("LabelSettings_d8hig")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Right" type="Control" parent="Control/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/MarginContainer/VBoxContainer/HBoxContainer/Right"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="Control/MarginContainer/VBoxContainer/HBoxContainer/Right/VBoxContainer"]
+layout_mode = 2
+text = "PARTS COLLECTED"
+label_settings = ExtResource("3_h44hj")
+horizontal_alignment = 1
+
+[node name="PartsCollectedList" parent="Control/MarginContainer/VBoxContainer/HBoxContainer/Right/VBoxContainer" instance=ExtResource("6_sq0jv")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 1
+
+[node name="Buttons" type="HBoxContainer" parent="Control/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 40
+alignment = 1
+
+[node name="RetryButton" type="Button" parent="Control/MarginContainer/VBoxContainer/Buttons"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+disabled = true
+text = "Retry"
+
+[node name="ContinueButton" type="Button" parent="Control/MarginContainer/VBoxContainer/Buttons"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+text = "Continue"
+
+[connection signal="pressed" from="Control/MarginContainer/VBoxContainer/Buttons/ContinueButton" to="." method="OnContinueButtonPressed"]

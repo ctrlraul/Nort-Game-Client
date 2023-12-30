@@ -5,6 +5,9 @@ namespace Nort.Entities;
 
 public partial class ConductorCraft : Craft
 {
+	public event Action Conduct;
+    
+	
 	public override void _Ready()
 	{
 		base._Ready();
@@ -15,6 +18,6 @@ public partial class ConductorCraft : Craft
 
 	private void OnInteractionRangeInteracted()
 	{
-		GD.PrintT("Go through portal!");
+		Conduct?.Invoke();
 	}
 }

@@ -1,9 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://cwl7mn40ut30d"]
+[gd_scene load_steps=4 format=3 uid="uid://cwl7mn40ut30d"]
 
 [ext_resource type="Script" path="res://Nort/Pages/CraftBuilder/PartsInventory.cs" id="2_hoekt"]
-[ext_resource type="PackedScene" uid="uid://gyid7spgcjj0" path="res://Scenes/Lists/PartsListItem.tscn" id="2_wlwwl"]
-[ext_resource type="Script" path="res://Nort/Listing/PartsList.cs" id="2_ye3bf"]
 [ext_resource type="PackedScene" uid="uid://civc8ny0v2omp" path="res://Scenes/Popups/PartBuilderPopup.tscn" id="3_6aonr"]
+[ext_resource type="PackedScene" uid="uid://pdvk3vguogsl" path="res://Scenes/Lists/PartsList.tscn" id="3_x2x78"]
 
 [node name="PartsInventory" type="MarginContainer"]
 offset_right = 324.0
@@ -38,42 +37,9 @@ mouse_filter = 2
 horizontal_scroll_mode = 0
 vertical_scroll_mode = 2
 
-[node name="PartsList" type="MarginContainer" parent="MarginContainer/VBoxContainer/ScrollContainer"]
+[node name="PartsList" parent="MarginContainer/VBoxContainer/ScrollContainer" instance=ExtResource("3_x2x78")]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-mouse_filter = 2
-theme_override_constants/margin_left = 0
-theme_override_constants/margin_top = 0
-theme_override_constants/margin_right = 0
-theme_override_constants/margin_bottom = 0
-script = ExtResource("2_ye3bf")
-ListItemScene = ExtResource("2_wlwwl")
-
-[node name="ListItemsContainer" type="GridContainer" parent="MarginContainer/VBoxContainer/ScrollContainer/PartsList"]
-unique_name_in_owner = true
-layout_mode = 2
-mouse_filter = 2
-columns = 4
-
-[node name="PartsListItem" parent="MarginContainer/VBoxContainer/ScrollContainer/PartsList/ListItemsContainer" instance=ExtResource("2_wlwwl")]
-layout_mode = 2
-
-[node name="PartsListItem2" parent="MarginContainer/VBoxContainer/ScrollContainer/PartsList/ListItemsContainer" instance=ExtResource("2_wlwwl")]
-layout_mode = 2
-
-[node name="PartsListItem3" parent="MarginContainer/VBoxContainer/ScrollContainer/PartsList/ListItemsContainer" instance=ExtResource("2_wlwwl")]
-layout_mode = 2
-
-[node name="PartsListItem4" parent="MarginContainer/VBoxContainer/ScrollContainer/PartsList/ListItemsContainer" instance=ExtResource("2_wlwwl")]
-layout_mode = 2
-
-[node name="EmptyTextLabel" type="Label" parent="MarginContainer/VBoxContainer/ScrollContainer/PartsList"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Empty"
-horizontal_alignment = 1
 
 [node name="AddPartButton" type="Button" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
