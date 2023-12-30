@@ -9,7 +9,36 @@ public partial class CoreTractor : Node2D
 	[Ready] public Sprite2D sprite2D;
 
 	private float textureSizeX;
+
 	private Entity target;
+
+	public Entity Target
+	{
+		get => target;
+		set
+		{
+			if (target != null)
+			{
+				DisconnectEntityEvents(target);
+			}
+
+			target = value;
+
+			if (target == null || GlobalPosition.DistanceTo(target.GlobalPosition) > breakDistance)
+			{
+				sprite2D.Visible = false;
+				SetProcess(false);
+				SetPhysicsProcess(false);
+			}
+			else
+			{
+				sprite2D.Visible = true;
+				SetProcess(true);
+				SetPhysicsProcess(true);
+				ConnectEntityEvents(target);
+			}
+		}
+	}
 
 	private float breakDistance = 700;
 	private float pullDistance = 450;
@@ -48,31 +77,6 @@ public partial class CoreTractor : Node2D
 			target.Velocity += target.GlobalPosition.DirectionTo(GlobalPosition) * pullForce * Mathf.Pow(distance / pullDistance, 2) * (float)delta;
 		}
 	}
-
-
-	public void SetTarget(Entity value)
-	{
-		if (target != null)
-		{
-			DisconnectEntityEvents(target);
-		}
-		
-		target = value;
-
-		if (target == null || GlobalPosition.DistanceTo(target.GlobalPosition) > breakDistance)
-		{
-			sprite2D.Visible = false;
-			SetProcess(false);
-			SetPhysicsProcess(false);
-		}
-		else
-		{
-			sprite2D.Visible = true;
-			SetProcess(true);
-			SetPhysicsProcess(true);
-			ConnectEntityEvents(target);
-		}
-	}
 	
 	private void ConnectEntityEvents(Entity entity)
 	{
@@ -106,12 +110,12 @@ public partial class CoreTractor : Node2D
 	private void OnTargetDestroyed()
 	{
 		DisconnectEntityEvents(target);
-		SetTarget(null);
+		Target = null;
 	}
 
 	private void OnTargetCollected()
 	{
 		DisconnectEntityEvents(target);
-		SetTarget(null);
+		Target = null;
 	}
 }

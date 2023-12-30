@@ -154,19 +154,26 @@ public partial class PlayerCraft : Craft
                 {
                     Entity entity = Stage.Instance.GetEntityOnMouse();
 
-                    switch (entity)
+                    if (coreTractor.Target == entity)
                     {
-                        case OrphanPart:
-                            coreTractor.SetTarget(entity);
-                            GetViewport().SetInputAsHandled();
+                        coreTractor.Target = null;
+                    }
+                    else
+                    {
+                        switch (entity)
+                        {
+                            case OrphanPart:
+                                coreTractor.Target = entity;
+                                GetViewport().SetInputAsHandled();
 
-                            break;
+                                break;
 
-                        case DroneCraft:
-                            coreTractor.SetTarget(entity);
-                            GetViewport().SetInputAsHandled();
+                            case DroneCraft:
+                                coreTractor.Target = entity;
+                                GetViewport().SetInputAsHandled();
 
-                            break;
+                                break;
+                        }
                     }
                 }
 
