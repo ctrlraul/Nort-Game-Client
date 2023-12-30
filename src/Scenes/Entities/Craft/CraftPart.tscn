@@ -8,7 +8,7 @@
 [ext_resource type="AudioStream" uid="uid://q672w1mqj8fu" path="res://Sounds/CraftPartDetached1.wav" id="5_e84wd"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5hmw0"]
-size = Vector2(81, 69)
+size = Vector2(80, 69)
 
 [node name="CraftPart" type="Area2D"]
 collision_layer = 0
@@ -17,12 +17,12 @@ monitoring = false
 script = ExtResource("1_5ku08")
 dropSounds = Array[AudioStream]([ExtResource("2_fjj7c"), ExtResource("3_51veb"), ExtResource("4_uf7h4"), ExtResource("5_e84wd")])
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-unique_name_in_owner = true
-self_modulate = Color(1, 0, 1, 1)
-texture = ExtResource("2_5mk3m")
-
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 unique_name_in_owner = true
 shape = SubResource("RectangleShape2D_5hmw0")
 debug_color = Color(0, 1, 0, 0.15)
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+unique_name_in_owner = true
+self_modulate = Color(0.5, 0.5, 0.5, 1)
+texture = ExtResource("2_5mk3m")
