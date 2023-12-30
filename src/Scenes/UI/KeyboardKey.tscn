@@ -19,6 +19,7 @@ Text = "E"
 metadata/_edit_group_ = true
 
 [node name="NinePatchRect" type="NinePatchRect" parent="."]
+self_modulate = Color(0, 1, 0.498039, 1)
 layout_mode = 2
 texture = ExtResource("1_lo8jp")
 patch_margin_left = 8
@@ -41,7 +42,6 @@ theme_override_constants/margin_bottom = 0
 
 [node name="Label" type="Label" parent="AspectRatioContainer/VBoxContainer/MarginContainer"]
 unique_name_in_owner = true
-self_modulate = Color(0, 1, 0.498039, 1)
 layout_mode = 2
 text = "E"
 label_settings = SubResource("LabelSettings_1iq1i")
