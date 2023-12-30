@@ -24,7 +24,7 @@ public static class Config
     public const float DropRateHull = 1.0f / 10f;
     public const float DropRateShiny = 1.0f / 1000f;
 
-    public const string ConsoleOverlayScenePath = "res://Scenes/Ui/Overlays/ConsoleOverlay.tscn";
+    public const string ConsoleOverlayScenePath = "res://Scenes/UI/Overlays/ConsoleOverlay.tscn";
 
     public static class Pages
     {
