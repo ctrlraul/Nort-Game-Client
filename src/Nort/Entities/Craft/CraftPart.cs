@@ -128,8 +128,8 @@ public partial class CraftPart : Area2D
         orphanPart.Flipped = blueprint.flipped;
         orphanPart.Shiny = blueprint.shiny || ShinyDropRoll();
         orphanPart.Velocity = Craft.Velocity + Position.Normalized() * (3 + GD.Randf() * 3);
+        orphanPart.Collectable = Craft is not PlayerCraft && GD.Randf() < GetDropRate();
         orphanPart.SetColor(sprite2D.SelfModulate);
-        orphanPart.BrokenOff(Craft is not PlayerCraft && GD.Randf() < GetDropRate());
     }
 
     public void Destroy()

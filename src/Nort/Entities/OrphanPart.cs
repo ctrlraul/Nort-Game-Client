@@ -70,10 +70,34 @@ public partial class OrphanPart : Entity
     private string partId;
     private string skillId;
 
-    public bool Collectable { get; private set; } = true;
     public bool AppearOnRadar { get; private set; }
 
+    private bool collectable = true;
 
+    public bool Collectable
+    {
+        get => collectable;
+        set
+        {
+            collectable = value;
+
+            if (Game.Instance.InMissionEditor)
+                return;
+
+            SceneTreeTimer timer = GetTree().CreateTimer(0.5);
+
+            if (collectable)
+            {
+                timer.Timeout += () => AppearOnRadar = true;
+            }
+            else
+            {
+                timer.Timeout += () => animationPlayer.Play("dissolve");
+            }
+        }
+    }
+
+    
     public override async void _Ready()
     {
         base._Ready();
@@ -85,9 +109,6 @@ public partial class OrphanPart : Entity
             throw new Exception($"Expected a {nameof(ShaderMaterial)} material on sprite");
         
         material.SetShaderParameter("dissolve_noise_offset", new Vector2(GD.Randi() % 256, GD.Randi() % 256));
-
-        if (Game.Instance.InMissionEditor)
-            collisionShape2D.Disabled = false;
         
         await Game.Instance.Initialize();
         
@@ -101,24 +122,6 @@ public partial class OrphanPart : Entity
         SetColor(Config.FactionlessColor);
     }
 
-
-    public void BrokenOff(bool collectable)
-    {
-        Collectable = collectable;
-        
-        GetTree().CreateTimer(0.5).Timeout += () =>
-        {
-            if (collectable)
-            {
-                AppearOnRadar = true;
-                collisionShape2D.Disabled = true;
-            }
-            else
-            {
-                animationPlayer.Play("dissolve");
-            }
-        };
-    }
     
     public void SetColor(Color value)
     {
