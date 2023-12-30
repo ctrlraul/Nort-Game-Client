@@ -251,8 +251,12 @@ public partial class Editor : Page
 
         foreach (EntitySetup copiedSetup in copied)
         {
-            Entity pastedEntity = Stage.Spawn(copiedSetup);
-            pastedEntity.Position = (canvasCenter + pastedEntity.Position - copyOffset).Snapped(gridSnap);
+            EntitySetup pastedSetup = EntitySetup.Copy(copiedSetup);
+            pastedSetup.position = (canvasCenter + copiedSetup.position - copyOffset).Snapped(gridSnap);
+            pastedSetup.uuid = Assets.GenerateUuid();
+            pastedSetup.connections.Clear();
+
+            Entity pastedEntity = Stage.Spawn(pastedSetup);
             selection.Add(pastedEntity);
         }
         

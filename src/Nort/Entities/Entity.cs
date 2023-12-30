@@ -22,6 +22,19 @@ public class EntitySetup
     public float angle;
     public List<EntityConnection> connections = new();
     public Dictionary<string, object> subTypeData = new();
+
+    public static EntitySetup Copy(EntitySetup source)
+    {
+        return new EntitySetup
+        {
+            uuid = source.uuid,
+            typeName = source.typeName,
+            position = source.position,
+            angle = source.angle,
+            connections = source.connections.ToList(),
+            subTypeData = new(source.subTypeData),
+        };
+    }
 }
 
 
