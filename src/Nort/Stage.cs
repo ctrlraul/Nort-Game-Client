@@ -270,7 +270,7 @@ public partial class Stage : Node2D
                     continue;
                 }
                 
-                Node target = connection.targetUuid != null ? GetEntityByUuid(connection.targetUuid) : null;
+                Node target = connection.targetUuid != null ? GetEntityByUuid(connection.targetUuid) : this;
                 
                 if (target == null)
                 {
