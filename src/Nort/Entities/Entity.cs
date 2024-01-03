@@ -146,7 +146,26 @@ public abstract partial class Entity : Node2D
 {
     protected virtual float Damp { get; } = 0.95f;
 
-    [Savable, Inspect] public bool AutoSpawn { get; set; } = true;
+    private bool autoSpawn = true;
+
+    [Savable, Inspect]
+    public bool AutoSpawn
+    {
+        get => autoSpawn;
+        set
+        {
+            autoSpawn = value;
+
+            if (Game.Instance.InMissionEditor)
+            {
+                if (autoSpawn)
+                    Modulate = Modulate with { A = 1 };
+                else
+                    Modulate = Modulate with { A = 0.3f };
+            }
+        }
+    }
+    
     public string Uuid { get; set; } = Assets.GenerateUuid();
     
     public List<EntityConnection> Connections { get; set; } = new();
