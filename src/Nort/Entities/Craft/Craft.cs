@@ -49,13 +49,13 @@ public abstract partial class Craft : Entity
     public float Hull { get; private set; }
 
 
-    public override void _Ready()
+    protected override void OnSpawning()
     {
-        base._Ready();
-        this.InitializeReady();
+        SetFaction(faction);
+        SetBlueprint(blueprint);
 
-        SetBlueprint(Blueprint);
-        SetFaction(Faction);
+        foreach (CraftPart part in GetParts())
+            part.AnimateSpawn();
     }
 
 
@@ -63,7 +63,7 @@ public abstract partial class Craft : Entity
     {
         blueprint = value;
 
-        if (!IsInsideTree())
+        if (!DidSpawn)
             return;
         
         blueprintVisualRect = Assets.Instance.GetBlueprintVisualRect(Blueprint);
@@ -91,7 +91,7 @@ public abstract partial class Craft : Entity
     {
         faction = value;
 
-        if (!IsInsideTree())
+        if (!DidSpawn)
             return;
         
         foreach (CraftPart part in GetParts())

@@ -119,7 +119,7 @@ public partial class Stage : Node2D
         {
             try
             {
-                Spawn(entitySetup);
+                AddEntity(entitySetup);
             }
             catch (Exception exception)
             {
@@ -206,23 +206,49 @@ public partial class Stage : Node2D
             _ => throw new Exception($"No entity scene configured for type '{typeName}'")
         };
     }
-    
-    public T Spawn<T>() where T : Entity
+
+    public T AddEntity<T>() where T : Entity
     {
         T entity = InstantiateEntityScene(typeof(T).Name) as T;
-        Spawn(entity);
-        return entity;
-    }
-    
-    public Entity Spawn(EntitySetup setup)
-    {
-        Entity entity = InstantiateEntityScene(setup.typeName);
-        Spawn(entity, setup);
+        AddEntity(entity);
         return entity;
     }
 
-    public void Spawn(Entity entity, EntitySetup setup = default)
+    public Entity AddEntity(EntitySetup setup)
     {
+        Entity entity = InstantiateEntityScene(setup.typeName);
+        AddEntity(entity, setup);
+        return entity;
+    }
+
+    public void AddEntity(Entity entity, EntitySetup setup = default)
+    {
+        switch (entity)
+        {
+            case PlayerCraft newPlayer:
+                if (Player != null)
+                {
+                    logger.Warn("Spawning a player while another instance already exists, freeing old instance");
+                    Player.QueueFree();
+                }
+
+                Player = newPlayer;
+                Player.Spawned += () => OnPlayerSpawned(newPlayer);
+                Player.Destroyed += OnPlayerDestroyed;
+
+                break;
+
+            case OrphanPart orphanPart:
+                orphanPart.Collected += () => OnOrphanPartCollected(orphanPart.GetPartData());
+
+                break;
+
+            case ConductorCraft conductorCraft:
+                conductorCraft.Conduct += CompleteMission;
+
+                break;
+        }
+
         entitiesContainer.AddChild(entity);
 
         setup?.Inject(entity);
@@ -230,35 +256,12 @@ public partial class Stage : Node2D
         // Important that this comes after injecting the setup since that's when the entity's UUID is set.
         entitiesMap.Add(entity.Uuid, entity);
 
-        switch (entity)
+        if (setup is { autoSpawn: true } || Game.Instance.InMissionEditor)
         {
-            case PlayerCraft newPlayer:
-                
-                if (Player != null)
-                {
-                    logger.Warn("Spawning a player while another instance already exists, freeing old instance");
-                    Player.Destroyed -= OnPlayerDestroyed;
-                    Player.QueueFree();
-                }
-
-                Player = newPlayer;
-                Player.Destroyed += OnPlayerDestroyed;
-
-                if (!Game.Instance.InMissionEditor)
-                    camera.Position = Player.Position;
-
-                PlayerSpawned?.Invoke(Player);
-                
-                break;
-            
-            case OrphanPart orphanPart:
-                orphanPart.Collected += () => OnOrphanPartCollected(orphanPart.GetPartData());
-                break;
-
-            case ConductorCraft conductorCraft:
-                conductorCraft.Conduct += CompleteMission;
-
-                break;
+            if (Game.Instance.InMissionEditor)
+                entity.SpawnSilently();
+            else
+                entity.Spawn();
         }
     }
 
@@ -298,10 +301,13 @@ public partial class Stage : Node2D
                     AddProblem($"Method '{connection.methodName}' not found in type {targetType.Name}");
                     continue;
                 }
-                
-                Delegate methodDelegate = Delegate.CreateDelegate(eventInfo.EventHandlerType!, target, methodInfo);
-            
-                eventInfo.AddEventHandler(entity, methodDelegate);
+
+                // Using this to call directly can cause problems due godot's process time stuff or whatever
+                // Delegate handler = Delegate.CreateDelegate(eventInfo.EventHandlerType!, target, methodInfo);
+
+                Action handler = () => target.CallDeferred(methodInfo.Name);
+
+                eventInfo.AddEventHandler(entity, handler);
             }
         }
     }
@@ -319,6 +325,16 @@ public partial class Stage : Node2D
     {
         Player = null;
         PlayerDestroyed?.Invoke();
+    }
+
+    private void OnPlayerSpawned(PlayerCraft playerCraft)
+    {
+        Player = playerCraft;
+
+        if (!Game.Instance.InMissionEditor)
+            camera.Position = Player.Position;
+
+        PlayerSpawned?.Invoke(Player);
     }
 
     private void OnOrphanPartCollected(PartData partData)

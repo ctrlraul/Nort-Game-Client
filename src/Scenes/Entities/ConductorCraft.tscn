@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://bu3xitidft7fc"]
+[gd_scene load_steps=21 format=3 uid="uid://bu3xitidft7fc"]
 
 [ext_resource type="PackedScene" uid="uid://b1xci2ckb2rvw" path="res://Scenes/Entities/Craft/Craft.tscn" id="1_gcspx"]
 [ext_resource type="Script" path="res://Nort/Entities/ConductorCraft.cs" id="2_pbokw"]
@@ -66,6 +66,42 @@ tracks/1/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [Vector2(1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("PortalStuff/InteractionRange:monitorable")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("PortalStuff/GPUParticles2D:emitting")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("PortalStuff/Portal:self_modulate")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0, 1, 0.498039, 1)]
 }
 
 [sub_resource type="Animation" id="Animation_5tb0u"]
@@ -137,10 +173,75 @@ tracks/2/keys = {
 "method": &"play"
 }]
 }
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("PortalStuff/InteractionRange:monitorable")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("PortalStuff/GPUParticles2D:emitting")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("PortalStuff/Portal:self_modulate")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(0, 1, 0.498039, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_3wkcj"]
+resource_name = "hide_portal"
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PortalStuff/Portal:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(0.34151),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PortalStuff/GPUParticles2D:emitting")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ltnae"]
 _data = {
 "RESET": SubResource("Animation_8aoun"),
+"hide_portal": SubResource("Animation_3wkcj"),
 "spin_portal": SubResource("Animation_5tb0u"),
 "summon_portal": SubResource("Animation_yb400")
 }
@@ -182,15 +283,17 @@ unique_name_in_owner = true
 remote_path = NodePath("../Portal")
 
 [node name="InteractionRange" parent="PortalStuff" index="4" instance=ExtResource("10_1cmvb")]
+monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PortalStuff/InteractionRange" index="0"]
 shape = SubResource("CircleShape2D_850yg")
 debug_color = Color(1, 1, 0, 0.15)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." index="3"]
+unique_name_in_owner = true
 libraries = {
 "": SubResource("AnimationLibrary_ltnae")
 }
-autoplay = "summon_portal"
+autoplay = "hide_portal"
 
 [connection signal="Interacted" from="PortalStuff/InteractionRange" to="." method="OnInteractionRangeInteracted"]

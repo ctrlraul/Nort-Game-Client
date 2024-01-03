@@ -170,8 +170,8 @@ public partial class Editor : Page
         }
         else
         {
-            Stage.Spawn<PlayerCraft>();
-            Stage.Spawn<ConductorCraft>().Position = Vector2.Right * 300;
+            Stage.AddEntity<PlayerCraft>();
+            Stage.AddEntity<ConductorCraft>().Position = Vector2.Right * 300;
         }
     }
 
@@ -219,7 +219,7 @@ public partial class Editor : Page
     
     private void AddEntity<T>() where T : Entity
     {
-        T entity = Stage.Spawn<T>();
+        T entity = Stage.AddEntity<T>();
         entity.Position = Stage.camera.Position.Snapped(gridSnap);
         entityInspector.SetEntity(entity);
     }
@@ -259,7 +259,7 @@ public partial class Editor : Page
                 new List<EntityConnection>(),
                 new Dictionary<string, object>()
             );
-            Entity pastedEntity = Stage.Spawn(pastedSetup);
+            Entity pastedEntity = Stage.AddEntity(pastedSetup);
             selection.Add(pastedEntity);
         }
         

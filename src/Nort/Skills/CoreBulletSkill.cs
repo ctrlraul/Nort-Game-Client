@@ -94,7 +94,7 @@ public partial class CoreBulletSkill : Node2D, ISkillNode
             return;
 
         cooldownTimer.Start();
-        CoreBulletProjectile projectile = Stage.Instance.Spawn<CoreBulletProjectile>();
+        CoreBulletProjectile projectile = Stage.Instance.AddEntity<CoreBulletProjectile>();
         projectile.SetSource(this);
         Fired?.Invoke();
     }

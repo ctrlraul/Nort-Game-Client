@@ -98,7 +98,7 @@ public partial class PlayerCraft : Craft
     {
         base.SetBlueprint(value);
 
-        if (!IsInsideTree())
+        if (!DidSpawn)
             return;
 
         label.Position = label.Position with { Y = blueprintVisualRect.Position.Y + blueprintVisualRect.Size.Y + 20 };

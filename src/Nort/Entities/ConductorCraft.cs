@@ -1,20 +1,29 @@
 using Godot;
 using System;
+using CtrlRaul.Godot;
 
 namespace Nort.Entities;
 
 public partial class ConductorCraft : Craft
 {
 	public event Action Conduct;
-    
-	
-	public override void _Ready()
+
+
+	[Ready] public AnimationPlayer animationPlayer;
+
+
+	public ConductorCraft()
 	{
-		base._Ready();
-		Blueprint = Assets.Instance.GetBlueprint("conductor");
-		Faction = Assets.Instance.PlayerFaction;
+		blueprint = Assets.Instance.GetBlueprint("conductor");
+		faction = Assets.Instance.PlayerFaction;
 	}
 
+
+	protected override void OnSpawning()
+	{
+		base.OnSpawning();
+		animationPlayer.Play("summon_portal");
+	}
 
 	private void OnInteractionRangeInteracted()
 	{

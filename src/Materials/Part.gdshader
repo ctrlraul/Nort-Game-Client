@@ -5,6 +5,7 @@ const float speed = 0.05;
 const float dissolve_scale = 0.1;
 
 uniform float dissolve_threshold = 1;
+uniform float spawn_threshold = 1;
 uniform bool shiny = true;
 //uniform vec4 color: source_color = vec4(0, 1, 0.5, 1);
 //uniform vec4 color_shiny: source_color = vec4(0, 1, 0.6, 1);
@@ -44,6 +45,17 @@ void fragment() {
 		if (dissolve_level > dissolve_threshold) {
 			COLOR.a = 0.0;
 		}
+
+	} else if (spawn_threshold < 1.0) {
+
+		vec2 size = vec2(textureSize(TEXTURE, 0)) * 0.5;
+		float aspect = size.x / size.y;
+		float dissolve_level = texture(dissolve_threshold_texture, fract(vec2(UV.x * aspect, UV.y) * dissolve_scale + size)).r;
+
+		if (dissolve_level > spawn_threshold) {
+			COLOR.rgb = vec3(1);
+		}
+
 	}
 
 }

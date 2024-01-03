@@ -13,7 +13,7 @@ public partial class LobbyPage : Page
     public override void _Ready()
     {
         base._Ready();
-        Stage.Instance.Spawn<PlayerCraft>();
+        Stage.Instance.AddEntity<PlayerCraft>();
     }
 
     private void OnCraftBuilderButtonPressed()

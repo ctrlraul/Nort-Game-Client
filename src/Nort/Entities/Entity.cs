@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using CtrlRaul.Godot;
 using Godot;
+using Nort.Pages;
 
 namespace Nort.Entities;
 
@@ -88,7 +90,7 @@ public class EntitySetup
 
     public void Inject(Entity entity)
     {
-        entity.AutoSpawned = autoSpawn;
+        entity.AutoSpawn = autoSpawn;
         entity.RotationDegrees = angle;
         entity.Uuid = uuid;
         entity.Position = position;
@@ -105,7 +107,7 @@ public class EntitySetup
     {
         return new EntitySetup
         (
-            entity.AutoSpawned,
+            entity.AutoSpawn,
             Mathf.Round(entity.RotationDegrees),
             entity.Uuid,
             entity.GetType().Name,
@@ -144,13 +146,19 @@ public abstract partial class Entity : Node2D
 {
     protected virtual float Damp { get; } = 0.95f;
 
-    public bool AutoSpawned { get; set; } = true;
+    [Savable, Inspect] public bool AutoSpawn { get; set; } = true;
     public string Uuid { get; set; } = Assets.GenerateUuid();
     
     public List<EntityConnection> Connections { get; set; } = new();
     public Vector2 Velocity { get; set; } = Vector2.Zero;
 
-    
+
+    public override void _Ready()
+    {
+        base._Ready();
+        this.InitializeReady();
+    }
+
     public override void _PhysicsProcess(double delta)
     {
         base._PhysicsProcess(delta);
@@ -159,5 +167,29 @@ public abstract partial class Entity : Node2D
 
         Position += Velocity * (float)delta;
         Velocity *= Damp;
+    }
+
+    [Connectable] public event Action Spawned;
+
+    public bool DidSpawn { get; private set; }
+
+
+    [Connectable]
+    public void Spawn()
+    {
+        DidSpawn = true;
+        OnSpawning();
+        Spawned?.Invoke();
+    }
+
+    public void SpawnSilently()
+    {
+        DidSpawn = true;
+        OnSpawning();
+    }
+
+
+    protected virtual void OnSpawning()
+    {
     }
 }

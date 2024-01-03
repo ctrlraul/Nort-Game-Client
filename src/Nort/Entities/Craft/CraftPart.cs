@@ -10,8 +10,8 @@ public partial class CraftPart : Area2D
     
     [Ready] public Sprite2D sprite2D;
     [Ready] public CollisionShape2D collisionShape2D;
-    
-    public readonly List<ISkillNode> skillNodes = new();
+    [Ready] public AnimationPlayer animationPlayer;
+
     public ISkillNode skillNode;
     public float hullMax;
     public float hull;
@@ -113,7 +113,7 @@ public partial class CraftPart : Area2D
 
     private void Drop()
     {
-        OrphanPart orphanPart = Stage.Instance.Spawn<OrphanPart>();
+        OrphanPart orphanPart = Stage.Instance.AddEntity<OrphanPart>();
 
         orphanPart.Position = GlobalPosition;
         orphanPart.Rotation = GlobalRotation;
@@ -144,6 +144,13 @@ public partial class CraftPart : Area2D
     public void SetColorScale(float scale)
     {
         sprite2D.SelfModulate = Config.FactionlessColor.Lerp(DisplayColor, scale);
+    }
+
+    public void AnimateSpawn()
+    {
+        animationPlayer.Play("pre_spawn");
+        IntervalTweener tween = CreateTween().TweenInterval(Position.Length() * 0.005f);
+        tween.Finished += () => animationPlayer.Play("spawn");
     }
     
 

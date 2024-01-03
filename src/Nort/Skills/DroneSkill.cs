@@ -41,7 +41,7 @@ public partial class DroneSkill : Node2D, ISkillNode
         
         cooldownTimer.Start();
 
-        Drone = Stage.Instance.Spawn<DroneCraft>();
+        Drone = Stage.Instance.AddEntity<DroneCraft>();
         Drone.Position = GlobalPosition;
         Drone.Blueprint = Assets.Instance.GetBlueprint(Config.DroneBlueprints.First());
         Drone.Faction = Part.Faction;
