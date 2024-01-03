@@ -1,0 +1,107 @@
+{
+  "id": "5d2f1ea0-2560-4689-8936-8f912cb4d5b6",
+  "displayName": "Basics",
+  "entitySetups": [
+    {
+      "autoSpawn": true,
+      "angle": 0.0,
+      "uuid": "79fdc7ba-25e9-496d-9e3c-65d789c0bd31",
+      "typeName": "PlayerCraft",
+      "position": {
+        "X": 0.0,
+        "Y": 0.0
+      },
+      "connections": [],
+      "subTypeData": {
+        "TestBlueprintId": "newborn",
+        "AutoSpawn": true
+      }
+    },
+    {
+      "autoSpawn": false,
+      "angle": 0.0,
+      "uuid": "992923bf-9516-4477-bda8-41fd2717f401",
+      "typeName": "ConductorCraft",
+      "position": {
+        "X": 300.0,
+        "Y": 0.0
+      },
+      "connections": [],
+      "subTypeData": {
+        "AutoSpawn": false
+      }
+    },
+    {
+      "autoSpawn": true,
+      "angle": 0.0,
+      "uuid": "6a6c0528-ee08-4da6-b789-a9d217f8c00e",
+      "typeName": "DroneCraft",
+      "position": {
+        "X": 832.0,
+        "Y": 0.0
+      },
+      "connections": [],
+      "subTypeData": {
+        "FactionId": "ruby",
+        "BlueprintId": "strike",
+        "AutoSpawn": true
+      }
+    },
+    {
+      "autoSpawn": true,
+      "angle": 0.0,
+      "uuid": "ced5afaf-ee3b-4976-8a3e-cb9d9f5bff94",
+      "typeName": "DroneCraft",
+      "position": {
+        "X": 896.0,
+        "Y": -320.0
+      },
+      "connections": [],
+      "subTypeData": {
+        "FactionId": "ruby",
+        "BlueprintId": "strike",
+        "AutoSpawn": true
+      }
+    },
+    {
+      "autoSpawn": true,
+      "angle": 0.0,
+      "uuid": "65c3d729-b739-4edc-98d3-050ee4bad0ed",
+      "typeName": "DroneCraft",
+      "position": {
+        "X": 896.0,
+        "Y": 320.0
+      },
+      "connections": [],
+      "subTypeData": {
+        "FactionId": "ruby",
+        "BlueprintId": "strike",
+        "AutoSpawn": true
+      }
+    },
+    {
+      "autoSpawn": true,
+      "angle": 0.0,
+      "uuid": "58b32877-2a37-4fe0-b013-aca8bca50120",
+      "typeName": "OrphanPart",
+      "position": {
+        "X": 1088.0,
+        "Y": 0.0
+      },
+      "connections": [
+        {
+          "targetUuid": "992923bf-9516-4477-bda8-41fd2717f401",
+          "eventName": "Collected",
+          "methodName": "Spawn"
+        }
+      ],
+      "subTypeData": {
+        "PartId": "tail_1",
+        "SkillId": "radar",
+        "Flipped": false,
+        "Shiny": false,
+        "AutoSpawn": true
+      }
+    }
+  ]
+}
