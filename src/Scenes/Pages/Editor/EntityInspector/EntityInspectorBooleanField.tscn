@@ -47,4 +47,4 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
 
-[connection signal="toggled" from="MarginContainer/HBoxContainer/CheckBox" to="MarginContainer/HBoxContainer" method="OnCheckBoxToggled"]
+[connection signal="toggled" from="MarginContainer/HBoxContainer/CheckBox" to="." method="OnCheckBoxToggled"]

@@ -42,7 +42,6 @@ public partial class EntityInspectorBooleanField : Control, EntityInspector.IFie
 
     private void OnCheckBoxToggled(bool value)
     {
-        GD.Print("Value changed");
         ValueChanged?.Invoke(value);
     }
 }

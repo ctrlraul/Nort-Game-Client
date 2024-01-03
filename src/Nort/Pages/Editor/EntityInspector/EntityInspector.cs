@@ -249,7 +249,7 @@ public partial class EntityInspector : PanelContainer
     {
         EntityInspectorBooleanField field = InstantiateFieldScene<EntityInspectorBooleanField>(propertyInfo);
         
-        field.SetValue(HasCommonValue(propertyInfo, out object commonValue) ? commonValue : false);
+        field.SetValue(HasCommonBoolValue(propertyInfo, out bool commonValue) && commonValue);
         
         field.ValueChanged += newValue =>
         {
@@ -306,6 +306,25 @@ public partial class EntityInspector : PanelContainer
                 propertyInfo = entityType.GetProperty(propertyInfo.Name)!;
             
             if (propertyInfo.GetValue(entity) != commonValue)
+                return false;
+        }
+
+        return true;
+    }
+
+
+    private bool HasCommonBoolValue(PropertyInfo propertyInfo, out bool commonValue)
+    {
+        commonValue = (bool)propertyInfo.GetValue(selectedEntities.First());
+
+        foreach (Entity entity in selectedEntities)
+        {
+            Type entityType = entity.GetType();
+
+            if (propertyInfo.ReflectedType != entityType)
+                propertyInfo = entityType.GetProperty(propertyInfo.Name)!;
+
+            if ((bool)propertyInfo.GetValue(entity)! != commonValue)
                 return false;
         }
 
