@@ -18,8 +18,8 @@ public partial class MissionsListItem : MarginContainer
 		set
 		{
 			mission = value;
-			
-			EntitySetup displaySetup = mission.entitySetups.FirstOrDefault(Entity.IsEntitySetupOfType<PlayerCraft>);
+
+			EntitySetup displaySetup = mission.entitySetups.FirstOrDefault(setup => setup.IsForType<PlayerCraft>());
 
 			displayCraft.Blueprint = (
 				displaySetup == default

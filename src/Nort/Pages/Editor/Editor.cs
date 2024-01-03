@@ -214,7 +214,7 @@ public partial class Editor : Page
         {
             id = missionIdLabel.Text,
             displayName = missionNameLabel.Text,
-            entitySetups = Stage.GetEntities().Select(Entity.GetSetup).ToList()
+            entitySetups = Stage.GetEntities().Select(EntitySetup.From).ToList()
         };
     }
     
@@ -238,8 +238,8 @@ public partial class Editor : Page
         {
             if (entity is PlayerCraft)
                 continue;
-            
-            copied.Add(Entity.GetSetup(entity));
+
+            copied.Add(EntitySetup.From(entity));
         }
     }
 
@@ -251,11 +251,15 @@ public partial class Editor : Page
 
         foreach (EntitySetup copiedSetup in copied)
         {
-            EntitySetup pastedSetup = EntitySetup.Copy(copiedSetup);
-            pastedSetup.position = (canvasCenter + copiedSetup.position - copyOffset).Snapped(gridSnap);
-            pastedSetup.uuid = Assets.GenerateUuid();
-            pastedSetup.connections.Clear();
-
+            EntitySetup pastedSetup = new(
+                copiedSetup.autoSpawn,
+                copiedSetup.angle,
+                Assets.GenerateUuid(),
+                copiedSetup.typeName,
+                (canvasCenter + copiedSetup.position - copyOffset).Snapped(gridSnap),
+                new List<EntityConnection>(),
+                new Dictionary<string, object>()
+            );
             Entity pastedEntity = Stage.Spawn(pastedSetup);
             selection.Add(pastedEntity);
         }

@@ -164,8 +164,8 @@ public partial class EntityInspector : PanelContainer
         EntityConnection connection = new()
         {
             targetUuid = target.Uuid,
-            eventName = Entity.GetConnectableEvents(entity).First().Name,
-            methodName = Entity.GetConnectableMethods(target).First().Name,
+            eventName = ConnectableAttribute.GetConnectableEvents(entity.GetType()).First().Name,
+            methodName = ConnectableAttribute.GetConnectableMethods(target.GetType()).First().Name,
         };
         
         entity.Connections.Add(connection);
@@ -179,8 +179,8 @@ public partial class EntityInspector : PanelContainer
         EntityConnection connection = new()
         {
             targetUuid = null,
-            eventName = Entity.GetConnectableEvents(entity).First().Name,
-            methodName = Entity.GetConnectableMethods(Stage.Instance).First().Name,
+            eventName = ConnectableAttribute.GetConnectableEvents(entity.GetType()).First().Name,
+            methodName = ConnectableAttribute.GetConnectableMethods(Stage.Instance.GetType()).First().Name,
         };
         
         entity.Connections.Add(connection);

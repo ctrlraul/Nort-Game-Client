@@ -1,3 +1,4 @@
+using System;
 using Godot;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,8 +43,10 @@ public partial class ConnectionsListItem : Control
 			: Stage.Instance.GetEntityByUuid(connection.targetUuid)
 		);
 
-		connectableEvents = Entity.GetConnectableEvents(entity).Select(info => info.Name).ToList();
-		connectableMethods = Entity.GetConnectableMethods(target).Select(info => info.Name).ToList();
+		Type type = entity.GetType();
+
+		connectableEvents = ConnectableAttribute.GetConnectableEvents(type).Select(info => info.Name).ToList();
+		connectableMethods = ConnectableAttribute.GetConnectableMethods(type).Select(info => info.Name).ToList();
 
 		foreach (string eventName in connectableEvents)
 			eventOptions.AddItem(eventName.Capitalize());
