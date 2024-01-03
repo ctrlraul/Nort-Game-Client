@@ -171,9 +171,10 @@ texture = ExtResource("5_btjl3")
 
 [node name="GPUParticles2D" type="GPUParticles2D" parent="PortalStuff" index="2"]
 self_modulate = Color(0.305882, 1, 0.498039, 1)
+amount = 16
 process_material = SubResource("ParticleProcessMaterial_ir30j")
 texture = ExtResource("4_yq8c5")
-lifetime = 3.0
+lifetime = 1.5
 fixed_fps = 60
 
 [node name="FloatingAnimation" parent="PortalStuff" index="3" instance=ExtResource("2_rfa1d")]
