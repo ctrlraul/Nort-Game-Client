@@ -43,10 +43,10 @@ public partial class ConnectionsListItem : Control
 			: Stage.Instance.GetEntityByUuid(connection.targetUuid)
 		);
 
-		Type type = entity.GetType();
-
-		connectableEvents = ConnectableAttribute.GetConnectableEvents(type).Select(info => info.Name).ToList();
-		connectableMethods = ConnectableAttribute.GetConnectableMethods(type).Select(info => info.Name).ToList();
+		connectableEvents = ConnectableAttribute.GetConnectableEvents(entity.GetType()).Select(info => info.Name)
+			.ToList();
+		connectableMethods = ConnectableAttribute.GetConnectableMethods(target.GetType()).Select(info => info.Name)
+			.ToList();
 
 		foreach (string eventName in connectableEvents)
 			eventOptions.AddItem(eventName.Capitalize());
