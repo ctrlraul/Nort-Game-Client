@@ -4,7 +4,6 @@ using System.Linq;
 using CtrlRaul.Godot;
 using CtrlRaul.Godot.Linq;
 using Godot;
-using Nort.Skills;
 
 namespace Nort.Entities;
 
