@@ -135,9 +135,7 @@ public abstract partial class Craft : Entity
         }
         
         partsContainer.AddChild(part);
-
-        foreach (Node skill in part.skillNodes.Cast<Node>())
-            skillsContainer.AddChild(skill);
+        skillsContainer.AddChild((Node)part.skillNode);
 
         return part;
     }

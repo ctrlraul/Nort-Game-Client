@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using CtrlRaul.Godot;
 using Godot;
 
@@ -14,6 +12,7 @@ public partial class CraftPart : Area2D
     [Ready] public CollisionShape2D collisionShape2D;
     
     public readonly List<ISkillNode> skillNodes = new();
+    public ISkillNode skillNode;
     public float hullMax;
     public float hull;
 
@@ -92,11 +91,8 @@ public partial class CraftPart : Area2D
             
             node.Position = Position;
 
-            if (node is ISkillNode skillNode) // Should always be truthy btw
-            {
-                skillNode.Part = this;
-                skillNodes.Add(skillNode);
-            }
+            skillNode = (ISkillNode)node;
+            skillNode.Part = this;
         }
 
         UpdateColor();
@@ -135,9 +131,8 @@ public partial class CraftPart : Area2D
         IsDestroyed = true;
         
         CallDeferred(nameof(Drop));
-        
-        foreach (Node skillNode in skillNodes.Cast<Node>())
-            skillNode.QueueFree();
+
+        ((Node)skillNode).QueueFree();
         
         QueueFree();
 
