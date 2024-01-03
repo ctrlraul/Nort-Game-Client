@@ -31,7 +31,7 @@ public partial class PlayerCraft : Craft
 
     [Ready] public FlightComponent flightComponent;
     [Ready] public CoreTractor coreTractor;
-    [Ready] public Label label;
+    [Ready] public Node2D controllerIcon;
 
     private List<InteractionRange> interactablesInRange = new();
 
@@ -60,7 +60,7 @@ public partial class PlayerCraft : Craft
     public override void _Ready()
     {
         base._Ready();
-        label.Visible = Game.Instance.InMissionEditor;
+        controllerIcon.Visible = Game.Instance.InMissionEditor;
         SetProcessUnhandledInput(!Game.Instance.InMissionEditor);
         SetPhysicsProcess(!Game.Instance.InMissionEditor);
     }
@@ -101,7 +101,10 @@ public partial class PlayerCraft : Craft
         if (!DidSpawn)
             return;
 
-        label.Position = label.Position with { Y = blueprintVisualRect.Position.Y + blueprintVisualRect.Size.Y + 20 };
+        controllerIcon.Position = controllerIcon.Position with
+        {
+            Y = blueprintVisualRect.Position.Y + blueprintVisualRect.Size.Y + 40
+        };
     }
     
     private static Vector2 GetKeyboardMotionDirection()

@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://p46oi0to68au" path="res://Scenes/Entities/Components/FlightComponent.tscn" id="3_v2nrv"]
 [ext_resource type="PackedScene" uid="uid://djqq8s6miovq7" path="res://Scenes/FloatingAnimation.tscn" id="4_m5ck5"]
 [ext_resource type="PackedScene" uid="uid://1sggqnuj0evg" path="res://Scenes/Entities/Components/CoreTractor.tscn" id="4_otqb4"]
+[ext_resource type="Texture2D" uid="uid://blv4e7b1xcgvf" path="res://Images/icons/controller.png" id="7_vbbtp"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_dqwve"]
 radius = 50.0
@@ -13,23 +14,11 @@ radius = 50.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_c4tym"]
 radius = 160.0
 
-[sub_resource type="LabelSettings" id="LabelSettings_yi16s"]
-font_size = 32
-
 [node name="PlayerCraft" instance=ExtResource("1_hcr24")]
 script = ExtResource("2_kv5h0")
 craftPartScene = ExtResource("3_hun0j")
 
-[node name="CoreTractor" parent="Body" index="2" instance=ExtResource("4_otqb4")]
-unique_name_in_owner = true
-
-[node name="FlightComponent" parent="." index="1" instance=ExtResource("3_v2nrv")]
-unique_name_in_owner = true
-
-[node name="FloatingAnimation" parent="." index="2" instance=ExtResource("4_m5ck5")]
-remote_path = NodePath("../Body")
-
-[node name="CollectingRange" type="Area2D" parent="." index="3"]
+[node name="CollectingRange" type="Area2D" parent="." index="0"]
 collision_layer = 0
 collision_mask = 4
 input_pickable = false
@@ -39,7 +28,7 @@ monitorable = false
 shape = SubResource("CircleShape2D_dqwve")
 debug_color = Color(0, 1, 1, 0)
 
-[node name="InteractingRange" type="Area2D" parent="." index="4"]
+[node name="InteractingRange" type="Area2D" parent="." index="1"]
 collision_layer = 0
 collision_mask = 2
 monitorable = false
@@ -48,18 +37,23 @@ monitorable = false
 shape = SubResource("CircleShape2D_c4tym")
 debug_color = Color(1, 1, 0, 0)
 
-[node name="AudioListener2D" type="AudioListener2D" parent="." index="5"]
-current = true
-
-[node name="Label" type="Label" parent="." index="6"]
+[node name="CoreTractor" parent="Body" index="1" instance=ExtResource("4_otqb4")]
 unique_name_in_owner = true
-offset_left = -100.0
-offset_top = 90.0
-offset_right = 100.0
-offset_bottom = 132.0
-text = "PLAYER"
-label_settings = SubResource("LabelSettings_yi16s")
-horizontal_alignment = 1
+
+[node name="FlightComponent" parent="." index="3" instance=ExtResource("3_v2nrv")]
+unique_name_in_owner = true
+
+[node name="FloatingAnimation" parent="." index="4" instance=ExtResource("4_m5ck5")]
+remote_path = NodePath("../Body")
+
+[node name="ControllerIcon" type="Sprite2D" parent="." index="5"]
+unique_name_in_owner = true
+position = Vector2(0, 80)
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("7_vbbtp")
+
+[node name="AudioListener2D" type="AudioListener2D" parent="." index="6"]
+current = true
 
 [connection signal="area_entered" from="CollectingRange" to="." method="OnCollectionRangeAreaEntered"]
 [connection signal="area_entered" from="InteractingRange" to="." method="OnInteractingRangeAreaEntered"]
