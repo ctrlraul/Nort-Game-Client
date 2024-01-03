@@ -2,5 +2,6 @@
 	"id": "amber",
 	"displayName": "Amber",
 	"colorHex": "#FFA020",
+	"colorShinyHex": "#FFB020",
 	"collisionLayer": 28
 }

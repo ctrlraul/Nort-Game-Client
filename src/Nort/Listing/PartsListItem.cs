@@ -16,7 +16,7 @@ public partial class PartsListItem : Button, IListItem<PartData>
 	{
 		Value = partData;
 		Count = int.MaxValue;
-		frame.Material = partData.shiny ? Assets.ShinyMaterial : null;
+		((ShaderMaterial)frame.Material).SetShaderParameter("shiny", partData.shiny);
 		displayPart.PartData = partData;
 	}
 

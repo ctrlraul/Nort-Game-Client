@@ -2,5 +2,6 @@
 	"id": "emerald",
 	"displayName": "Emerald",
 	"colorHex": "#00ff80",
+	"colorShinyHex": "#00ffa0",
 	"collisionLayer": 31
 }

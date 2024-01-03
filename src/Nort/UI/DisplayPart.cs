@@ -15,8 +15,8 @@ public partial class DisplayPart : Control
 	
 	public bool Shiny
 	{
-		get => textureRect.Material == Assets.ShinyMaterial;
-		set => textureRect.Material = value ? Assets.ShinyMaterial : null;
+		get => ((ShaderMaterial)textureRect.Material).GetShaderParameter("shiny").AsBool();
+		set => ((ShaderMaterial)textureRect.Material).SetShaderParameter("shiny", value);
 	}
 
 	public Color Color

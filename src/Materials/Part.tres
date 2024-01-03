@@ -1,0 +1,22 @@
+[gd_resource type="ShaderMaterial" load_steps=5 format=3 uid="uid://bf26eeqwjq5co"]
+
+[ext_resource type="Shader" path="res://Materials/Part.gdshader" id="1_s2uh1"]
+[ext_resource type="Texture2D" uid="uid://c4i4ddimgplc1" path="res://Images/ShinyReflections.png" id="2_noeyk"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_l4ooq"]
+frequency = 0.0247
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_ydqck"]
+width = 256
+height = 256
+generate_mipmaps = false
+seamless = true
+noise = SubResource("FastNoiseLite_l4ooq")
+
+[resource]
+resource_local_to_scene = true
+shader = ExtResource("1_s2uh1")
+shader_parameter/dissolve_threshold = 1.0
+shader_parameter/shiny = true
+shader_parameter/shiny_reflections_texture = ExtResource("2_noeyk")
+shader_parameter/dissolve_threshold_texture = SubResource("NoiseTexture2D_ydqck")

@@ -25,7 +25,7 @@ public partial class OrphanPart : Entity
         {
             Texture2D texture = Assets.Instance.GetPartTexture(value);
             partId = value;
-            sprite2D.Texture = texture;
+            partSprite.Texture = texture;
             collisionShape2D.Shape = new RectangleShape2D { Size = texture.GetSize() };
         }
     }
@@ -46,21 +46,21 @@ public partial class OrphanPart : Entity
     [Savable, Inspect]
     public bool Flipped
     {
-        get => sprite2D.FlipH;
-        set => sprite2D.FlipH = value;
+        get => partSprite.FlipH;
+        set => partSprite.FlipH = value;
     }
     
     [Savable, Inspect]
     public bool Shiny
     {
-        get => material.GetShaderParameter("shiny").AsBool();
-        set => material.SetShaderParameter("shiny", value);
+        get => ((ShaderMaterial)partSprite.Material).GetShaderParameter("shiny").AsBool();
+        set => ((ShaderMaterial)partSprite.Material).SetShaderParameter("shiny", value);
     }
 
     public IEnumerable<string> PartIdOptions => Assets.Instance.GetParts().Select(p => p.id);
     public IEnumerable<string> SkillIdOptions => Assets.Instance.GetSkills().Select(s => s.id);
-    
-    [Ready] public Sprite2D sprite2D;
+
+    [Ready] public Sprite2D partSprite;
     [Ready] public Sprite2D skillSprite;
     [Ready] public CollisionShape2D collisionShape2D;
     [Ready] public AnimationPlayer animationPlayer;
@@ -103,7 +103,7 @@ public partial class OrphanPart : Entity
         base._Ready();
         this.InitializeReady();
 
-        material = sprite2D.Material as ShaderMaterial;
+        material = partSprite.Material as ShaderMaterial;
 
         if (material == null)
             throw new Exception($"Expected a {nameof(ShaderMaterial)} material on sprite");
@@ -125,7 +125,7 @@ public partial class OrphanPart : Entity
     
     public void SetColor(Color value)
     {
-        sprite2D.SelfModulate = value;
+        partSprite.SelfModulate = value;
     }
     
     public PartData GetPartData()

@@ -33,7 +33,6 @@ public class Assets : Singleton<Assets>
     public static readonly Texture2D PartTexturePlaceholder = GD.Load<Texture2D>("res://Images/placeholders/part.png");
     public static readonly Texture2D SkillTexturePlaceholder = GD.Load<Texture2D>("res://Images/placeholders/skill.png");
     public static readonly Texture2D CoreLightTexture = GD.Load<Texture2D>("res://Images/core_light.png");
-    public static readonly ShaderMaterial ShinyMaterial = GD.Load<ShaderMaterial>("res://Materials/shiny_part_shader_material.tres");
     public static readonly ShaderMaterial PartOutlineMaterial = GD.Load<ShaderMaterial>("res://Materials/part_outline_shader_material.tres");
 
     public const string SkillTexturesDirectory = "res://Images/skills";

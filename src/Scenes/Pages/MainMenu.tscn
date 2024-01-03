@@ -2,8 +2,8 @@
 
 [ext_resource type="Script" path="res://Nort/Pages/MainMenu.cs" id="1_ngwbq"]
 [ext_resource type="Theme" uid="uid://85byrm5eq3ab" path="res://OtherResources/theme.tres" id="2_3jnk7"]
+[ext_resource type="Material" uid="uid://bf26eeqwjq5co" path="res://Materials/Part.tres" id="2_mt85y"]
 [ext_resource type="PackedScene" uid="uid://djqq8s6miovq7" path="res://Scenes/FloatingAnimation.tscn" id="3_jmepi"]
-[ext_resource type="Material" uid="uid://bscgpp7x5c27j" path="res://Materials/shiny_part_shader_material.tres" id="4_t0a7q"]
 [ext_resource type="Texture2D" uid="uid://dgqwtel1q4ppk" path="res://Images/branding/logo_themed.png" id="5_bktyo"]
 [ext_resource type="PackedScene" uid="uid://cxdrb6lxh18qh" path="res://Scenes/UI/DisplayCraft.tscn" id="6_0tu20"]
 
@@ -44,7 +44,7 @@ remote_path = NodePath("../Logo2DWrapper")
 [node name="Logo2DWrapper" type="Node2D" parent="Theme/MarginContainer/VBoxContainer/LogoContainer/Control"]
 
 [node name="TextureRect" type="TextureRect" parent="Theme/MarginContainer/VBoxContainer/LogoContainer/Control/Logo2DWrapper"]
-material = ExtResource("4_t0a7q")
+material = ExtResource("2_mt85y")
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5

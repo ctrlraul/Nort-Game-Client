@@ -2,5 +2,6 @@
 	"id": "cerulean",
 	"displayName": "Cerulean",
 	"colorHex": "#0080ff",
+	"colorShinyHex": "#587fff",
 	"collisionLayer": 29
 }

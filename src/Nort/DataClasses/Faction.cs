@@ -8,8 +8,12 @@ public class Faction
     [JsonProperty] public string id;
     [JsonProperty] public string displayName;
     [JsonProperty] public string colorHex;
+    [JsonProperty] public string colorShinyHex;
     [JsonProperty] public int collisionLayer;
 
-    [JsonIgnore] private Color? _color;
-    [JsonIgnore] public Color Color => _color ??= new Color(colorHex);
+    [JsonIgnore] private Color? color;
+    [JsonIgnore] public Color Color => color ??= new Color(colorHex);
+
+    [JsonIgnore] private Color? colorShiny;
+    [JsonIgnore] public Color ColorShiny => colorShiny ??= new Color(colorShinyHex);
 }
