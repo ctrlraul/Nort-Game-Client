@@ -7,11 +7,10 @@ using CtrlRaul;
 using CtrlRaul.Godot;
 using CtrlRaul.Godot.Linq;
 using Nort.Entities;
-using Entity = Nort.Entities.Entity;
+using PropAttrDict =
+    System.Collections.Generic.Dictionary<string, (System.Reflection.PropertyInfo, Nort.Pages.InspectAttribute)>;
 
-using PropAttrDict = System.Collections.Generic.Dictionary<string, (System.Reflection.PropertyInfo, Nort.Hud.InspectAttribute)>;
-
-namespace Nort.Hud;
+namespace Nort.Pages;
 
 
 [AttributeUsage(AttributeTargets.Property)]

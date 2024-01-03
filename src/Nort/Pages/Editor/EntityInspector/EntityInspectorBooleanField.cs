@@ -2,7 +2,7 @@ using System;
 using CtrlRaul.Godot;
 using Godot;
 
-namespace Nort.Hud;
+namespace Nort.Pages;
 
 public partial class EntityInspectorBooleanField : Control, EntityInspector.IField
 {
@@ -42,6 +42,7 @@ public partial class EntityInspectorBooleanField : Control, EntityInspector.IFie
 
     private void OnCheckBoxToggled(bool value)
     {
+        GD.Print("Value changed");
         ValueChanged?.Invoke(value);
     }
 }

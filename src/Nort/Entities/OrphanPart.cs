@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using CtrlRaul.Godot;
 using Godot;
-using Nort.Hud;
+using Nort.Pages;
 
 namespace Nort.Entities;
 

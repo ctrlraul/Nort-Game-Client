@@ -5,7 +5,7 @@ using CtrlRaul.Godot;
 using CtrlRaul.Godot.Linq;
 using Godot;
 using Nort.Entities.Components;
-using Nort.Hud;
+using Nort.Pages;
 
 namespace Nort.Entities;
 

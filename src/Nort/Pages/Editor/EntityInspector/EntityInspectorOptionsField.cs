@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using CtrlRaul.Godot;
 using Godot;
 
-namespace Nort.Hud;
+namespace Nort.Pages;
 
 
 public partial class EntityInspectorOptionsField : Control, EntityInspector.IField
