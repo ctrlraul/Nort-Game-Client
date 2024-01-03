@@ -122,7 +122,7 @@ public partial class MissionHud : Page
         hullProgressBar.Progress = 1;
         coreProgressBar.Progress = 1;
 
-        foreach (ISkillNode skillNode in player.GetSkillNodes())
+        foreach (ISkillNode skillNode in player.skillNodes)
         {
             SkillButton button = skillButtonScene.Instantiate<SkillButton>();
             skillButtons.AddChild(button);

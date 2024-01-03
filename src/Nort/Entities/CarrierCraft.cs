@@ -54,7 +54,7 @@ public partial class CarrierCraft : Craft
         if (Engine.GetFramesDrawn() % 60 != 0)
             return;
 
-        foreach (ISkillNode skillNode in GetSkillNodes())
+        foreach (ISkillNode skillNode in skillNodes)
         {
             if (skillNode is DroneSkill droneSkill)
                 droneSkill.Fire();

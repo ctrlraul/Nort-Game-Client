@@ -10,6 +10,7 @@ public partial class CraftPart : Area2D
     
     [Ready] public Sprite2D sprite2D;
     [Ready] public CollisionShape2D collisionShape2D;
+    [Ready] public Node2D skillNodeContainer;
     [Ready] public AnimationPlayer animationPlayer;
 
     public ISkillNode skillNode;
@@ -83,16 +84,14 @@ public partial class CraftPart : Area2D
         collisionShape2D.Shape = new RectangleShape2D { Size = sprite2D.Texture.GetSize() };
         
         if (Assets.IsCore(blueprint.Part))
-            AddChild(new Sprite2D { Texture = Assets.CoreLightTexture });
+            skillNodeContainer.AddChild(new Sprite2D { Texture = Assets.CoreLightTexture });
 
         if (!string.IsNullOrEmpty(blueprint.skillId))
         {
             Node2D node = blueprint.Skill.Scene.Instantiate<Node2D>();
-            
-            node.Position = Position;
-
             skillNode = (ISkillNode)node;
             skillNode.Part = this;
+            skillNodeContainer.AddChild(node);
         }
 
         UpdateColor();
@@ -131,8 +130,6 @@ public partial class CraftPart : Area2D
         IsDestroyed = true;
         
         CallDeferred(nameof(Drop));
-
-        ((Node)skillNode).QueueFree();
         
         QueueFree();
 

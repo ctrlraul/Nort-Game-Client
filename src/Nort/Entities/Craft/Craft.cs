@@ -17,10 +17,11 @@ public abstract partial class Craft : Entity
     [Export] private PackedScene craftPartScene;
 
     [Ready] public Node2D partsContainer;
-    [Ready] public Node2D skillsContainer;
 
     public bool IsDestroyed { get; private set; }
     private CraftPart corePart;
+
+    public readonly List<ISkillNode> skillNodes = new();
 
     protected Faction faction = Assets.Instance.DefaultEnemyFaction;
 
@@ -68,9 +69,7 @@ public abstract partial class Craft : Entity
         
         blueprintVisualRect = Assets.Instance.GetBlueprintVisualRect(Blueprint);
 
-        
-        
-        skillsContainer.QueueFreeChildren();
+        skillNodes.Clear();
         partsContainer.QueueFreeChildren();
         
         foreach (BlueprintPart blueprintPart in blueprint.hulls)
@@ -134,7 +133,7 @@ public abstract partial class Craft : Entity
         }
         
         partsContainer.AddChild(part);
-        skillsContainer.AddChild((Node)part.skillNode);
+        skillNodes.Add(part.skillNode);
 
         return part;
     }
@@ -142,11 +141,6 @@ public abstract partial class Craft : Entity
     private IEnumerable<CraftPart> GetParts()
     {
         return partsContainer.GetChildren().Cast<CraftPart>();
-    }
-
-    public IEnumerable<ISkillNode> GetSkillNodes()
-    {
-        return skillsContainer.GetChildren().Cast<ISkillNode>();
     }
 
     public void TakeHit(CraftPart part, ISkillNode from, float damage)

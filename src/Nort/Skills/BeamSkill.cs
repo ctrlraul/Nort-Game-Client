@@ -94,7 +94,7 @@ public partial class BeamSkill : Node2D, ISkillNode
     
     private void PointUp()
     {
-        Rotation = -Mathf.Pi / 2;
+        GlobalRotation = -Mathf.Pi / 2;
     }
 
     private void UpdateCollisionMasks()

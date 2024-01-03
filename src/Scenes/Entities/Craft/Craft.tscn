@@ -6,6 +6,3 @@
 
 [node name="PartsContainer" type="Node2D" parent="Body"]
 unique_name_in_owner = true
-
-[node name="SkillsContainer" type="Node2D" parent="Body"]
-unique_name_in_owner = true
