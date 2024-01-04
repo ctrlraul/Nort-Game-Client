@@ -16,101 +16,117 @@ font_size = 64
 font_color = Color(0, 1, 1, 1)
 shadow_offset = Vector2(0, 4)
 
-[node name="PlayableMissionButton" type="PanelContainer"]
+[node name="PlayableMissionButton" type="Button"]
+custom_minimum_size = Vector2(0, 122)
+offset_right = 1753.0
+offset_bottom = 120.0
+theme_type_variation = &"ButtonMission"
 script = ExtResource("1_ctid8")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -48.5
+offset_bottom = 48.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 45
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 45
+theme_override_constants/margin_bottom = 5
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
 clip_contents = true
-custom_minimum_size = Vector2(360, 0)
 layout_mode = 2
 
-[node name="NameLabel" type="Label" parent="HBoxContainer/VBoxContainer"]
+[node name="NameLabel" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 2
 text = "The plight of the drones"
 label_settings = ExtResource("1_73nha")
 
-[node name="EntitiesLabel" type="Label" parent="HBoxContainer/VBoxContainer"]
+[node name="EntitiesLabel" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "3 Enemies
 0 Allies"
 
-[node name="Control" type="PanelContainer" parent="HBoxContainer"]
+[node name="Control" type="PanelContainer" parent="MarginContainer/HBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 6
 size_flags_vertical = 4
+mouse_filter = 2
 theme_type_variation = &"PanelDarken"
 
-[node name="QuoteLabel" type="Label" parent="HBoxContainer/Control"]
+[node name="QuoteLabel" type="Label" parent="MarginContainer/HBoxContainer/Control"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "\"Alone, it's a spark; together, a blaze. Careful when they team up!\""
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer"]
-custom_minimum_size = Vector2(360, 0)
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer"]
 layout_mode = 2
 alignment = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/HBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/HBoxContainer"]
 layout_mode = 2
 theme_override_constants/separation = 0
 alignment = 1
 
-[node name="Label" type="Label" parent="HBoxContainer/HBoxContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/HBoxContainer/VBoxContainer"]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 text = "Best Time"
 horizontal_alignment = 1
 
-[node name="TimeLabel" type="Label" parent="HBoxContainer/HBoxContainer/VBoxContainer"]
+[node name="TimeLabel" type="Label" parent="MarginContainer/HBoxContainer/HBoxContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_vertical = 7
 text = "10.0s"
 label_settings = SubResource("LabelSettings_ls2ht")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="VBoxContainer3" type="VBoxContainer" parent="HBoxContainer/HBoxContainer"]
+[node name="VBoxContainer3" type="VBoxContainer" parent="MarginContainer/HBoxContainer/HBoxContainer"]
 layout_mode = 2
 theme_override_constants/separation = 0
 alignment = 1
 
-[node name="Label" type="Label" parent="HBoxContainer/HBoxContainer/VBoxContainer3"]
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/HBoxContainer/VBoxContainer3"]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 text = "Best Score"
 horizontal_alignment = 1
 
-[node name="ScoreLabel" type="Label" parent="HBoxContainer/HBoxContainer/VBoxContainer3"]
+[node name="ScoreLabel" type="Label" parent="MarginContainer/HBoxContainer/HBoxContainer/VBoxContainer3"]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_vertical = 7
 text = "20000"
 label_settings = SubResource("LabelSettings_ls2ht")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="HBoxContainer/HBoxContainer"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/HBoxContainer/HBoxContainer"]
 visible = false
 layout_mode = 2
 theme_override_constants/separation = 0
 alignment = 1
 
-[node name="Label" type="Label" parent="HBoxContainer/HBoxContainer/VBoxContainer2"]
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/HBoxContainer/VBoxContainer2"]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 text = "Best Rank"
 horizontal_alignment = 1
 
-[node name="RankLabel" type="Label" parent="HBoxContainer/HBoxContainer/VBoxContainer2"]
+[node name="RankLabel" type="Label" parent="MarginContainer/HBoxContainer/HBoxContainer/VBoxContainer2"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
@@ -119,8 +135,4 @@ label_settings = SubResource("LabelSettings_i0wij")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Button" type="Button" parent="."]
-self_modulate = Color(1, 1, 1, 0)
-layout_mode = 2
-
-[connection signal="pressed" from="Button" to="." method="OnButtonPressed"]
+[connection signal="pressed" from="." to="." method="OnPressed"]

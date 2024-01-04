@@ -6,7 +6,7 @@ using Nort;
 using Nort.Entities;
 using Nort.Pages;
 
-public partial class PlayableMissionButton : PanelContainer
+public partial class PlayableMissionButton : Button
 {
 	[Ready] public Label nameLabel;
 	[Ready] public Label entitiesLabel;
@@ -58,7 +58,7 @@ public partial class PlayableMissionButton : PanelContainer
 	}
 
 
-	private async void OnButtonPressed()
+	private async void OnPressed()
 	{
 		MissionHud.NavigationData data = new(
 			fromEditor: false,
