@@ -33,7 +33,7 @@ public partial class PlayerListItem : PanelContainer
         scoreLabel.Text = "0";
         displayCraft.Blueprint = player.blueprint;
         displayCraft.Color = Assets.Instance.PlayerFaction.Color;
-        displayCraft.Scale = Vector2.One * Mathf.Clamp(1f / (player.parts.Count * 0.225f) * 0.5f, 0.25f, 0.5f);
+        displayCraft.Scale = Vector2.One * 100 / Assets.Instance.GetBlueprintVisualRect(player.blueprint).Size.Length();
     }
 
     private void OnDeleteButtonPressed()

@@ -27,7 +27,7 @@ mouse_filter = 2
 
 [node name="CraftPreview" type="Panel" parent="MarginContainer/HBoxContainer"]
 clip_contents = true
-custom_minimum_size = Vector2(80, 80)
+custom_minimum_size = Vector2(100, 100)
 layout_mode = 2
 mouse_filter = 2
 theme_type_variation = &"PanelDarken"
