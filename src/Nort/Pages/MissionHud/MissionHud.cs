@@ -54,6 +54,7 @@ public partial class MissionHud : Page
         base._ExitTree();
         Stage.Instance.PlayerSpawned -= OnPlayerSpawned;
         Stage.Instance.PlayerDestroyed -= OnPlayerDestroyed;
+        Stage.Instance.MissionCompleted -= OnMissionCompleted;
     }
 
     public override void _Process(double delta)
