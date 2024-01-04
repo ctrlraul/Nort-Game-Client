@@ -256,6 +256,7 @@ public partial class Editor : Page
                 Assets.GenerateUuid(),
                 copiedSetup.typeName,
                 (canvasCenter + copiedSetup.position - copyOffset).Snapped(gridSnap),
+                copiedSetup.playerObjective,
                 new List<EntityConnection>(),
                 new Dictionary<string, object>()
             );

@@ -42,6 +42,9 @@ public partial class Stage : Node2D
     private readonly List<string> problems = new();
     private readonly Dictionary<string, Entity> entitiesMap = new();
     public readonly List<PartData> partsCollected = new();
+    
+    private int objectivesTotal;
+    private int objectivesCompleted;
 
     private PlayerCraft player;
     public PlayerCraft Player
@@ -49,6 +52,8 @@ public partial class Stage : Node2D
         get => IsInstanceValid(player) ? player : null;
         private set => player = value;
     }
+
+    private ConductorCraft conductor;
 
 
     public override void _Ready()
@@ -183,7 +188,10 @@ public partial class Stage : Node2D
         problems.Clear();
         entitiesMap.Clear();
         partsCollected.Clear();
+        objectivesTotal = 0;
+        objectivesCompleted = 0;
         Player = null;
+        conductor = null;
     }
 
     public Entity GetEntityByUuid(string uuid)
@@ -238,13 +246,20 @@ public partial class Stage : Node2D
 
                 break;
 
-            case OrphanPart orphanPart:
-                orphanPart.Collected += () => OnOrphanPartCollected(orphanPart.GetPartData());
+            case ConductorCraft newConductor:
+                if (IsInstanceValid(conductor))
+                {
+                    logger.Warn("Spawning a conductor while another instance already exists, freeing old instance");
+                    conductor.QueueFree();
+                }
+
+                conductor = newConductor;
+                conductor.Conduct += CompleteMission;
 
                 break;
 
-            case ConductorCraft conductorCraft:
-                conductorCraft.Conduct += CompleteMission;
+            case OrphanPart orphanPart:
+                orphanPart.Collected += () => OnOrphanPartCollected(orphanPart.GetPartData());
 
                 break;
         }
@@ -274,9 +289,17 @@ public partial class Stage : Node2D
     {
         foreach (Entity entity in GetEntities())
         {
+            Type sourceType = entity.GetType();
+
+            if (!string.IsNullOrEmpty(entity.PlayerObjective))
+            {
+                EventInfo eventInfo = sourceType.GetEvent(entity.PlayerObjective)!;
+                eventInfo.AddEventHandler(entity, OnObjectiveCompleted);
+                objectivesTotal += 1;
+            }
+            
             foreach (EntityConnection connection in entity.Connections)
             {
-                Type sourceType = entity.GetType();
                 EventInfo eventInfo = sourceType.GetEvent(connection.eventName);
 
                 if (eventInfo == null)
@@ -340,5 +363,12 @@ public partial class Stage : Node2D
     private void OnOrphanPartCollected(PartData partData)
     {
         partsCollected.Add(partData);
+    }
+
+    private void OnObjectiveCompleted()
+    {
+        objectivesCompleted += 1;
+        if (objectivesCompleted >= objectivesTotal)
+            conductor.CallDeferred(nameof(conductor.Spawn));
     }
 }

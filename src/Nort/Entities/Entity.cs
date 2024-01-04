@@ -56,6 +56,7 @@ public class EntitySetup
     public float angle;
     public string uuid;
     public string typeName;
+    public string playerObjective;
     public Vector2 position;
     public List<EntityConnection> connections;
     public Dictionary<string, object> subTypeData;
@@ -70,6 +71,7 @@ public class EntitySetup
         string uuid,
         string typeName,
         Vector2 position,
+        string playerObjective,
         List<EntityConnection> connections,
         Dictionary<string, object> subTypeData)
     {
@@ -78,6 +80,7 @@ public class EntitySetup
         this.uuid = uuid;
         this.typeName = typeName;
         this.position = position;
+        this.playerObjective = playerObjective;
         this.connections = connections;
         this.subTypeData = subTypeData;
     }
@@ -94,6 +97,7 @@ public class EntitySetup
         entity.RotationDegrees = angle;
         entity.Uuid = uuid;
         entity.Position = position;
+        entity.PlayerObjective = playerObjective;
         entity.Connections.AddRange(connections);
 
         foreach (PropertyInfo property in GetSavableProperties(entity))
@@ -112,6 +116,7 @@ public class EntitySetup
             entity.Uuid,
             entity.GetType().Name,
             entity.Position,
+            entity.PlayerObjective,
             entity.Connections,
             GetSavableProperties(entity).ToDictionary(info => info.Name, info => info.GetValue(entity))
         );
@@ -163,6 +168,22 @@ public abstract partial class Entity : Node2D
                 else
                     Modulate = Modulate with { A = 0.3f };
             }
+        }
+    }
+
+    [Savable]
+    [Inspect(nameof(PlayerObjectiveOptions))]
+    public string PlayerObjective { get; set; }
+
+    public IEnumerable<string> PlayerObjectiveOptions
+    {
+        get
+        {
+            IEnumerable<string> eventNames = ConnectableAttribute
+                .GetConnectableEvents(GetType())
+                .Select(eventInfo => eventInfo.Name);
+
+            return (new[] { "(None)" }).Concat(eventNames);
         }
     }
     
