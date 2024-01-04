@@ -85,6 +85,7 @@ grow_vertical = 2
 alignment = 1
 
 [node name="Label" type="Label" parent="Control/MarginContainer/VBoxContainer/HBoxContainer/Center/VBoxContainer"]
+visible = false
 layout_mode = 2
 text = "RANK"
 label_settings = ExtResource("3_h44hj")
@@ -92,6 +93,7 @@ horizontal_alignment = 1
 
 [node name="RankLabel" type="Label" parent="Control/MarginContainer/VBoxContainer/HBoxContainer/Center/VBoxContainer"]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 text = "S"
 label_settings = SubResource("LabelSettings_conq3")
@@ -99,8 +101,15 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Spacer" type="Control" parent="Control/MarginContainer/VBoxContainer/HBoxContainer/Center/VBoxContainer"]
+visible = false
 custom_minimum_size = Vector2(0, 70)
 layout_mode = 2
+
+[node name="Label2" type="Label" parent="Control/MarginContainer/VBoxContainer/HBoxContainer/Center/VBoxContainer"]
+layout_mode = 2
+text = "SCORE"
+label_settings = ExtResource("3_h44hj")
+horizontal_alignment = 1
 
 [node name="ScoreLabel" type="Label" parent="Control/MarginContainer/VBoxContainer/HBoxContainer/Center/VBoxContainer"]
 unique_name_in_owner = true
