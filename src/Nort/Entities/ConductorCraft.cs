@@ -14,6 +14,7 @@ public partial class ConductorCraft : Craft
 
 	public ConductorCraft()
 	{
+		AutoSpawn = false;
 		blueprint = Assets.Instance.GetBlueprint("conductor");
 		faction = Assets.Instance.PlayerFaction;
 	}
