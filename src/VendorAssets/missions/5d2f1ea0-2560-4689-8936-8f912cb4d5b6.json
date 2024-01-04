@@ -1,101 +1,101 @@
 {
-  "id": "5d2f1ea0-2560-4689-8936-8f912cb4d5b6",
-  "displayName": "The plight of the drones",
-  "description": null,
-  "entitySetups": [
-    {
-      "autoSpawn": true,
-      "angle": 0.0,
-      "uuid": "79fdc7ba-25e9-496d-9e3c-65d789c0bd31",
-      "typeName": "PlayerCraft",
-      "playerObjective": null,
-      "position": {
-        "X": 0.0,
-        "Y": 0.0
-      },
-      "connections": [],
-      "subTypeData": {
-        "TestBlueprintId": "newborn"
-      }
-    },
-    {
-      "autoSpawn": false,
-      "angle": 0.0,
-      "uuid": "992923bf-9516-4477-bda8-41fd2717f401",
-      "typeName": "ConductorCraft",
-      "playerObjective": null,
-      "position": {
-        "X": 1792.0,
-        "Y": -64.0
-      },
-      "connections": [],
-      "subTypeData": {}
-    },
-    {
-      "autoSpawn": true,
-      "angle": 0.0,
-      "uuid": "6a6c0528-ee08-4da6-b789-a9d217f8c00e",
-      "typeName": "DroneCraft",
-      "playerObjective": "Destroyed",
-      "position": {
-        "X": 1152.0,
-        "Y": -384.0
-      },
-      "connections": [],
-      "subTypeData": {
-        "FactionId": "ruby",
-        "BlueprintId": "strike"
-      }
-    },
-    {
-      "autoSpawn": true,
-      "angle": 0.0,
-      "uuid": "65c3d729-b739-4edc-98d3-050ee4bad0ed",
-      "typeName": "DroneCraft",
-      "playerObjective": "Destroyed",
-      "position": {
-        "X": 1152.0,
-        "Y": 384.0
-      },
-      "connections": [],
-      "subTypeData": {
-        "FactionId": "ruby",
-        "BlueprintId": "strike"
-      }
-    },
-    {
-      "autoSpawn": true,
-      "angle": 0.0,
-      "uuid": "58b32877-2a37-4fe0-b013-aca8bca50120",
-      "typeName": "OrphanPart",
-      "playerObjective": "Collected",
-      "position": {
-        "X": 1280.0,
-        "Y": 0.0
-      },
-      "connections": [],
-      "subTypeData": {
-        "PartId": "tail_1",
-        "SkillId": "bullet",
-        "Flipped": false,
-        "Shiny": false
-      }
-    },
-    {
-      "autoSpawn": true,
-      "angle": 0.0,
-      "uuid": "3483b6ae-62d8-456c-9543-882d6b2cf5c4",
-      "typeName": "DroneCraft",
-      "playerObjective": "Destroyed",
-      "position": {
-        "X": 960.0,
-        "Y": 0.0
-      },
-      "connections": [],
-      "subTypeData": {
-        "FactionId": "ruby",
-        "BlueprintId": "strike"
-      }
-    }
-  ]
+	"id": "5d2f1ea0-2560-4689-8936-8f912cb4d5b6",
+	"displayName": "The plight of the drones",
+	"description": "Individually, a mere whisper. Together, a thunderous roar. Might in numbers!",
+	"entitySetups": [
+		{
+			"autoSpawn": true,
+			"angle": 0.0,
+			"uuid": "79fdc7ba-25e9-496d-9e3c-65d789c0bd31",
+			"typeName": "PlayerCraft",
+			"playerObjective": null,
+			"position": {
+				"X": 0.0,
+				"Y": 0.0
+			},
+			"connections": [],
+			"subTypeData": {
+				"TestBlueprintId": "newborn"
+			}
+		},
+		{
+			"autoSpawn": false,
+			"angle": 0.0,
+			"uuid": "992923bf-9516-4477-bda8-41fd2717f401",
+			"typeName": "ConductorCraft",
+			"playerObjective": null,
+			"position": {
+				"X": 1792.0,
+				"Y": -64.0
+			},
+			"connections": [],
+			"subTypeData": {}
+		},
+		{
+			"autoSpawn": true,
+			"angle": 0.0,
+			"uuid": "6a6c0528-ee08-4da6-b789-a9d217f8c00e",
+			"typeName": "DroneCraft",
+			"playerObjective": "Destroyed",
+			"position": {
+				"X": 1152.0,
+				"Y": -384.0
+			},
+			"connections": [],
+			"subTypeData": {
+				"FactionId": "ruby",
+				"BlueprintId": "strike"
+			}
+		},
+		{
+			"autoSpawn": true,
+			"angle": 0.0,
+			"uuid": "65c3d729-b739-4edc-98d3-050ee4bad0ed",
+			"typeName": "DroneCraft",
+			"playerObjective": "Destroyed",
+			"position": {
+				"X": 1152.0,
+				"Y": 384.0
+			},
+			"connections": [],
+			"subTypeData": {
+				"FactionId": "ruby",
+				"BlueprintId": "strike"
+			}
+		},
+		{
+			"autoSpawn": true,
+			"angle": 0.0,
+			"uuid": "58b32877-2a37-4fe0-b013-aca8bca50120",
+			"typeName": "OrphanPart",
+			"playerObjective": "Collected",
+			"position": {
+				"X": 1280.0,
+				"Y": 0.0
+			},
+			"connections": [],
+			"subTypeData": {
+				"PartId": "tail_1",
+				"SkillId": "bullet",
+				"Flipped": false,
+				"Shiny": false
+			}
+		},
+		{
+			"autoSpawn": true,
+			"angle": 0.0,
+			"uuid": "3483b6ae-62d8-456c-9543-882d6b2cf5c4",
+			"typeName": "DroneCraft",
+			"playerObjective": "Destroyed",
+			"position": {
+				"X": 960.0,
+				"Y": 0.0
+			},
+			"connections": [],
+			"subTypeData": {
+				"FactionId": "ruby",
+				"BlueprintId": "strike"
+			}
+		}
+	]
 }
