@@ -43,7 +43,7 @@ public partial class PlayableMissionButton : PanelContainer
 
 		nameLabel.Text = mission.displayName;
 		entitiesLabel.Text = $"{enemies} Enemies\n{allies} Allies";
-		quoteLabel.Text = mission.description;
+		quoteLabel.Text = $"\"{mission.description}\"";
 
 		if (Game.Instance.CurrentPlayer.missionRecords.TryGetValue(mission.id, out MissionRecord record))
 		{
