@@ -1,0 +1,126 @@
+[gd_scene load_steps=7 format=3 uid="uid://issl46qh1ia5"]
+
+[ext_resource type="LabelSettings" uid="uid://dtfxwulwc71hw" path="res://OtherResources/big_label_settings.tres" id="1_73nha"]
+[ext_resource type="Script" path="res://Scenes/Pages/PlayableMissionButton.cs" id="1_ctid8"]
+[ext_resource type="FontVariation" uid="uid://d3mpjilq7jk34" path="res://Fonts/AireExterior.tres" id="2_wr126"]
+[ext_resource type="FontFile" uid="uid://egkh56djee13" path="res://Fonts/AireExterior.ttf" id="3_l0qta"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_ls2ht"]
+font = ExtResource("2_wr126")
+font_size = 40
+font_color = Color(0.741176, 1, 0.878431, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_i0wij"]
+font = ExtResource("3_l0qta")
+font_size = 64
+font_color = Color(0, 1, 1, 1)
+shadow_offset = Vector2(0, 4)
+
+[node name="PlayableMissionButton" type="PanelContainer"]
+script = ExtResource("1_ctid8")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
+clip_contents = true
+custom_minimum_size = Vector2(360, 0)
+layout_mode = 2
+
+[node name="NameLabel" type="Label" parent="HBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 2
+text = "The plight of the drones"
+label_settings = ExtResource("1_73nha")
+
+[node name="EntitiesLabel" type="Label" parent="HBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "3 Enemies
+0 Allies"
+
+[node name="Control" type="PanelContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_type_variation = &"PanelDarken"
+
+[node name="QuoteLabel" type="Label" parent="HBoxContainer/Control"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "\"Alone, it's a spark; together, a blaze. Careful when they team up!\""
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer"]
+custom_minimum_size = Vector2(360, 0)
+layout_mode = 2
+alignment = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="Label" type="Label" parent="HBoxContainer/HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Best Time"
+horizontal_alignment = 1
+
+[node name="TimeLabel" type="Label" parent="HBoxContainer/HBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 7
+text = "10.0s"
+label_settings = SubResource("LabelSettings_ls2ht")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="HBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="Label" type="Label" parent="HBoxContainer/HBoxContainer/VBoxContainer3"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Best Score"
+horizontal_alignment = 1
+
+[node name="ScoreLabel" type="Label" parent="HBoxContainer/HBoxContainer/VBoxContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 7
+text = "20000"
+label_settings = SubResource("LabelSettings_ls2ht")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="HBoxContainer/HBoxContainer"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="Label" type="Label" parent="HBoxContainer/HBoxContainer/VBoxContainer2"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Best Rank"
+horizontal_alignment = 1
+
+[node name="RankLabel" type="Label" parent="HBoxContainer/HBoxContainer/VBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+text = "S"
+label_settings = SubResource("LabelSettings_i0wij")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Button" type="Button" parent="."]
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+
+[connection signal="pressed" from="Button" to="." method="OnButtonPressed"]

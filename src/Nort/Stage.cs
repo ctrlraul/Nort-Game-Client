@@ -42,7 +42,9 @@ public partial class Stage : Node2D
     private readonly List<string> problems = new();
     private readonly Dictionary<string, Entity> entitiesMap = new();
     public readonly List<PartData> partsCollected = new();
-    
+
+    private string missionId;
+    private DateTime missionStartTime;
     private int objectivesTotal;
     private int objectivesCompleted;
 
@@ -118,6 +120,9 @@ public partial class Stage : Node2D
     {
         Clear();
 
+        missionId = mission.id;
+        missionStartTime = DateTime.Now;
+
         logger.Log($"Loading mission '{mission.displayName}'");
 
         foreach (EntitySetup entitySetup in mission.entitySetups)
@@ -162,20 +167,25 @@ public partial class Stage : Node2D
     [Connectable]
     public void CompleteMission()
     {
-        MissionCompletion missionCompletion = new()
-        {
-            partsCollected = partsCollected.ToArray()
-        };
+        TimeSpan time = DateTime.Now - missionStartTime;
+        float score = 1337;
 
         if (ShouldSaveProgress())
         {
-            foreach (PartData partData in partsCollected)
-            {
-                LocalPlayersManager.Instance.AddPart(Game.Instance.CurrentPlayer, partData);
-            }
+            Player currentPlayer = Game.Instance.CurrentPlayer;
             
-            LocalPlayersManager.Instance.StoreLocalPlayer(Game.Instance.CurrentPlayer);
+            foreach (PartData partData in partsCollected)
+                LocalPlayersManager.Instance.AddPart(currentPlayer, partData);
+
+            LocalPlayersManager.Instance.UpdateMissionRecord(currentPlayer, missionId, (float)time.TotalSeconds, score);
+            LocalPlayersManager.Instance.StoreLocalPlayer(currentPlayer);
         }
+
+        MissionCompletion missionCompletion = new(
+            (float)time.TotalSeconds,
+            score,
+            partsCollected.ToArray()
+        );
 
         MissionCompleted?.Invoke(missionCompletion);
     }
@@ -188,6 +198,8 @@ public partial class Stage : Node2D
         problems.Clear();
         entitiesMap.Clear();
         partsCollected.Clear();
+        missionId = null;
+        // missionStartTime = ;
         objectivesTotal = 0;
         objectivesCompleted = 0;
         Player = null;

@@ -32,7 +32,7 @@ public static class Config
         public const string LocalPlayers = "res://Scenes/Pages/LocalPlayersPage/LocalPlayersPage.tscn";
         public const string Lobby = "res://Scenes/Pages/LobbyPage.tscn";
         public const string CraftBuilder = "res://Scenes/Pages/CraftBuilder/CraftBuilder.tscn";
-        public const string Mission = "res://Scenes/Pages/MissionHud/MissionHud.tscn";
+        public const string MissionHud = "res://Scenes/Pages/MissionHud/MissionHud.tscn";
         public const string MissionEditor = "res://Scenes/Pages/Editor/Editor.tscn";
     }
 

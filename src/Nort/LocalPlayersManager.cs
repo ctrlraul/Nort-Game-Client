@@ -88,6 +88,7 @@ public class LocalPlayersManager : Singleton<LocalPlayersManager>
         try
         {
             player.SaveJson(path);
+            logger.Log("Progress Stored");
         }
         catch (Exception exception)
         {
@@ -123,6 +124,17 @@ public class LocalPlayersManager : Singleton<LocalPlayersManager>
     public void AddPart(Player player, PartData partData)
     {
         player?.parts.Add(partData);
+    }
+
+    public void UpdateMissionRecord(Player player, string missionId, float time, float score)
+    {
+        if (!player.missionRecords.TryGetValue(missionId, out MissionRecord record))
+            record = new MissionRecord();
+
+        record.bestTime = Mathf.Min(record.bestTime, time);
+        record.bestScore = Mathf.Max(record.bestScore, score);
+
+        player.missionRecords[missionId] = record;
     }
 
     private static string GetPathForPlayerFile(string playerId)

@@ -48,72 +48,71 @@ unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
 
-[node name="LeftSide" type="Control" parent="InterfaceRoot/UiSectionsContainer"]
+[node name="LeftSide" type="VBoxContainer" parent="InterfaceRoot/UiSectionsContainer"]
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 2
 mouse_filter = 2
 
 [node name="ReturnButton" parent="InterfaceRoot/UiSectionsContainer/LeftSide" instance=ExtResource("3_c0oqk")]
-layout_mode = 0
+layout_mode = 2
+
+[node name="Panel" type="PanelContainer" parent="InterfaceRoot/UiSectionsContainer/LeftSide"]
+custom_minimum_size = Vector2(256, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 6
+
+[node name="VBoxContainer" type="VBoxContainer" parent="InterfaceRoot/UiSectionsContainer/LeftSide/Panel"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="EntityButtons" type="VBoxContainer" parent="InterfaceRoot/UiSectionsContainer/LeftSide/Panel/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="InterfaceRoot/UiSectionsContainer/LeftSide/Panel/VBoxContainer/EntityButtons"]
+layout_mode = 2
+text = "Entities"
+
+[node name="PlayerButton" type="Button" parent="InterfaceRoot/UiSectionsContainer/LeftSide/Panel/VBoxContainer/EntityButtons"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 8
+text = "Player"
+
+[node name="CarrierButton" type="Button" parent="InterfaceRoot/UiSectionsContainer/LeftSide/Panel/VBoxContainer/EntityButtons"]
+layout_mode = 2
+size_flags_vertical = 8
+text = "Carrier"
+
+[node name="DroneButton" type="Button" parent="InterfaceRoot/UiSectionsContainer/LeftSide/Panel/VBoxContainer/EntityButtons"]
+layout_mode = 2
+size_flags_vertical = 8
+text = "Drone"
+
+[node name="OrphanPartButton" type="Button" parent="InterfaceRoot/UiSectionsContainer/LeftSide/Panel/VBoxContainer/EntityButtons"]
+layout_mode = 2
+size_flags_vertical = 8
+text = "Orphan Part
+"
 
 [node name="VBoxContainer2" type="HBoxContainer" parent="InterfaceRoot/UiSectionsContainer/LeftSide"]
-layout_mode = 1
-anchors_preset = 2
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_top = -20.0
-offset_right = 20.0
-grow_vertical = 0
+layout_mode = 2
 
 [node name="ImportButton" type="Button" parent="InterfaceRoot/UiSectionsContainer/LeftSide/VBoxContainer2"]
 layout_mode = 2
+size_flags_horizontal = 3
 text = "Import
 "
 
 [node name="ExportButton" type="Button" parent="InterfaceRoot/UiSectionsContainer/LeftSide/VBoxContainer2"]
 layout_mode = 2
+size_flags_horizontal = 3
 text = "Export"
 
 [node name="Center" type="Control" parent="InterfaceRoot/UiSectionsContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 2
-
-[node name="HBoxContainer" type="HBoxContainer" parent="InterfaceRoot/UiSectionsContainer/Center"]
-layout_mode = 1
-anchors_preset = 12
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = -113.0
-offset_bottom = -72.0
-grow_horizontal = 2
-grow_vertical = 0
-size_flags_horizontal = 3
-mouse_filter = 2
-alignment = 1
-
-[node name="PlayerButton" type="Button" parent="InterfaceRoot/UiSectionsContainer/Center/HBoxContainer"]
-visible = false
-layout_mode = 2
-size_flags_vertical = 8
-text = "Player"
-
-[node name="CarrierButton" type="Button" parent="InterfaceRoot/UiSectionsContainer/Center/HBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 8
-text = "Carrier"
-
-[node name="DroneButton" type="Button" parent="InterfaceRoot/UiSectionsContainer/Center/HBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 8
-text = "Drone"
-
-[node name="OrphanPartButton" type="Button" parent="InterfaceRoot/UiSectionsContainer/Center/HBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 8
-text = "Orphan Part
-"
 
 [node name="VBoxContainer" type="VBoxContainer" parent="InterfaceRoot/UiSectionsContainer/Center"]
 layout_mode = 1
@@ -202,12 +201,12 @@ layout_mode = 2
 
 [connection signal="gui_input" from="InterfaceRoot" to="." method="OnInterfaceRootGuiInput"]
 [connection signal="pressed" from="InterfaceRoot/EntityConnectionHint/ConnectToStageButton" to="." method="OnConnectToStageButtonPressed"]
+[connection signal="pressed" from="InterfaceRoot/UiSectionsContainer/LeftSide/Panel/VBoxContainer/EntityButtons/PlayerButton" to="." method="OnPlayerButtonPressed"]
+[connection signal="pressed" from="InterfaceRoot/UiSectionsContainer/LeftSide/Panel/VBoxContainer/EntityButtons/CarrierButton" to="." method="OnCarrierButtonPressed"]
+[connection signal="pressed" from="InterfaceRoot/UiSectionsContainer/LeftSide/Panel/VBoxContainer/EntityButtons/DroneButton" to="." method="OnDroneButtonPressed"]
+[connection signal="pressed" from="InterfaceRoot/UiSectionsContainer/LeftSide/Panel/VBoxContainer/EntityButtons/OrphanPartButton" to="." method="OnOrphanPartButtonPressed"]
 [connection signal="pressed" from="InterfaceRoot/UiSectionsContainer/LeftSide/VBoxContainer2/ImportButton" to="." method="OnImportButtonPressed"]
 [connection signal="pressed" from="InterfaceRoot/UiSectionsContainer/LeftSide/VBoxContainer2/ExportButton" to="." method="OnExportButtonPressed"]
-[connection signal="pressed" from="InterfaceRoot/UiSectionsContainer/Center/HBoxContainer/PlayerButton" to="." method="OnPlayerButtonPressed"]
-[connection signal="pressed" from="InterfaceRoot/UiSectionsContainer/Center/HBoxContainer/CarrierButton" to="." method="OnCarrierButtonPressed"]
-[connection signal="pressed" from="InterfaceRoot/UiSectionsContainer/Center/HBoxContainer/DroneButton" to="." method="OnDroneButtonPressed"]
-[connection signal="pressed" from="InterfaceRoot/UiSectionsContainer/Center/HBoxContainer/OrphanPartButton" to="." method="OnOrphanPartButtonPressed"]
 [connection signal="focus_exited" from="InterfaceRoot/UiSectionsContainer/Center/VBoxContainer/MissionNameLabel" to="." method="OnMissionNameLabelFocusExited"]
 [connection signal="pressed" from="InterfaceRoot/UiSectionsContainer/Center/CraftBuilderButton" to="." method="OnCraftBuilderButtonPressed"]
 [connection signal="pressed" from="InterfaceRoot/UiSectionsContainer/RightSide/TestButton" to="." method="OnTestButtonPressed"]

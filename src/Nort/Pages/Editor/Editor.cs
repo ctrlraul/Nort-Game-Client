@@ -470,7 +470,7 @@ public partial class Editor : Page
     private void OnTestButtonPressed()
     {
         _ = PagesNavigator.Instance.GoTo(
-            Config.Pages.Mission,
+            Config.Pages.MissionHud,
             new MissionHud.NavigationData(true, CreateMission())
         );
     }

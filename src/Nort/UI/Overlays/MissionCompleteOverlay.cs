@@ -16,7 +16,7 @@ public partial class MissionCompleteOverlay : CanvasLayer
 
 	public void SetMissionCompletion(MissionCompletion missionCompletion)
 	{
-		foreach (PartData partData in missionCompletion.partsCollected)
+		foreach (PartData partData in missionCompletion.PartsCollected)
 		{
 			PartsListItem listItem = partsCollectedList.AddItem(partData);
 			listItem.Color = Assets.Instance.PlayerFaction.Color;

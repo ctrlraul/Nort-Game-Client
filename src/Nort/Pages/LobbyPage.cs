@@ -1,29 +1,51 @@
 using System.Threading.Tasks;
-using Nort.Entities;
+using CtrlRaul.Godot;
+using CtrlRaul.Godot.Linq;
+using Godot;
+using Nort.UI;
 
 namespace Nort.Pages;
 
 public partial class LobbyPage : Page
 {
-    public override async Task Initialize()
-    {
-        await Game.Instance.Initialize();
-    }
+    [Export] private PackedScene playableMissionButtonScene;
 
+    [Ready] public Control missionsContainer;
+    [Ready] public DisplayCraft displayCraft;
+
+    
     public override void _Ready()
     {
         base._Ready();
-        Stage.Instance.AddEntity<PlayerCraft>();
+        this.InitializeReady();
+        missionsContainer.QueueFreeChildren();
     }
 
-    private void OnCraftBuilderButtonPressed()
+
+    public override async Task Initialize()
     {
-        _ = PagesNavigator.Instance.GoTo(Config.Pages.CraftBuilder);
+        await Game.Instance.Initialize();
+
+        foreach (Mission mission in Assets.Instance.GetMissions())
+        {
+            PlayableMissionButton listItem = playableMissionButtonScene.Instantiate<PlayableMissionButton>();
+            missionsContainer.AddChild(listItem);
+            listItem.SetMission(mission);
+        }
+
+        displayCraft.Blueprint = Game.Instance.CurrentPlayer.blueprint;
+        displayCraft.Color = Assets.Instance.PlayerFaction.Color;
     }
 
-    private void OnTestButtonPressed()
+
+    private async void OnEditCraftButtonPressed()
     {
-        MissionHud.NavigationData data = new(fromEditor:false, Assets.Instance.GetMission("basics"));
-        _ = PagesNavigator.Instance.GoTo(Config.Pages.Mission, data);
+        await PagesNavigator.Instance.GoTo(Config.Pages.CraftBuilder);
+    }
+
+    private async void OnReturnButtonPressed()
+    {
+        Game.Instance.CurrentPlayer = null;
+        await PagesNavigator.Instance.GoBack();
     }
 }

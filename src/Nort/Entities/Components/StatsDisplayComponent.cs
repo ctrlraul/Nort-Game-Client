@@ -9,6 +9,7 @@ public partial class StatsDisplayComponent : EntityComponent
     [Ready] public Node2D hull;
     [Ready] public Node2D core;
 
+
     public override void _Ready()
     {
         base._Ready();

@@ -1,11 +1,14 @@
-[gd_scene load_steps=4 format=3 uid="uid://ntcpn7ia0jqa"]
+[gd_scene load_steps=6 format=3 uid="uid://ntcpn7ia0jqa"]
 
 [ext_resource type="Script" path="res://Nort/Pages/LobbyPage.cs" id="1_bjtg4"]
 [ext_resource type="Theme" uid="uid://85byrm5eq3ab" path="res://OtherResources/theme.tres" id="2_nbsui"]
 [ext_resource type="PackedScene" uid="uid://cdwor48b8w6ca" path="res://Scenes/UI/ReturnButton.tscn" id="3_mefwj"]
+[ext_resource type="PackedScene" uid="uid://cxdrb6lxh18qh" path="res://Scenes/UI/DisplayCraft.tscn" id="5_2cnfo"]
+[ext_resource type="PackedScene" uid="uid://issl46qh1ia5" path="res://Scenes/Pages/PlayableMissionButton.tscn" id="5_r5knx"]
 
 [node name="LobbyPage" type="CanvasLayer"]
 script = ExtResource("1_bjtg4")
+playableMissionButtonScene = ExtResource("5_r5knx")
 
 [node name="Theme" type="Control" parent="."]
 layout_mode = 3
@@ -17,7 +20,55 @@ grow_vertical = 2
 mouse_filter = 2
 theme = ExtResource("2_nbsui")
 
-[node name="MarginContainer" type="MarginContainer" parent="Theme"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Theme"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="Theme/HBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"WindowMarginContainer"
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="Theme/HBoxContainer/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+alignment = 1
+
+[node name="ColorRect" type="ColorRect" parent="Theme/HBoxContainer/MarginContainer/VBoxContainer2"]
+custom_minimum_size = Vector2(400, 400)
+layout_mode = 2
+color = Color(0, 0, 0, 0.313726)
+
+[node name="DisplayCraft" parent="Theme/HBoxContainer/MarginContainer/VBoxContainer2/ColorRect" instance=ExtResource("5_2cnfo")]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.75, 0.75)
+
+[node name="EditButton" type="Button" parent="Theme/HBoxContainer/MarginContainer/VBoxContainer2"]
+layout_mode = 2
+text = "Edit"
+
+[node name="ReturnButton" parent="Theme/HBoxContainer/MarginContainer" instance=ExtResource("3_mefwj")]
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="ColorRect" type="ColorRect" parent="Theme/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+color = Color(0, 0, 0, 0.313726)
+
+[node name="MarginContainer" type="MarginContainer" parent="Theme/HBoxContainer/ColorRect"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -26,48 +77,12 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_type_variation = &"WindowMarginContainer"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Theme/MarginContainer"]
+[node name="MissionsContainer" type="VBoxContainer" parent="Theme/HBoxContainer/ColorRect/MarginContainer"]
+unique_name_in_owner = true
 layout_mode = 2
-mouse_filter = 2
 
-[node name="Header" type="MarginContainer" parent="Theme/MarginContainer/VBoxContainer"]
+[node name="PlayableMissionButton" parent="Theme/HBoxContainer/ColorRect/MarginContainer/MissionsContainer" instance=ExtResource("5_r5knx")]
 layout_mode = 2
-size_flags_vertical = 0
-mouse_filter = 2
-theme_override_constants/margin_left = 0
-theme_override_constants/margin_top = 0
-theme_override_constants/margin_right = 0
-theme_override_constants/margin_bottom = 0
 
-[node name="ReturnButton" parent="Theme/MarginContainer/VBoxContainer/Header" instance=ExtResource("3_mefwj")]
-layout_mode = 2
-size_flags_vertical = 0
-
-[node name="TestButton" type="Button" parent="Theme/MarginContainer/VBoxContainer/Header"]
-custom_minimum_size = Vector2(120, 0)
-layout_mode = 2
-size_flags_horizontal = 4
-text = "Test"
-
-[node name="Main" type="Control" parent="Theme/MarginContainer/VBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-mouse_filter = 2
-
-[node name="Footer" type="MarginContainer" parent="Theme/MarginContainer/VBoxContainer"]
-layout_mode = 2
-mouse_filter = 2
-theme_override_constants/margin_left = 0
-theme_override_constants/margin_top = 0
-theme_override_constants/margin_right = 0
-theme_override_constants/margin_bottom = 0
-
-[node name="CraftBuilderButton" type="Button" parent="Theme/MarginContainer/VBoxContainer/Footer"]
-custom_minimum_size = Vector2(120, 0)
-layout_mode = 2
-size_flags_horizontal = 4
-text = "Craft 
-Builder"
-
-[connection signal="pressed" from="Theme/MarginContainer/VBoxContainer/Header/TestButton" to="." method="OnTestButtonPressed"]
-[connection signal="pressed" from="Theme/MarginContainer/VBoxContainer/Footer/CraftBuilderButton" to="." method="OnCraftBuilderButtonPressed"]
+[connection signal="pressed" from="Theme/HBoxContainer/MarginContainer/VBoxContainer2/EditButton" to="." method="OnEditCraftButtonPressed"]
+[connection signal="pressed" from="Theme/HBoxContainer/MarginContainer/ReturnButton" to="." method="OnReturnButtonPressed"]

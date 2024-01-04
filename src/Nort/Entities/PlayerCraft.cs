@@ -133,6 +133,14 @@ public partial class PlayerCraft : Craft
     }
 
 
+    protected override void OnSpawning()
+    {
+        if (Game.Instance.CurrentPlayer != null)
+            blueprint = Game.Instance.CurrentPlayer.blueprint;
+
+        base.OnSpawning();
+    }
+
     private void OnInputEventKey(InputEventKey inputEventKey)
     {
         if (Game.Instance.InMissionEditor)
