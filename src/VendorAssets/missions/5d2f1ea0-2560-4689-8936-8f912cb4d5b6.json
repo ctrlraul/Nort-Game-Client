@@ -25,7 +25,7 @@
 			"typeName": "ConductorCraft",
 			"playerObjective": null,
 			"position": {
-				"X": 1792.0,
+				"X": 1536.0,
 				"Y": -64.0
 			},
 			"connections": [],
@@ -61,24 +61,6 @@
 			"subTypeData": {
 				"FactionId": "ruby",
 				"BlueprintId": "strike"
-			}
-		},
-		{
-			"autoSpawn": true,
-			"angle": 0.0,
-			"uuid": "58b32877-2a37-4fe0-b013-aca8bca50120",
-			"typeName": "OrphanPart",
-			"playerObjective": "Collected",
-			"position": {
-				"X": 1280.0,
-				"Y": 0.0
-			},
-			"connections": [],
-			"subTypeData": {
-				"PartId": "tail_1",
-				"SkillId": "bullet",
-				"Flipped": false,
-				"Shiny": false
 			}
 		},
 		{
