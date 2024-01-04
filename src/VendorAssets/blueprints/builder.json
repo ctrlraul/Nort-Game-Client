@@ -1,32 +1,68 @@
 {
-	"id": "builder",
-	"core": {
-		"flipped": false,
-		"x": 0.0,
-		"y": 0.0,
-		"angle": 0.0,
-		"shiny": false,
-		"partId": "core_2",
-		"skillId": "core_bullet"
-	},
-	"hulls": [
-		{
-			"flipped": false,
-			"x": 0.0,
-			"y": 80.0,
-			"angle": 0.0,
-			"shiny": false,
-			"partId": "tiny_center_1",
-			"skillId": ""
-		},
-		{
-			"flipped": false,
-			"x": 0.0,
-			"y": -80.0,
-			"angle": -180.0,
-			"shiny": false,
-			"partId": "tiny_center_1",
-			"skillId": ""
-		}
-	]
+  "id": "builder",
+  "core": {
+    "flipped": false,
+    "x": 0.0,
+    "y": 0.0,
+    "angle": 0.0,
+    "shiny": false,
+    "partId": "core_2",
+    "skillId": null
+  },
+  "hulls": [
+    {
+      "flipped": false,
+      "x": -64.0,
+      "y": 32.0,
+      "angle": -112.50098,
+      "shiny": false,
+      "partId": "MediumCenter1",
+      "skillId": ""
+    },
+    {
+      "flipped": false,
+      "x": 48.0,
+      "y": -16.0,
+      "angle": -67.5,
+      "shiny": false,
+      "partId": "wing_3",
+      "skillId": ""
+    },
+    {
+      "flipped": false,
+      "x": -48.0,
+      "y": -16.0,
+      "angle": -112.5,
+      "shiny": false,
+      "partId": "wing_3",
+      "skillId": ""
+    },
+    {
+      "flipped": false,
+      "x": 0.0,
+      "y": -32.0,
+      "angle": 0.0,
+      "shiny": false,
+      "partId": "tail_1",
+      "skillId": ""
+    },
+    {
+      "flipped": false,
+      "x": 64.0,
+      "y": 32.0,
+      "angle": -247.5,
+      "shiny": false,
+      "partId": "MediumCenter1",
+      "skillId": ""
+    },
+    {
+      "flipped": false,
+      "x": 0.0,
+      "y": 40.0,
+      "angle": -180.0,
+      "shiny": false,
+      "partId": "tail_2",
+      "skillId": ""
+    }
+  ]
 }

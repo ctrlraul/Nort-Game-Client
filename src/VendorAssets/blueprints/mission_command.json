@@ -1,0 +1,95 @@
+{
+  "id": "mission_command",
+  "core": {
+    "flipped": false,
+    "x": 0.0,
+    "y": 0.0,
+    "angle": 0.0,
+    "shiny": false,
+    "partId": "core_2",
+    "skillId": null
+  },
+  "hulls": [
+    {
+      "flipped": false,
+      "x": 0.0,
+      "y": 40.0,
+      "angle": -180.0,
+      "shiny": false,
+      "partId": "MediumCenter1",
+      "skillId": ""
+    },
+    {
+      "flipped": true,
+      "x": 48.0,
+      "y": -16.0,
+      "angle": 0.0,
+      "shiny": false,
+      "partId": "MediumWing1",
+      "skillId": ""
+    },
+    {
+      "flipped": false,
+      "x": -72.0,
+      "y": 24.0,
+      "angle": -22.5,
+      "shiny": false,
+      "partId": "wing_3",
+      "skillId": ""
+    },
+    {
+      "flipped": false,
+      "x": 0.0,
+      "y": -32.0,
+      "angle": 0.0,
+      "shiny": false,
+      "partId": "tail_2",
+      "skillId": ""
+    },
+    {
+      "flipped": false,
+      "x": -40.0,
+      "y": -88.0,
+      "angle": 0.0,
+      "shiny": false,
+      "partId": "small_antenna_1",
+      "skillId": ""
+    },
+    {
+      "flipped": false,
+      "x": -48.0,
+      "y": -16.0,
+      "angle": 0.0,
+      "shiny": false,
+      "partId": "MediumWing1",
+      "skillId": ""
+    },
+    {
+      "flipped": false,
+      "x": 72.0,
+      "y": 24.0,
+      "angle": 202.5,
+      "shiny": false,
+      "partId": "wing_3",
+      "skillId": ""
+    },
+    {
+      "flipped": false,
+      "x": -72.0,
+      "y": 56.0,
+      "angle": -202.5,
+      "shiny": false,
+      "partId": "tiny_center_1",
+      "skillId": ""
+    },
+    {
+      "flipped": false,
+      "x": 72.0,
+      "y": 56.0,
+      "angle": -157.5,
+      "shiny": false,
+      "partId": "tiny_center_1",
+      "skillId": ""
+    }
+  ]
+}

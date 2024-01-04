@@ -1,0 +1,9 @@
+{
+	"id": "MediumCenter1",
+	"displayName": "Barrel",
+	"textureName": "MediumCenter1.png",
+	"type": "HULL",
+	"hull": 40,
+	"core": 15,
+	"mass": 20
+}
