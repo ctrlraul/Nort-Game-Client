@@ -153,7 +153,7 @@ public abstract partial class Entity : Node2D
 
     private bool autoSpawn = true;
 
-    [Savable, Inspect]
+    [Inspect]
     public bool AutoSpawn
     {
         get => autoSpawn;
@@ -171,7 +171,6 @@ public abstract partial class Entity : Node2D
         }
     }
 
-    [Savable]
     [Inspect(nameof(PlayerObjectiveOptions))]
     public string PlayerObjective { get; set; }
 
