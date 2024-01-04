@@ -19,6 +19,7 @@ public partial class DragReceiver : Control
         DragManager.Instance.DragStart += OnDragStart;
         DragManager.Instance.DragStop += OnDragStop;
         Hide();
+        Modulate = Modulate with { A = 0 };
         SetProcessInput(false);
     }
 
@@ -39,7 +40,8 @@ public partial class DragReceiver : Control
     private void OnDragStart(DragData dragData)
     {
         Show();
-        Modulate = Modulate with { A = 0.2f };
+        if (OS.HasFeature("editor"))
+            Modulate = Modulate with { A = 0.2f };
     }
 
     private void OnDragStop(DragData dragData)
@@ -52,7 +54,8 @@ public partial class DragReceiver : Control
     private void OnMouseEntered()
     {
         SetProcessInput(true);
-        Modulate = Modulate with { A = 0.5f };
+        if (OS.HasFeature("editor"))
+            Modulate = Modulate with { A = 0.5f };
         MouseOver = true;
         DragEntered?.Invoke();
     }
