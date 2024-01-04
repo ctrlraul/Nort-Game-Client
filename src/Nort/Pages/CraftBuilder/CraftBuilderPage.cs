@@ -64,23 +64,22 @@ public partial class CraftBuilderPage : Page
     private bool panning;
     private bool mouseDownOnCanvasManipulationHitBox;
 
-    private Color color = Config.FactionlessColor;
-    private Color Color
+    private Faction faction;
+
+    private Faction Faction
     {
-        get => color;
+        get => faction;
         set
         {
-            displayCraft.Color = value;
-            partsInventory.Color = value;
-            partInspector.Color = value;
-            draggedPartPreview.Color = value;
+            faction = value;
+
+            displayCraft.Color = faction.Color;
+            partsInventory.partsList.Faction = faction;
+            partInspector.Color = faction.Color;
+            draggedPartPreview.Color = faction.Color;
 
             foreach (CoresListItem item in coresList.GetChildren().Cast<CoresListItem>())
-            {
-                item.Color = value;
-            }
-
-            color = value;
+                item.Color = faction.Color;
         }
     }
 
@@ -91,7 +90,7 @@ public partial class CraftBuilderPage : Page
 
         displayCraft.BlueprintChanged += craftSummary.SetBlueprint;
         dragReceiver.DragEntered += OnDragReceiverDragEntered;
-        partsInventory.PartHovered += partInspector.SetPartData;
+        partsInventory.PartDataDetailsRequested += partInspector.SetPartData;
         partsInventoryDragReceiver.DragEntered += OnPartsInventoryDragReceiverDragEntered;
         partsInventoryDragReceiver.DragExited += OnPartsInventoryDragReceiverDragExited;
         partsInventoryDragReceiver.DragDrop += OnPartsInventoryDragReceiverDragDrop;
@@ -146,14 +145,14 @@ public partial class CraftBuilderPage : Page
             blueprintIdInput.Visible = true;
             blueprintButtons.Visible = true;
             SetBlueprint(Assets.Instance.InitialBlueprint);
-            Color = Assets.Instance.DefaultEnemyFaction.Color;
+            Faction = Assets.Instance.DefaultEnemyFaction;
         }
         else
         {
             blueprintIdInput.Visible = false;
             blueprintButtons.Visible = false;
             SetBlueprint(Game.Instance.CurrentPlayer.blueprint);
-            Color = Assets.Instance.PlayerFaction.Color;
+            Faction = Assets.Instance.PlayerFaction;
         }
     }
     
@@ -165,7 +164,7 @@ public partial class CraftBuilderPage : Page
         coresList.AddChild(item);
 
         item.PartData = partData;
-        item.Color = Color;
+        item.Color = Faction?.Color ?? Config.FactionlessColor;
         item.Pressed += () => SetCoreBlueprint(blueprint);
         item.MouseEntered += () => partInspector.SetPartData(partData);
     }
@@ -194,20 +193,20 @@ public partial class CraftBuilderPage : Page
 
         foreach (BlueprintPart part in blueprint.hulls)
         {
-            AddPart(part);
+            if (partsInventory.TryTakingPart(PartData.From(part)) || editorMode)
+                AddPart(part);
         }
 
-        if (Game.Instance.CurrentPlayer != null)
-        {
-            displayCraft.SetCoreBlueprint(blueprint.core); // This way it's not editable
-        }
-        else
+        if (editorMode)
         {
             AddPart(blueprint.core, true);
         }
+        else
+        {
+            displayCraft.SetCoreBlueprint(blueprint.core); // This way it's not editable
+        }
 
         partInspector.SetPart(displayCraft.Core);
-        //partsInventory.SetBlueprint(blueprint);
         craftSummary.SetBlueprint(displayCraft.Blueprint);
     }
 
@@ -260,8 +259,8 @@ public partial class CraftBuilderPage : Page
             cores = Game.Instance.CurrentPlayer.Cores.ToList();
         }
 
-        partsInventory.Clear();
-        partsInventory.AddParts(hulls);
+        partsInventory.partsList.Clear();
+        partsInventory.partsList.Add(hulls);
 
         coresList.QueueFreeChildren();
 
@@ -397,11 +396,6 @@ public partial class CraftBuilderPage : Page
     
     #region EventHandlers
 
-    private void OnPartsInventoryPartsListItemHovered(PartsListItem partsListItem)
-    {
-        partInspector.SetPartData(partsListItem.Value);
-    }
-
     private void OnPartTransformControlsRotate(float angle)
     {
         hoveredPartOutline.Visible = false;
@@ -527,6 +521,9 @@ public partial class CraftBuilderPage : Page
 
     private void OnPartsInventoryDragReceiverDragDrop(DragData dragData)
     {
+        // if (editorMode)
+        //     return;
+        
         switch (dragData.data)
         {
             case PartData partData:
@@ -536,7 +533,6 @@ public partial class CraftBuilderPage : Page
             case BlueprintPart blueprintPart:
                 partsInventory.PutPart(PartData.From(blueprintPart));
                 break;
-            
         }
     }
 

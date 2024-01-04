@@ -12,7 +12,8 @@ theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 0
 theme_override_constants/margin_bottom = 0
 script = ExtResource("1_clrt8")
-ListItemScene = ExtResource("2_rai3r")
+listItemScene = ExtResource("2_rai3r")
+listItemOutlineEnabled = true
 
 [node name="ListItemsContainer" type="GridContainer" parent="."]
 unique_name_in_owner = true
@@ -34,6 +35,7 @@ layout_mode = 2
 
 [node name="EmptyTextLabel" type="Label" parent="."]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 text = "Empty"
 horizontal_alignment = 1

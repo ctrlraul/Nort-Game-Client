@@ -1,33 +1,39 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using CtrlRaul;
 using CtrlRaul.Godot;
 using CtrlRaul.Godot.Linq;
-using CtrlRaul.Interfaces;
 using Godot;
 
 namespace Nort.Listing;
 
-public partial class PartsList : MarginContainer, IItemsList<PartsListItem, PartData>
+public partial class PartsList : Control
 {
-	[Export] public PackedScene ListItemScene { get; private set; }
+	public event Action<PartsListItem> ListItemAdded;
 
-	[Ready] public Control ListItemsContainer { get; set; }
-	[Ready] public Control EmptyTextLabel { get; set; }
+	[Export] private PackedScene listItemScene;
+	[Export] private bool listItemOutlineEnabled;
 
-	private readonly Dictionary<PartData, PartsListItem> valueToListItem = new();
+	[Ready] public Control listItemsContainer;
+	[Ready] public Control emptyTextLabel;
 
-	
-	private Color color;
-	public Color Color
+	private readonly Dictionary<string, PartsListItem> discriminatorToListItem = new();
+
+	private Faction faction;
+
+	public Faction Faction
 	{
-		get => color;
+		get => faction;
 		set
 		{
-			color = value;
-			foreach (PartsListItem listItem in GetItems())
-				listItem.Color = color;
+			faction = value;
+
+			foreach (PartsListItem listItem in discriminatorToListItem.Values)
+				listItem.Color = listItem.PartData.shiny ? faction.ColorShiny : faction.Color;
 		}
 	}
+	
 	
 	public override void _Ready()
 	{
@@ -36,53 +42,79 @@ public partial class PartsList : MarginContainer, IItemsList<PartsListItem, Part
 		Clear();
 	}
 
-	public void SetBlueprint(Blueprint blueprint)
+
+	public void Add(PartData partData, int count = 1)
 	{
-		foreach (PartsListItem listItem in blueprint.hulls.Select(PartData.From).Select(GetItem))
+		emptyTextLabel.Visible = false;
+
+		string discriminator = partData.Discriminator;
+
+		if (discriminatorToListItem.TryGetValue(discriminator, out PartsListItem listItem))
 		{
-			listItem.Count -= 1;
+			listItem.Count += count;
+		}
+		else
+		{
+			PartsListItem newListItem = listItemScene.Instantiate<PartsListItem>();
+
+			listItemsContainer.AddChild(newListItem);
+
+			newListItem.SetOutlineEnabled(listItemOutlineEnabled);
+			newListItem.PartData = partData;
+			newListItem.Count = count;
+			newListItem.Color = (
+				Faction != null
+					? (partData.shiny ? Faction.ColorShiny : Faction.Color)
+					: Config.FactionlessColor
+			);
+
+			discriminatorToListItem.Add(partData.Discriminator, newListItem);
+
+			ListItemAdded?.Invoke(newListItem);
 		}
 	}
+
+	public void Add(IEnumerable<PartData> partsData)
+	{
+		foreach (PartData partData in partsData)
+			Add(partData);
+	}
+
+	public void Remove(PartData value, int count = 1)
+	{
+		string discriminator = value.Discriminator;
+
+		if (discriminatorToListItem.TryGetValue(discriminator, out PartsListItem listItem))
+		{
+			listItem.Count -= count;
+
+			if (listItem.Count <= 0)
+			{
+				if (listItem.Count < 0)
+					Logger.Warn("PartsList", "listItem.Count < 0");
+
+				discriminatorToListItem.Remove(discriminator);
+				listItem.QueueFree();
+
+				if (!discriminatorToListItem.Any())
+					emptyTextLabel.Visible = true;
+			}
+		}
+		else
+		{
+			Logger.Warn("PartsList", "Tried to remove unavailable item");
+		}
+	}
+
+	public bool Has(PartData partData)
+	{
+		return discriminatorToListItem.ContainsKey(partData.Discriminator);
+	}
 	
-	public IEnumerable<PartsListItem> GetItems()
-	{
-		return ListItemsContainer.GetChildren().Cast<PartsListItem>();
-	}
-
-	public PartsListItem GetItem(PartData value)
-	{
-		return valueToListItem.TryGetValue(value, out PartsListItem listItem) ? listItem : null;
-	}
-
-	public IEnumerable<PartsListItem> AddItems(IEnumerable<PartData> values)
-	{
-		return values.Select(AddItem);
-	}
-
-	public PartsListItem AddItem(PartData value)
-	{
-		EmptyTextLabel.Visible = false;
-		PartsListItem listItem = ListItemScene.Instantiate<PartsListItem>();
-		ListItemsContainer.AddChild(listItem);
-		listItem.SetFor(value);
-		valueToListItem.Add(value, listItem);
-		return listItem;
-	}
-
-	public bool RemoveItem(PartData value)
-	{
-		PartsListItem listItem = valueToListItem[value];
-		listItem.QueueFree();
-		ListItemsContainer.RemoveChild(listItem);
-		if (ListItemsContainer.GetChildCount() == 0)
-			EmptyTextLabel.Visible = true;
-		return valueToListItem.Remove(value);
-	}
-
 	public void Clear()
 	{
-		EmptyTextLabel.Visible = true;
-		valueToListItem.Clear();
-		ListItemsContainer.QueueFreeChildren();
+		emptyTextLabel.Visible = true;
+		discriminatorToListItem.Clear();
+		listItemsContainer.QueueFreeChildren();
 	}
 }

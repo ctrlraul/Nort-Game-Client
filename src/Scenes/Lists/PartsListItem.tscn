@@ -49,7 +49,3 @@ offset_bottom = 18.0
 grow_horizontal = 2
 text = "x99"
 label_settings = SubResource("LabelSettings_3s4op")
-
-[connection signal="button_down" from="." to="." method="OnButtonDown"]
-[connection signal="mouse_entered" from="." to="." method="OnMouseEntered"]
-[connection signal="mouse_exited" from="." to="." method="OnMouseExited"]

@@ -14,15 +14,13 @@ public partial class MissionCompleteOverlay : CanvasLayer
 	{
 		this.InitializeReady();
 		partsCollectedList.Clear();
+		partsCollectedList.Faction = Assets.Instance.PlayerFaction;
 	}
 
 	public void SetMissionCompletion(MissionCompletion missionCompletion)
 	{
 		foreach (PartData partData in missionCompletion.PartsCollected)
-		{
-			PartsListItem listItem = partsCollectedList.AddItem(partData);
-			listItem.Color = Assets.Instance.PlayerFaction.Color;
-		}
+			partsCollectedList.Add(partData);
 
 		scoreLabel.Text = missionCompletion.Score.ToString(CultureInfo.CurrentCulture);
 	}

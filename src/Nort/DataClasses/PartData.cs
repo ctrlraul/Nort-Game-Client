@@ -23,6 +23,8 @@ public class PartData : ISavable
         set => skillId = value != null ? value.id: string.Empty;
     }
 
+    [JsonIgnore] public string Discriminator => $"{partId}-{skillId}-{shiny}";
+
 
     public static PartData From(Part part)
     {
