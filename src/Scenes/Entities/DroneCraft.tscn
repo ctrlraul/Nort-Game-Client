@@ -30,12 +30,10 @@ monitorable = false
 shape = SubResource("CircleShape2D_xdbrn")
 debug_color = Color(1, 0.501961, 0, 0)
 
-[node name="PathLineDebug" type="Node" parent="." index="4"]
-
-[node name="PathLine2D" type="Line2D" parent="PathLineDebug" index="0"]
+[node name="RememberTargetTimer" type="Timer" parent="." index="4"]
 unique_name_in_owner = true
-width = 2.0
-default_color = Color(0, 1, 0, 1)
+wait_time = 2.0
 
 [connection signal="area_entered" from="Range" to="." method="OnRangeAreaEntered"]
 [connection signal="area_exited" from="Range" to="." method="OnRangeAreaExited"]
+[connection signal="timeout" from="RememberTargetTimer" to="." method="OnRememberTargetTimerTimeout"]

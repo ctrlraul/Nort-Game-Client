@@ -33,25 +33,31 @@ public partial class DroneCraft : Craft
     public IEnumerable<string> BlueprintIdOptions => Config.DroneBlueprints;
 
     #endregion
-    
-    
-    private const int ProcessIntervalFrames = 10;
-    private const float PathPointDistanceTolerance = 200;
 
-    private readonly int processIntervalFramesOffset = (int)GD.Randi() % ProcessIntervalFrames;
-    private readonly List<Vector2> path = new();
-    private readonly List<Craft> foesInRange = new();
+
+    private const int DistanceMaintainedFromTarget = 400;
+    private const int DistanceToleratedFromTargetPosition = 32;
     
     [Ready] public FlightComponent flightComponent;
     [Ready] public Area2D range;
-    [Ready] public Line2D pathLine2D;
+    [Ready] public Timer rememberTargetTimer;
 
-    private bool IsProcessFrame => Engine.GetFramesDrawn() % ProcessIntervalFrames != processIntervalFramesOffset;
+    private CraftPart target;
+
+    private CraftPart Target
+    {
+        get => target;
+        set
+        {
+            target = value;
+            SetPhysicsProcess(IsInstanceValid(target));
+        }
+    }
+
     private Vector2 targetPosition;
-    private Craft target;
-    
 
-    public DroneCraft() : base()
+
+    public DroneCraft()
     {
         blueprint = Assets.Instance.GetBlueprint(Config.DroneBlueprints.First());
     }
@@ -60,32 +66,18 @@ public partial class DroneCraft : Craft
     public override void _Ready()
     {
         base._Ready();
-
-        if (Game.Instance.InMissionEditor)
-        {
-            SetPhysicsProcess(false);
-            range.Monitoring = false;
-        }
+        SetPhysicsProcess(false);
     }
 
     public override void _PhysicsProcess(double delta)
     {
         base._PhysicsProcess(delta);
-        
-        if (path.Any())
-        {
-            flightComponent.Direction = Position.DirectionTo(path[0]);
 
-            if (IsProcessFrame)
-            {
-                if (Position.DistanceTo(path[0]) < PathPointDistanceTolerance)
-                {
-                    path.RemoveAt(0);
-                }
-            }
-        }
-        
-        UpdateDebugVisuals();
+        targetPosition = Target.GlobalPosition +
+                         Target.GlobalPosition.DirectionTo(Position) * DistanceMaintainedFromTarget;
+
+        if (Position.DistanceTo(targetPosition) > ArtificialRadius + DistanceToleratedFromTargetPosition)
+            flightComponent.Direction = Position.DirectionTo(targetPosition);
     }
 
 
@@ -96,34 +88,42 @@ public partial class DroneCraft : Craft
         if (IsInsideTree())
             range.CollisionMask = Assets.Instance.GetFactionCollisionMask(faction);
     }
+
+
+    private void LookForNewTarget()
+    {
+        Target = (CraftPart)range.GetOverlappingAreas().FirstOrDefault();
+    }
     
 
     private void OnRangeAreaEntered(Area2D area)
     {
-        if (area.Owner is Craft craft)
-        {
-            foesInRange.Add(craft);
-        }
+        if (Target != null && rememberTargetTimer.IsStopped())
+            return;
+
+        if (!rememberTargetTimer.IsStopped())
+            rememberTargetTimer.Stop();
+
+        Target = (CraftPart)area;
     }
 
     private void OnRangeAreaExited(Area2D area)
     {
-        if (area.Owner is Craft craft)
-        {
-            foesInRange.Remove(craft);
+        if (Target == null || area != Target)
+            return;
 
-            if (!foesInRange.Any())
-            {
-                float distance = Position.DistanceTo(craft.Position);
-                path.Add(craft.Position.Lerp(Position, (craft.ArtificialRadius) / distance));
-                UpdateDebugVisuals();
-            }
+        if (Target.IsDestroyed)
+        {
+            LookForNewTarget();
+
+            return;
         }
+
+        rememberTargetTimer.Start();
     }
 
-    private void UpdateDebugVisuals()
+    private void OnRememberTargetTimerTimeout()
     {
-        if (Config.DebugAi)
-            pathLine2D.Points = new[]{ Position }.Concat(path).ToArray();
+        LookForNewTarget();
     }
 }
