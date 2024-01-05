@@ -350,10 +350,12 @@ public partial class Editor : Page
                         }
                         else
                         {
-                            if (!selection.Contains(entity))
-                                selection.Clear();
+                            bool alreadySelected = selection.Contains(entity);
 
-                            selection.Add(entity);
+                            selection.Clear();
+
+                            if (!alreadySelected)
+                                selection.Add(entity);
                         }
                         
                         entityInspector.SetEntities(selection);
