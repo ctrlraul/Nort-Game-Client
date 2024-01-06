@@ -18,8 +18,8 @@ public partial class MainMenu : Page
         base._Ready();
         this.InitializeReady();
         
-        if (!OS.HasFeature("editor"))
-            missionEditorButton.QueueFree();
+        // if (!OS.HasFeature("editor"))
+        //     missionEditorButton.QueueFree();
 
         Game.Instance.PlayerChanged += UpdatePlayerCraftDisplay;
         TreeExiting += () => Game.Instance.PlayerChanged -= UpdatePlayerCraftDisplay;
