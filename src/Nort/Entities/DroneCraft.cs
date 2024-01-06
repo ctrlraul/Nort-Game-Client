@@ -112,6 +112,9 @@ public partial class DroneCraft : Craft
 
     private void OnRangeAreaExited(Area2D area)
     {
+        if (Stage.Instance.Clearing)
+            return;
+        
         if (Target == null || area != Target)
             return;
 
