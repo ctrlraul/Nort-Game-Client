@@ -1,0 +1,35 @@
+{
+  "id": "59d2e40f-7700-4b0e-9861-229cb9562f36",
+  "displayName": "The Empty",
+  "description": "The canvas of nothingness",
+  "entitySetups": [
+    {
+      "autoSpawn": true,
+      "angle": 0.0,
+      "uuid": "1ee542a6-6746-40ef-a00f-685b06d78d64",
+      "typeName": "PlayerCraft",
+      "playerObjective": null,
+      "position": {
+        "X": 0.2,
+        "Y": 0.0
+      },
+      "connections": [],
+      "subTypeData": {
+        "TestBlueprintId": "newborn"
+      }
+    },
+    {
+      "autoSpawn": false,
+      "angle": 0.0,
+      "uuid": "63536ac4-5676-450d-9741-5f9e51e358ca",
+      "typeName": "ConductorCraft",
+      "playerObjective": null,
+      "position": {
+        "X": 300.1,
+        "Y": 0.0
+      },
+      "connections": [],
+      "subTypeData": {}
+    }
+  ]
+}
