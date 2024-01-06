@@ -26,7 +26,7 @@ public partial class CraftBuilderPage : Page
     private readonly Vector2 gridSnap = Vector2.One * 8.0f;
     private const float ZoomStep = 0.1f;
     private const float ZoomMin = 0.5f;
-    private const float ZoomMax = 1.0f;
+    private const float ZoomMax = 1.5f;
 
     [Export] private PackedScene blueprintSelectorPopupScene;
     [Export] private PackedScene coresListItemScene;
