@@ -39,10 +39,14 @@ public partial class BulletSkill : Node2D, ISkillNode
             if (value == target)
                 return;
 
+            if (IsInstanceValid(target))
+                target.Craft.FactionChanged -= LookForATarget;
+            
             target = value;
 
             if (IsInstanceValid(target))
             {
+                target.Craft.FactionChanged += LookForATarget;
                 SetProcess(true);
                 Fire();
             }
