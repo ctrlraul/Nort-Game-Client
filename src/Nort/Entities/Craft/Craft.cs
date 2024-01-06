@@ -95,6 +95,10 @@ public abstract partial class Craft : Entity
         
         foreach (CraftPart part in GetParts())
             part.Faction = Faction;
+
+        // Hack to force the physics engine to re-calculate collisions
+        // so ex-friendly crafts will detect each other as enemies.
+        Position += new Vector2(0.1f, 0);
         
         FactionChanged?.Invoke();
     }
