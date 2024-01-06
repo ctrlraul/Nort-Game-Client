@@ -88,7 +88,7 @@ public partial class BulletSkill : Node2D, ISkillNode
     
     private void ResetRotation()
     {
-        GlobalRotation = -Mathf.Pi / 2;
+        Rotation = -Part.Rotation - Mathf.Pi / 2;
     }
 
     private void UpdateCollisionMasks()
