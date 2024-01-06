@@ -42,14 +42,12 @@ public partial class BulletSkill : Node2D, ISkillNode
 
             if (IsInstanceValid(target))
             {
-                SetPhysicsProcess(true);
-                LookAt(Target.GlobalPosition);
-                rayCast2D.ForceRaycastUpdate();
+                SetProcess(true);
                 Fire();
             }
             else
             {
-                SetPhysicsProcess(false);
+                SetProcess(false);
                 PointUp();
             }
         }
@@ -69,12 +67,12 @@ public partial class BulletSkill : Node2D, ISkillNode
 
         Part.Craft.FactionChanged += OnCraftFactionChanged;
 
-        SetPhysicsProcess(false);
+        SetProcess(false);
     }
 
-    public override void _PhysicsProcess(double delta)
+    public override void _Process(double delta)
     {
-        base._PhysicsProcess(delta);
+        base._Process(delta);
         LookAt(Target.GlobalPosition);
     }
     
@@ -110,6 +108,9 @@ public partial class BulletSkill : Node2D, ISkillNode
         if (cooldownTimer.TimeLeft > 0)
             return;
 
+        LookAt(Target.GlobalPosition);
+        rayCast2D.ForceRaycastUpdate();
+        
         if (rayCast2D.GetCollider() is not CraftPart partHit)
             return;
         
