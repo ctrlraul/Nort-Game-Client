@@ -70,4 +70,4 @@ ignore_texture_size = true
 stretch_mode = 5
 
 [connection signal="pressed" from="SelectButton" to="." method="OnSelectButtonPressed"]
-[connection signal="pressed" from="MarginContainer/HBoxContainer/DeleteButton" to="." method="_on_delete_button_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/DeleteButton" to="." method="OnDeleteButtonPressed"]

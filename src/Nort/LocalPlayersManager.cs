@@ -45,28 +45,7 @@ public class LocalPlayersManager : Singleton<LocalPlayersManager>
             return players;
         }
 
-        foreach (string fileName in directory.Files())
-        {
-            string filePath = path.PathJoin(fileName);
-            try
-            {
-                FileAccess file = FileAccess.Open(filePath, FileAccess.ModeFlags.Read);
-
-                if (file == null)
-                    throw new Exception($"Failed to read local player file '{filePath}': {FileAccess.GetOpenError()}");
-
-                string json = file.GetAsText();
-
-                if (string.IsNullOrEmpty(json))
-                    throw new Exception($"Empty local player file '{filePath}'");
-
-                players.Add(JsonConvert.DeserializeObject<Player>(json));
-            }
-            catch (Exception exception)
-            {
-                logger.Error($"Failed to import local player file '{filePath}': {exception}");
-            }
-        }
+        players.AddRange(directory.ParseJsonFiles<Player>());
 
         return players;
     }
