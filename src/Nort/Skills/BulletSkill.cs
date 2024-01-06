@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Godot;
 using CtrlRaul;
 using CtrlRaul.Godot;
@@ -25,7 +26,7 @@ public partial class BulletSkill : Node2D, ISkillNode
     private const float Damage = 3;
 
     [Ready] public Area2D range;
-    [Ready] public RayCast2D rayCast2D;
+    [Ready] public Area2D pseudoRay;
     [Ready] public GpuParticles2D particles;
     [Ready] public Timer cooldownTimer;
     
@@ -90,7 +91,7 @@ public partial class BulletSkill : Node2D, ISkillNode
     private void UpdateCollisionMasks()
     {
         range.CollisionMask = Assets.Instance.GetFactionCollisionMask(Part.Faction);
-        rayCast2D.CollisionMask = range.CollisionMask;
+        pseudoRay.CollisionMask = range.CollisionMask;
         LookForATarget();
     }
 
@@ -109,16 +110,26 @@ public partial class BulletSkill : Node2D, ISkillNode
             return;
 
         LookAt(Target.GlobalPosition);
-        rayCast2D.ForceRaycastUpdate();
-        
-        if (rayCast2D.GetCollider() is not CraftPart partHit)
-            return;
-        
-        cooldownTimer.Start();
-        particles.Emitting = true;
-        partHit.Craft.TakeHit(partHit, this, Damage);
-        AudioManager.Instance.PlayBulletFired(GlobalPosition);
-        Fired?.Invoke();
+
+        CraftPart aimedPart = GetAimedPart();
+
+        if (aimedPart != null)
+        {
+            cooldownTimer.Start();
+            particles.Emitting = true;
+            aimedPart.Craft.TakeHit(aimedPart, this, Damage);
+            AudioManager.Instance.PlayBulletFired(GlobalPosition);
+            Fired?.Invoke();
+        }
+    }
+
+    private CraftPart GetAimedPart()
+    {
+        return pseudoRay
+            .GetOverlappingAreas()
+            .Cast<CraftPart>()
+            .OrderBy(part => part.GlobalPosition.DistanceTo(GlobalPosition))
+            .FirstOrDefault(part => !part.IsDestroyed);
     }
 
 

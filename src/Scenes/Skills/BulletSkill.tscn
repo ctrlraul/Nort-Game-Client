@@ -6,6 +6,9 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_v2vhg"]
 radius = 700.0
 
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_at6sy"]
+b = Vector2(700, 0)
+
 [sub_resource type="Curve" id="Curve_exlj0"]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -1.65129, 0.0, 0, 0]
 point_count = 2
@@ -39,12 +42,15 @@ monitorable = false
 shape = SubResource("CircleShape2D_v2vhg")
 debug_color = Color(1, 0, 0, 0)
 
-[node name="RayCast2D" type="RayCast2D" parent="."]
+[node name="PseudoRay" type="Area2D" parent="."]
 unique_name_in_owner = true
-target_position = Vector2(710, 0)
-hit_from_inside = true
-collide_with_areas = true
-collide_with_bodies = false
+collision_layer = 0
+collision_mask = 0
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PseudoRay"]
+shape = SubResource("SegmentShape2D_at6sy")
+debug_color = Color(1, 0, 0, 1)
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 rotation = 1.5708
