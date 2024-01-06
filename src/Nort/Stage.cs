@@ -57,8 +57,6 @@ public partial class Stage : Node2D
 
     private ConductorCraft conductor;
 
-    public bool Clearing { get; private set; }
-
 
     public override void _Ready()
     {
@@ -194,8 +192,6 @@ public partial class Stage : Node2D
 
     public void Clear()
     {
-        Clearing = true;
-        
         camera.Zoom = Vector2.One * 0.75f;
         camera.Position = Vector2.Zero;
         entitiesContainer.QueueFreeChildren();
@@ -208,8 +204,6 @@ public partial class Stage : Node2D
         objectivesCompleted = 0;
         Player = null;
         conductor = null;
-
-        Clearing = false;
     }
 
     public Entity GetEntityByUuid(string uuid)

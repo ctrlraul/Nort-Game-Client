@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using CtrlRaul.Godot;
@@ -112,9 +111,6 @@ public partial class DroneCraft : Craft
 
     private void OnRangeAreaExited(Area2D area)
     {
-        if (Stage.Instance.Clearing)
-            return;
-        
         if (Target == null || area != Target)
             return;
 
@@ -125,7 +121,10 @@ public partial class DroneCraft : Craft
             return;
         }
 
-        rememberTargetTimer.Start();
+        // Idk how the fuck this is supposed to be outside of the tree while the drone itself
+        // still is in it and not even queued for deletion and I sincerely cannot be fucked
+        if (rememberTargetTimer.IsInsideTree())
+            rememberTargetTimer.Start();
     }
 
     private void OnRememberTargetTimerTimeout()
