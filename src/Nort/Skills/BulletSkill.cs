@@ -116,8 +116,8 @@ public partial class BulletSkill : Node2D, ISkillNode
 
         if (aimedPart == null)
             return;
-        
-        ShowFiredVisualFeedback();
+
+        // ShowFiredVisualFeedback();
         
         cooldownTimer.Start();
         particles.Emitting = true;
