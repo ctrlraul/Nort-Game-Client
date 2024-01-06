@@ -73,6 +73,9 @@ public partial class DroneCraft : Craft
     {
         base._PhysicsProcess(delta);
 
+        if (Game.Instance.InMissionEditor)
+            return;
+
         targetPosition = Target.GlobalPosition +
                          Target.GlobalPosition.DirectionTo(Position) * DistanceMaintainedFromTarget;
 
