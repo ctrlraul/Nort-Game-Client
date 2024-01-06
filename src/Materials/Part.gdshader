@@ -1,7 +1,7 @@
 shader_type canvas_item;
 
 const vec3 white = vec3(1);
-const float speed = 0.05;
+const float speed = 0.075;
 const float dissolve_scale = 0.1;
 
 uniform float dissolve_threshold = 1;

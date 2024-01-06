@@ -2,6 +2,6 @@
 	"id": "ruby",
 	"displayName": "Ruby",
 	"colorHex": "#ff0040",
-	"colorShinyHex": "#00f0c0",
+	"colorShinyHex": "#ff0070",
 	"collisionLayer": 30
 }

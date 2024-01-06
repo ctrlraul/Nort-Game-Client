@@ -1,7 +1,7 @@
 {
 	"id": "amber",
 	"displayName": "Amber",
-	"colorHex": "#FFA020",
-	"colorShinyHex": "#FFB020",
+	"colorHex": "#FFA000",
+	"colorShinyHex": "#FFD000",
 	"collisionLayer": 28
 }
