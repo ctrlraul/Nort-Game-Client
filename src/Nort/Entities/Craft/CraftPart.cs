@@ -127,6 +127,9 @@ public partial class CraftPart : Area2D
 
     public void Destroy()
     {
+        if (IsDestroyed)
+            throw new Exception("Already destroyed");
+        
         IsDestroyed = true;
         
         CallDeferred(nameof(Drop));
