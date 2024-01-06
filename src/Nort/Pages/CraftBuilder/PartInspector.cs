@@ -89,7 +89,7 @@ public partial class PartInspector : PanelContainer
 		if (partData.shiny)
 		{
 			nameLabel.Text = "Shiny " + nameLabel.Text;
-			nameLabel.Modulate = new Color(0, 1, 1);
+			nameLabel.Modulate = Assets.Instance.GetFactionColor(Faction, true);
 		}
 		else
 		{

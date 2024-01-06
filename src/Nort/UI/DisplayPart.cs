@@ -17,7 +17,11 @@ public partial class DisplayPart : Control
 	public bool Shiny
 	{
 		get => ((ShaderMaterial)textureRect.Material).GetShaderParameter("shiny").AsBool();
-		set => ((ShaderMaterial)textureRect.Material).SetShaderParameter("shiny", value);
+		set
+		{
+			((ShaderMaterial)textureRect.Material).SetShaderParameter("shiny", value);
+			UpdateColor();
+		}
 	}
 
 	public Faction Faction
@@ -26,7 +30,7 @@ public partial class DisplayPart : Control
 		set
 		{
 			faction = value;
-			textureRect.SelfModulate = Assets.Instance.GetFactionColor(value, Shiny);
+			UpdateColor();
 		}
 	}
 	
@@ -185,5 +189,10 @@ public partial class DisplayPart : Control
 			skillTextureRect.QueueFree();
 			skillTextureRect = null;
 		}
+	}
+
+	private void UpdateColor()
+	{
+		textureRect.SelfModulate = Assets.Instance.GetFactionColor(Faction, Shiny);
 	}
 }
