@@ -11,16 +11,16 @@
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_s8wqn"]
 atlas = ExtResource("4_natrv")
-region = Rect2(0, 0, 27, 129)
+region = Rect2(0, 0, 14, 102)
 filter_clip = true
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_g4rmj"]
 atlas = ExtResource("4_natrv")
-region = Rect2(27, 0, 77, 129)
+region = Rect2(26, 0, 125, 102)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_kgi2c"]
 atlas = ExtResource("4_natrv")
-region = Rect2(105, 0, 118, 129)
+region = Rect2(154, 0, 64, 102)
 
 [node name="MissionHud" type="CanvasLayer"]
 script = ExtResource("1_qmqk6")
@@ -150,7 +150,8 @@ texture = SubResource("AtlasTexture_g4rmj")
 
 [node name="MarginContainer" type="MarginContainer" parent="UiRoot/MarginContainer2/HBoxContainer2/MarginContainer"]
 layout_mode = 2
-theme_override_constants/margin_bottom = 0
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_right = -20
 
 [node name="SkillButtons" type="HBoxContainer" parent="UiRoot/MarginContainer2/HBoxContainer2/MarginContainer/MarginContainer"]
 unique_name_in_owner = true
@@ -172,9 +173,8 @@ layout_mode = 2
 
 [node name="TextureRect" type="TextureRect" parent="UiRoot/MarginContainer2/HBoxContainer2/Control"]
 layout_mode = 0
-offset_left = -48.0
-offset_right = 72.0
-offset_bottom = 129.0
+offset_right = 64.0
+offset_bottom = 102.0
 mouse_filter = 2
 texture = SubResource("AtlasTexture_kgi2c")
 

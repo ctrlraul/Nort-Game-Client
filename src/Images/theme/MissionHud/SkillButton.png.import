@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dedwit1uji764"
-path="res://.godot/imported/skill_button_press.png-6ade7a1cbcf72023f1c928a9757e36cf.ctex"
+uid="uid://tuftdm0qlpdn"
+path="res://.godot/imported/SkillButton.png-897f5da6bd90924f9f5819e82044cb45.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Images/theme/MissionHud/skill_button_press.png"
-dest_files=["res://.godot/imported/skill_button_press.png-6ade7a1cbcf72023f1c928a9757e36cf.ctex"]
+source_file="res://Images/theme/MissionHud/SkillButton.png"
+dest_files=["res://.godot/imported/SkillButton.png-897f5da6bd90924f9f5819e82044cb45.ctex"]
 
 [params]
 

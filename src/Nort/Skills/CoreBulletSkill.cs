@@ -84,6 +84,13 @@ public partial class CoreBulletSkill : Node2D, ISkillNode
         if (Game.Instance.InMissionEditor)
             return;
 
+        if (!IsInsideTree())
+        {
+            GD.Print("what the fuck lol");
+
+            return;
+        }
+        
         if (Part.IsDestroyed)
             return;
 
