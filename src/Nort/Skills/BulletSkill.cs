@@ -70,7 +70,7 @@ public partial class BulletSkill : Node2D, ISkillNode
         PointUp();
         UpdateCollisionMasks();
 
-        Part.Craft.FactionChanged += OnCraftFactionChanged;
+        Part.Craft.FactionChanged += UpdateCollisionMasks;
 
         SetProcess(false);
     }
@@ -138,12 +138,7 @@ public partial class BulletSkill : Node2D, ISkillNode
             .OrderBy(part => part.GlobalPosition.DistanceTo(GlobalPosition))
             .FirstOrDefault(part => !part.IsDestroyed);
     }
-
-
-    private void OnCraftFactionChanged()
-    {
-        UpdateCollisionMasks();
-    }
+    
     
     private void OnRangeAreaEntered(Area2D area)
     {
