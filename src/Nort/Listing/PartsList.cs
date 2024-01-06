@@ -30,7 +30,7 @@ public partial class PartsList : Control
 			faction = value;
 
 			foreach (PartsListItem listItem in discriminatorToListItem.Values)
-				listItem.Color = listItem.PartData.shiny ? faction.ColorShiny : faction.Color;
+				listItem.Faction = Faction;
 		}
 	}
 	
@@ -62,11 +62,7 @@ public partial class PartsList : Control
 			newListItem.SetOutlineEnabled(listItemOutlineEnabled);
 			newListItem.PartData = partData;
 			newListItem.Count = count;
-			newListItem.Color = (
-				Faction != null
-					? (partData.shiny ? Faction.ColorShiny : Faction.Color)
-					: Config.FactionlessColor
-			);
+			newListItem.Faction = Faction;
 
 			discriminatorToListItem.Add(partData.Discriminator, newListItem);
 

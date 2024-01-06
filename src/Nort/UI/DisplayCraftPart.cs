@@ -6,10 +6,10 @@ public partial class DisplayCraftPart : Control
 {
     private DisplayPart displayPart;
 
-    public Color Color
+    public Faction Faction
     {
-        get => displayPart.Color;
-        set => displayPart.Color = value;
+        get => displayPart.Faction;
+        set => displayPart.Faction = value;
     }
 	
     public bool Flipped

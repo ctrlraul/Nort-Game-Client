@@ -16,13 +16,14 @@ public partial class DisplayCraft : Control
 	[Ready] public Control partsContainer;
 	[Ready] public DisplayCraftPart Core { get; private set; }
 
-	private Color color;
-	public Color Color
+	private Faction faction;
+
+	public Faction Faction
 	{
-		get => color;
+		get => faction;
 		set
 		{
-			color = value;
+			faction = value;
 			if (IsInsideTree())
 				UpdateColor();
 		}
@@ -73,7 +74,7 @@ public partial class DisplayCraft : Control
 		
 		partsContainer.AddChild(part);
 
-		part.Color = Color;
+		part.Faction = Faction;
 		part.Blueprint = blueprintPart;
 
 		return part;
@@ -87,10 +88,10 @@ public partial class DisplayCraft : Control
 
 	private void UpdateColor()
 	{
-		Core.Color = color;
+		Core.Faction = Faction;
 		foreach (DisplayCraftPart displayPart in Parts)
 		{
-			displayPart.Color = color;
+			displayPart.Faction = Faction;
 		}
 	}
 

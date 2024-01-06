@@ -235,6 +235,14 @@ public class Assets : Singleton<Assets>
         return factionCollisionLayersAndMasks[faction].Item2;
     }
 
+    public Color GetFactionColor(Faction faction, bool shiny = false)
+    {
+        if (faction != null)
+            return shiny ? faction.ColorShiny : faction.Color;
+
+        return Config.FactionlessColor;
+    }
+
     
     public IEnumerable<Part> GetParts()
     {

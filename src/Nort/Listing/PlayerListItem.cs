@@ -32,7 +32,7 @@ public partial class PlayerListItem : PanelContainer
         nickLabel.Text = player.nick;
         scoreLabel.Text = "0";
         displayCraft.Blueprint = player.blueprint;
-        displayCraft.Color = Assets.Instance.PlayerFaction.Color;
+        displayCraft.Faction = Assets.Instance.PlayerFaction;
         displayCraft.Scale = Vector2.One * 100 / Assets.Instance.GetBlueprintVisualRect(player.blueprint).Size.Length();
     }
 

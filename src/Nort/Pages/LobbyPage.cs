@@ -34,7 +34,7 @@ public partial class LobbyPage : Page
         }
 
         displayCraft.Blueprint = Game.Instance.CurrentPlayer.blueprint;
-        displayCraft.Color = Assets.Instance.PlayerFaction.Color;
+        displayCraft.Faction = Assets.Instance.PlayerFaction;
     }
 
 

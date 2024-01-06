@@ -73,13 +73,13 @@ public partial class CraftBuilderPage : Page
         {
             faction = value;
 
-            displayCraft.Color = faction.Color;
+            displayCraft.Faction = faction;
             partsInventory.partsList.Faction = faction;
-            partInspector.Color = faction.Color;
-            draggedPartPreview.Color = faction.Color;
+            partInspector.Faction = faction;
+            draggedPartPreview.Faction = faction;
 
             foreach (CoresListItem item in coresList.GetChildren().Cast<CoresListItem>())
-                item.Color = faction.Color;
+                item.Faction = faction;
         }
     }
 
@@ -164,7 +164,7 @@ public partial class CraftBuilderPage : Page
         coresList.AddChild(item);
 
         item.PartData = partData;
-        item.Color = Faction?.Color ?? Config.FactionlessColor;
+        item.Faction = Faction;
         item.Pressed += () => SetCoreBlueprint(blueprint);
         item.MouseEntered += () => partInspector.SetPartData(partData);
     }

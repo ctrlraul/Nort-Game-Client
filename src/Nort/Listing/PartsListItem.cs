@@ -11,14 +11,14 @@ public partial class PartsListItem : Button
 	[Ready] public Label countLabel;
 
 	private bool outlineEnabled;
-	
-	public Color Color
+
+	public Faction Faction
 	{
-		get => displayPart.Color;
+		get => displayPart.Faction;
 		set
 		{
-			displayPart.Color = value;
-			frame.SelfModulate = value;
+			displayPart.Faction = value;
+			frame.SelfModulate = Assets.Instance.GetFactionColor(value, displayPart.Shiny);
 		}
 	}
 

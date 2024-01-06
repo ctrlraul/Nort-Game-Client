@@ -46,7 +46,7 @@ public partial class MainMenu : Page
         {
             displayCraft.Visible = true;
             displayCraft.Blueprint = Game.Instance.CurrentPlayer.blueprint;
-            displayCraft.Color = Assets.Instance.PlayerFaction.Color;
+            displayCraft.Faction = Assets.Instance.PlayerFaction;
         }
         else
         {

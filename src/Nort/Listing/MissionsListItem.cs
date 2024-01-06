@@ -48,7 +48,7 @@ public partial class MissionsListItem : MarginContainer
 	private async void Initialize()
 	{
 		await Game.Instance.Initialize();
-		displayCraft.Color = Assets.Instance.PlayerFaction.Color;
+		displayCraft.Faction = Assets.Instance.PlayerFaction;
 	}
 
 	private void OnButtonPressed()

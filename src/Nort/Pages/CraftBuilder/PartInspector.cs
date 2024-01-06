@@ -16,10 +16,10 @@ public partial class PartInspector : PanelContainer
 
 	private DisplayCraftPart _part = null;
 
-	public Color Color
+	public Faction Faction
 	{
-		set => displayPart.Color = value;
-		get => displayPart.Color;
+		set => displayPart.Faction = value;
+		get => displayPart.Faction;
 	}
 
 	public override void _Ready()

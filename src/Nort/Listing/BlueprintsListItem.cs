@@ -33,7 +33,7 @@ public partial class BlueprintsListItem : MarginContainer
 		base._Ready();
 		this.InitializeReady();
 
-		displayCraft.Color = Config.FactionlessColor;
+		displayCraft.Faction = null;
 	}
 
 	public void OnButtonPressed()

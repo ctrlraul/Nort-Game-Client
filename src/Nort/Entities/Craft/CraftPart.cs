@@ -20,8 +20,6 @@ public partial class CraftPart : Area2D
 
     public bool IsDestroyed { get; private set; }
     public Craft Craft { get; set; }
-
-    private Color DisplayColor => blueprint.shiny ? faction.ColorShiny : faction.Color;
     
     private Faction faction = Assets.Instance.DefaultEnemyFaction;
     public Faction Faction
@@ -144,7 +142,8 @@ public partial class CraftPart : Area2D
 
     public void SetColorScale(float scale)
     {
-        sprite2D.SelfModulate = Config.FactionlessColor.Lerp(DisplayColor, scale);
+        Color color = Assets.Instance.GetFactionColor(Faction, blueprint.shiny);
+        sprite2D.SelfModulate = Config.FactionlessColor.Lerp(color, scale);
     }
 
     public void AnimateSpawn()

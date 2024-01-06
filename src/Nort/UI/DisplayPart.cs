@@ -12,6 +12,7 @@ public partial class DisplayPart : Control
 	private TextureRect outlineTextureRect;
 	
 	private bool coreLight;
+	private Faction faction;
 	
 	public bool Shiny
 	{
@@ -19,10 +20,14 @@ public partial class DisplayPart : Control
 		set => ((ShaderMaterial)textureRect.Material).SetShaderParameter("shiny", value);
 	}
 
-	public Color Color
+	public Faction Faction
 	{
-		get => textureRect.SelfModulate;
-		set => textureRect.SelfModulate = value;
+		get => faction;
+		set
+		{
+			faction = value;
+			textureRect.SelfModulate = Assets.Instance.GetFactionColor(value, Shiny);
+		}
 	}
 	
 	public bool Flipped
