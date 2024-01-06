@@ -286,6 +286,7 @@ mouse_filter = 2
 alignment = 1
 
 [node name="BuildButton" type="Button" parent="Control/MarginContainer/VBoxContainer/HBoxContainer/Center/HBoxContainer"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 size_flags_horizontal = 4

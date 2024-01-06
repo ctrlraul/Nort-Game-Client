@@ -36,6 +36,7 @@ public partial class CraftBuilderPage : Page
     [Ready] public Area2D coreArea;
     [Ready] public Node2D partAreas;
     [Ready] public Camera2D camera;
+    [Ready] public Control buildButton;
 
     [Ready] public Control canvasManipulationHitBox;
     [Ready] public DragReceiver dragReceiver;
@@ -142,6 +143,7 @@ public partial class CraftBuilderPage : Page
 
         if (editorMode)
         {
+            buildButton.Visible = false;
             blueprintIdInput.Visible = true;
             blueprintButtons.Visible = true;
             SetBlueprint(Assets.Instance.InitialBlueprint);
@@ -149,6 +151,7 @@ public partial class CraftBuilderPage : Page
         }
         else
         {
+            buildButton.Visible = true;
             blueprintIdInput.Visible = false;
             blueprintButtons.Visible = false;
             SetBlueprint(Game.Instance.CurrentPlayer.blueprint);
