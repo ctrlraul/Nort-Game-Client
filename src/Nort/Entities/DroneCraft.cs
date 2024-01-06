@@ -94,7 +94,9 @@ public partial class DroneCraft : Craft
 
     private void LookForNewTarget()
     {
-        Target = (CraftPart)range.GetOverlappingAreas().FirstOrDefault();
+        Target = range.GetOverlappingAreas()
+            .Cast<CraftPart>()
+            .FirstOrDefault(part => !part.IsDestroyed);
     }
     
 
