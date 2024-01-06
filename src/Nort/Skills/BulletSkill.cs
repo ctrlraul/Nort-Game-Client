@@ -94,10 +94,7 @@ public partial class BulletSkill : Node2D, ISkillNode
     {
         range.CollisionMask = Assets.Instance.GetFactionCollisionMask(Part.Faction);
         rayCast2D.CollisionMask = range.CollisionMask;
-        if (Target != null)
-        {
-            LookForATarget();
-        }
+        LookForATarget();
     }
 
     public void Fire()
