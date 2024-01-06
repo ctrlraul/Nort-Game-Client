@@ -1,0 +1,10 @@
+[gd_scene load_steps=4 format=3 uid="uid://bvha623csxmsl"]
+
+[ext_resource type="Material" uid="uid://igpcbk30hpxf" path="res://Materials/part_outline_shader_material.tres" id="1_cxdh3"]
+[ext_resource type="Texture2D" uid="uid://b3bm4djf5tas8" path="res://Images/placeholders/part.png" id="2_i712k"]
+[ext_resource type="Script" path="res://Nort/Pages/CraftBuilder/PartOutline.cs" id="3_wwu6b"]
+
+[node name="PartOutline" type="Sprite2D"]
+material = ExtResource("1_cxdh3")
+texture = ExtResource("2_i712k")
+script = ExtResource("3_wwu6b")

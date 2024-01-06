@@ -1,6 +1,7 @@
-[gd_scene load_steps=19 format=3 uid="uid://6wfise1ybf04"]
+[gd_scene load_steps=20 format=3 uid="uid://6wfise1ybf04"]
 
 [ext_resource type="Script" path="res://Nort/Stage.cs" id="1_8dh8q"]
+[ext_resource type="PackedScene" uid="uid://b1xci2ckb2rvw" path="res://Scenes/Entities/Craft/Craft.tscn" id="2_0u3mb"]
 [ext_resource type="PackedScene" uid="uid://bq5ax7cccxg6l" path="res://Scenes/Entities/CarrierCraft.tscn" id="2_vgo7s"]
 [ext_resource type="PackedScene" uid="uid://dnfpufrxifb44" path="res://Scenes/Entities/PlayerCraft.tscn" id="3_a35qp"]
 [ext_resource type="PackedScene" uid="uid://cchjaw6os6aaa" path="res://Scenes/Entities/DroneCraft.tscn" id="4_f7v6k"]
@@ -45,6 +46,7 @@ adjustment_enabled = true
 
 [node name="Stage" type="Node2D"]
 script = ExtResource("1_8dh8q")
+craftScene = ExtResource("2_0u3mb")
 carrierCraftScene = ExtResource("2_vgo7s")
 playerCraftScene = ExtResource("3_a35qp")
 droneCraftScene = ExtResource("4_f7v6k")

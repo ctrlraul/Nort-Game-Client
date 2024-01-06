@@ -25,23 +25,72 @@ public partial class CraftPart : Area2D
     public Faction Faction
     {
         get => faction;
-        set => SetFaction(value);
+        set
+        {
+            faction = value;
+
+            if (!IsInsideTree())
+                return;
+
+            CollisionLayer = Assets.Instance.GetFactionCollisionLayer(faction);
+            CollisionLayer |= PhysicsLayer.Get("craft_part");
+
+            UpdateColor();
+        }
     }
 
     private BlueprintPart blueprint = Assets.Instance.InitialBlueprint.core;
+
     public BlueprintPart Blueprint
     {
         get => blueprint;
-        set => SetBlueprint(value);
+        set
+        {
+            blueprint = value;
+
+            if (!IsInsideTree())
+                return;
+
+            Position = blueprint.Place;
+            RotationDegrees = blueprint.angle;
+
+            hullMax = blueprint.Part.hull;
+            hull = hullMax;
+
+            sprite2D.Texture = Assets.Instance.GetPartTexture(blueprint);
+            sprite2D.FlipH = blueprint.flipped;
+            ((ShaderMaterial)sprite2D.Material).SetShaderParameter("shiny", blueprint.shiny);
+
+            collisionShape2D.Shape = new RectangleShape2D { Size = sprite2D.Texture.GetSize() };
+
+            if (Assets.IsCore(blueprint.Part))
+                skillNodeContainer.AddChild(new Sprite2D { Texture = Assets.CoreLightTexture });
+
+            if (!string.IsNullOrEmpty(blueprint.skillId))
+            {
+                Node2D node = blueprint.Skill.Scene.Instantiate<Node2D>();
+                skillNode = (ISkillNode)node;
+                skillNode.Part = this;
+                skillNodeContainer.AddChild(node);
+            }
+
+            UpdateColor();
+        }
     }
-    
-    
+
+    public bool Flipped
+    {
+        get => sprite2D.FlipH;
+        set => sprite2D.FlipH = value;
+    }
+
+
     public override void _Ready()
     {
         this.InitializeReady();
-        
-        SetFaction(Faction);
-        SetBlueprint(Blueprint);
+
+        Faction = Faction;
+        Blueprint = blueprint;
     }
 
 
@@ -49,53 +98,6 @@ public partial class CraftPart : Area2D
     {
         Craft = craft;
     }
-
-    private void SetFaction(Faction value)
-    {
-        faction = value;
-
-        if (!IsInsideTree())
-            return;
-        
-        CollisionLayer = Assets.Instance.GetFactionCollisionLayer(faction);
-        CollisionLayer |= PhysicsLayer.Get("craft_part");
-        
-        UpdateColor();
-    }
-
-    private void SetBlueprint(BlueprintPart value)
-    {
-        blueprint = value;
-
-        if (!IsInsideTree())
-            return;
-
-        Position = blueprint.Place;
-        RotationDegrees = blueprint.angle;
-
-        hullMax = blueprint.Part.hull;
-        hull = hullMax;
-
-        sprite2D.Texture = Assets.Instance.GetPartTexture(blueprint);
-        sprite2D.FlipH = blueprint.flipped;
-        ((ShaderMaterial)sprite2D.Material).SetShaderParameter("shiny", blueprint.shiny);
-        
-        collisionShape2D.Shape = new RectangleShape2D { Size = sprite2D.Texture.GetSize() };
-        
-        if (Assets.IsCore(blueprint.Part))
-            skillNodeContainer.AddChild(new Sprite2D { Texture = Assets.CoreLightTexture });
-
-        if (!string.IsNullOrEmpty(blueprint.skillId))
-        {
-            Node2D node = blueprint.Skill.Scene.Instantiate<Node2D>();
-            skillNode = (ISkillNode)node;
-            skillNode.Part = this;
-            skillNodeContainer.AddChild(node);
-        }
-
-        UpdateColor();
-    }
-
     
     public void TakeDamage(float damage)
     {
@@ -107,6 +109,19 @@ public partial class CraftPart : Area2D
             return;
 
         Destroy();
+    }
+
+    public BlueprintPart GetCurrentBlueprint()
+    {
+        return new()
+        {
+            angle = RotationDegrees,
+            flipped = blueprint.flipped,
+            shiny = blueprint.shiny,
+            partId = blueprint.partId,
+            skillId = blueprint.skillId,
+            Place = Position,
+        };
     }
 
     private void Drop()

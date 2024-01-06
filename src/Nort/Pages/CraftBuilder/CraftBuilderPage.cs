@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Linq;
 using CtrlRaul.Godot;
 using CtrlRaul.Godot.Linq;
+using Nort.Entities;
 using Nort.UI;
 using Nort.Listing;
 using Nort.Popups;
@@ -30,22 +31,14 @@ public partial class CraftBuilderPage : Page
 
     [Export] private PackedScene blueprintSelectorPopupScene;
     [Export] private PackedScene coresListItemScene;
-
-    [Ready] public SubViewport subViewport;
-    [Ready] public Area2D mouseArea;
-    [Ready] public Area2D coreArea;
-    [Ready] public Node2D partAreas;
-    [Ready] public Camera2D camera;
+    
     [Ready] public Control buildButton;
-
     [Ready] public Control canvasManipulationHitBox;
     [Ready] public DragReceiver dragReceiver;
-    [Ready] public Control canvas;
-    [Ready] public Control hoveredPartOutline;
-    [Ready] public TextureRect hoveredPartOutlineSprite;
+    
     [Ready] public PartTransformControls partTransformControls;
     [Ready] public LineEdit blueprintIdInput;
-    [Ready] public DisplayCraft displayCraft;
+
     [Ready] public PartsInventory partsInventory;
     [Ready] public CraftSummary craftSummary;
     [Ready] public PartInspector partInspector;
@@ -54,16 +47,20 @@ public partial class CraftBuilderPage : Page
     [Ready] public Control coresList;
     [Ready] public DraggedPartPreview draggedPartPreview;
     [Ready] public DragReceiver partsInventoryDragReceiver;
+    [Ready] public PartOutline partOutline;
 
+    private ulong lastZoomTime;
     private Vector2 dragOffset = Vector2.Zero;
-    private DisplayCraftPart draggedPart;
-    private DisplayCraftPart hoveredPart;
-    private DisplayCraftPart selectedPart;
-    private readonly Dictionary<object, Area2D> areaForPart = new();
-    private readonly Dictionary<object, DisplayCraftPart> partForArea = new();
+    private CraftPart draggedPart;
+    private CraftPart hoveredPart;
+
+    private CraftPart selectedPart;
+
     private bool editorMode;
     private bool panning;
     private bool mouseDownOnCanvasManipulationHitBox;
+
+    private Craft craft;
 
     private Faction faction;
 
@@ -74,7 +71,7 @@ public partial class CraftBuilderPage : Page
         {
             faction = value;
 
-            displayCraft.Faction = faction;
+            craft.Faction = faction;
             partsInventory.partsList.Faction = faction;
             partInspector.Faction = faction;
             draggedPartPreview.Faction = faction;
@@ -83,13 +80,13 @@ public partial class CraftBuilderPage : Page
                 item.Faction = faction;
         }
     }
+    
 
     public override void _Ready()
     {
         base._Ready();
         this.InitializeReady();
 
-        displayCraft.BlueprintChanged += craftSummary.SetBlueprint;
         dragReceiver.DragEntered += OnDragReceiverDragEntered;
         partsInventory.PartDataDetailsRequested += partInspector.SetPartData;
         partsInventoryDragReceiver.DragEntered += OnPartsInventoryDragReceiverDragEntered;
@@ -99,15 +96,11 @@ public partial class CraftBuilderPage : Page
         partTransformControls.Flip += OnPartTransformControlsFlip;
 
         DragManager.Instance.DragStop += OnDragManagerDragStop;
-        
-        GetTree().Root.SizeChanged += UpdateSupViewportSize;
-        UpdateSupViewportSize();
     }
     
     public override void _ExitTree()
     {
         base._ExitTree();
-        GetTree().Root.SizeChanged -= UpdateSupViewportSize;
         DragManager.Instance.DragStop -= OnDragManagerDragStop;
     }
 
@@ -120,13 +113,11 @@ public partial class CraftBuilderPage : Page
             {
                 Vector2 place = GetSnappedMousePosition();
                 draggedPart.Position = place;
-                GetAreaForPart(draggedPart).Position = place;
             }
             else if (panning)
             {
-                canvas.Position += mouseMotionEvent.Relative;
-                UpdateCamera();
-                partTransformControls.UpdateTransform(canvas);
+                Stage.Instance.camera.Position -= mouseMotionEvent.Relative / Stage.Instance.camera.Zoom;
+                partTransformControls.UpdateTransform(Stage.Instance.camera);
             }
             else
             {
@@ -139,6 +130,11 @@ public partial class CraftBuilderPage : Page
     {
         await Game.Instance.Initialize();
 
+        RemoveChild(partOutline);
+        Stage.Instance.AddCustomEffect(partOutline);
+
+        craft = Stage.Instance.AddEntity<Craft>();
+
         editorMode = Game.Instance.Dev || PagesNavigator.Instance.NavigationData is NavigationData { FromEditor: true };
 
         if (editorMode)
@@ -146,17 +142,24 @@ public partial class CraftBuilderPage : Page
             buildButton.Visible = false;
             blueprintIdInput.Visible = true;
             blueprintButtons.Visible = true;
-            SetBlueprint(Assets.Instance.InitialBlueprint);
             Faction = Assets.Instance.DefaultEnemyFaction;
+            SetBlueprint(Assets.Instance.InitialBlueprint);
         }
         else
         {
             buildButton.Visible = true;
             blueprintIdInput.Visible = false;
             blueprintButtons.Visible = false;
-            SetBlueprint(Game.Instance.CurrentPlayer.blueprint);
             Faction = Assets.Instance.PlayerFaction;
+            SetBlueprint(Game.Instance.CurrentPlayer.blueprint);
         }
+
+        craft.StatsChanged += UpdateCraftSummary;
+    }
+
+    private void UpdateCraftSummary()
+    {
+        craftSummary.SetStats(craft.Stats);
     }
     
     private void AddCoreButton(PartData partData)
@@ -174,18 +177,16 @@ public partial class CraftBuilderPage : Page
 
     private void SetCoreBlueprint(BlueprintPart blueprint)
     {
-        Vector2 corePosition = displayCraft.Core.Position;
-        
-        displayCraft.SetCoreBlueprint(blueprint);
-        displayCraft.Core.Position = corePosition;
-        
-        if (hoveredPart == displayCraft.Core)
-            SetHoveredPartOutline(blueprint);
+        Vector2 corePosition = craft.CorePart?.Position ?? Vector2.Zero;
 
-        if (partTransformControls.Part == displayCraft.Core)
-            partTransformControls.Part = displayCraft.Core;
+        craft.SetCoreBlueprint(blueprint);
+        craft.CorePart!.Position = corePosition;
 
-        craftSummary.SetBlueprint(displayCraft.Blueprint);
+        if (hoveredPart == craft.CorePart)
+            partOutline.SetPart(craft.CorePart);
+
+        if (partTransformControls.Part == craft.CorePart)
+            partTransformControls.Part = craft.CorePart;
     }
 
     private void SetBlueprint(Blueprint blueprint)
@@ -197,53 +198,37 @@ public partial class CraftBuilderPage : Page
         foreach (BlueprintPart part in blueprint.hulls)
         {
             if (editorMode || partsInventory.TryTakingPart(PartData.From(part)))
-                AddPart(part);
+                craft.AddPart(part);
         }
 
-        if (editorMode)
-        {
-            AddPart(blueprint.core, true);
-        }
-        else
-        {
-            displayCraft.SetCoreBlueprint(blueprint.core); // This way it's not editable
-        }
+        craft.SetCoreBlueprint(blueprint.core);
 
-        partInspector.SetPart(displayCraft.Core);
-        craftSummary.SetBlueprint(displayCraft.Blueprint);
-    }
+        // if (editorMode)
+        // {
+        //     AddPart(blueprint.core, true);
+        // }
+        // else
+        // {
+        //     displayCraft.SetCoreBlueprint(blueprint.core); // This way it's not editable
+        // }
 
-    private void SetHoveredPartOutline(BlueprintPart blueprint)
-    {
-        Texture2D texture = Assets.Instance.GetPartTexture(blueprint);
-        Vector2 textureSize = texture.GetSize();
-
-        hoveredPartOutlineSprite.Texture = texture;
-        hoveredPartOutlineSprite.Size = textureSize;
-        hoveredPartOutlineSprite.PivotOffset = textureSize * 0.5f;
-        hoveredPartOutlineSprite.Position = -textureSize * 0.5f;
-        hoveredPartOutlineSprite.FlipH = blueprint.flipped;
+        partInspector.SetPartData(PartData.From(blueprint.core));
     }
 
     private void Clear()
     {
-        canvas.Scale = Vector2.One * 0.75f;
+        Stage.Instance.camera.Zoom = Vector2.One;
         blueprintIdInput.Text = "";
-        hoveredPartOutline.Visible = false;
+        partOutline.Hide();
 
-        areaForPart.Clear();
-        partForArea.Clear();
         partTransformControls.Clear();
-        displayCraft.Clear();
+        craft.ClearParts();
         partInspector.Clear();
         craftSummary.Clear();
-        Stage.Instance.Clear();
         
         coresList.QueueFreeChildren();
-        partAreas.QueueFreeChildren();
 
         RepopulateInventory();
-        UpdateCamera();
     }
 
     private void RepopulateInventory()
@@ -274,126 +259,72 @@ public partial class CraftBuilderPage : Page
 
         coresListContainer.Visible = cores.Count > 1;
     }
-
+    
     private void Zoom(int delta)
     {
-        float change = canvas.Scale.X + delta * ZoomStep * canvas.Scale.X;
-        Vector2 newZoom = Vector2.One * Mathf.Clamp(change, ZoomMin, ZoomMax);
+        // Prevent double input
 
-        if (newZoom == canvas.Scale)
-        {
+        ulong now = Time.GetTicksMsec();
+
+        if (now - lastZoomTime < 3) // 3 is arbitrary, just seemed to work well for me
             return;
-        }
 
-        Vector2 localMouse = canvas.GetLocalMousePosition();
+        lastZoomTime = now;
 
-        canvas.Scale = newZoom;
-        canvas.Position -= localMouse * canvas.Scale * ZoomStep * delta;
 
-        UpdateCamera();
-        UpdateHoveredPart();
-        partTransformControls.UpdateTransform(canvas);
+        // Actual zooming code
+
+        Vector2 mouse = Stage.Instance.camera.GetLocalMousePosition();
+        Vector2 oldZoom = Stage.Instance.camera.Zoom;
+        Vector2 zoomAmount = oldZoom * ZoomStep * delta;
+        Vector2 motion = mouse * zoomAmount / (oldZoom + zoomAmount);
+
+        Stage.Instance.camera.Zoom += zoomAmount;
+        Stage.Instance.camera.Position += motion;
+        partTransformControls.UpdateTransform(Stage.Instance.camera);
     }
 
-    private void UpdateCamera()
+    private CraftPart AddPart(BlueprintPart blueprint, bool core = false)
     {
-        camera.Zoom = canvas.Scale;
-        camera.Position = -canvas.Position / canvas.Scale;
-    }
-
-    private DisplayCraftPart AddPart(BlueprintPart blueprint, bool core = false)
-    {
-        DisplayCraftPart part = core ? displayCraft.SetCoreBlueprint(blueprint) : displayCraft.AddPart(blueprint);
-        Area2D area = new();
-        CollisionShape2D shape = new();
-
-        area.Position = blueprint.Place;
-        area.RotationDegrees = blueprint.angle;
-        area.CollisionLayer = PhysicsLayer.Get("mouse_interactable");
-        shape.Shape = new RectangleShape2D
-        {
-            Size = Assets.Instance.GetPartTexture(blueprint.partId).GetSize()
-        };
-
-        area.AddChild(shape);
-        partAreas.AddChild(area);
-
-        areaForPart[part.GetInstanceId()] = area;
-        partForArea[area.GetInstanceId()] = part;
-
-        return part;
+        return core
+            ? craft.SetCoreBlueprint(blueprint)
+            : craft.AddPart(blueprint);
     }
 
     private void AddAndDragPart(BlueprintPart blueprint)
     {
         draggedPart = AddPart(blueprint);
-        hoveredPartOutline.Visible = false;
-        craftSummary.SetBlueprint(displayCraft.Blueprint);
+        partOutline.Hide();
     }
 
-    private void RemovePart(DisplayCraftPart part)
+    private void RemovePart(CraftPart part)
     {
         if (part == draggedPart)
             draggedPart = null;
 
-        Area2D area = GetAreaForPart(part);
-
-        partForArea.Remove(area);
-        areaForPart.Remove(part);
-
-        area.QueueFree();
         part.QueueFree();
 
-        craftSummary.SetBlueprint(displayCraft.Blueprint);
+        UpdateCraftSummary();
     }
 
     private void UpdateHoveredPart()
     {
-        mouseArea.Position = canvas.GetLocalMousePosition();
-        
-        Godot.Collections.Array<Area2D> areas = mouseArea.GetOverlappingAreas();
-
-        hoveredPart = areas.Count switch
-        {
-            0 => null,
-            1 => GetPartForArea(areas[0]),
-            _ => GetPartForArea(areas.FindNearest(mouseArea.Position))
-        };
-
+        hoveredPart = Stage.Instance.GetCraftPartOnMouse();
+    
         if (hoveredPart == null)
         {
-            hoveredPartOutline.Visible = false;
+            partOutline.Hide();
         }
         else
         {
-            hoveredPartOutline.Visible = true;
-            hoveredPartOutline.Position = hoveredPart.Position;
-            hoveredPartOutline.RotationDegrees = hoveredPart.Angle;
-            SetHoveredPartOutline(hoveredPart.Blueprint);
-            partInspector.SetPart(hoveredPart);
+            partOutline.SetPart(hoveredPart);
+            partInspector.SetPartData(PartData.From(hoveredPart.Blueprint));
         }
-    }
-
-    // ReSharper disable once SuggestBaseTypeForParameter
-    private Area2D GetAreaForPart(DisplayCraftPart part)
-    {
-        return areaForPart.TryGetValue(part.GetInstanceId(), out Area2D area) ? area : null;
-    }
-    
-    // ReSharper disable once SuggestBaseTypeForParameter
-    private DisplayCraftPart GetPartForArea(Area2D area)
-    {
-        return partForArea.TryGetValue(area.GetInstanceId(), out DisplayCraftPart part) ? part : null;
     }
 
     private Vector2 GetSnappedMousePosition()
     {
-        return (canvas.GetLocalMousePosition() - dragOffset).Snapped(gridSnap);
-    }
-
-    private void UpdateSupViewportSize()
-    {
-        subViewport.Size = GetTree().Root.Size;
+        return (Stage.Instance.GetLocalMousePosition() - dragOffset).Snapped(gridSnap);
     }
 
     
@@ -401,13 +332,12 @@ public partial class CraftBuilderPage : Page
 
     private void OnPartTransformControlsRotate(float angle)
     {
-        hoveredPartOutline.Visible = false;
-        GetAreaForPart(partTransformControls.Part).RotationDegrees = angle;
+        partOutline.Hide();
     }
 
     private void OnPartTransformControlsFlip(bool flipped)
     {
-        hoveredPartOutline.Visible = false;
+        partOutline.Hide();
     }
 
     private void OnExportButtonPressed()
@@ -424,8 +354,8 @@ public partial class CraftBuilderPage : Page
 
             return;
         }
-            
-        Blueprint blueprint = displayCraft.Blueprint;
+
+        Blueprint blueprint = Blueprint.From(craft.GetCurrentBlueprint());
         blueprint.id = blueprintIdInput.Text;
 
         try
@@ -454,7 +384,7 @@ public partial class CraftBuilderPage : Page
     {
         if (Game.Instance.CurrentPlayer != null)
         {
-            Game.Instance.CurrentPlayer.blueprint = displayCraft.Blueprint;
+            Game.Instance.CurrentPlayer.blueprint = craft.GetCurrentBlueprint();
             LocalPlayersManager.Instance.StoreLocalPlayer(Game.Instance.CurrentPlayer);
         }
 
@@ -484,13 +414,13 @@ public partial class CraftBuilderPage : Page
             return;
         
         AddAndDragPart(blueprintPart);
-        craftSummary.SetBlueprint(displayCraft.Blueprint);
+        UpdateCraftSummary();
     }
 
     private void OnDragManagerDragStop(DragData dragData)
     {
         partTransformControls.Part = draggedPart;
-        partTransformControls.UpdateTransform(canvas);
+        partTransformControls.UpdateTransform(Stage.Instance.camera);
         draggedPart = null;
 
     }
@@ -499,7 +429,7 @@ public partial class CraftBuilderPage : Page
     {
         if (draggedPart != null)
         {
-            draggedPartPreview.PartData = draggedPart.partData;
+            draggedPartPreview.PartData = PartData.From(draggedPart.Blueprint);
             RemovePart(draggedPart);
         }
         else switch (DragManager.Instance.DragData.data)
@@ -550,17 +480,18 @@ public partial class CraftBuilderPage : Page
                         mouseDownOnCanvasManipulationHitBox = mouseButtonEvent.Pressed;
                         if (!mouseButtonEvent.Pressed)
                         {
-                            panning = false;
                             if (hoveredPart != null)
                             {
                                 partTransformControls.Part = hoveredPart;
-                                partTransformControls.UpdateTransform(canvas);
-                                displayCraft.MovePartToTop(hoveredPart);
+                                partTransformControls.UpdateTransform(Stage.Instance.camera);
+                                craft.MovePartToTop(hoveredPart);
                             }
-                            else
+                            else if (!panning)
                             {
                                 partTransformControls.Clear();
                             }
+
+                            panning = false;
                         }
                         break;
                     
@@ -583,8 +514,8 @@ public partial class CraftBuilderPage : Page
                     draggedPart = hoveredPart;
                     dragOffset = draggedPart.GetLocalMousePosition();
                     partTransformControls.Clear();
-                    hoveredPartOutline.Hide();
-                    DragManager.Instance.Drag(canvasManipulationHitBox, draggedPart.partData);
+                    partOutline.Hide();
+                    DragManager.Instance.Drag(canvasManipulationHitBox, PartData.From(draggedPart.Blueprint));
                 }
                 else
                 {

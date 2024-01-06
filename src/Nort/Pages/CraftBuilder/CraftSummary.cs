@@ -18,13 +18,12 @@ public partial class CraftSummary : PanelContainer
 		partsLabel = GetNode<Label>("%PartsLabel");
 	}
 
-	public void SetBlueprint(Blueprint blueprint)
+	public void SetStats(BlueprintStats stats)
 	{
-		BlueprintStats stats = Blueprint.GetStats(blueprint);
 		coreLabel.Text = stats.core.ToString();
 		hullLabel.Text = stats.hull.ToString();
 		massLabel.Text = stats.mass.ToString();
-		partsLabel.Text = $"Parts: {blueprint.hulls.Count + 1}"; // +1 is the core
+		//partsLabel.Text = $"Parts: {blueprint.hulls.Count + 1}"; // +1 is the core
 	}
 
 	public void Clear()

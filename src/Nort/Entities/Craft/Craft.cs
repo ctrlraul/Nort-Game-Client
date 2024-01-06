@@ -8,7 +8,7 @@ using Nort.Skills;
 
 namespace Nort.Entities;
 
-public abstract partial class Craft : Entity
+public partial class Craft : Entity
 {
     public event Action StatsChanged;
     public event Action FactionChanged;
@@ -20,7 +20,7 @@ public abstract partial class Craft : Entity
     [Ready] public Node2D partsContainer;
 
     public bool IsDestroyed { get; private set; }
-    private CraftPart corePart;
+    public CraftPart CorePart { get; private set; }
 
     public readonly List<ISkillNode> skillNodes = new();
 
@@ -45,21 +45,12 @@ public abstract partial class Craft : Entity
     public float ArtificialRadius => blueprintVisualRect.Size.Length();
 
 
+    public BlueprintStats Stats { get; private set; }
     public float CoreMax { get; private set; }
     public float Core { get; private set; }
     public float HullMax { get; private set; }
     public float Hull { get; private set; }
-
-
-    protected override void OnSpawning()
-    {
-        SetFaction(faction);
-        SetBlueprint(blueprint);
-
-        foreach (CraftPart part in GetParts())
-            part.AnimateSpawn();
-    }
-
+    
 
     protected virtual void SetBlueprint(Blueprint value)
     {
@@ -71,20 +62,26 @@ public abstract partial class Craft : Entity
         blueprintVisualRect = Assets.Instance.GetBlueprintVisualRect(Blueprint);
 
         skillNodes.Clear();
-        partsContainer.QueueFreeChildren();
+        ClearParts();
         
         foreach (BlueprintPart blueprintPart in blueprint.hulls)
             AddPart(blueprintPart);
 
-        corePart = AddPart(blueprint.core);
+        CorePart = AddPart(blueprint.core);
 
-        BlueprintStats stats = Blueprint.GetStats(blueprint);
-        CoreMax = stats.core;
-        HullMax = stats.hull;
-        Core = CoreMax;
-        Hull = HullMax;
-        
-        StatsChanged?.Invoke();
+        RecalculateStats();
+    }
+
+    public CraftPart SetCoreBlueprint(BlueprintPart blueprintPart)
+    {
+        if (CorePart == null)
+            CorePart = AddPart(blueprintPart);
+        else
+            CorePart.Blueprint = blueprintPart;
+
+        RecalculateStats();
+
+        return CorePart;
     }
     
     protected virtual void SetFaction(Faction value)
@@ -103,6 +100,26 @@ public abstract partial class Craft : Entity
         
         FactionChanged?.Invoke();
     }
+
+    public void ClearParts()
+    {
+        CorePart = null;
+        partsContainer.QueueFreeChildren();
+        RecalculateStats();
+    }
+
+    public Blueprint GetCurrentBlueprint()
+    {
+        return new()
+        {
+            id = Assets.GenerateUuid(),
+            core = CorePart?.Blueprint,
+            hulls = GetParts()
+                .Where(part => part != CorePart)
+                .Select(part => part.GetCurrentBlueprint())
+                .ToList()
+        };
+    }
     
     
     [Connectable]
@@ -110,8 +127,8 @@ public abstract partial class Craft : Entity
     {
         Hull = 0;
         Core = 0;
-        
-        if (Assets.IsCore(corePart.Blueprint.Part))
+
+        if (Assets.IsCore(CorePart.Blueprint.Part))
             Stage.Instance.AddCoreExplosionEffect(GlobalPosition);
         
         foreach (CraftPart part in GetParts())
@@ -122,8 +139,8 @@ public abstract partial class Craft : Entity
         Destroyed?.Invoke();
     }
 
-    
-    private CraftPart AddPart(BlueprintPart blueprintPart)
+
+    public CraftPart AddPart(BlueprintPart blueprintPart)
     {
         CraftPart part = craftPartScene.Instantiate<CraftPart>();
 
@@ -142,6 +159,8 @@ public abstract partial class Craft : Entity
         if (part.skillNode != null)
             skillNodes.Add(part.skillNode);
 
+        RecalculateStats();
+        
         return part;
     }
     
@@ -157,11 +176,11 @@ public abstract partial class Craft : Entity
         if (Hull >= 0)
             return;
 
-        if (part == corePart)
+        if (part == CorePart)
         {
             Core += Hull;
 
-            corePart.SetColorScale(Core / CoreMax);
+            CorePart.SetColorScale(Core / CoreMax);
 
             if (Core <= 0)
                 Destroy();
@@ -174,6 +193,34 @@ public abstract partial class Craft : Entity
         Hull = 0;
     
         StatsChanged?.Invoke();
+    }
+
+    private void RecalculateStats()
+    {
+        Stats = Blueprint.GetStats(GetCurrentBlueprint());
+
+        CoreMax = Stats.core;
+        HullMax = Stats.hull;
+        Core = CoreMax;
+        Hull = HullMax;
+
+        StatsChanged?.Invoke();
+    }
+
+    public void MovePartToTop(CraftPart part)
+    {
+        if (partsContainer.GetChildCount() > 1)
+            partsContainer.MoveChild(part, -1);
+    }
+
+
+    protected override void OnSpawning()
+    {
+        SetFaction(faction);
+        SetBlueprint(blueprint);
+
+        foreach (CraftPart part in GetParts())
+            part.AnimateSpawn();
     }
 
     private void OnPartDestroyed(CraftPart part)

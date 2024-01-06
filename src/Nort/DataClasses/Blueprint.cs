@@ -62,11 +62,15 @@ public class Blueprint : ISavable
         BlueprintStats stats = new()
         {
             torque = 1,
-            acceleration = 1,
-            core = blueprint.core.Part.core,
-            hull = blueprint.core.Part.hull,
-            mass = blueprint.core.Mass
+            acceleration = 1
         };
+
+        if (blueprint.core != null)
+        {
+            stats.core = blueprint.core.Part.core;
+            stats.hull = blueprint.core.Part.hull;
+            stats.mass = blueprint.core.Mass;
+        }
         
         foreach (BlueprintPart hull in blueprint.hulls)
         {

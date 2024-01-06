@@ -281,7 +281,11 @@ public class Assets : Singleton<Assets>
     
     public Rect2 GetBlueprintVisualRect(Blueprint blueprint)
     {
-        List<BlueprintPart> parts = blueprint.hulls.Concat(new[] { blueprint.core }).ToList();
+        List<BlueprintPart> parts = (
+            blueprint.core == null
+                ? blueprint.hulls
+                : blueprint.hulls.Concat(new[] { blueprint.core }).ToList()
+        );
 
         if (!parts.Any())
             return new Rect2();

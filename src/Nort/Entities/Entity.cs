@@ -208,6 +208,7 @@ public abstract partial class Entity : Node2D
         Velocity *= Damp;
     }
 
+    [Connectable] protected event Action Spawning;
     [Connectable] public event Action Spawned;
 
     public bool DidSpawn { get; private set; }
@@ -218,12 +219,14 @@ public abstract partial class Entity : Node2D
     {
         DidSpawn = true;
         OnSpawning();
+        Spawning?.Invoke();
         Spawned?.Invoke();
     }
 
     public void SpawnSilently()
     {
         DidSpawn = true;
+        Spawning?.Invoke();
         OnSpawning();
     }
 

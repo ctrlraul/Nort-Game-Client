@@ -21,6 +21,7 @@ public partial class Stage : Node2D
     public event Action PlayerDestroyed;
 
     // Entities
+    [Export] private PackedScene craftScene;
     [Export] private PackedScene carrierCraftScene;
     [Export] private PackedScene playerCraftScene;
     [Export] private PackedScene droneCraftScene;
@@ -107,6 +108,13 @@ public partial class Stage : Node2D
         }
 
         return entitiesOnMouse.FindNearest(mouseArea.Position);
+    }
+
+    public CraftPart GetCraftPartOnMouse()
+    {
+        return (CraftPart)mouseArea.GetOverlappingAreas()
+            .Where(area => area is CraftPart)
+            .MinBy(part => part.GlobalPosition.DistanceTo(mouseArea.Position));
     }
 
     private void CameraFollowPlayer()
@@ -217,6 +225,7 @@ public partial class Stage : Node2D
     {
         return typeName switch
         {
+            nameof(Craft) => craftScene.Instantiate<Craft>(),
             nameof(PlayerCraft) => playerCraftScene.Instantiate<PlayerCraft>(),
             nameof(CarrierCraft) => carrierCraftScene.Instantiate<CarrierCraft>(),
             nameof(DroneCraft) => droneCraftScene.Instantiate<DroneCraft>(),
@@ -354,6 +363,11 @@ public partial class Stage : Node2D
     {
         Node2D effect = coreExplosionScene.Instantiate<Node2D>();
         effect.Position = position;
+        effectsContainer.AddChild(effect);
+    }
+
+    public void AddCustomEffect(Node effect)
+    {
         effectsContainer.AddChild(effect);
     }
     

@@ -1,4 +1,3 @@
-using System.Linq;
 using Godot;
 using Nort.UI;
 
@@ -14,7 +13,7 @@ public partial class PartInspector : PanelContainer
 	private Label coreLabel;
 	private Label hullLabel;
 
-	private DisplayCraftPart _part = null;
+	private PartData partData;
 
 	public Faction Faction
 	{
@@ -22,6 +21,7 @@ public partial class PartInspector : PanelContainer
 		get => displayPart.Faction;
 	}
 
+	
 	public override void _Ready()
 	{
 		base._Ready();
@@ -34,35 +34,25 @@ public partial class PartInspector : PanelContainer
 		hullLabel = GetNode<Label>("%HullLabel");
 	}
 
-	public void SetPart(DisplayCraftPart part)
-	{
-		_part = part;
 
-		if (_part == null)
+	public void SetPartData(PartData value)
+	{
+		partData = value;
+
+		if (partData == null)
 		{
 			Clear();
-		}
-		else
-		{
-			var partData = _part.partData;
-			SetPartData(partData);
 
-			if (partData.Skill != null)
-			{
-				skillIcon.Texture = Assets.Instance.GetSkillTexture(partData.Skill.id);
-				skillLabel.Text = partData.Skill.displayName;
-			}
-			else
-			{
-				skillIcon.Texture = null;
-				skillLabel.Text = "";
-			}
+			return;
 		}
-	}
 
-	public void SetPartData(PartData partData)
-	{
-		_SetPartData(partData);
+		container.Modulate = container.Modulate with { A = 1 };
+
+		displayPart.PartData = partData;
+
+		nameLabel.Text = partData.Part.displayName;
+		coreLabel.Text = partData.Part.core.ToString();
+		hullLabel.Text = partData.Part.hull.ToString();
 
 		if (partData.Skill != null)
 		{
@@ -74,17 +64,6 @@ public partial class PartInspector : PanelContainer
 			skillIcon.Texture = null;
 			skillLabel.Text = "";
 		}
-	}
-
-	private void _SetPartData(PartData partData)
-	{
-		container.Modulate = container.Modulate with { A = 1 };
-
-		displayPart.PartData = partData;
-
-		nameLabel.Text = partData.Part.displayName;
-		coreLabel.Text = partData.Part.core.ToString();
-		hullLabel.Text = partData.Part.hull.ToString();
 
 		if (partData.shiny)
 		{
@@ -100,10 +79,5 @@ public partial class PartInspector : PanelContainer
 	public void Clear()
 	{
 		container.Modulate = container.Modulate with { A = 0 };
-	}
-
-	private void OnSkillOptionsItemSelected(int index)
-	{
-		_part.partData.Skill = Assets.Instance.GetSkills().ElementAt(index);
 	}
 }

@@ -2,6 +2,7 @@ using Godot;
 using Nort.UI;
 using System;
 using CtrlRaul.Godot;
+using Nort.Entities;
 
 namespace Nort.Pages.CraftBuilder;
 
@@ -44,21 +45,22 @@ public partial class PartTransformControls : Control
 	}
 
 
-	private DisplayCraftPart part;
-	public DisplayCraftPart Part
+	private CraftPart part;
+
+	public CraftPart Part
 	{
 		get => part;
 		set
 		{
 			if (value != null)
 			{
-				Texture2D texture = Assets.Instance.GetPartTexture(value.partData.partId);
+				Texture2D texture = Assets.Instance.GetPartTexture(value.Blueprint);
 
 				partOutline.Texture = texture;
 				partOutline.Size = texture.GetSize();
 
-				Angle = value.Angle;
-				Flipped = value.Flipped;
+				Angle = value.Blueprint.angle;
+				Flipped = value.Blueprint.flipped;
 
 				Visible = true;
 			}
@@ -86,18 +88,18 @@ public partial class PartTransformControls : Control
 		if (@event is InputEventMouseMotion)
 		{
 			Vector2 mouse = GetLocalMousePosition();
-			float mouseAngle = mouse.Angle();
-			float newRotation = Mathf.RadToDeg(mouseAngle - rotationStartAngle);
+			float mouseAngle = Mathf.RadToDeg(mouse.Angle());
+			float newRotation = mouseAngle - rotationStartAngle;
 			const float snap = 360.0f / Angles;
 
 			Angle = Mathf.Floor(newRotation / snap) * snap;
 
 			if (Part != null)
 			{
-				Part.Angle = Angle;
+				Part.RotationDegrees = Angle;
 			}
 
-			line2D.Rotation = mouseAngle;
+			line2D.RotationDegrees = mouseAngle;
 			line2D.Scale = line2D.Scale with { X = mouse.Length() };
 
 			Rotate?.Invoke(Angle);
@@ -110,30 +112,30 @@ public partial class PartTransformControls : Control
 		Visible = false;
 	}
 
-	public void UpdateTransform(Control control)
+	public void UpdateTransform(Camera2D camera)
 	{
 		if (Part == null)
 		{
 			return;
 		}
 
-		Position = control.Position + Part.Position * control.Scale;
-		partOutlineContainer.Scale = control.Scale;
+		Position = (Part.Position - camera.Position) * camera.Zoom;
+		partOutlineContainer.Scale = camera.Zoom;
 		buttonsMargin.Position = buttonsMargin.Position with
 		{
-			Y = partOutline.Texture.GetHeight() * 0.5f * control.Scale.Y + 20
+			Y = partOutline.Texture.GetHeight() * 0.5f * camera.Zoom.Y + 20
 		};
 	}
 
 	private void OnRotateButtonButtonDown()
 	{
 		Vector2 mouse = GetLocalMousePosition();
-		float mouseAngle = mouse.Angle();
+		float mouseAngle = Mathf.RadToDeg(mouse.Angle());
 
 		rotationStartAngle = mouseAngle - Angle;
 
 		line2D.Visible = true;
-		line2D.Rotation = mouseAngle;
+		line2D.RotationDegrees = mouseAngle;
 		line2D.Scale = line2D.Scale with { X = mouse.Length() };
 
 		SetProcessInput(true);
@@ -174,7 +176,7 @@ public partial class PartTransformControls : Control
 
 			Angle += 360.0f / Angles * delta;
 
-			Part.Angle = Angle;
+			Part.RotationDegrees = Angle;
 			lastMouseWheelSpin = now;
 			
 			Rotate?.Invoke(Angle);
