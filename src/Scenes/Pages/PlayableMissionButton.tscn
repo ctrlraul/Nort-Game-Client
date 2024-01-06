@@ -18,8 +18,9 @@ shadow_offset = Vector2(0, 4)
 
 [node name="PlayableMissionButton" type="Button"]
 custom_minimum_size = Vector2(0, 122)
-offset_right = 1753.0
-offset_bottom = 120.0
+anchors_preset = 10
+anchor_right = 1.0
+grow_horizontal = 2
 theme_type_variation = &"ButtonMission"
 script = ExtResource("1_ctid8")
 
@@ -43,6 +44,7 @@ layout_mode = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
 clip_contents = true
+custom_minimum_size = Vector2(360, 0)
 layout_mode = 2
 
 [node name="NameLabel" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer"]
@@ -60,19 +62,21 @@ text = "3 Enemies
 
 [node name="Control" type="PanelContainer" parent="MarginContainer/HBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 6
-size_flags_vertical = 4
+size_flags_horizontal = 3
 mouse_filter = 2
 theme_type_variation = &"PanelDarken"
 
 [node name="QuoteLabel" type="Label" parent="MarginContainer/HBoxContainer/Control"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(1, 0)
 layout_mode = 2
 text = "\"Alone, it's a spark; together, a blaze. Careful when they team up!\""
 horizontal_alignment = 1
 vertical_alignment = 1
+autowrap_mode = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 alignment = 2
 
