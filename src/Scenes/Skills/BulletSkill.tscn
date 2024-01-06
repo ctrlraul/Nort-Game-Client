@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://dln0sc730korg"]
+[gd_scene load_steps=8 format=3 uid="uid://dln0sc730korg"]
 
 [ext_resource type="Script" path="res://Nort/Skills/BulletSkill.cs" id="1_70pev"]
 [ext_resource type="Texture2D" uid="uid://hlcyw0kime5w" path="res://Images/skills/bullet.png" id="2_t1j6l"]
