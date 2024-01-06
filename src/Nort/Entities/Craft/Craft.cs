@@ -4,6 +4,7 @@ using System.Linq;
 using CtrlRaul.Godot;
 using CtrlRaul.Godot.Linq;
 using Godot;
+using Nort.Skills;
 
 namespace Nort.Entities;
 
@@ -137,7 +138,9 @@ public abstract partial class Craft : Entity
         }
         
         partsContainer.AddChild(part);
-        skillNodes.Add(part.skillNode);
+
+        if (part.skillNode != null)
+            skillNodes.Add(part.skillNode);
 
         return part;
     }

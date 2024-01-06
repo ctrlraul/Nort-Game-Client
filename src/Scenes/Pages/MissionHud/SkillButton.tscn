@@ -128,3 +128,4 @@ libraries = {
 
 [connection signal="button_down" from="." to="." method="OnButtonDown"]
 [connection signal="button_up" from="." to="." method="OnButtonUp"]
+[connection signal="pressed" from="." to="." method="Fire"]

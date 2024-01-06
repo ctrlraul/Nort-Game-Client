@@ -17,6 +17,7 @@ public partial class DroneSkill : Node2D, ISkillNode
     public float CooldownMax => (float)cooldownTimer.WaitTime;
     public float Cooldown => (float)cooldownTimer.TimeLeft;
     public Texture2D Texture => GetNode<Sprite2D>("Sprite2D").Texture;
+    public bool Passive => false;
 
     #endregion
     

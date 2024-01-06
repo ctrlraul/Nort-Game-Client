@@ -1,6 +1,7 @@
 using Godot;
 using CtrlRaul.Godot;
 using Nort.Entities;
+using Nort.Skills;
 
 namespace Nort.Pages;
 
@@ -19,6 +20,14 @@ public partial class SkillButton : TextureButton
 		this.InitializeReady();
 	}
 
+
+	public void Fire()
+	{
+		if (skillNode.Passive)
+			return;
+
+		skillNode.Fire();
+	}
 
 	public void SetSkillNode(ISkillNode value)
 	{
@@ -48,7 +57,7 @@ public partial class SkillButton : TextureButton
 		}
 	}
 
-	public void SetShortcut(string text)
+	public void SetShortcutLabel(string text)
 	{
 		shortcutLabel.Text = text;
 	}
@@ -56,6 +65,7 @@ public partial class SkillButton : TextureButton
 
 	private void OnSkillNodeFired()
 	{
+		animationPlayer.Stop();
 		animationPlayer.Play("progress");
 	}
 

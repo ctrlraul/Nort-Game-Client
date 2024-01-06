@@ -1,10 +1,12 @@
-﻿using Godot;
+﻿using System.Linq;
+using Godot;
 using System.Threading.Tasks;
 using CtrlRaul.Godot;
 using CtrlRaul.Godot.Linq;
 using Nort.UI;
 using Nort.UI.Overlays;
 using Nort.Entities;
+using Nort.Skills;
 
 namespace Nort.Pages;
 
@@ -42,10 +44,14 @@ public partial class MissionHud : Page
     {
         base._Ready();
         this.InitializeReady();
+
+        interactionIndicator.Visible = false;
+        skillButtons.QueueFreeChildren();
+        
         Stage.Instance.PlayerSpawned += OnPlayerSpawned;
         Stage.Instance.PlayerDestroyed += OnPlayerDestroyed;
         Stage.Instance.MissionCompleted += OnMissionCompleted;
-        skillButtons.QueueFreeChildren();
+        
         SetProcess(false);
     }
 
@@ -90,8 +96,13 @@ public partial class MissionHud : Page
         }
     }
 
-    public override void _Input(InputEvent @event)
+    public override void _UnhandledInput(InputEvent @event)
     {
+        if (@event is not InputEventKey keyEvent)
+            return;
+        
+        
+        
         if (Input.IsActionJustPressed("escape") && Visible)
         {
             Visible = false;
@@ -100,7 +111,42 @@ public partial class MissionHud : Page
             pause.Unpaused += OnUnpaused;
             pause.Forfeit += Forfeit;
             pause.Quit += () => GetTree().Quit();
+
+            return;
         }
+
+        switch (keyEvent.Keycode)
+        {
+            case Key.Key1:
+                TryToUseSkill(0);
+
+                break;
+
+            case Key.Key2:
+                TryToUseSkill(1);
+
+                break;
+
+            case Key.Key3:
+                TryToUseSkill(2);
+
+                break;
+
+            case Key.Key4:
+                TryToUseSkill(3);
+
+                break;
+        }
+    }
+
+    private void TryToUseSkill(int index)
+    {
+        if (index >= skillButtons.GetChildCount())
+            return;
+
+        SkillButton skillButton = (SkillButton)skillButtons.GetChild(index);
+
+        skillButton.Fire();
     }
 
     public async void Forfeit()
@@ -123,11 +169,23 @@ public partial class MissionHud : Page
         hullProgressBar.Progress = 1;
         coreProgressBar.Progress = 1;
 
-        foreach (ISkillNode skillNode in player.skillNodes)
+        int activeSkills = 0;
+
+        foreach (ISkillNode skillNode in player.skillNodes.OrderBy(skillNode => skillNode.Passive))
         {
             SkillButton button = skillButtonScene.Instantiate<SkillButton>();
             skillButtons.AddChild(button);
             button.SetSkillNode(skillNode);
+
+            if (skillNode.Passive)
+            {
+                button.SetShortcutLabel(string.Empty);
+            }
+            else
+            {
+                activeSkills++;
+                button.SetShortcutLabel(activeSkills.ToString());
+            }
         }
         
         SetProcess(true);

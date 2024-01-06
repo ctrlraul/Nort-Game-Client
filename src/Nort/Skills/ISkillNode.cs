@@ -2,7 +2,7 @@
 using Godot;
 using Nort.Entities;
 
-namespace Nort;
+namespace Nort.Skills;
 
 public interface ISkillNode
 {
@@ -12,4 +12,7 @@ public interface ISkillNode
     public float CooldownMax { get; }
     public float Cooldown { get; }
     public Texture2D Texture { get; }
+    public bool Passive { get; }
+
+    public void Fire();
 }

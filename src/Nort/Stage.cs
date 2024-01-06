@@ -283,7 +283,7 @@ public partial class Stage : Node2D
         // Important that this comes after injecting the setup since that's when the entity's UUID is set.
         entitiesMap.Add(entity.Uuid, entity);
 
-        if (setup is { autoSpawn: true } || Game.Instance.InMissionEditor)
+        if (setup == null || setup is { autoSpawn: true } || Game.Instance.InMissionEditor)
         {
             if (Game.Instance.InMissionEditor)
                 entity.SpawnSilently();

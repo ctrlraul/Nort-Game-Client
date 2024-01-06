@@ -15,6 +15,11 @@ public partial class RadarSkill : Node2D, ISkillNode
     public float CooldownMax => 0;
     public float Cooldown => 0;
     public Texture2D Texture => GetNode<Sprite2D>("Sprite2D").Texture;
+    public bool Passive => true;
+
+    public void Fire()
+    {
+    }
 
     #endregion
 }

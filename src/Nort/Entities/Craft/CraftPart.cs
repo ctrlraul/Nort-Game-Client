@@ -1,6 +1,7 @@
 ﻿using System;
 using CtrlRaul.Godot;
 using Godot;
+using Nort.Skills;
 
 namespace Nort.Entities;
 

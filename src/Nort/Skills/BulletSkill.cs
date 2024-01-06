@@ -19,6 +19,7 @@ public partial class BulletSkill : Node2D, ISkillNode
     public float CooldownMax => (float)cooldownTimer.WaitTime;
     public float Cooldown => (float)cooldownTimer.TimeLeft;
     public Texture2D Texture => GetNode<Sprite2D>("Sprite2D").Texture;
+    public bool Passive => true;
 
     #endregion
     
@@ -101,7 +102,7 @@ public partial class BulletSkill : Node2D, ISkillNode
         LookForATarget();
     }
 
-    private void Fire()
+    public void Fire()
     {
         if (cooldownTimer.TimeLeft > 0)
             return;
