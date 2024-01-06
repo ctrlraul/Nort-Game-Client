@@ -25,7 +25,6 @@ public partial class BulletSkill : Node2D, ISkillNode
     private const float Damage = 3;
 
     [Ready] public Area2D range;
-    [Ready] public CollisionShape2D rangeAreaCollisionShape2D;
     [Ready] public RayCast2D rayCast2D;
     [Ready] public GpuParticles2D particles;
     [Ready] public Timer cooldownTimer;
