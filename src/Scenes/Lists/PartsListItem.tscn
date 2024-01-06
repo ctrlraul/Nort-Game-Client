@@ -1,9 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://gyid7spgcjj0"]
+[gd_scene load_steps=7 format=3 uid="uid://gyid7spgcjj0"]
 
 [ext_resource type="Script" path="res://Nort/Listing/PartsListItem.cs" id="1_hi4b5"]
 [ext_resource type="Material" uid="uid://bf26eeqwjq5co" path="res://Materials/Part.tres" id="2_go65u"]
 [ext_resource type="Texture2D" uid="uid://cpvu7gu8m0rod" path="res://Images/theme/parts_list_item_frame.png" id="2_jpb70"]
 [ext_resource type="PackedScene" uid="uid://uk8tpg655i5w" path="res://Scenes/UI/DisplayPart.tscn" id="7_13fuq"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2owox"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_3s4op"]
 outline_size = 8
@@ -11,6 +13,7 @@ outline_color = Color(0, 0, 0, 1)
 
 [node name="PartsListItem" type="Button"]
 custom_minimum_size = Vector2(64, 64)
+theme_override_styles/focus = SubResource("StyleBoxEmpty_2owox")
 flat = true
 script = ExtResource("1_hi4b5")
 
