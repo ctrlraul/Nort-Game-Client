@@ -72,7 +72,10 @@ public partial class PartsInventory : MarginContainer
                 if (listItemPressed != null)
                 {
                     DragManager.Instance.Drag(listItemPressed, listItemPressed.PartData);
-                    partsList.Remove(partsListItem.PartData);
+
+                    if (!Game.Instance.Dev)
+                        partsList.Remove(partsListItem.PartData);
+                    
                     listItemPressed = null;
                 }
 

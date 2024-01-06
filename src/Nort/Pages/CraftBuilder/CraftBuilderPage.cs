@@ -193,7 +193,7 @@ public partial class CraftBuilderPage : Page
 
         foreach (BlueprintPart part in blueprint.hulls)
         {
-            if (partsInventory.TryTakingPart(PartData.From(part)) || editorMode)
+            if (editorMode || partsInventory.TryTakingPart(PartData.From(part)))
                 AddPart(part);
         }
 
@@ -521,8 +521,8 @@ public partial class CraftBuilderPage : Page
 
     private void OnPartsInventoryDragReceiverDragDrop(DragData dragData)
     {
-        // if (editorMode)
-        //     return;
+        if (editorMode)
+            return;
         
         switch (dragData.data)
         {
