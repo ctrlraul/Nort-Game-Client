@@ -1,9 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Godot;
 using CtrlRaul;
 using CtrlRaul.Godot;
-using CtrlRaul.Godot.Linq;
 using Nort.Entities;
 
 namespace Nort.Skills;
@@ -26,7 +26,7 @@ public partial class BulletSkill : Node2D, ISkillNode
     private const float Damage = 3;
 
     [Ready] public Area2D range;
-    [Ready] public Area2D pseudoRay;
+    [Ready] public ShapeCast2D aimShapeCast2D;
     [Ready] public GpuParticles2D particles;
     [Ready] public Timer cooldownTimer;
     
@@ -47,13 +47,14 @@ public partial class BulletSkill : Node2D, ISkillNode
             if (IsInstanceValid(target))
             {
                 target.Craft.FactionChanged += LookForATarget;
-                SetProcess(true);
+                GlobalRotation = GlobalPosition.AngleToPoint(target.GlobalPosition);
                 Fire();
+                SetProcess(true);
             }
             else
             {
-                SetProcess(false);
                 ResetRotation();
+                SetProcess(false);
             }
         }
     }
@@ -83,7 +84,9 @@ public partial class BulletSkill : Node2D, ISkillNode
     
     private void LookForATarget()
     {
-        Target = range.GetOverlappingAreas().FindNearest(GlobalPosition, true) as CraftPart;
+        Target = range.GetOverlappingAreas()
+            .Cast<CraftPart>()
+            .FirstOrDefault(part => !part.IsDestroyed);
     }
     
     private void ResetRotation()
@@ -94,34 +97,27 @@ public partial class BulletSkill : Node2D, ISkillNode
     private void UpdateCollisionMasks()
     {
         range.CollisionMask = Assets.Instance.GetFactionCollisionMask(Part.Faction);
-        pseudoRay.CollisionMask = range.CollisionMask;
+        aimShapeCast2D.CollisionMask = range.CollisionMask;
         LookForATarget();
     }
 
-    public void Fire()
+    private void Fire()
     {
-        if (Game.Instance.InMissionEditor)
-            return;
-        
-        if (Part.IsDestroyed)
-            return;
-
-        if (Target == null)
-            return;
-        
         if (cooldownTimer.TimeLeft > 0)
             return;
 
-        LookAt(Target.GlobalPosition);
-
-        CraftPart aimedPart = GetAimedPart();
-
-        if (aimedPart == null)
+        if (!IsInstanceValid(Target))
             return;
 
+        if (Game.Instance.InMissionEditor)
+            return;
+
+        ShowFiredVisualFeedback();
+        
         cooldownTimer.Start();
         particles.Emitting = true;
 
+        CraftPart aimedPart = GetAimedPart();
         aimedPart.Craft.TakeHit(aimedPart, this, Damage);
 
         AudioManager.Instance.PlayBulletFired(GlobalPosition);
@@ -131,11 +127,22 @@ public partial class BulletSkill : Node2D, ISkillNode
 
     private CraftPart GetAimedPart()
     {
-        return pseudoRay
-            .GetOverlappingAreas()
-            .Cast<CraftPart>()
-            .OrderBy(part => part.GlobalPosition.DistanceTo(GlobalPosition))
-            .FirstOrDefault(part => !part.IsDestroyed);
+        LookAt(Target.GlobalPosition);
+        aimShapeCast2D.ForceShapecastUpdate();
+
+        int collisionCount = aimShapeCast2D.GetCollisionCount();
+        List<CraftPart> collidingParts = new();
+
+        for (int i = 0; i < collisionCount; i++)
+            collidingParts.Add((CraftPart)aimShapeCast2D.GetCollider(i));
+
+        return collidingParts.FirstOrDefault(part => !part.IsDestroyed);
+    }
+
+    private void ShowFiredVisualFeedback()
+    {
+        Modulate = new Color(1, 0, 1);
+        CreateTween().TweenProperty(this, "modulate:g", 1, cooldownTimer.WaitTime * 0.90);
     }
     
     
@@ -149,9 +156,9 @@ public partial class BulletSkill : Node2D, ISkillNode
         if (area == Target)
             LookForATarget();
     }
-    
+
     private void OnCooldownTimerTimeout()
     {
         Fire();
     }
-} 
+}
