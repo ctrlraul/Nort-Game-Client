@@ -112,12 +112,16 @@ public partial class BulletSkill : Node2D, ISkillNode
         if (Game.Instance.InMissionEditor)
             return;
 
+        CraftPart aimedPart = GetAimedPart();
+
+        if (aimedPart == null)
+            return;
+        
         ShowFiredVisualFeedback();
         
         cooldownTimer.Start();
         particles.Emitting = true;
-
-        CraftPart aimedPart = GetAimedPart();
+        
         aimedPart.Craft.TakeHit(aimedPart, this, Damage);
 
         AudioManager.Instance.PlayBulletFired(GlobalPosition);
