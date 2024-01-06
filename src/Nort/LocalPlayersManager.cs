@@ -18,7 +18,7 @@ public class LocalPlayersManager : Singleton<LocalPlayersManager>
         Player player = new()
         {
             id = Assets.GenerateUuid(),
-            nick = "noob",
+            nick = "Newborn",
             blueprint = Blueprint.From(Assets.Instance.InitialBlueprint)
         };
 
