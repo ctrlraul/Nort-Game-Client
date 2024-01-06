@@ -11,6 +11,7 @@ public static class Config
 
     public static readonly string[] CarrierBlueprints = { "small_carrier" };
     public static readonly string[] DroneBlueprints = { "strike", "brisk" };
+    public static readonly string[] TurretBlueprints = { "bullet_turret" };
     
     public const string SkillsPath = "res://Scenes/Skills";
     public const string PlayerFaction = "emerald";

@@ -1,0 +1,9 @@
+[gd_scene load_steps=4 format=3 uid="uid://djpnhm8p35jxu"]
+
+[ext_resource type="PackedScene" uid="uid://b1xci2ckb2rvw" path="res://Scenes/Entities/Craft/Craft.tscn" id="1_elph6"]
+[ext_resource type="Script" path="res://Nort/Entities/TurretCraft.cs" id="2_kkdgm"]
+[ext_resource type="PackedScene" uid="uid://c8vjpl3s8tb65" path="res://Scenes/Entities/Craft/CraftPart.tscn" id="3_wlaio"]
+
+[node name="TurretCraft" instance=ExtResource("1_elph6")]
+script = ExtResource("2_kkdgm")
+craftPartScene = ExtResource("3_wlaio")

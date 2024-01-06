@@ -25,6 +25,7 @@ public partial class Stage : Node2D
     [Export] private PackedScene playerCraftScene;
     [Export] private PackedScene droneCraftScene;
     [Export] private PackedScene conductorCraftScene;
+    [Export] private PackedScene turretCraftScene;
     [Export] private PackedScene orphanPartScene;
     [Export] private PackedScene coreBulletProjectileScene;
     
@@ -220,6 +221,7 @@ public partial class Stage : Node2D
             nameof(CarrierCraft) => carrierCraftScene.Instantiate<CarrierCraft>(),
             nameof(DroneCraft) => droneCraftScene.Instantiate<DroneCraft>(),
             nameof(ConductorCraft) => conductorCraftScene.Instantiate<ConductorCraft>(),
+            nameof(TurretCraft) => turretCraftScene.Instantiate<TurretCraft>(),
             nameof(OrphanPart) => orphanPartScene.Instantiate<OrphanPart>(),
             nameof(CoreBulletProjectile) => coreBulletProjectileScene.Instantiate<CoreBulletProjectile>(),
             
