@@ -26,7 +26,7 @@ public partial class CoreTractor : Node2D
 
 			target = value;
 
-			if (target == null || GlobalPosition.DistanceTo(target.GlobalPosition) > breakDistance)
+			if (target == null)
 			{
 				sprite2D.Visible = false;
 				SetProcess(false);
@@ -75,6 +75,13 @@ public partial class CoreTractor : Node2D
 		base._PhysicsProcess(delta);
 
 		distance = GlobalPosition.DistanceTo(target.GlobalPosition);
+
+		if (distance > breakDistance)
+		{
+			Target = null;
+
+			return;
+		}
 
 		switch (target)
 		{
