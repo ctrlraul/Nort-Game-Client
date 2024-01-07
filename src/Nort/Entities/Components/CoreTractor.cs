@@ -10,6 +10,8 @@ public partial class CoreTractor : Node2D
 
 	private float textureSizeX;
 
+	private Craft ownerCraft;
+    
 	private Entity target;
 
 	public Entity Target
@@ -43,6 +45,7 @@ public partial class CoreTractor : Node2D
 	private float breakDistance = 700;
 	private float pullDistance = 450;
 	private float pullForce = 30;
+	private float distance;
 	
 	
 	public override void _Ready()
@@ -50,9 +53,10 @@ public partial class CoreTractor : Node2D
 		base._Ready();
 		this.InitializeReady();
 
-		if (Owner is not Craft)
+		if (Owner is not Craft craft)
 			throw new Exception($"Expected parent to be {nameof(Craft)}");
 
+		ownerCraft = craft;
 		textureSizeX = sprite2D.Texture.GetSize().X;
 		sprite2D.Visible = false;
         
@@ -69,13 +73,40 @@ public partial class CoreTractor : Node2D
 	public override void _PhysicsProcess(double delta)
 	{
 		base._PhysicsProcess(delta);
-		
-		float distance = GlobalPosition.DistanceTo(target.GlobalPosition);
 
+		distance = GlobalPosition.DistanceTo(target.GlobalPosition);
+
+		switch (target)
+		{
+			case OrphanPart:
+				PullInto(delta);
+
+				break;
+
+			default:
+				PullToRange(delta);
+
+				break;
+		}
+	}
+
+	private void PullToRange(double delta)
+	{
 		if (distance > pullDistance)
 		{
-			target.Velocity += target.GlobalPosition.DirectionTo(GlobalPosition) * pullForce * Mathf.Pow(distance / pullDistance, 2) * (float)delta;
+			target.Velocity += target.GlobalPosition.DirectionTo(GlobalPosition)
+			                   * pullForce
+			                   * Mathf.Pow(distance / pullDistance, 2)
+			                   * (float)delta;
 		}
+	}
+
+	private void PullInto(double delta)
+	{
+		target.Velocity += target.GlobalPosition.DirectionTo(GlobalPosition)
+		                   * pullForce
+		                   * distance / PlayerCraft.CollectingRadius
+		                   * (float)delta;
 	}
 	
 	private void ConnectEntityEvents(Entity entity)

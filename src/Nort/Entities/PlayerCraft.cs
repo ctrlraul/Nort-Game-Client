@@ -11,6 +11,8 @@ namespace Nort.Entities;
 
 public partial class PlayerCraft : Craft
 {
+    public const int CollectingRadius = 64;  
+    
     #region EntityInspector compatibility
 
     [Savable]
@@ -60,7 +62,14 @@ public partial class PlayerCraft : Craft
     public override void _Ready()
     {
         base._Ready();
+
+        GetNode<CollisionShape2D>("%CollectingRangeShape").Shape = new CircleShape2D
+        {
+            Radius = CollectingRadius
+        };
+        
         controllerIcon.Visible = Game.Instance.InMissionEditor;
+        
         SetProcessUnhandledInput(!Game.Instance.InMissionEditor);
         SetPhysicsProcess(!Game.Instance.InMissionEditor);
     }

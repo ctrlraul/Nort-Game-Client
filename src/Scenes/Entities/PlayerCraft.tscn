@@ -1,22 +1,17 @@
-[gd_scene load_steps=10 format=3 uid="uid://dnfpufrxifb44"]
+[gd_scene load_steps=8 format=3 uid="uid://dnfpufrxifb44"]
 
 [ext_resource type="PackedScene" uid="uid://b1xci2ckb2rvw" path="res://Scenes/Entities/Craft/Craft.tscn" id="1_hcr24"]
 [ext_resource type="Script" path="res://Nort/Entities/PlayerCraft.cs" id="2_kv5h0"]
-[ext_resource type="PackedScene" uid="uid://c8vjpl3s8tb65" path="res://Scenes/Entities/Craft/CraftPart.tscn" id="3_hun0j"]
 [ext_resource type="PackedScene" uid="uid://p46oi0to68au" path="res://Scenes/Entities/Components/FlightComponent.tscn" id="3_v2nrv"]
 [ext_resource type="PackedScene" uid="uid://djqq8s6miovq7" path="res://Scenes/FloatingAnimation.tscn" id="4_m5ck5"]
 [ext_resource type="PackedScene" uid="uid://1sggqnuj0evg" path="res://Scenes/Entities/Components/CoreTractor.tscn" id="4_otqb4"]
 [ext_resource type="Texture2D" uid="uid://blv4e7b1xcgvf" path="res://Images/icons/controller.png" id="7_vbbtp"]
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_dqwve"]
-radius = 50.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_c4tym"]
 radius = 160.0
 
 [node name="PlayerCraft" instance=ExtResource("1_hcr24")]
 script = ExtResource("2_kv5h0")
-craftPartScene = ExtResource("3_hun0j")
 
 [node name="CollectingRange" type="Area2D" parent="." index="0"]
 collision_layer = 0
@@ -24,8 +19,8 @@ collision_mask = 4
 input_pickable = false
 monitorable = false
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CollectingRange" index="0"]
-shape = SubResource("CircleShape2D_dqwve")
+[node name="CollectingRangeShape" type="CollisionShape2D" parent="CollectingRange" index="0"]
+unique_name_in_owner = true
 debug_color = Color(0, 1, 1, 0)
 
 [node name="InteractingRange" type="Area2D" parent="." index="1"]
