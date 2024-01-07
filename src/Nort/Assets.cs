@@ -340,7 +340,7 @@ public class Assets : Singleton<Assets>
         string assetsDirectory;
         AssetsLibrary assetsLibrary;
 
-        if (Game.Instance.Dev)
+        if (OS.HasFeature("editor"))
         {
             assetsDirectory = Config.VendorAssetsDirectory;
             assetsLibrary = vendorAssets;
