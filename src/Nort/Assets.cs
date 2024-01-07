@@ -337,9 +337,6 @@ public class Assets : Singleton<Assets>
     
     public void StoreMission(Mission mission)
     {
-        logger.Log($"mission.displayName: {mission.displayName}");
-        logger.Log($"mission.id: {mission.id}");
-        
         string assetsDirectory;
         AssetsLibrary assetsLibrary;
 
