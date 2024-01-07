@@ -54,13 +54,14 @@ public partial class PartTransformControls : Control
 		{
 			if (value != null)
 			{
-				Texture2D texture = Assets.Instance.GetPartTexture(value.Blueprint);
+				BlueprintPart blueprint = value.GetCurrentBlueprint();
+				Texture2D texture = Assets.Instance.GetPartTexture(blueprint);
 
 				partOutline.Texture = texture;
 				partOutline.Size = texture.GetSize();
 
-				Angle = value.Blueprint.angle;
-				Flipped = value.Blueprint.flipped;
+				Angle = blueprint.angle;
+				Flipped = blueprint.flipped;
 
 				Visible = true;
 			}
